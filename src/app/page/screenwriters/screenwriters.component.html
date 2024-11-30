@@ -1,0 +1,3 @@
+@for (screenwriter of screenwriters$ | async; track $index) {
+<p>{{screenwriter?.lastName}} {{screenwriter?.firstName}}</p>
+}

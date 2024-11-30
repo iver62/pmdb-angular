@@ -1,0 +1,28 @@
+<form class="form" [formGroup]="formGroup">
+  <!-- <div formArrayName="countriesCtrl">
+    @for (country of countriesArray.controls; track country; let i = $index) {
+    <div class="grid grid-cols-12 gap-2 items-baseline" [formGroupName]="i">
+      <mat-form-field class="lg:col-span-3" appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="name" placeholder="Nom">
+      </mat-form-field>
+        <button mat-icon-button matTooltip="Retirer" (click)="removeCountry(i)"
+        aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon color="warn">remove</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  <div class="flex justify-center">
+    <button mat-button (click)="addCountry()">Ajouter</button>
+  </div> -->
+  <mat-form-field class="w-full" appearance="outline">
+    <mat-label>Pays</mat-label>
+    <mat-select formControlName="countriesCtrl" multiple>
+      @for (country of countries$ | async | orderBy: ['nomFrFr']; track country) {
+      <mat-option [value]="country">{{country?.nomFrFr}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+</form>

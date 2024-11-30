@@ -1,0 +1,7 @@
+<div class="grid grid-cols-12 gap-2 items-baseline">
+  @for (country of countries$ | async | orderBy: ['nomFrFr']; track $index) {
+  <mat-card class="col-span-12 sm:col-span-4 md:col-span-3 lg:col-span-2 2xl:col-span-1" appearance="outlined">
+    <mat-card-content>{{country?.nomFrFr}}</mat-card-content>
+  </mat-card>
+  }
+</div>

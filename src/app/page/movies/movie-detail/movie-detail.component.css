@@ -1,0 +1,12 @@
+.tab-icon {
+  margin-right: 8px;
+}
+
+.hide {
+  display: none;
+}
+
+.table:hover + .hide {
+  display: block;
+  color: red;
+}

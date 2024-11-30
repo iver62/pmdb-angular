@@ -1,0 +1,49 @@
+<form class="form" [formGroup]="formGroup">
+  <div formArrayName="personsCtrl">
+    @for (person of personsArray.controls; track person; let i = $index) {
+    <div class="grid grid-cols-12 gap-2 items-baseline" [formGroupName]="i">
+      <mat-form-field class="example-full-width">
+        <mat-label>Number</mat-label>
+        <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="lastName"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (person of persons$ | async | orderBy: ['lastName']; track person) {
+          <mat-option [value]="person">{{person?.lastName}} {{person?.firstName}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="lastName" placeholder="Nom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="firstName" placeholder="Prénom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>2ème prénom</mat-label>
+        <input matInput formControlName="secondName" placeholder="Deuxième prénom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>3ème prénom</mat-label>
+        <input matInput formControlName="thirdName" placeholder="Troisième prénom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>Pseudo</mat-label>
+        <input matInput formControlName="pseudo" placeholder="Pseudo">
+      </mat-form-field>
+      <!-- <mat-form-field class="lg:col-span-2" appearance="outline">
+          <mat-label>Photo</mat-label>
+          <ngx-mat-file-input formControlName="photoCtrl" accept="'.jpg', '.jpeg', '.png'"></ngx-mat-file-input>
+          <mat-icon matSuffix>photo_camera</mat-icon>
+        </mat-form-field> -->
+      <button mat-mini-fab matTooltip="Retirer" (click)="removePerson(i)">
+        <mat-icon color="warn">remove</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  <div class="flex justify-center">
+    <button mat-button (click)="addPerson()">Ajouter</button>
+  </div>
+</form>

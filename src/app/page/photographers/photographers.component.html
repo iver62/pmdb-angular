@@ -1,0 +1,3 @@
+@for (photographer of photographers$ | async; track $index) {
+<p>{{photographer?.lastName}} {{photographer?.firstName}}</p>
+}

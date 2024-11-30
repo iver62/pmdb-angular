@@ -1,0 +1,38 @@
+<form class="form" [formGroup]="formGroup">
+  <div formArrayName="rolesCtrl">
+    @for (role of rolesArray.controls; track role; let i = $index) {
+    <div class="grid grid-cols-12 gap-2 items-baseline" [formGroupName]="i">
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="lastNameCtrl" placeholder="Nom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="firstNameCtrl" placeholder="Prénom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-1" appearance="outline">
+        <mat-label>2ème prénom</mat-label>
+        <input matInput formControlName="secondNameCtrl" placeholder="Deuxième prénom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-1" appearance="outline">
+        <mat-label>3ème prénom</mat-label>
+        <input matInput formControlName="thirdNameCtrl" placeholder="Troisième prénom">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>Pseudo</mat-label>
+        <input matInput formControlName="pseudoCtrl" placeholder="Pseudo">
+      </mat-form-field>
+      <mat-form-field class="lg:col-span-2" appearance="outline">
+        <mat-label>Rôle</mat-label>
+        <input matInput formControlName="roleCtrl" placeholder="Rôle">
+      </mat-form-field>
+      <button mat-icon-button matTooltip="Retirer" (click)="removeRole(i)">
+        <mat-icon color="warn">remove</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+  <div class="flex justify-center">
+    <button mat-button (click)="addRole()">Ajouter</button>
+  </div>
+</form>
