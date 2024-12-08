@@ -3,11 +3,10 @@ import { Component } from '@angular/core';
 import { PersonService } from '../../services/person.service';
 
 @Component({
-  selector: 'app-decorators',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './decorators.component.html',
-  styleUrl: './decorators.component.css'
+    selector: 'app-decorators',
+    imports: [CommonModule],
+    templateUrl: './decorators.component.html',
+    styleUrl: './decorators.component.css'
 })
 export class DecoratorsComponent {
 

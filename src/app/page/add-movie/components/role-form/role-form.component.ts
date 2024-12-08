@@ -9,11 +9,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MaterialFileInputModule } from 'ngx-custom-material-file-input';
 
 @Component({
-  selector: 'app-role-form',
-  standalone: true,
-  imports: [FormsModule, MaterialFileInputModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, ReactiveFormsModule],
-  templateUrl: './role-form.component.html',
-  styleUrl: './role-form.component.css'
+    selector: 'app-role-form',
+    imports: [FormsModule, MaterialFileInputModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, ReactiveFormsModule],
+    templateUrl: './role-form.component.html',
+    styleUrl: './role-form.component.css'
 })
 export class RoleFormComponent {
 

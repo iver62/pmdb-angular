@@ -5,11 +5,10 @@ import { NgPipesModule } from 'ngx-pipes';
 import { GenreService } from '../../services/genre.service';
 
 @Component({
-  selector: 'app-genres',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, NgPipesModule],
-  templateUrl: './genres.component.html',
-  styleUrl: './genres.component.css'
+    selector: 'app-genres',
+    imports: [CommonModule, MatCardModule, NgPipesModule],
+    templateUrl: './genres.component.html',
+    styleUrl: './genres.component.css'
 })
 export class GenresComponent {
 

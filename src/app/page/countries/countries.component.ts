@@ -5,11 +5,10 @@ import { CountryService } from '../../services/country.service';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-countries',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, NgPipesModule],
-  templateUrl: './countries.component.html',
-  styleUrl: './countries.component.css'
+    selector: 'app-countries',
+    imports: [CommonModule, MatCardModule, NgPipesModule],
+    templateUrl: './countries.component.html',
+    styleUrl: './countries.component.css'
 })
 export class CountriesComponent {
 

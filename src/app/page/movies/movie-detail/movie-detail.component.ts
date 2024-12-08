@@ -10,11 +10,10 @@ import { MovieService } from '../../../services';
 import { Form } from '@angular/forms';
 
 @Component({
-  selector: 'app-movie-detail',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatTabsModule, MatIconModule, RouterModule],
-  templateUrl: './movie-detail.component.html',
-  styleUrl: './movie-detail.component.css'
+    selector: 'app-movie-detail',
+    imports: [CommonModule, MatButtonModule, MatTabsModule, MatIconModule, RouterModule],
+    templateUrl: './movie-detail.component.html',
+    styleUrl: './movie-detail.component.css'
 })
 export class MovieDetailComponent {
 

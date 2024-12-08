@@ -18,11 +18,10 @@ interface GenreWrapper {
 }
 
 @Component({
-  selector: 'app-genre-form',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, ReactiveFormsModule],
-  templateUrl: './genre-form.component.html',
-  styleUrl: './genre-form.component.css'
+    selector: 'app-genre-form',
+    imports: [CommonModule, FormsModule, MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, ReactiveFormsModule],
+    templateUrl: './genre-form.component.html',
+    styleUrl: './genre-form.component.css'
 })
 export class GenreFormComponent {
 

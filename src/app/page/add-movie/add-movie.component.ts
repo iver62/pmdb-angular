@@ -14,28 +14,27 @@ import { MovieService, PersonService } from '../../services';
 import { AwardFormComponent, CountryFormComponent, GeneralInfosFormComponent, GenreFormComponent, PersonFormComponent, RoleFormComponent } from './components';
 
 @Component({
-  selector: 'app-add-movie',
-  standalone: true,
-  imports: [
-    AwardFormComponent,
-    CountryFormComponent,
-    GeneralInfosFormComponent,
-    GenreFormComponent,
-    PersonFormComponent,
-    RoleFormComponent,
-    MatButtonModule,
-    MatStepperModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatNativeDateModule,
-    MatSnackBarModule
-  ],
-  templateUrl: './add-movie.component.html',
-  styleUrl: './add-movie.component.css'
+    selector: 'app-add-movie',
+    imports: [
+        AwardFormComponent,
+        CountryFormComponent,
+        GeneralInfosFormComponent,
+        GenreFormComponent,
+        PersonFormComponent,
+        RoleFormComponent,
+        MatButtonModule,
+        MatStepperModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatNativeDateModule,
+        MatSnackBarModule
+    ],
+    templateUrl: './add-movie.component.html',
+    styleUrl: './add-movie.component.css'
 })
 export class AddMovieComponent {
 

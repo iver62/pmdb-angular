@@ -3,11 +3,10 @@ import { Component } from '@angular/core';
 import { PersonService } from '../../services/person.service';
 
 @Component({
-  selector: 'app-musicians',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './musicians.component.html',
-  styleUrl: './musicians.component.css'
+    selector: 'app-musicians',
+    imports: [CommonModule],
+    templateUrl: './musicians.component.html',
+    styleUrl: './musicians.component.css'
 })
 export class MusiciansComponent {
 

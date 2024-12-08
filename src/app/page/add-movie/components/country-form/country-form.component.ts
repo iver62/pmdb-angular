@@ -12,11 +12,10 @@ import { NgPipesModule } from 'ngx-pipes';
 import { CountryService } from '../../../../services';
 
 @Component({
-  selector: 'app-country-form',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, MatTooltipModule, NgPipesModule, ReactiveFormsModule],
-  templateUrl: './country-form.component.html',
-  styleUrl: './country-form.component.css'
+    selector: 'app-country-form',
+    imports: [CommonModule, FormsModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, MatTooltipModule, NgPipesModule, ReactiveFormsModule],
+    templateUrl: './country-form.component.html',
+    styleUrl: './country-form.component.css'
 })
 export class CountryFormComponent {
 

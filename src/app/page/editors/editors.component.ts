@@ -3,11 +3,10 @@ import { Component } from '@angular/core';
 import { PersonService } from '../../services/person.service';
 
 @Component({
-  selector: 'app-editors',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './editors.component.html',
-  styleUrl: './editors.component.css'
+    selector: 'app-editors',
+    imports: [CommonModule],
+    templateUrl: './editors.component.html',
+    styleUrl: './editors.component.css'
 })
 export class EditorsComponent {
 

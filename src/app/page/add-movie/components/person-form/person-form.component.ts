@@ -13,11 +13,10 @@ import { Observable } from 'rxjs';
 import { Person } from '../../../../models';
 
 @Component({
-  selector: 'app-person-form',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, NgPipesModule, ReactiveFormsModule],
-  templateUrl: './person-form.component.html',
-  styleUrl: './person-form.component.css'
+    selector: 'app-person-form',
+    imports: [CommonModule, FormsModule, MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, NgPipesModule, ReactiveFormsModule],
+    templateUrl: './person-form.component.html',
+    styleUrl: './person-form.component.css'
 })
 export class PersonFormComponent {
 

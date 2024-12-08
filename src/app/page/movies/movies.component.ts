@@ -7,11 +7,10 @@ import { MovieService } from '../../services';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-movies',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, NgPipesModule, RouterModule],
-  templateUrl: './movies.component.html',
-  styleUrl: './movies.component.css'
+    selector: 'app-movies',
+    imports: [CommonModule, MatButtonModule, MatCardModule, NgPipesModule, RouterModule],
+    templateUrl: './movies.component.html',
+    styleUrl: './movies.component.css'
 })
 export class MoviesComponent {
 

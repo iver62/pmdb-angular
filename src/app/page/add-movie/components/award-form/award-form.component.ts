@@ -9,11 +9,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Award } from '../../../../models';
 
 @Component({
-  selector: 'app-award-form',
-  standalone: true,
-  imports: [FormsModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, ReactiveFormsModule],
-  templateUrl: './award-form.component.html',
-  styleUrl: './award-form.component.css'
+    selector: 'app-award-form',
+    imports: [FormsModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, ReactiveFormsModule],
+    templateUrl: './award-form.component.html',
+    styleUrl: './award-form.component.css'
 })
 export class AwardFormComponent {
 
