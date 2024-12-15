@@ -2,11 +2,10 @@
   margin-right: 8px;
 }
 
-.hide {
-  display: none;
+.title {
+  width: fit-content;
 }
 
-.table:hover + .hide {
-  display: block;
-  color: red;
+ul li {
+  display: inline;
 }

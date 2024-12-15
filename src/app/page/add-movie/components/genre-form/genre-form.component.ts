@@ -18,10 +18,10 @@ interface GenreWrapper {
 }
 
 @Component({
-    selector: 'app-genre-form',
-    imports: [CommonModule, FormsModule, MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, ReactiveFormsModule],
-    templateUrl: './genre-form.component.html',
-    styleUrl: './genre-form.component.css'
+  selector: 'app-genre-form',
+  imports: [CommonModule, FormsModule, MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, ReactiveFormsModule],
+  templateUrl: './genre-form.component.html',
+  styleUrl: './genre-form.component.css'
 })
 export class GenreFormComponent {
 
@@ -29,57 +29,9 @@ export class GenreFormComponent {
 
   @Output() remove = new EventEmitter<Genre>();
 
-  // genres$ = this.genreService.getAll().pipe(
-  //   map(
-  //     genres => genres.map(
-  //       g => (
-  //         {
-  //           ...g,
-  //           selected: false
-  //         }
-  //       )
-  //     )
-  //   )
-  // );
-
   selectedGenres: GenreWrapper[] = [];
 
   constructor(private formBuilder: FormBuilder) { }
-
-  displayFn(value: Genre[] | string): string | undefined {
-    let displayValue: string;
-    if (Array.isArray(value)) {
-      value.forEach((genre, index) => {
-        if (index === 0) {
-          displayValue = genre.name;
-        } else {
-          displayValue += ', ' + genre.name;
-        }
-      });
-    } else {
-      displayValue = value;
-    }
-    return displayValue;
-  }
-
-  optionClicked(event: Event, genre: GenreWrapper) {
-    event.stopPropagation();
-    this.toggleSelection(genre);
-  }
-
-  toggleSelection(genre: GenreWrapper) {
-    genre.selected = !genre.selected;
-    if (genre.selected) {
-      this.selectedGenres.push(genre);
-    } else {
-      const i = this.selectedGenres.findIndex(value => value.name === genre.name);
-      this.selectedGenres.splice(i, 1);
-    }
-
-    this.formGroup.controls['genresCtrl'].setValue(this.selectedGenres);
-    console.log(this.formGroup.controls['genresCtrl']);
-
-  }
 
   addGenre() {
     const item = this.formBuilder.group(
@@ -96,8 +48,7 @@ export class GenreFormComponent {
   }
 
   get genresArray() {
-    return this.formGroup.get('genresCtrl') as FormArray
-      ;
+    return this.formGroup.get('genresCtrl') as FormArray;
   }
 
 }

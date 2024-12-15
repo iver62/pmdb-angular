@@ -1,6 +1,6 @@
-<button mat-button routerLink="../">Retour</button>
-
 @let movie = movie$ | async;
+
+<button mat-button routerLink="../">Retour</button>
 
 <mat-tab-group>
   <mat-tab>
@@ -8,24 +8,28 @@
       <mat-icon class="tab-icon">info</mat-icon>
       Infos générales
     </ng-template>
-
-    <form (ngSubmit)="submitGeneralInfos($event)">
-      <div class="py-2">
-        <p class="title">TITRE: {{movie?.generalInfos?.title}}</p> <mat-icon class="hide">edit</mat-icon>
-        <p>TITRE ORIGINAL: {{movie?.generalInfos?.originalTitle}}</p>
-        <p>SYNOPSIS: {{movie?.generalInfos?.synopsis}}</p>
-        <p>DATE DE SORTIE: {{movie?.generalInfos?.releaseDate | date: 'dd/MM/yyyy'}}</p>
-        <p>DURÉE: {{movie?.generalInfos?.runningTime}} minutes</p>
-        <p>BUDGET: {{movie?.generalInfos?.budget}} millions $</p>
-        <p>BOX-OFFICE: {{movie?.generalInfos?.boxOffice}} $</p>
-        <p>GENRES: {{movie?.genres}}</p>
-        <p>PAYS: {{movie?.countries}}</p>
+    <div class="py-4">
+      @if (!editGeneralInfos) {
+      <div class="grid gap-4">
+        <p>TITRE : {{movie?.title}}</p>
+        <p>TITRE ORIGINAL : {{movie?.originalTitle}}</p>
+        <p>SYNOPSIS : {{movie?.synopsis}}</p>
+        <p>DATE DE SORTIE : {{movie?.releaseDate | date: 'dd/MM/yyyy'}}</p>
+        <p>DURÉE : {{movie?.runningTime}} minutes</p>
+        <p>BUDGET : {{movie?.budget}} millions $</p>
+        <p>BOX-OFFICE : {{movie?.boxOffice}} $</p>
+        <p>GENRES : {{(movie?.genres | pluck: 'name')?.join(', ')}}</p>
+        <p>PAYS : {{(movie?.countries | pluck: 'nomFrFR')?.join(', ')}}</p>
       </div>
 
-      <div>
-        <button type="submit" mat-flat-button>Disabled</button>
-      </div>
-    </form>
+      <button mat-fab class="float-right" matTooltip="Modifier" aria-label="Example icon button with a delete icon"
+        color="accent" (click)="editGeneralInfos=true">
+        <mat-icon>edit</mat-icon>
+      </button>
+      } @else {
+      <app-general-infos [movie]="movie" (save)="saveGeneralInfos($event)"></app-general-infos>
+      }
+    </div>
   </mat-tab>
 
   <mat-tab>
@@ -34,15 +38,39 @@
       Fiche technique
     </ng-template>
 
-    <div class="py-2">
-      <p>PRODUCTEURS: {{movie?.producers}}</p>
-      <p>RÉALISATEURS: {{movie?.directors}}</p>
-      <p>SCÉNARISTES: {{movie?.screenwriters}}</p>
-      <p>MUSIQUE: {{movie?.musicians}}</p>
-      <p>PHOTOGRAPHIE: {{movie?.photographers}}</p>
-      <p>COSTUMES: {{movie?.costumiers}}</p>
-      <p>DÉCORS: {{movie?.decorators}}</p>
-      <p>MONTAGE: {{movie?.editors}}</p>
+    <div class="py-4 grid gap-4">
+      <div class="flex">
+        <span>PRODUCTEURS :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.producers}"></div>
+      </div>
+      <div class="flex">
+        <span>RÉALISATEURS :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.directors}"></div>
+      </div>
+      <div class="flex">
+        <span>SCÉNARISTES :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.screenwriters}"></div>
+      </div>
+      <div class="flex">
+        <span>MUSIQUE :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.musicians}"></div>
+      </div>
+      <div class="flex">
+        <span>PHOTOGRAPHIE :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.photographers}"></div>
+      </div>
+      <div class="flex">
+        <span>COSTUMES :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.costumiers}"></div>
+      </div>
+      <div class="flex">
+        <span>DÉCORS :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.decorators}"></div>
+      </div>
+      <div class="flex">
+        <span>MONTAGE :&nbsp;</span>
+        <div *ngTemplateOutlet="personTemplate; context: {persons: movie?.editors}"></div>
+      </div>
     </div>
   </mat-tab>
 
@@ -55,4 +83,13 @@
     <div></div>
   </mat-tab>
 </mat-tab-group>
-}
+
+<ng-template #personTemplate let-persons="persons">
+  <ul>
+    @for (p of persons; track p.id){
+    <li>
+      {{p?.firstName}} {{p?.secondName}} {{p?.thirdName}} {{p?.lastName}} {{p?.pseudo}}
+    </li>
+    }
+  </ul>
+</ng-template>

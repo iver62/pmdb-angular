@@ -12,37 +12,17 @@ import { NgPipesModule } from 'ngx-pipes';
 import { CountryService } from '../../../../services';
 
 @Component({
-    selector: 'app-country-form',
-    imports: [CommonModule, FormsModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, MatTooltipModule, NgPipesModule, ReactiveFormsModule],
-    templateUrl: './country-form.component.html',
-    styleUrl: './country-form.component.css'
+  selector: 'app-country-form',
+  imports: [CommonModule, FormsModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, MatTooltipModule, NgPipesModule, ReactiveFormsModule],
+  templateUrl: './country-form.component.html',
+  styleUrl: './country-form.component.css'
 })
 export class CountryFormComponent {
 
   @Input() formGroup: FormGroup;
 
-  // @Output() remove = new EventEmitter<Country>();
-
   countries$ = this.countryService.getAll();
 
   constructor(private countryService: CountryService) { }
-
-  // addCountry() {
-  //   const item = this.formBuilder.group(
-  //     {
-  //       name: ['']
-  //     }
-  //   );
-  //   this.countriesArray.push(item);
-  // }
-
-  // removeCountry(index: number) {
-  //   this.countriesArray.removeAt(index);
-  //   this.remove.emit(this.countriesArray.at(index).value);
-  // }
-
-  // get countriesArray() {
-  //   return this.formGroup.get('countriesCtrl') as FormArray;
-  // }
 
 }

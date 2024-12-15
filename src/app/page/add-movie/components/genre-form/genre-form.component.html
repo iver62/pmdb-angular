@@ -1,11 +1,8 @@
-CONTROL -> {{this.formGroup.controls['genresCtrl']}}
-
-GENRES -> {{selectedGenres | json}}
 <form class="form grid grid-cols-12" [formGroup]="formGroup">
   <div formArrayName="genresCtrl">
     @for (genre of genresArray.controls; track genre; let i = $index) {
     <div class="grid grid-cols-12 gap-2 items-baseline" [formGroupName]="i">
-      <mat-form-field class="lg:col-span-3" appearance="outline">
+      <mat-form-field class="lg:col-span-9" appearance="outline">
         <mat-label>Nom</mat-label>
         <input matInput formControlName="name" placeholder="Nom">
       </mat-form-field>
@@ -19,21 +16,4 @@ GENRES -> {{selectedGenres | json}}
   <div class="flex justify-center">
     <button mat-button (click)="addGenre()">Ajouter</button>
   </div>
-  <!-- <mat-form-field class="col-span-12" appearance="outline">
-    <input type="text" placeholder="Selectionner des genres" aria-label="Select Users" matInput [matAutocomplete]="auto"
-      formControlName="genresCtrl">
-    <mat-hint>Enter text to find genres</mat-hint>
-  </mat-form-field>
-
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-    @for (genre of genres$ | async; track genre) {
-    <mat-option>
-      <div (click)="optionClicked($event, genre)">
-        <mat-checkbox [checked]="genre.selected" (change)="toggleSelection(genre)" (click)="$event.stopPropagation()">
-          {{ genre.name }}
-        </mat-checkbox>
-      </div>
-    </mat-option>
-    }
-  </mat-autocomplete> -->
 </form>

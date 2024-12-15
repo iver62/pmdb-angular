@@ -1,21 +1,21 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { RouterModule } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { MovieService } from '../../services';
-import { MatButtonModule } from '@angular/material/button';
+import { MovieComponent } from './components/movie/movie.component';
 
 @Component({
-    selector: 'app-movies',
-    imports: [CommonModule, MatButtonModule, MatCardModule, NgPipesModule, RouterModule],
-    templateUrl: './movies.component.html',
-    styleUrl: './movies.component.css'
+  selector: 'app-movies',
+  imports: [AsyncPipe, MovieComponent, NgPipesModule],
+  templateUrl: './movies.component.html',
+  styleUrl: './movies.component.css'
 })
 export class MoviesComponent {
 
   movies$ = this.movieService.getAll();
 
   constructor(private movieService: MovieService) { }
+
+
 
 }

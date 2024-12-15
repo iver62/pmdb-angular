@@ -1,12 +1,15 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-  <mat-toolbar class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <h1 class="example-app-name">{{title}}</h1>
+  <mat-toolbar class="justify-between">
+    <div class="flex items-center">
+      <button mat-icon-button (click)="snav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1 class="example-app-name">{{title}}</h1>
+    </div>
     <h1>
-      <button mat-button routerLink="add-movie">
-        <mat-icon>add</mat-icon>Ajouter un film
+      <button mat-flat-button routerLink="add-movie">
+        <mat-icon>add</mat-icon>
+        <span>Ajouter un film</span>
       </button>
     </h1>
     <button mat-icon-button>

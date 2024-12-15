@@ -14,27 +14,27 @@ import { MovieService, PersonService } from '../../services';
 import { AwardFormComponent, CountryFormComponent, GeneralInfosFormComponent, GenreFormComponent, PersonFormComponent, RoleFormComponent } from './components';
 
 @Component({
-    selector: 'app-add-movie',
-    imports: [
-        AwardFormComponent,
-        CountryFormComponent,
-        GeneralInfosFormComponent,
-        GenreFormComponent,
-        PersonFormComponent,
-        RoleFormComponent,
-        MatButtonModule,
-        MatStepperModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatNativeDateModule,
-        MatSnackBarModule
-    ],
-    templateUrl: './add-movie.component.html',
-    styleUrl: './add-movie.component.css'
+  selector: 'app-add-movie',
+  imports: [
+    AwardFormComponent,
+    CountryFormComponent,
+    GeneralInfosFormComponent,
+    GenreFormComponent,
+    PersonFormComponent,
+    RoleFormComponent,
+    MatButtonModule,
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatSnackBarModule
+  ],
+  templateUrl: './add-movie.component.html',
+  styleUrl: './add-movie.component.css'
 })
 export class AddMovieComponent {
 
@@ -62,7 +62,7 @@ export class AddMovieComponent {
   costumiersFormGroup = this.formBuilder.group({ personsCtrl: this.formBuilder.array([]) });
   photographersFormGroup = this.formBuilder.group({ personsCtrl: this.formBuilder.array([]) });
   editorsFormGroup = this.formBuilder.group({ personsCtrl: this.formBuilder.array([]) });
-  genresFormGroup = this.formBuilder.group({ genresCtrl: new FormControl([]) });
+  genresFormGroup = this.formBuilder.group({ genresCtrl: this.formBuilder.array([]) });
   countriesFormGroup = this.formBuilder.group({ countriesCtrl: new FormControl([]) });
   awardsFormGroup = this.formBuilder.group({ awardsCtrl: this.formBuilder.array([]) });
   rolesFormGroup = this.formBuilder.group({ rolesCtrl: this.formBuilder.array([]) });

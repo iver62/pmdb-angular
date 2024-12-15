@@ -1,12 +1,7 @@
-@if (movies$ | async; as movies){
 <div class="grid grid-cols-12 gap-2 items-baseline">
-  @for (movie of movies | orderBy: ['title']; track movie.id) {
-  <mat-card class="col-span-12 sm:col-span-4 md:col-span-3 lg:col-span-2 2xl:col-span-1" appearance="outlined"
-    [routerLink]="['/movies', movie.id]">
-    <mat-card-content>{{movie?.title}}</mat-card-content>
-  </mat-card>
+  @for (movie of movies$ | async | orderBy: ['title']; track movie.id) {
+  <app-movie class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2" [movie]="movie"></app-movie>
+  } @empty {
+  <div>Aucun film</div>
   }
 </div>
-} @else {
-<div>Aucun film</div>
-}

@@ -1,0 +1,19 @@
+<mat-card class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{movie()?.title}}</mat-card-title>
+  </mat-card-header>
+  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+  <mat-card-content class="h-52 overflow-auto">
+    {{movie()?.synopsis}}
+  </mat-card-content>
+  <mat-card-actions class="justify-end">
+    <button mat-icon-button matTooltip="Détails" aria-label="Example icon button with a vertical three dot icon"
+      [routerLink]="['/movies', movie().id]">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a open in new tab icon"
+      (click)="deleteMovie(movie().id)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

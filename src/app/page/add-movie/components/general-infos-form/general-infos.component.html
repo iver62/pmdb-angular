@@ -4,7 +4,7 @@
       <mat-label>Titre</mat-label>
       <input matInput placeholder="Titre français" formControlName="titleCtrl" required>
       @if (titleFormCtrl.hasError('required')) {
-        <mat-error>Le titre est requis</mat-error>
+      <mat-error>Le titre est requis</mat-error>
       }
     </mat-form-field>
     <mat-form-field appearance="outline" class="col-span-12 md:col-span-6 lg:col-span-4">
@@ -33,10 +33,10 @@
       <mat-label>Box Office</mat-label>
       <input matInput type="number" min="0" placeholder="Box Office mondial" formControlName="boxOfficeCtrl">
     </mat-form-field>
-    <mat-form-field appearance="outline" class="col-span-12 md:col-span-6 lg:col-span-3">
+    <!-- <mat-form-field appearance="outline" class="col-span-12 md:col-span-6 lg:col-span-3">
       <mat-label>Affiche</mat-label>
       <ngx-mat-file-input formControlName="posterCtrl" accept="'.jpg', '.jpeg', '.png'"></ngx-mat-file-input>
       <mat-icon matSuffix>image</mat-icon>
-    </mat-form-field>
+    </mat-form-field> -->
   </div>
 </form>

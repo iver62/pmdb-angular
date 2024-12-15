@@ -21,7 +21,6 @@
     "@angular/platform-browser": "^19.0.3",
     "@angular/platform-browser-dynamic": "^19.0.3",
     "@angular/router": "^19.0.3",
-    "ngx-custom-material-file-input": "^18.0.0",
     "ngx-pipes": "^3.2.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
