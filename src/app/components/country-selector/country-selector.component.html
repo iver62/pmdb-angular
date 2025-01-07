@@ -1,0 +1,21 @@
+<mat-form-field class="w-full">
+  <mat-label>Pays</mat-label>
+  <mat-chip-grid #countriesChipGrid aria-label="Country selection" [formControl]="control">
+    @for (country of selectedCountries(); track country.id) {
+    <mat-chip-row (removed)="remove(country)" [value]="country">
+      {{country?.nomFrFr}}
+      <button matChipRemove [attr.aria-label]="'remove ' + country?.nomFrFr">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+    }
+    <input placeholder="Ajouter..." [(ngModel)]="currentCountry" [matChipInputFor]="countriesChipGrid"
+      [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
+      [ngModelOptions]="{standalone: true}" />
+  </mat-chip-grid>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    @for (country of filteredCountries() | orderBy: ['nomFrFr']; track country.id) {
+    <mat-option [value]="country">{{country?.nomFrFr}}</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
