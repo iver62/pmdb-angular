@@ -1,111 +1,24 @@
-<mat-stepper [linear]="isLinear" #stepper>
-  <mat-step [stepControl]="generalFormGroup" label="Informations générales">
-    <app-general-infos-form [formGroup]="generalFormGroup"></app-general-infos-form>
-    <div>
-      <button mat-button matStepperNext (click)="createMovie()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="producersFormGroup" label="Production">
-    <app-person-form [formGroup]="producersFormGroup" (remove)="removeProducer($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveProducers()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="directorsFormGroup" label="Réalisation">
-    <app-person-form [formGroup]="directorsFormGroup" [persons$]="directors$" (remove)="removeDirector($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveDirectors()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="screenwritersFormGroup" label="Scénario">
-    <app-person-form [formGroup]="screenwritersFormGroup" (remove)="removeScreenwriter($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveScreenwriters()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="musiciansFormGroup" label="Musique">
-    <app-person-form [formGroup]="musiciansFormGroup" (remove)="removeMusician($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveMusicians()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="decoratorsFormGroup" label="Décor">
-    <app-person-form [formGroup]="decoratorsFormGroup" (remove)="removeDecorator($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveDecorators()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="costumiersFormGroup" label="Costumes">
-    <app-person-form [formGroup]="costumiersFormGroup" (remove)="removeCostumier($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveCostumiers()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="photographersFormGroup" label="Photographie">
-    <app-person-form [formGroup]="photographersFormGroup" (remove)="removePhotographer($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="savePhotographers()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="editorsFormGroup" label="Montage">
-    <app-person-form [formGroup]="editorsFormGroup" (remove)="removeEditor($event)">
-    </app-person-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveEditors()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="genresFormGroup" label="Genres">
-    <app-genre-form [formGroup]="genresFormGroup">
-    </app-genre-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveGenres()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="countriesFormGroup" label="Pays">
-    <app-country-form [formGroup]="countriesFormGroup">
-    </app-country-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveCountries()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="awardsFormGroup" label="Récompenses">
-    <app-award-form [formGroup]="awardsFormGroup" (remove)="removeAward($event)">
-    </app-award-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext (click)="saveAwards()">Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="rolesFormGroup" label="Distribution">
-    <app-role-form [formGroup]="rolesFormGroup"></app-role-form>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-button matStepperNext>Suivant</button>
-    </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="deleteMovie(); stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
-</mat-stepper>
+<ng-container [formGroup]="form">
+  <mat-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="form.get('generalFormGroup')" label="Informations générales">
+      <app-general-infos-form formGroupName="generalFormGroup"></app-general-infos-form>
+      <div>
+        <button mat-button matStepperNext (click)="saveMovie()">Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="form.get('generalFormGroup')" label="Fiche technique">
+      <app-technical-summary-form formGroupName="technicalSummaryFormGroup"></app-technical-summary-form>
+      <div>
+        <button mat-button matStepperNext (click)="saveTechnicalSummay()">Suivant</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="deleteMovie(); stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</ng-container>
