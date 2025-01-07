@@ -1,0 +1,47 @@
+<form class="form" [formGroup]="form">
+  <div class="grid grid-cols-12 gap-2">
+    <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
+      <mat-label>Titre</mat-label>
+      <input matInput placeholder="Titre français" formControlName="title" required>
+      @if (titleFormCtrl.hasError('required')) {
+      <mat-error>Le titre est requis</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
+      <mat-label>Titre original</mat-label>
+      <input matInput placeholder="Titre original" formControlName="originalTitle">
+    </mat-form-field>
+    <mat-form-field class="col-span-12 lg:col-span-4">
+      <mat-label>Date de sortie</mat-label>
+      <input matInput [matDatepicker]="picker" placeholder="JJ/MM/YYYY" formControlName="releaseDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="col-span-12 md:col-span-12">
+      <mat-label>Synopsis</mat-label>
+      <textarea matInput placeholder="Résumé du film" formControlName="synopsis"></textarea>
+    </mat-form-field>
+    <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
+      <mat-label>Durée</mat-label>
+      <input matInput type="number" min="0" placeholder="Durée en minutes" formControlName="runningTime">
+    </mat-form-field>
+    <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
+      <mat-label>Budget</mat-label>
+      <input matInput type="number" min="0" placeholder="Budget en millions d'euros" formControlName="budget">
+    </mat-form-field>
+    <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
+      <mat-label>Box Office</mat-label>
+      <input matInput type="number" min="0" placeholder="Box Office mondial" formControlName="boxOffice">
+    </mat-form-field>
+    <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
+      <mat-label>Affiche</mat-label>
+      <input matInput placeholder="Affiche" formControlName="poster">
+    </mat-form-field>
+
+    <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries"></app-country-selector>
+
+    <app-genre-selector class="col-span-12 lg:col-span-6" [genres]="genres" formGroupName="genres"
+      (addGenre)="addGenre($event)">
+    </app-genre-selector>
+  </div>
+</form>
