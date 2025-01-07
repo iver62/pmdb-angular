@@ -1,0 +1,21 @@
+<mat-form-field class="w-full">
+  <mat-label>{{title()}}</mat-label>
+  <mat-chip-grid #personsChipGrid [attr.aria-label]="label" [formControl]="control">
+    @for (person of selectedPersons(); track person) {
+    <mat-chip-row (removed)="remove(person)" [value]="person">
+      {{person?.name}}
+      <button matChipRemove [attr.aria-label]="'remove ' + person?.name">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+    }
+    <input placeholder="Ajouter..." [(ngModel)]="currentPerson" [matChipInputFor]="personsChipGrid"
+      [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
+      [ngModelOptions]="{standalone: true}" />
+  </mat-chip-grid>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    @for (person of filteredPersons() | orderBy: ['name']; track person.id) {
+    <mat-option [value]="person">{{person?.name}}</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
