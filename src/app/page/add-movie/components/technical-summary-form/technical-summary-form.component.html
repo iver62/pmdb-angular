@@ -1,0 +1,37 @@
+<form class="form grid grid-cols-12" [formGroup]="form">
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="producers" title="Production"
+    label="Producers selection" (addPerson)="add($event)">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="directors" title="Réalisation"
+    label="Directors selection">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="screenwriters" title="Scénario"
+    label="Screenwriters selection">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="musicians" title="Musique"
+    label="Musicians selection">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="decorators" title="Décors"
+    label="Decorators selection">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="costumiers" title="Costumes"
+    label="Costumiers selection">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="photographers" title="Photographie"
+    label="Photographers selection">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="editors" title="Montage"
+    label="Editors selection">
+  </app-person-selector>
+
+  <app-person-selector class="col-span-12" [persons]="persons" formGroupName="casting" title="Casting"
+    label="Casters selection">
+  </app-person-selector>
+</form>
