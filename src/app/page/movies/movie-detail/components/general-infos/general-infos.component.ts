@@ -36,7 +36,7 @@ export class GeneralInfosComponent {
           countriesCtrl: this.fb.array(this.movie().countries)
         }
       )
-    })
+    });
   }
 
   onSubmit(event: any) {

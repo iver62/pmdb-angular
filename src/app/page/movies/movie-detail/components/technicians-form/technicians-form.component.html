@@ -1,0 +1,24 @@
+<form [formGroup]="techniciansForm" (ngSubmit)="onSubmit($event)">
+  <mat-form-field class="example-chip-list">
+    <mat-label>Producteurs</mat-label>
+    <mat-chip-grid #reactiveChipGrid aria-label="Fruit selection" formControlName="producersCtrl">
+      @for (producer of technicalSummary().producers; track $index) {
+      <mat-chip-row (removed)="removeProducer(producer)">
+        {{producer?.firstName}} {{producer?.lastName}}
+        <button matChipRemove [attr.aria-label]="'remove ' + producer?.lastName">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input placeholder="Ajouter..." [matChipInputFor]="reactiveChipGrid"
+      (matChipInputTokenEnd)="addReactiveKeyword($event)" />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      @for (producer of filteredProducers(); track producer) {
+      <mat-option [value]="producer">
+        {{producer?.firstName}} {{producer?.lastName}}
+      </mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

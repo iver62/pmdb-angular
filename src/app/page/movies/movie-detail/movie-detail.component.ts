@@ -1,93 +1,46 @@
-import { AsyncPipe, DatePipe, NgTemplateOutlet } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
-import { Movie } from '../../../models';
+import { concatMap, forkJoin, map, switchMap } from 'rxjs';
 import { MovieService } from '../../../services';
-import { GeneralInfosComponent } from './components/general-infos/general-infos.component';
+import { GeneralInfosFormComponent } from "../../add-movie/components/general-infos-form/general-infos-form.component";
+import { TechnicalSummaryFormComponent } from "../../add-movie/components/technical-summary-form/technical-summary-form.component";
 
 @Component({
   selector: 'app-movie-detail',
-  imports: [AsyncPipe, DatePipe, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSnackBarModule, MatTabsModule, MatTooltipModule, NgPipesModule, NgTemplateOutlet, ReactiveFormsModule, RouterLink, GeneralInfosComponent],
+  imports: [
+    DatePipe,
+    GeneralInfosFormComponent,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    MatTooltipModule,
+    NgPipesModule,
+    ReactiveFormsModule,
+    RouterLink,
+    TechnicalSummaryFormComponent,
+    TechnicalSummaryFormComponent
+  ],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.css'
 })
 export class MovieDetailComponent {
 
   private _snackBar = inject(MatSnackBar);
+  private readonly durationInSeconds = 5;
 
-  techniciansForm = this.fb.group(
-    {
-      producersCtrl: this.fb.array([]),
-      directorsCtrl: this.fb.array([]),
-      screenwritersCtrl: this.fb.array([]),
-      musiciansCtrl: this.fb.array([]),
-      decoratorsCtrl: this.fb.array([]),
-      costumiersCtrl: this.fb.array([]),
-      photographersCtrl: this.fb.array([]),
-      editorsCtrl: this.fb.array([])
-    }
-  )
-  castingForm = this.fb.group(
-    {}
-  );
-
-  movie$: Observable<Movie> = this.route.paramMap.pipe(
-    switchMap(params =>
-      forkJoin(
-        {
-          generalInfos: this.movieService.getOne(Number(params.get('id'))),
-          genres: this.movieService.getGenres(Number(params.get('id'))),
-          countries: this.movieService.getCountries(Number(params.get('id'))),
-          producers: this.movieService.getProducers(Number(params.get('id'))),
-          directors: this.movieService.getDirectors(Number(params.get('id'))),
-          screenwriters: this.movieService.getScreenwriters(Number(params.get('id'))),
-          musicians: this.movieService.getMusicians(Number(params.get('id'))),
-          photographers: this.movieService.getPhotographers(Number(params.get('id'))),
-          costumiers: this.movieService.getCostumiers(Number(params.get('id'))),
-          decorators: this.movieService.getDecorators(Number(params.get('id'))),
-          editors: this.movieService.getEditors(Number(params.get('id')))
-        }
-      )
-    ), map(
-      result => (
-        {
-          id: result.generalInfos.id,
-          title: result.generalInfos.title,
-          originalTitle: result.generalInfos.originalTitle,
-          synopsis: result.generalInfos.synopsis,
-          releaseDate: result.generalInfos.releaseDate,
-          runningTime: result.generalInfos.runningTime,
-          budget: result.generalInfos.budget,
-          boxOffice: result.generalInfos.boxOffice,
-          creationDate: result.generalInfos.creationDate,
-          lastUpdate: result.generalInfos.lastUpdate,
-          producers: result.producers,
-          directors: result.directors,
-          screenwriters: result.screenwriters,
-          musicians: result.musicians,
-          photographers: result.photographers,
-          costumiers: result.costumiers,
-          decorators: result.decorators,
-          editors: result.editors,
-          genres: result.genres,
-          countries: result.countries
-        }
-      )
-    )
-  );
-
+  form: FormGroup;
   editGeneralInfos = false;
+  editTechnicalSummary = false;
+  editCasting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -95,6 +48,149 @@ export class MovieDetailComponent {
     private route: ActivatedRoute,
     private router: Router
   ) { }
+
+  ngOnInit() {
+    this.route.paramMap.pipe(
+      map(params => Number(params.get('id'))),
+      switchMap(id =>
+        forkJoin(
+          {
+            generalInfos: this.movieService.getOne(id),
+            genres: this.movieService.getGenres(id),
+            countries: this.movieService.getCountries(id),
+            producers: this.movieService.getProducers(id),
+            directors: this.movieService.getDirectors(id),
+            screenwriters: this.movieService.getScreenwriters(id),
+            musicians: this.movieService.getMusicians(id),
+            photographers: this.movieService.getPhotographers(id),
+            costumiers: this.movieService.getCostumiers(id),
+            decorators: this.movieService.getDecorators(id),
+            editors: this.movieService.getEditors(id),
+            casters: this.movieService.getCasters(id)
+          }
+        )
+      ),
+      map(
+        result => this.fb.group(
+          {
+            generalFormGroup: this.fb.group(
+              {
+                id: [result.generalInfos.id],
+                title: [result.generalInfos.title, Validators.required],
+                originalTitle: [result.generalInfos.originalTitle],
+                synopsis: [result.generalInfos.synopsis],
+                releaseDate: [result.generalInfos.releaseDate],
+                runningTime: [result.generalInfos.runningTime],
+                budget: [result.generalInfos.budget],
+                boxOffice: [result.generalInfos.boxOffice],
+                poster: [result.generalInfos.posterPath],
+                countries: [result.countries],
+                genres: [result.genres]
+              }
+            ),
+            technicalSummaryFormGroup: this.fb.group(
+              {
+                producers: [result.producers],
+                directors: [result.directors],
+                screenwriters: [result.screenwriters],
+                musicians: [result.musicians],
+                decorators: [result.decorators],
+                costumiers: [result.costumiers],
+                photographers: [result.photographers],
+                editors: [result.editors],
+                casters: [result.casters]
+              }
+            ),
+            castingFormGroup: this.fb.group(
+              {
+
+              }
+            )
+          }
+        )
+      )
+    ).subscribe(result => this.form = result);
+  }
+
+  get id() {
+    return this.form.controls['generalFormGroup'].get('id').value;
+  }
+
+  get title() {
+    return this.form.controls['generalFormGroup'].get('title').value;
+  }
+
+  get originalTitle() {
+    return this.form.controls['generalFormGroup'].get('originalTitle').value;
+  }
+
+  get synopsis() {
+    return this.form.controls['generalFormGroup'].get('synopsis').value;
+  }
+
+  get releaseDate() {
+    return this.form.controls['generalFormGroup'].get('releaseDate').value;
+  }
+
+  get runningTime() {
+    return this.form.controls['generalFormGroup'].get('runningTime').value;
+  }
+
+  get budget() {
+    return this.form.controls['generalFormGroup'].get('budget').value;
+  }
+
+  get boxOffice() {
+    return this.form.controls['generalFormGroup'].get('boxOffice').value;
+  }
+
+  get poster() {
+    return this.form.controls['generalFormGroup'].get('poster').value;
+  }
+
+  get countries() {
+    return this.form.controls['generalFormGroup'].get('countries').value;
+  }
+
+  get genres() {
+    return this.form.controls['generalFormGroup'].get('genres').value;
+  }
+
+  get producers() {
+    return this.form.controls['technicalSummaryFormGroup'].get('producers').value;
+  }
+
+  get directors() {
+    return this.form.controls['technicalSummaryFormGroup'].get('directors').value;
+  }
+
+  get screenwriters() {
+    return this.form.controls['technicalSummaryFormGroup'].get('screenwriters').value;
+  }
+
+  get musicians() {
+    return this.form.controls['technicalSummaryFormGroup'].get('musicians').value;
+  }
+
+  get decorators() {
+    return this.form.controls['technicalSummaryFormGroup'].get('decorators').value;
+  }
+
+  get costumiers() {
+    return this.form.controls['technicalSummaryFormGroup'].get('costumiers').value;
+  }
+
+  get photographers() {
+    return this.form.controls['technicalSummaryFormGroup'].get('photographers').value;
+  }
+
+  get editors() {
+    return this.form.controls['technicalSummaryFormGroup'].get('editors').value;
+  }
+
+  get casters() {
+    return this.form.controls['technicalSummaryFormGroup'].get('casters').value;
+  }
 
   deleteMovie(id: number) {
     this.movieService.deleteMovie(id).subscribe(
@@ -108,11 +204,48 @@ export class MovieDetailComponent {
     )
   }
 
-  saveGeneralInfos(event: any) {
-    console.log('SUBMIT GENERAL INFOS', event);
-    this.editGeneralInfos = false;
+  saveGeneralInfos() {
+    this.movieService.updateMovie(this.form.value.generalFormGroup).pipe(
+      concatMap(movie =>
+        this.movieService.getCountries(movie.id).pipe(
+          map(countries => ({ ...movie, countries: countries }))
+        )
+      ),
+      concatMap(movie =>
+        this.movieService.getGenres(movie.id).pipe(
+          map(genres => ({ ...movie, genres: genres }))
+        )
+      )
+    ).subscribe(
+      {
+        next: result => {
+          this._snackBar.open('Film modifié avec succès', 'Done', { duration: this.durationInSeconds * 1000 });
+          this.form.controls['generalFormGroup'].patchValue(result);
+          this.editGeneralInfos = false;
+        },
+        error: error => {
+          console.error(error);
+          this._snackBar.open('Erreur lors de la modification du film', 'Error', { duration: this.durationInSeconds * 1000 });
+        },
+        complete: () => this.editGeneralInfos = false
+      }
+    );
   }
 
-
+  saveTechnicalSummary() {
+    this.movieService.saveTechnicalSummay(this.id, this.form.get('technicalSummaryFormGroup').value).subscribe(
+      {
+        next: result => {
+          this._snackBar.open('Fiche technique modifiée avec succès', 'Done', { duration: this.durationInSeconds * 1000 });
+          this.form.controls['technicalSummaryFormGroup'].patchValue(result);
+        },
+        error: error => {
+          console.error(error);
+          this._snackBar.open('Erreur lors de la modification de la fiche technique', 'Error', { duration: this.durationInSeconds * 1000 });
+        },
+        complete: () => this.editTechnicalSummary = false
+      }
+    );
+  }
 
 }

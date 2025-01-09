@@ -1,6 +1,6 @@
 <mat-card class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2" appearance="outlined">
   <mat-card-header>
-    <mat-card-title>{{movie()?.title}}</mat-card-title>
+    <mat-card-title>{{movie()?.title}} ({{movie()?.releaseDate | date: 'yyyy'}})</mat-card-title>
   </mat-card-header>
   <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
   <mat-card-content class="h-52 overflow-auto">

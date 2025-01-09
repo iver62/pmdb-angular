@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Award, Country, Genre, Movie, Person } from '../models';
+import { Award, Country, Genre, Movie, Person, TechnicalSummary } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +51,10 @@ export class MovieService {
     return this.http.get<Person[]>(`${this.basePath}/${id}/editors`);
   }
 
+  getCasters(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/casters`);
+  }
+
   getGenres(id: number) {
     return this.http.get<Genre[]>(`${this.basePath}/${id}/genres`);
   }
@@ -59,53 +63,61 @@ export class MovieService {
     return this.http.get<Country[]>(`${this.basePath}/${id}/countries`);
   }
 
-  createMovie(movie: Movie) {
+  saveMovie(movie: Movie) {
     return this.http.post<Movie>(this.basePath, movie);
   }
 
-  saveProducers(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/producers`, persons);
+  saveTechnicalSummay(id: number, technicalSummary: TechnicalSummary) {
+    return this.http.put<TechnicalSummary>(`${this.basePath}/${id}/technical-summary`, technicalSummary);
   }
 
-  saveDirectors(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/directors`, persons);
+  updateMovie(movie: Movie) {
+    return this.http.put<Movie>(`${this.basePath}/${movie.id}`, movie);
   }
 
-  saveScreewriters(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/screenwriters`, persons);
-  }
+  // saveProducers(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/producers`, persons);
+  // }
 
-  saveMusicians(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/musicians`, persons);
-  }
+  // saveDirectors(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/directors`, persons);
+  // }
 
-  saveDecorators(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/decorators`, persons);
-  }
+  // saveScreewriters(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/screenwriters`, persons);
+  // }
 
-  saveCostumiers(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/costumiers`, persons);
-  }
+  // saveMusicians(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/musicians`, persons);
+  // }
 
-  savePhotographers(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/photographers`, persons);
-  }
+  // saveDecorators(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/decorators`, persons);
+  // }
 
-  saveEditors(id: number, persons: Person[]) {
-    return this.http.put<Person[]>(`${this.basePath}/${id}/editors`, persons);
-  }
+  // saveCostumiers(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/costumiers`, persons);
+  // }
 
-  saveGenres(id: number, genres: Genre[]) {
-    return this.http.put<Genre[]>(`${this.basePath}/${id}/genres`, genres);
-  }
+  // savePhotographers(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/photographers`, persons);
+  // }
 
-  saveCountries(id: number, countries: Country[]) {
-    return this.http.put<Country[]>(`${this.basePath}/${id}/countries`, countries);
-  }
+  // saveEditors(id: number, persons: Person[]) {
+  //   return this.http.put<Person[]>(`${this.basePath}/${id}/editors`, persons);
+  // }
 
-  saveAwards(id: number, awards: Award[]) {
-    return this.http.put<Award[]>(`${this.basePath}/${id}/awards`, awards);
-  }
+  // saveGenres(id: number, genres: Genre[]) {
+  //   return this.http.put<Genre[]>(`${this.basePath}/${id}/genres`, genres);
+  // }
+
+  // saveCountries(id: number, countries: Country[]) {
+  //   return this.http.put<Country[]>(`${this.basePath}/${id}/countries`, countries);
+  // }
+
+  // saveAwards(id: number, awards: Award[]) {
+  //   return this.http.put<Award[]>(`${this.basePath}/${id}/awards`, awards);
+  // }
 
   removeProducer(movieId: number, personId: number) {
     return this.http.put<Person[]>(`${this.basePath}/${movieId}/producers/${personId}`, null);
