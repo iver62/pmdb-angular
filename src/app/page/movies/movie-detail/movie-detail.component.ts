@@ -66,7 +66,12 @@ export class MovieDetailComponent {
             costumiers: this.movieService.getCostumiers(id),
             decorators: this.movieService.getDecorators(id),
             editors: this.movieService.getEditors(id),
-            casters: this.movieService.getCasters(id)
+            casters: this.movieService.getCasters(id),
+            artDirectors: this.movieService.getArtDirectors(id),
+            soundEditors: this.movieService.getSoundEditors(id),
+            visualEffectsSupervisors: this.movieService.getVisualEffectsSupervisors(id),
+            makeupArtists: this.movieService.getMakeupArtists(id),
+            hairDressers: this.movieService.getHairDressers(id)
           }
         )
       ),
@@ -98,7 +103,12 @@ export class MovieDetailComponent {
                 costumiers: [result.costumiers],
                 photographers: [result.photographers],
                 editors: [result.editors],
-                casters: [result.casters]
+                casters: [result.casters],
+                artDirectors: [result.artDirectors],
+                soundEditors: [result.soundEditors],
+                visualEffectsSupervisors: [result.visualEffectsSupervisors],
+                makeupArtists: [result.makeupArtists],
+                hairDressers: [result.hairDressers]
               }
             ),
             castingFormGroup: this.fb.group(
@@ -190,6 +200,26 @@ export class MovieDetailComponent {
 
   get casters() {
     return this.form.controls['technicalSummaryFormGroup'].get('casters').value;
+  }
+
+  get artDirectors() {
+    return this.form.controls['technicalSummaryFormGroup'].get('artDirectors').value;
+  }
+
+  get soundEditors() {
+    return this.form.controls['technicalSummaryFormGroup'].get('soundEditors').value;
+  }
+
+  get visualEffectsSupervisors() {
+    return this.form.controls['technicalSummaryFormGroup'].get('visualEffectsSupervisors').value;
+  }
+
+  get makeupArtists() {
+    return this.form.controls['technicalSummaryFormGroup'].get('makeupArtists').value;
+  }
+
+  get hairDressers() {
+    return this.form.controls['technicalSummaryFormGroup'].get('hairDressers').value;
   }
 
   deleteMovie(id: number) {

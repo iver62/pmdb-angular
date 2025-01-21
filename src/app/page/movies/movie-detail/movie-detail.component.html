@@ -46,15 +46,48 @@
       <div class="py-4">
         @if (!editTechnicalSummary) {
         <div class="grid gap-4">
+          @if(producers?.length) {
           <p>PRODUCTEURS : {{(producers | pluck: 'name' | orderBy)?.join(', ') }}</p>
+          }
+          @if(directors?.length) {
           <p>RÉALISATEURS : {{(directors | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(screenwriters?.length) {
           <p>SCÉNARISTES : {{(screenwriters | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(musicians?.length) {
           <p>MUSIQUE : {{(musicians | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(photographers?.length) {
           <p>PHOTOGRAPHIE : {{(photographers | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(costumiers?.length) {
           <p>COSTUMES : {{(costumiers | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(decorators?.length) {
           <p>DÉCORS : {{(decorators | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(editors?.length) {
           <p>MONTAGE : {{(editors | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(casters?.length) {
           <p>CASTING : {{(casters | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(artDirectors?.length) {
+          <p>DIRECTION ARTISTIQUE : {{(artDirectors | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(soundEditors?.length) {
+          <p>SON : {{(soundEditors | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(visualEffectsSupervisors?.length) {
+          <p>EFFETS SPECIAUX : {{(visualEffectsSupervisors | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(makeupArtists?.length) {
+          <p>MAQUILLAGE : {{(makeupArtists | pluck: 'name')?.join(', ') }}</p>
+          }
+          @if(hairDressers?.length) {
+          <p>COIFFURE : {{(hairDressers | pluck: 'name')?.join(', ') }}</p>
+          }
         </div>
 
         <button mat-fab class="float-right m-1" matTooltip="Modifier"
@@ -82,7 +115,3 @@
   </div>
   }
 </mat-tab-group>
-
-<!-- <ng-template #personTemplate let-persons="persons">
-  {{(persons | pluck: 'name')?.join(', ') }}
-</ng-template> -->
