@@ -38,7 +38,8 @@
       <input matInput placeholder="Affiche" formControlName="poster">
     </mat-form-field>
 
-    <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries"></app-country-selector>
+    <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries">
+    </app-country-selector>
 
     <app-genre-selector class="col-span-12 lg:col-span-6" [genres]="genres" formGroupName="genres"
       (addGenre)="addGenre($event)">

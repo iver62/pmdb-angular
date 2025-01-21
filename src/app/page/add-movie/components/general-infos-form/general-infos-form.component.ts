@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
 import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,21 +23,18 @@ import { GenreService } from '../../../../services';
 })
 export class GeneralInfosFormComponent {
 
-  @Input() formGroupName: string;
-
-  @Output() change = new EventEmitter();
-
+  formGroupName = input.required<string>();
   form: FormGroup;
   genres: Genre[] = [];
 
   constructor(
     private genreService: GenreService,
     private rootFormGroup: FormGroupDirective
-  ) { }
+  ) {
+    effect(() => this.form = this.rootFormGroup.control.get(this.formGroupName()) as FormGroup);
+  }
 
   ngOnInit() {
-    this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-
     this.genreService.getAll().subscribe(result => this.genres = result);
   }
 

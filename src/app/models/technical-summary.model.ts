@@ -9,5 +9,10 @@ export interface TechnicalSummary {
   costumiers?: Person[],
   decorators?: Person[],
   editors?: Person[],
-  casting?: Person[]
+  casters?: Person[],
+  artDirectors?: Person[],
+  soundEditors?: Person[],
+  visualEffectsSupervisors?: Person[],
+  makeupArtists?: Person[],
+  hairDressers?: Person[]
 }

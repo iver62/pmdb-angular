@@ -1,12 +1,7 @@
 
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Movie } from '../../models';
@@ -19,13 +14,7 @@ import { GeneralInfosFormComponent, TechnicalSummaryFormComponent } from './comp
     GeneralInfosFormComponent,
     MatButtonModule,
     MatStepperModule,
-    FormsModule,
     ReactiveFormsModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatNativeDateModule,
     MatSnackBarModule,
     TechnicalSummaryFormComponent
   ],
@@ -64,7 +53,12 @@ export class AddMovieComponent {
           costumiers: [],
           photographers: [],
           editors: [],
-          casting: []
+          casters: [],
+          artDirectors: [],
+          soundEditors: [],
+          visualEffectsSupervisor: [],
+          makeupArtists: [],
+          hairDressers: []
         }
       ),
       castingFormGroup: this.fb.group(
@@ -97,7 +91,7 @@ export class AddMovieComponent {
     );
   }
 
-  saveTechnicalSummay() {
+  saveTechnicalSummary() {
     this.movieService.saveTechnicalSummay(this.movie.id, this.form.get('technicalSummaryFormGroup').value).subscribe(
       {
         next: result => {
@@ -110,10 +104,5 @@ export class AddMovieComponent {
         }
       }
     );
-  }
-
-
-  deleteMovie() {
-    this.movieService.deleteMovie(this.movie.id).subscribe(result => console.log(result));
   }
 }

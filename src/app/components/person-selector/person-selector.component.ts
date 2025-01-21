@@ -1,13 +1,13 @@
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, computed, effect, EventEmitter, input, Input, Output, signal } from '@angular/core';
+import { Component, computed, effect, input, Input, signal } from '@angular/core';
 import { FormControl, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { NgPipesModule } from 'ngx-pipes';
+import { Observable } from 'rxjs';
 import { Person } from '../../models';
-import { PersonService } from '../../services';
 
 @Component({
   selector: 'app-person-selector',
@@ -25,13 +25,12 @@ import { PersonService } from '../../services';
 })
 export class PersonSelectorComponent {
 
-  @Input() formGroupName: string;
   @Input() label: string;
-
-  @Output() addPerson = new EventEmitter<Person>();
+  @Input() saveFn: (person: Person) => Observable<Person>;
 
   persons = input.required<Person[]>();
   title = input.required<string>();
+  formGroupName = input.required<string>();
 
   personsSignal = signal<Person[]>(null);
   selectedPersons = signal<Person[]>([]);
@@ -43,27 +42,23 @@ export class PersonSelectorComponent {
       ?.filter(person => person.name.toLowerCase().includes(this.currentPerson()?.toLowerCase()))
   );
 
-  control: FormControl;
-
   readonly separatorKeysCodes: number[] = [ENTER];
 
-  constructor(
-    private personService: PersonService,
-    private rootFormGroup: FormGroupDirective
-  ) {
-    effect(() => this.personsSignal.set(this.persons()));
-  }
+  control: FormControl;
 
-  ngOnInit() {
-    this.control = this.rootFormGroup.control.get(this.formGroupName) as FormControl;
+  constructor(private rootFormGroup: FormGroupDirective) {
+    effect(() => this.personsSignal.set(this.persons()));
+    effect(() => {
+      this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
+      this.selectedPersons.set(this.control.value || []);
+    });
   }
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
     if (value && !this.personsSignal().map(p => p.name.toLocaleLowerCase()).includes(value.toLocaleLowerCase())) {
-      this.personService.save({ name: value }).subscribe(result => {
-        this.addPerson.emit(result);
+      this.saveFn({ name: value })?.subscribe(result => {
         this.selectedPersons().push(result);
         this.control?.setValue(this.selectedPersons);
       });
