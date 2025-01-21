@@ -5,6 +5,7 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/ma
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgPipesModule } from 'ngx-pipes';
 import { Observable } from 'rxjs';
 import { Person } from '../../models';
@@ -17,11 +18,12 @@ import { Person } from '../../models';
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     NgPipesModule,
     ReactiveFormsModule
   ],
   templateUrl: './person-selector.component.html',
-  styleUrl: './person-selector.component.css'
+  styleUrl: './person-selector.component.scss'
 })
 export class PersonSelectorComponent {
 
@@ -35,6 +37,8 @@ export class PersonSelectorComponent {
   personsSignal = signal<Person[]>(null);
   selectedPersons = signal<Person[]>([]);
   currentPerson = signal<string>('');
+
+  loading = false;
 
   readonly filteredPersons = computed(() =>
     this.personsSignal()
@@ -58,9 +62,11 @@ export class PersonSelectorComponent {
     const value = (event.value || '').trim();
 
     if (value && !this.personsSignal().map(p => p.name.toLocaleLowerCase()).includes(value.toLocaleLowerCase())) {
+      this.loading = true;
       this.saveFn({ name: value })?.subscribe(result => {
         this.selectedPersons().push(result);
         this.control?.setValue(this.selectedPersons);
+        this.loading = false;
       });
     }
 

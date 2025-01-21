@@ -1,6 +1,6 @@
 <mat-form-field class="w-full">
   <mat-label>{{title()}}</mat-label>
-  <mat-chip-grid #personsChipGrid [attr.aria-label]="label" [formControl]="control">
+  <mat-chip-grid #personsChipGrid [attr.aria-label]="label" [formControl]="control" class="flex items-center">
     @for (person of selectedPersons(); track person) {
     <mat-chip-row (removed)="remove(person)" [value]="person">
       {{person?.name}}
@@ -8,6 +8,9 @@
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-chip-row>
+    }
+    @if (loading) {
+    <mat-spinner [diameter]="20"></mat-spinner>
     }
     <input placeholder="Ajouter..." [(ngModel)]="currentPerson" [matChipInputFor]="personsChipGrid"
       [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
