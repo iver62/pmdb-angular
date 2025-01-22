@@ -1,3 +1,1 @@
-@for (musician of musicians$ | async; track $index) {
-<p>{{musician?.lastName}} {{musician?.firstName}}</p>
-}
+<app-persons-list [persons]="musicians$ | async"></app-persons-list>

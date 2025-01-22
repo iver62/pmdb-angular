@@ -1,17 +1,21 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { PersonService } from '../../services/person.service';
+import { PersonsListComponent } from '../../components';
+import { EditorService } from '../../services';
 
 @Component({
-    selector: 'app-editors',
-    imports: [CommonModule],
-    templateUrl: './editors.component.html',
-    styleUrl: './editors.component.css'
+  selector: 'app-editors',
+  imports: [
+    AsyncPipe,
+    PersonsListComponent
+  ],
+  templateUrl: './editors.component.html',
+  styleUrl: './editors.component.css'
 })
 export class EditorsComponent {
 
-  editors$ = this.personService.getEditors();
+  editors$ = this.editorService.getAll();
 
-  constructor(private personService: PersonService) { }
+  constructor(private editorService: EditorService) { }
 
 }

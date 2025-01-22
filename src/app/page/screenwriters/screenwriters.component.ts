@@ -1,17 +1,21 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { PersonService } from '../../services/person.service';
+import { PersonsListComponent } from '../../components';
+import { ScreenwriterService } from '../../services';
 
 @Component({
-    selector: 'app-screenwriters',
-    imports: [CommonModule],
-    templateUrl: './screenwriters.component.html',
-    styleUrl: './screenwriters.component.css'
+  selector: 'app-screenwriters',
+  imports: [
+    AsyncPipe,
+    PersonsListComponent
+  ],
+  templateUrl: './screenwriters.component.html',
+  styleUrl: './screenwriters.component.css'
 })
 export class ScreenwritersComponent {
 
-  screenwriters$ = this.personService.getScreenwriters();
+  screenwriters$ = this.screenwriterService.getAll();
 
-  constructor(private personService: PersonService) { }
+  constructor(private screenwriterService: ScreenwriterService) { }
 
 }

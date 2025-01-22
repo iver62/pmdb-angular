@@ -1,3 +1,1 @@
-@for (director of directors$ | async; track $index) {
-<p>{{director?.lastName}} {{director?.firstName}}</p>
-}
+<app-persons-list [persons]="directors$ | async"></app-persons-list>

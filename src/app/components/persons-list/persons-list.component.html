@@ -1,0 +1,10 @@
+<div class="grid grid-cols-12 gap-2">
+  @for (person of persons() | orderBy: 'name'; track $index) {
+  <div class="col-span-12 sm:col-span-3 md:col-span-2 lg:col-span-1 flex flex-col items-center">
+    <img src="/assets/images/no-photo-available.jpg" alt="image">
+    <span>{{person?.name}}</span>
+  </div>
+  } @empty {
+  <div class="col-span-12 text-center">Aucun résultat</div>
+  }
+</div>

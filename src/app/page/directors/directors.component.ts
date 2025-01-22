@@ -1,17 +1,21 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { PersonService } from '../../services/person.service';
+import { PersonsListComponent } from '../../components';
+import { DirectorService } from '../../services';
 
 @Component({
-    selector: 'app-directors',
-    imports: [CommonModule],
-    templateUrl: './directors.component.html',
-    styleUrl: './directors.component.css'
+  selector: 'app-directors',
+  imports: [
+    AsyncPipe,
+    PersonsListComponent
+  ],
+  templateUrl: './directors.component.html',
+  styleUrl: './directors.component.css'
 })
 export class DirectorsComponent {
 
-  directors$ = this.personService.getDirectors();
+  directors$ = this.directorService.getAll();
 
-  constructor(private personService: PersonService) { }
+  constructor(private directorService: DirectorService) { }
 
 }

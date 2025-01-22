@@ -1,3 +1,1 @@
-@for (editor of editors$ | async; track $index) {
-<p>{{editor?.lastName}} {{editor?.firstName}}</p>
-}
+<app-persons-list [persons]="editors$ | async"></app-persons-list>

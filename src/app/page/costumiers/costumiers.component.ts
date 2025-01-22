@@ -1,17 +1,21 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { PersonService } from '../../services/person.service';
+import { PersonsListComponent } from '../../components';
+import { CostumierService } from '../../services';
 
 @Component({
-    selector: 'app-costumiers',
-    imports: [CommonModule],
-    templateUrl: './costumiers.component.html',
-    styleUrl: './costumiers.component.css'
+  selector: 'app-costumiers',
+  imports: [
+    AsyncPipe,
+    PersonsListComponent
+  ],
+  templateUrl: './costumiers.component.html',
+  styleUrl: './costumiers.component.css'
 })
 export class CostumiersComponent {
 
-  costumiers$ = this.personService.getCostumiers();
+  costumiers$ = this.costumierService.getAll();
 
-  constructor(private personService: PersonService) { }
+  constructor(private costumierService: CostumierService) { }
 
 }

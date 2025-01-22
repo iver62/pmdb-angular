@@ -1,17 +1,21 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { PersonService } from '../../services/person.service';
+import { PersonsListComponent } from '../../components';
+import { MusicianService } from '../../services';
 
 @Component({
-    selector: 'app-musicians',
-    imports: [CommonModule],
-    templateUrl: './musicians.component.html',
-    styleUrl: './musicians.component.css'
+  selector: 'app-musicians',
+  imports: [
+    AsyncPipe,
+    PersonsListComponent
+  ],
+  templateUrl: './musicians.component.html',
+  styleUrl: './musicians.component.css'
 })
 export class MusiciansComponent {
 
-  musicians$ = this.personService.getMusicians();
+  musicians$ = this.musicianService.getAll();
 
-  constructor(private personService: PersonService) { }
+  constructor(private musicianService: MusicianService) { }
 
 }
