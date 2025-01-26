@@ -1,10 +1,9 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { catchError, concatMap, map, of, throwError } from 'rxjs';
-import { Person } from '../models';
+import { throwError } from 'rxjs';
 import { ArtDirectorService, BaseService, CasterService, CostumierService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, VisualEffectSupervisorsService } from '../services';
 
-export const personTypeResolver: ResolveFn<Person> = (route, state) => {
+export const personServiceResolver: ResolveFn<BaseService> = (route, state) => {
   // Mapping des types de personnes vers leurs services
   const serviceMap: { [key: string]: BaseService } = {
     producers: inject(ProducerService),
@@ -34,23 +33,5 @@ export const personTypeResolver: ResolveFn<Person> = (route, state) => {
     return throwError(() => new Error(`Unknown route: ${personType}`)); // Retourner une erreur observable pour une route inconnue
   }
 
-  // Récupération de l'ID depuis les paramètres de la route
-  const id = Number(route.paramMap.get('id'));
-
-  // Vérification si l'ID est valide
-  if (isNaN(id)) {
-    console.log('ID invalide');
-    return throwError(() => new Error('Invalid ID'));
-  }
-
-  // Appelle la méthode `get` et retourne son résultat (Observable)
-  return service.get(id).pipe(
-    concatMap(p => service.getMovies(p).pipe(
-      map(movies => ({ ...p, movies: movies }))
-    )),
-    catchError(error => {
-      console.error('Erreur lors de la récupération des données:', error);
-      return of(null); // Retourne un observable avec null en cas d'erreur
-    })
-  );
+  return service;
 };
