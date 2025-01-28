@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { catchError, concatMap, map, of, switchMap } from 'rxjs';
+import { catchError, concatMap, forkJoin, map, of, switchMap } from 'rxjs';
 import { CountrySelectorComponent } from '../../components';
 import { Person } from '../../models';
 import { BaseService } from '../../services';
@@ -54,9 +54,23 @@ export class PersonDetailsComponent {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap(params => this.service.get(+params.get('id')).pipe(
-        concatMap(p => this.service.getMovies(p).pipe(
-          map(movies => ({ ...p, movies: movies }))
-        )),
+        concatMap(p =>
+          forkJoin(
+            {
+              movies: this.service.getMovies(p),
+              countries: this.service.getCountries(p)
+            }
+          ).pipe(
+            map(result => (
+              {
+                ...p,
+                movies: result.movies,
+                countries: result.countries
+              }
+            )
+            )
+          )
+        ),
         catchError(error => {
           console.error('Erreur lors de la récupération des films:', error);
           return of(null); // Retourne un observable avec null en cas d'erreur
@@ -92,7 +106,16 @@ export class PersonDetailsComponent {
   }
 
   save() {
-    this.service.update(this.person().id, { ...this.form.value, creationDate: this.person().creationDate }).subscribe(
+    this.service.update(this.person().id, { ...this.form.value, creationDate: this.person().creationDate }).pipe(
+      concatMap(person => this.service.getCountries(person).pipe(
+        map(countries => (
+          {
+            ...person,
+            countries: countries
+          }
+        ))
+      ))
+    ).subscribe(
       {
         next: (result: Person) => {
           console.log(result);
@@ -101,6 +124,7 @@ export class PersonDetailsComponent {
             name: result.name,
             dateOfBirth: result.dateOfBirth,
             dateOfDeath: result.dateOfDeath,
+            countries: result.countries
           }));
           this.editMode = false;
           this.snackBar.open(`${this.person().name} modifié avec succès`, 'Done', { duration: this.durationInSeconds * 1000 });

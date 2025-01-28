@@ -1,11 +1,15 @@
+import { Country } from "./country.model";
+import { Movie } from "./movie.model";
+
 export interface Person {
-  id?: number;
-  lastName?: string;
-  firstName?: string;
-  secondName?: string;
-  thirdName?: string;
-  pseudo?: string;
-  photoPath?: string;
-  dateOfBirth?: Date;
-  dateOfDeath?: Date;
+  id?: number,
+  name: string,
+  photoPath?: string,
+  dateOfBirth?: Date,
+  dateOfDeath?: Date,
+  creationDate?: Date,
+  lastUpdate?: Date,
+  // role?: Role,
+  movies?: Movie[],
+  countries?: Country[]
 }

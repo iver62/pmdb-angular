@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Person } from '../../models';
+import { Country, Movie, Person } from '../../models';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +9,31 @@ export class BaseService {
 
   constructor(protected http: HttpClient, @Inject(String) private basePath: string) { }
 
+  get(id: number) {
+    return this.http.get<Person>(`${this.basePath}/${id}`);
+  }
+
   getAll() {
     return this.http.get<Person[]>(this.basePath);
   }
 
+  getMovies(person: Person) {
+    return this.http.get<Movie[]>(`${this.basePath}/${person.id}/movies`)
+  }
+
+  getCountries(person: Person) {
+    return this.http.get<Country[]>(`${this.basePath}/${person.id}/countries`)
+  }
+
   save(person: Person) {
     return this.http.post<Person>(this.basePath, person);
+  }
+
+  update(id: number, person: Person) {
+    return this.http.put<Person>(`${this.basePath}/${id}`, person);
+  }
+
+  delete(id: number) {
+    return this.http.delete<boolean>(`${this.basePath}/${id}`);
   }
 }

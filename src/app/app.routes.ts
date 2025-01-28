@@ -4,7 +4,7 @@ import { AddMovieComponent } from './page/add-movie/add-movie.component';
 import { CountriesComponent } from './page/countries/countries.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { GenresComponent } from './page/genres/genres.component';
-import { personTypeResolver } from './resolvers/person-type.resolver';
+import { personServiceResolver } from './resolvers';
 
 export const routes: Routes = [
   {
@@ -35,7 +35,7 @@ export const routes: Routes = [
   {
     path: 'producers/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -46,7 +46,7 @@ export const routes: Routes = [
   {
     path: 'directors/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -57,7 +57,7 @@ export const routes: Routes = [
   {
     path: 'screenwriters/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -68,7 +68,7 @@ export const routes: Routes = [
   {
     path: 'musicians/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -79,7 +79,7 @@ export const routes: Routes = [
   {
     path: 'decorators/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -90,7 +90,7 @@ export const routes: Routes = [
   {
     path: 'costumiers/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -101,7 +101,7 @@ export const routes: Routes = [
   {
     path: 'photographers/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -112,7 +112,7 @@ export const routes: Routes = [
   {
     path: 'editors/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -123,7 +123,7 @@ export const routes: Routes = [
   {
     path: 'casters/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -134,7 +134,7 @@ export const routes: Routes = [
   {
     path: 'art-directors/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -145,7 +145,7 @@ export const routes: Routes = [
   {
     path: 'sound-editors/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -156,7 +156,7 @@ export const routes: Routes = [
   {
     path: 'visual-effects-supervisors/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -167,7 +167,7 @@ export const routes: Routes = [
   {
     path: 'makeup-artists/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
@@ -178,7 +178,7 @@ export const routes: Routes = [
   {
     path: 'hair-dressers/:id',
     resolve: {
-      person: personTypeResolver
+      service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
