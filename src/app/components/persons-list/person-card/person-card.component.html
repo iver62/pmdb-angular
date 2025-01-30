@@ -1,0 +1,6 @@
+<mat-card class="person-card items-center justify-around cursor-pointer w-full" [routerLink]="[route(), person().id]">
+  <img mat-card-image [src]="person().photoPath || '/assets/images/no-photo-available.jpg'" alt="{{ person().name }}" />
+  <mat-card-content>
+    <mat-card-title class="text-lg">{{ person().name }}</mat-card-title>
+  </mat-card-content>
+</mat-card>
