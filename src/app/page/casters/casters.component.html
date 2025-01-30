@@ -1,1 +1,7 @@
-<app-persons-list [persons]="casters$ | async"></app-persons-list>
+@let casters = casters$ | async;
+
+@if (casters?.length) {
+<app-persons-list title="Casteurs" [persons]="casters" route="/casters"></app-persons-list>
+} @else {
+<div>Aucun résultat</div>
+}
