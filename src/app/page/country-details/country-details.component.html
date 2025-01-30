@@ -1,0 +1,77 @@
+@let country = country$ | async;
+
+<div class="country-details-container">
+  <button mat-button routerLink="/countries">Retour à la liste des pays</button>
+
+  <!-- Country Information -->
+  <mat-card class="country-card">
+    <mat-card-header>
+      <div mat-card-avatar class="country-avatar"></div>
+      <mat-card-title>{{ country?.nomFrFr }}</mat-card-title>
+      <mat-card-subtitle>{{ country?.nomEnGb }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Alpha-2 Code:</strong> {{ country?.alpha2 }}</p>
+      <p><strong>Alpha-3 Code:</strong> {{ country?.alpha3 }}</p>
+      <p><strong>Numeric Code:</strong> {{ country?.code }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="mt-4 grid gap-4">
+    <!-- Films associés -->
+    <app-movies-list title="Films associés" [movies]="country?.movies"></app-movies-list>
+
+    <!-- Producteurs associés -->
+    <app-persons-list title="Producteurs associés" [persons]="country?.producers" route="/producers"></app-persons-list>
+
+    <!-- Réalisateurs associés -->
+    <app-persons-list title="Réalisateurs associés" [persons]="country?.directors"
+      route="/directors"></app-persons-list>
+
+    <!-- Scénaristes associés -->
+    <app-persons-list title="Scénaristes associés" [persons]="country?.screenwriters" route="/screenwriters">
+    </app-persons-list>
+
+    <!-- Musiciens associés -->
+    <app-persons-list title="Musiciens associés" [persons]="country?.musicians" route="/musicians"></app-persons-list>
+
+    <!-- Photographes associés -->
+    <app-persons-list title="Photographes associés" [persons]="country?.photographers" route="/photographers">
+    </app-persons-list>
+
+    <!-- Costumiers associés -->
+    <app-persons-list title="Costumiers associés" [persons]="country?.costumiers"
+      route="/costumiers"></app-persons-list>
+
+    <!-- Décorateurs associés -->
+    <app-persons-list title="Décorateurs associés" [persons]="country?.decorators"
+      route="/decorators"></app-persons-list>
+
+    <!-- Monteurs associés -->
+    <app-persons-list title="Monteurs associés" [persons]="country?.editors" route="/editors"></app-persons-list>
+
+    <!-- Casteurs associés -->
+    <app-persons-list title="Casteurs associés" [persons]="country?.casters" route="/casters"></app-persons-list>
+
+    <!-- Directeurs artistiques associés -->
+    <app-persons-list title="Directeurs artistiques associés" [persons]="country?.artDirectors" route="/art-directors">
+    </app-persons-list>
+
+    <!-- Ingénieurs du son associés -->
+    <app-persons-list title="Ingénieurs du son associés" [persons]="country?.soundEditors" route="/sound-editors">
+    </app-persons-list>
+
+    <!-- Spécialistes effets spéciaux associés -->
+    <app-persons-list title="Spécialistes effets spéciaux associés" [persons]="country?.visualEffectsSupervisors"
+      route="/visual-effects-supervisors">
+    </app-persons-list>
+
+    <!-- Maquilleurs associés -->
+    <app-persons-list title="Maquilleurs associés" [persons]="country?.makeupArtists" route="/makeup-artists">
+    </app-persons-list>
+
+    <!-- Coiffeurs associés -->
+    <app-persons-list title="Coiffeurs associés" [persons]="country?.hairDressers" route="/hair-dressers">
+    </app-persons-list>
+  </div>
+</div>
