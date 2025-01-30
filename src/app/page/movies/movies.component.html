@@ -1,7 +1,55 @@
-<div class="grid grid-cols-12 gap-2 items-baseline">
-  @for (movie of movies$ | async | orderBy: ['title']; track movie.id) {
-  <app-movie class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2" [movie]="movie"></app-movie>
-  } @empty {
-  <div>Aucun film</div>
+<div>
+  @if (view == 'cards') {
+  <app-movies-list title="Films" [movies]="movies$ | async"></app-movies-list>
+  } @else {
+  <div>
+    <div class="example-table-container">
+
+      <table mat-table [dataSource]="data" class="example-table" matSort matSortActive="title" matSortDisableClear
+        matSortDirection="desc">
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Titre</th>
+          <td mat-cell *matCellDef="let row">{{row.title}}</td>
+        </ng-container>
+
+        <!-- Original title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title original</th>
+          <td mat-cell *matCellDef="let row">{{row.originalTitle}}</td>
+        </ng-container>
+
+        <!-- Release date Column -->
+        <ng-container matColumnDef="releaseDate">
+          <th mat-header-cell *matHeaderCellDef>Date de sortie</th>
+          <td mat-cell *matCellDef="let row">{{row.releaseDate | date: 'dd/MM/yyyy'}}</td>
+        </ng-container>
+
+        <!-- Running time Column -->
+        <ng-container matColumnDef="runningTime">
+          <th mat-header-cell *matHeaderCellDef>Durée</th>
+          <td mat-cell *matCellDef="let row">{{row.duration}}</td>
+        </ng-container>
+
+        <!-- Budget Column -->
+        <ng-container matColumnDef="budget">
+          <th mat-header-cell *matHeaderCellDef>Budget</th>
+          <td mat-cell *matCellDef="let row">{{row.budget}}</td>
+        </ng-container>
+
+        <!-- Box-Office Column -->
+        <ng-container matColumnDef="boxOffice">
+          <th mat-header-cell *matHeaderCellDef>Box-office</th>
+          <td mat-cell *matCellDef="let row">{{row.boxOffice}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <mat-paginator [length]="resultsLength" [pageSize]="50" aria-label="Select page of Movie search results">
+    </mat-paginator>
+  </div>
   }
 </div>
