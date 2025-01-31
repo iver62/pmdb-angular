@@ -1,0 +1,8 @@
+<div class="flex flex-col h-full">
+  <button mat-button class="w-fit" routerLink="../">Retour à la liste</button>
+
+  <h1 class="my-4 text-3xl">{{name}}</h1>
+
+  <!-- Films associés -->
+  <app-movies-list title="Films associés" [movies]="movies$ | async"></app-movies-list>
+</div>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Genre } from '../models';
+import { Genre, Movie } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +13,17 @@ export class GenreService {
 
   getAll() {
     return this.http.get<Genre[]>(this.basePath);
+  }
+
+  getMovies(id: number) {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies`);
+  }
+
+  save(genre: Genre) {
+    return this.http.post<Genre>(this.basePath, genre);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.basePath}/${id}`);
   }
 }
