@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { ActorsComponent } from './page/actors/actors.component';
 import { AddMovieComponent } from './page/add-movie/add-movie.component';
-import { CountriesComponent } from './page/countries/countries.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { GenresComponent } from './page/genres/genres.component';
 import { personServiceResolver } from './resolvers';
@@ -26,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: 'movies/:id',
-    loadComponent: () => import('./page/movies/movie-detail/movie-detail.component').then(c => c.MovieDetailComponent)
+    loadComponent: () => import('./page/movie-details/movie-details.component').then(c => c.MovieDetailsComponent)
   },
   {
     path: 'producers',
@@ -192,7 +191,11 @@ export const routes: Routes = [
   },
   {
     path: 'countries',
-    component: CountriesComponent
+    loadComponent: () => import('./page/countries/countries.component').then(c => c.CountriesComponent)
+  },
+  {
+    path: 'countries/:id',
+    loadComponent: () => import('./page/country-details/country-details.component').then(c => c.CountryDetailsComponent)
   },
   // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
 ];

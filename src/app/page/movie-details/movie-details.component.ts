@@ -9,12 +9,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { concatMap, forkJoin, map, switchMap } from 'rxjs';
-import { MovieService } from '../../../services';
-import { GeneralInfosFormComponent } from "../../add-movie/components/general-infos-form/general-infos-form.component";
-import { TechnicalSummaryFormComponent } from "../../add-movie/components/technical-summary-form/technical-summary-form.component";
+import { MovieService } from '../../services';
+import { GeneralInfosFormComponent, TechnicalSummaryFormComponent } from '../add-movie/components';
 
 @Component({
-  selector: 'app-movie-detail',
+  selector: 'app-movie-details',
   imports: [
     DatePipe,
     GeneralInfosFormComponent,
@@ -26,13 +25,12 @@ import { TechnicalSummaryFormComponent } from "../../add-movie/components/techni
     NgPipesModule,
     ReactiveFormsModule,
     RouterLink,
-    TechnicalSummaryFormComponent,
     TechnicalSummaryFormComponent
   ],
-  templateUrl: './movie-detail.component.html',
-  styleUrl: './movie-detail.component.css'
+  templateUrl: './movie-details.component.html',
+  styleUrl: './movie-details.component.css'
 })
-export class MovieDetailComponent {
+export class MovieDetailsComponent {
 
   private _snackBar = inject(MatSnackBar);
   private readonly durationInSeconds = 5;
