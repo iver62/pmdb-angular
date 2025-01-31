@@ -1,43 +1,60 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { catchError, switchMap, tap } from 'rxjs';
-import { GenreService } from '../../services/genre.service';
+import { catchError, map, tap } from 'rxjs';
+import { GenreService } from '../../services';
 
 @Component({
   selector: 'app-genres',
   imports: [
     AsyncPipe,
+    MatButtonModule,
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
-    NgPipesModule
+    NgPipesModule,
+    RouterLink
   ],
   templateUrl: './genres.component.html',
   styleUrl: './genres.component.css'
 })
 export class GenresComponent {
 
-  private _snackBar = inject(MatSnackBar);
-  durationInSeconds = 5;
-  genres$ = this.genreService.getAll();
+  private snackBarDuration = 5000;
 
-  constructor(private genreService: GenreService) { }
+  genres$ = this.genreService.getAll().pipe(
+    tap(() => console.log('Genres chargés')),
+    catchError(error => {
+      console.error('Erreur de chargement des genres', error);
+      this.snackBar.open('Erreur lors du chargement des genres', 'Error', { duration: this.snackBarDuration });
+      throw error;
+    })
+  );
+
+  constructor(
+    private genreService: GenreService,
+    private snackBar: MatSnackBar
+  ) { }
 
   deleteGenre(id: number) {
-    this.genres$ = this.genreService.delete(id).pipe(
-      switchMap(() => this.genreService.getAll()),
-      tap(() => this._snackBar.open('Genre supprimé avec succès', 'Done', { duration: this.durationInSeconds * 1000 })),
-      catchError((error) => {
-        console.error(error);
-        this._snackBar.open('Impossible de supprimer le genre', 'Error', { duration: this.durationInSeconds * 1000 })
-        return this.genreService.getAll();
-      })
+    this.genres$ = this.genres$.pipe(
+      map(genres => genres.filter(g => g.id !== id)) // Mise à jour locale sans recharge
+    );
+
+    this.genreService.delete(id).subscribe(
+      {
+        next: () => this.snackBar.open('Genre supprimé avec succès', 'Done', { duration: this.snackBarDuration }),
+        error: e => {
+          console.error(e);
+          this.snackBar.open('Impossible de supprimer le genre', 'Error', { duration: this.snackBarDuration })
+        }
+      }
     );
   }
-
 }
