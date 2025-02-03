@@ -11,35 +11,49 @@
 
       <div class="py-4">
         @if (!editGeneralInfos) {
-        <div class="grid gap-4">
-          <p>TITRE : {{title}}</p>
-          <p>TITRE ORIGINAL : {{originalTitle}}</p>
-          <p>SYNOPSIS : {{synopsis}}</p>
-          <p>DATE DE SORTIE : {{releaseDate | date: 'dd/MM/yyyy'}}</p>
-          <p>DURÉE : {{runningTime}} @if (runningTime) {minutes}</p>
-          <p>BUDGET : {{budget}} @if (budget) {$}</p>
-          <p>BOX-OFFICE : {{boxOffice}} @if (boxOffice) {$}</p>
-          <p>GENRES :
-            @for (genre of genres | orderBy: 'name'; track genre.id) {
-            <a mat-button [routerLink]="['/genres', genre.id]" [state]="{name: genre?.name}">{{genre?.name}}</a>
-            }
-          </p>
-          <p>PAYS :
-            @for (country of countries | orderBy: 'nomFrFr'; track country.id) {
-            <a mat-button [routerLink]="['/countries', country.id]">{{country?.nomFrFr}}</a>
-            }
+        <div class="grid grid-cols-12 gap-2">
+          <div class="col-span-9 grid gap-2">
+            <p>TITRE : {{title}}</p>
+            <p>TITRE ORIGINAL : {{originalTitle}}</p>
+            <p>SYNOPSIS : {{synopsis}}</p>
+            <p>DATE DE SORTIE : {{releaseDate | date: 'dd/MM/yyyy'}}</p>
+            <p>DURÉE : {{runningTime}} @if (runningTime) {minutes}</p>
+            <p>BUDGET : {{budget}} @if (budget) {$}</p>
+            <p>BOX-OFFICE : {{boxOffice}} @if (boxOffice) {$}</p>
+            <p>GENRES :
+              @for (genre of genres | orderBy: 'name'; track genre.id) {
+              <a mat-button [routerLink]="['/genres', genre.id]" [state]="{name: genre?.name}">{{genre?.name}}</a>
+              }
+            </p>
+            <p>PAYS :
+              @for (country of countries | orderBy: 'nomFrFr'; track country.id) {
+              <a mat-button [routerLink]="['/countries', country.id]">{{country?.nomFrFr}}</a>
+              }
+          </div>
+          <div class="col-span-3 mr-4">
+            <img mat-card-image [src]="getSafePosterUrl(posterFileName)" alt="{{ title }}" />
+          </div>
         </div>
 
-        <button mat-fab class="float-right m-1" matTooltip="Modifier"
-          aria-label="Example icon button with a delete icon" color="accent" (click)="editGeneralInfos=true">
-          <mat-icon>edit</mat-icon>
-        </button>
+        <div class="fixed bottom-5 right-5">
+          <button mat-fab class="float-right m-1" matTooltip="Modifier"
+            aria-label="Example icon button with a delete icon" color="accent" (click)="editGeneralInfos=true">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
         } @else {
-        <app-general-infos-form formGroupName="generalFormGroup"></app-general-infos-form>
-        <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
-          color="accent" (click)="saveGeneralInfos()">
-          <mat-icon>check</mat-icon>
-        </button>
+        <app-general-infos-form formGroupName="generalFormGroup" (selectImage)="selectImage($event)">
+        </app-general-infos-form>
+        <div class="fixed bottom-5 right-5">
+          <button mat-fab class="float-right m-1" matTooltip="Valider"
+            aria-label="Example icon button with a check icon" color="accent" (click)="saveGeneralInfos()">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-fab class="float-right m-1" matTooltip="Annuler"
+            aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelGeneralInfos()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
         }
       </div>
     </mat-tab>
@@ -156,16 +170,20 @@
           }
         </div>
 
-        <button mat-fab class="float-right m-1" matTooltip="Modifier"
-          aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalSummary=true">
-          <mat-icon>edit</mat-icon>
-        </button>
+        <div class="fixed bottom-5 right-5">
+          <button mat-fab class="float-right m-1" matTooltip="Modifier"
+            aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalSummary=true">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
         } @else {
         <app-technical-summary-form formGroupName="technicalSummaryFormGroup"></app-technical-summary-form>
-        <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
-          color="accent" (click)="saveTechnicalSummary()">
-          <mat-icon>check</mat-icon>
-        </button>
+        <div class="fixed bottom-5 right-5">
+          <button mat-fab class="float-right m-1" matTooltip="Valider"
+            aria-label="Example icon button with a delete icon" color="accent" (click)="saveTechnicalSummary()">
+            <mat-icon>check</mat-icon>
+          </button>
+        </div>
         }
       </div>
     </mat-tab>

@@ -33,7 +33,8 @@ export class MoviesComponent {
         {
           id: m.id,
           title: m.title,
-          releaseDate: m.releaseDate
+          releaseDate: m.releaseDate,
+          posterFileName: m.posterFileName
         }
       ))
     )

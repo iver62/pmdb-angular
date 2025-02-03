@@ -1,9 +1,7 @@
 <mat-card class="movie-card cursor-pointer w-full" [routerLink]="['/movies', movie().id]">
-  <img mat-card-image [src]="movie().posterPath || '/assets/images/no-image-available.jpg'" alt="{{ movie().title }}" />
-  <mat-card-content>
-    <mat-card-title class="flex flex-col">
-      <div>{{ movie().title }}</div>
-      <div>({{ movie().releaseDate | date: 'yyyy' }})</div>
-    </mat-card-title>
+  <img mat-card-image [src]="getSafePosterUrl(movie().posterFileName)" alt="{{ movie().title }}" />
+  <mat-card-content class="flex flex-col">
+    <div>{{ movie().title }}</div>
+    <div>({{ movie().releaseDate | date: 'yyyy' }})</div>
   </mat-card-content>
 </mat-card>

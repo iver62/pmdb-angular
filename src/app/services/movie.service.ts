@@ -19,6 +19,10 @@ export class MovieService {
     return this.http.get<Movie>(`${this.basePath}/${id}`);
   }
 
+  getPosterUrl(posterFileName: string): string {
+    return `${this.basePath}/poster/${posterFileName}`;
+  }
+
   getProducers(id: number) {
     return this.http.get<Person[]>(`${this.basePath}/${id}/producers`);
   }
@@ -55,6 +59,26 @@ export class MovieService {
     return this.http.get<Person[]>(`${this.basePath}/${id}/casters`);
   }
 
+  getArtDirectors(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/art-directors`);
+  }
+
+  getSoundEditors(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors`);
+  }
+
+  getVisualEffectsSupervisors(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/visual-effects-supervisors`);
+  }
+
+  getMakeupArtists(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/makeup-artists`);
+  }
+
+  getHairDressers(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers`);
+  }
+
   getGenres(id: number) {
     return this.http.get<Genre[]>(`${this.basePath}/${id}/genres`);
   }
@@ -63,16 +87,26 @@ export class MovieService {
     return this.http.get<Country[]>(`${this.basePath}/${id}/countries`);
   }
 
-  saveMovie(movie: Movie) {
-    return this.http.post<Movie>(this.basePath, movie);
+  saveMovie(imageFile: File, movie: Movie) {
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append('file', imageFile);
+    }
+    formData.append('movieDTO', new Blob([JSON.stringify(movie)], { type: 'application/json' }));
+    return this.http.post<Movie>(this.basePath, formData);
   }
 
   saveTechnicalSummay(id: number, technicalSummary: TechnicalSummary) {
     return this.http.put<TechnicalSummary>(`${this.basePath}/${id}/technical-summary`, technicalSummary);
   }
 
-  updateMovie(movie: Movie) {
-    return this.http.put<Movie>(`${this.basePath}/${movie.id}`, movie);
+  updateMovie(imageFile: File, movie: Movie) {
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append('file', imageFile);
+    }
+    formData.append('movieDTO', new Blob([JSON.stringify(movie)], { type: 'application/json' }));
+    return this.http.put<Movie>(`${this.basePath}/${movie.id}`, formData);
   }
 
   // saveProducers(id: number, persons: Person[]) {

@@ -33,16 +33,29 @@
       <mat-label>Box Office</mat-label>
       <input matInput type="number" min="0" placeholder="Box Office mondial" formControlName="boxOffice">
     </mat-form-field>
-    <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
-      <mat-label>Affiche</mat-label>
-      <input matInput placeholder="Affiche" formControlName="poster">
-    </mat-form-field>
+
+    <div class="file-upload items-baseline col-span-12 md:col-span-6 lg:col-span-3">
+      <input type="file" accept=".jpg,.jpeg,.png" #fileInput formControlName="poster" (change)="onFileChange($event)"
+        hidden>
+      <button mat-flat-button class="w-full" (click)="fileInput.click()">
+        @if (!posterFormCtrl.value) {
+        Choisir un fichier
+        } @else {
+        <div class="button-label">
+          <span class="filename">{{ posterFormCtrl.value }}</span>
+          <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a vertical three dot icon"
+            (click)="deleteFile(); $event.stopPropagation()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        }
+      </button>
+    </div>
 
     <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries">
     </app-country-selector>
 
-    <app-genre-selector class="col-span-12 lg:col-span-6" [genres]="genres" formGroupName="genres"
-      (addGenre)="addGenre($event)">
+    <app-genre-selector class="col-span-12 lg:col-span-6" [genres]="genres" formGroupName="genres">
     </app-genre-selector>
   </div>
 </form>

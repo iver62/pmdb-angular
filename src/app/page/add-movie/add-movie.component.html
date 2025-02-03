@@ -1,7 +1,8 @@
 <ng-container [formGroup]="form">
   <mat-stepper [linear]="isLinear" #stepper>
     <mat-step [stepControl]="form.get('generalFormGroup')" label="Informations générales">
-      <app-general-infos-form formGroupName="generalFormGroup"></app-general-infos-form>
+      <app-general-infos-form formGroupName="generalFormGroup" (selectImage)="selectImage($event)">
+      </app-general-infos-form>
       <button mat-button matStepperNext (click)="saveMovie()">Suivant</button>
     </mat-step>
     <mat-step [stepControl]="form.get('generalFormGroup')" label="Fiche technique">

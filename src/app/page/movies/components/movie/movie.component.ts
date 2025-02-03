@@ -31,7 +31,6 @@ export class MovieComponent {
   constructor(private movieService: MovieService) { }
 
   deleteMovie(id: number) {
-    console.log(id);
     this.movieService.deleteMovie(id).subscribe(
       {
         next: () => {

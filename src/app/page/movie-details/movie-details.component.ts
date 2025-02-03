@@ -6,9 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { concatMap, forkJoin, map, switchMap } from 'rxjs';
+import { concatMap, forkJoin, map, switchMap, tap } from 'rxjs';
 import { MovieService } from '../../services';
 import { GeneralInfosFormComponent, TechnicalSummaryFormComponent } from '../add-movie/components';
 
@@ -36,15 +37,19 @@ export class MovieDetailsComponent {
   private readonly durationInSeconds = 5;
 
   form: FormGroup;
+  generalInfosInitialValues: any;
+  technicalSummaryInitialValues: any;
   editGeneralInfos = false;
   editTechnicalSummary = false;
   editCasting = false;
+  imageFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
     private movieService: MovieService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -73,42 +78,42 @@ export class MovieDetailsComponent {
           }
         )
       ),
-      map(
-        result => this.fb.group(
+      tap(result => {
+        this.generalInfosInitialValues = {
+          id: [result.generalInfos.id],
+          title: [result.generalInfos.title, Validators.required],
+          originalTitle: [result.generalInfos.originalTitle],
+          synopsis: [result.generalInfos.synopsis],
+          releaseDate: [result.generalInfos.releaseDate],
+          runningTime: [result.generalInfos.runningTime],
+          budget: [result.generalInfos.budget],
+          boxOffice: [result.generalInfos.boxOffice],
+          poster: [result.generalInfos.posterFileName],
+          countries: [result.countries],
+          genres: [result.genres]
+        };
+        this.technicalSummaryInitialValues = {
+          producers: [result.producers],
+          directors: [result.directors],
+          screenwriters: [result.screenwriters],
+          musicians: [result.musicians],
+          decorators: [result.decorators],
+          costumiers: [result.costumiers],
+          photographers: [result.photographers],
+          editors: [result.editors],
+          casters: [result.casters],
+          artDirectors: [result.artDirectors],
+          soundEditors: [result.soundEditors],
+          visualEffectsSupervisors: [result.visualEffectsSupervisors],
+          makeupArtists: [result.makeupArtists],
+          hairDressers: [result.hairDressers]
+        };
+      }),
+      map(result =>
+        this.fb.group(
           {
-            generalFormGroup: this.fb.group(
-              {
-                id: [result.generalInfos.id],
-                title: [result.generalInfos.title, Validators.required],
-                originalTitle: [result.generalInfos.originalTitle],
-                synopsis: [result.generalInfos.synopsis],
-                releaseDate: [result.generalInfos.releaseDate],
-                runningTime: [result.generalInfos.runningTime],
-                budget: [result.generalInfos.budget],
-                boxOffice: [result.generalInfos.boxOffice],
-                poster: [result.generalInfos.posterPath],
-                countries: [result.countries],
-                genres: [result.genres]
-              }
-            ),
-            technicalSummaryFormGroup: this.fb.group(
-              {
-                producers: [result.producers],
-                directors: [result.directors],
-                screenwriters: [result.screenwriters],
-                musicians: [result.musicians],
-                decorators: [result.decorators],
-                costumiers: [result.costumiers],
-                photographers: [result.photographers],
-                editors: [result.editors],
-                casters: [result.casters],
-                artDirectors: [result.artDirectors],
-                soundEditors: [result.soundEditors],
-                visualEffectsSupervisors: [result.visualEffectsSupervisors],
-                makeupArtists: [result.makeupArtists],
-                hairDressers: [result.hairDressers]
-              }
-            ),
+            generalFormGroup: this.fb.group(this.generalInfosInitialValues),
+            technicalSummaryFormGroup: this.fb.group(this.technicalSummaryInitialValues),
             castingFormGroup: this.fb.group(
               {
 
@@ -152,7 +157,7 @@ export class MovieDetailsComponent {
     return this.form.controls['generalFormGroup'].get('boxOffice').value;
   }
 
-  get poster() {
+  get posterFileName() {
     return this.form.controls['generalFormGroup'].get('poster').value;
   }
 
@@ -220,6 +225,20 @@ export class MovieDetailsComponent {
     return this.form.controls['technicalSummaryFormGroup'].get('hairDressers').value;
   }
 
+  selectImage(event: any) {
+    this.imageFile = event;
+  }
+
+  getSafePosterUrl(posterFileName: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(this.movieService.getPosterUrl(posterFileName));
+  }
+
+  cancelGeneralInfos() {
+    this.editGeneralInfos = false;
+    this.form.controls['generalFormGroup'].setValue(this.generalInfosInitialValues);
+    this.form.controls['technicalSummaryFormGroup'].reset(this.technicalSummaryInitialValues);
+  }
+
   deleteMovie(id: number) {
     this.movieService.deleteMovie(id).subscribe(
       {
@@ -233,7 +252,7 @@ export class MovieDetailsComponent {
   }
 
   saveGeneralInfos() {
-    this.movieService.updateMovie(this.form.value.generalFormGroup).pipe(
+    this.movieService.updateMovie(this.imageFile, this.form.value.generalFormGroup).pipe(
       concatMap(movie =>
         this.movieService.getCountries(movie.id).pipe(
           map(countries => ({ ...movie, countries: countries }))

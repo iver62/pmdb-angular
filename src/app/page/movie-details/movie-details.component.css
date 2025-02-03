@@ -17,10 +17,4 @@ ul li {
     height: calc(100% - 49px);
     overflow-y: auto;
   }
-
-  .float-right {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-  }
 }

@@ -26,6 +26,7 @@ export class AddMovieComponent {
   private _snackBar = inject(MatSnackBar);
   movie: Movie;
   durationInSeconds = 5;
+  imageFile: File | null = null;
 
   form = this.fb.group(
     {
@@ -56,7 +57,7 @@ export class AddMovieComponent {
           casters: [],
           artDirectors: [],
           soundEditors: [],
-          visualEffectsSupervisor: [],
+          visualEffectsSupervisors: [],
           makeupArtists: [],
           hairDressers: []
         }
@@ -76,8 +77,16 @@ export class AddMovieComponent {
     private movieService: MovieService
   ) { }
 
+  // get formValue() {
+  //   return this.form.get('generalFormGroup').value;
+  // }
+
+  selectImage(event: any) {
+    this.imageFile = event;
+  }
+
   saveMovie() {
-    this.movieService.saveMovie(this.form.get('generalFormGroup').value).subscribe(
+    this.movieService.saveMovie(this.imageFile, this.form.get('generalFormGroup').value).subscribe(
       {
         next: result => {
           this._snackBar.open('Film créé avec succès', 'Done', { duration: this.durationInSeconds * 1000 });

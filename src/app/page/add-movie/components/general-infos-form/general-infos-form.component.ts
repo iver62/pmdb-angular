@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, input, Output } from '@angular/core';
 import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CountrySelectorComponent, GenreSelectorComponent } from '../../../../components';
 import { Genre } from '../../../../models';
 import { GenreService } from '../../../../services';
@@ -12,9 +15,12 @@ import { GenreService } from '../../../../services';
   imports: [
     CountrySelectorComponent,
     GenreSelectorComponent,
+    MatButtonModule,
     MatDatepickerModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
+    MatTooltipModule,
     ReactiveFormsModule
   ],
   templateUrl: './general-infos-form.component.html',
@@ -26,6 +32,10 @@ export class GeneralInfosFormComponent {
   formGroupName = input.required<string>();
   form: FormGroup;
   genres: Genre[] = [];
+  selectedFileName: string | null = null;
+  selectedFile: File | null = null;
+
+  @Output() selectImage = new EventEmitter<File>();
 
   constructor(
     private genreService: GenreService,
@@ -42,8 +52,27 @@ export class GeneralInfosFormComponent {
     return this.form.get('title');
   }
 
+  get posterFormCtrl() {
+    return this.form.get('poster');
+  }
+
   addGenre(event: Genre) {
     this.genres.push(event);
+  }
+
+  onFileChange(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      this.selectImage.emit(this.selectedFile);
+      this.selectedFileName = this.selectedFile.name;
+      this.posterFormCtrl.setValue(this.selectedFileName);
+    }
+  }
+
+  deleteFile() {
+    this.posterFormCtrl.reset();
+    this.selectImage.emit(null);
   }
 
 }
