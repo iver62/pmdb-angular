@@ -8,10 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { catchError, concatMap, forkJoin, map, of, switchMap } from 'rxjs';
-import { CountrySelectorComponent } from '../../components';
+import { CountrySelectorComponent, MoviesListComponent } from '../../components';
 import { Person } from '../../models';
 import { BaseService } from '../../services';
 
@@ -27,6 +28,7 @@ import { BaseService } from '../../services';
     MatIconModule,
     MatInputModule,
     MatTooltipModule,
+    MoviesListComponent,
     NgPipesModule,
     ReactiveFormsModule,
     RouterLink
@@ -43,11 +45,14 @@ export class PersonDetailsComponent {
   ageOfDeath = computed(() => new Date(this.person().dateOfDeath)?.getFullYear() - new Date(this.person().dateOfBirth)?.getFullYear());
   editMode = false;
   form: FormGroup;
+  selectedFileName: string | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private sanitizer: DomSanitizer,
     private snackBar: MatSnackBar
   ) { }
 
@@ -84,13 +89,36 @@ export class PersonDetailsComponent {
       this.person.set(result);
       this.form = this.fb.group(
         {
+          id: [this.person().id],
           name: [this.person().name, Validators.required],
           dateOfBirth: [this.person().dateOfBirth],
           dateOfDeath: [this.person().dateOfDeath],
+          photoFileName: [this.person().photoFileName],
           countries: [this.person().countries]
         }
       )
     });
+  }
+
+  onFileChange(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      this.selectedFileName = this.selectedFile.name;
+      this.photoFormCtrl.setValue(this.selectedFileName);
+    }
+  }
+
+  deleteFile() {
+    this.photoFormCtrl.reset();
+  }
+
+  get photoFormCtrl() {
+    return this.form.get('photoFileName');
+  }
+
+  getSafePhotoUrl() {
+    return this.sanitizer.bypassSecurityTrustUrl(this.service.getPhotoUrl(this.person()?.photoFileName));
   }
 
   cancel() {
@@ -98,6 +126,7 @@ export class PersonDetailsComponent {
     this.form.patchValue(
       {
         name: this.person().name,
+        photoFileName: this.person().photoFileName,
         dateOfBirth: this.person().dateOfBirth,
         dateOfDeath: this.person().dateOfDeath,
         countries: this.person().countries
@@ -106,7 +135,9 @@ export class PersonDetailsComponent {
   }
 
   save() {
-    this.service.update(this.person().id, { ...this.form.value, creationDate: this.person().creationDate }).pipe(
+    console.log(this.form.value);
+
+    this.service.update(this.selectedFile, { ...this.form.value, creationDate: this.person().creationDate }).pipe(
       concatMap(person => this.service.getCountries(person).pipe(
         map(countries => (
           {
@@ -118,10 +149,12 @@ export class PersonDetailsComponent {
     ).subscribe(
       {
         next: (result: Person) => {
-          console.log(result);
+          console.log('RESULT', result);
+
           this.person.update(current => ({
             ...current,
             name: result.name,
+            photoFileName: result.photoFileName,
             dateOfBirth: result.dateOfBirth,
             dateOfDeath: result.dateOfDeath,
             countries: result.countries

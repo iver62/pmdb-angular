@@ -25,12 +25,21 @@ export class BaseService {
     return this.http.get<Country[]>(`${this.basePath}/${person.id}/countries`)
   }
 
+  getPhotoUrl(photoFileName: string) {
+    return `${this.basePath}/photos/${photoFileName}`;
+  }
+
   save(person: Person) {
     return this.http.post<Person>(this.basePath, person);
   }
 
-  update(id: number, person: Person) {
-    return this.http.put<Person>(`${this.basePath}/${id}`, person);
+  update(imageFile: File, person: Person) {
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append('file', imageFile);
+    }
+    formData.append('personDTO', new Blob([JSON.stringify(person)], { type: 'application/json' }));
+    return this.http.put<Person>(`${this.basePath}/${person.id}`, formData);
   }
 
   delete(id: number) {

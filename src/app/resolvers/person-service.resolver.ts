@@ -29,7 +29,6 @@ export const personServiceResolver: ResolveFn<BaseService> = (route, state) => {
   const service = serviceMap[personType];
 
   if (!service) {
-    console.log('Route inconnue:', personType);
     return throwError(() => new Error(`Unknown route: ${personType}`)); // Retourner une erreur observable pour une route inconnue
   }
 

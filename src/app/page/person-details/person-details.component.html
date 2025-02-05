@@ -1,19 +1,19 @@
 <div class="flex flex-col h-full">
-  <button mat-button class="w-fit" routerLink="../">Retour</button>
-  <div class="flex flex-row h-1/2">
-    <img src="/assets/images/no-photo-available.jpg" alt="image">
+  <button mat-button class="w-fit" routerLink="../">Retour à la liste</button>
+  <div class="flex flex-row h-1/2 mb-4">
+    <img mat-card-image [src]="getSafePhotoUrl()" alt="{{ person()?.photoFileName }}" width="220">
     <div class="ml-4 w-1/2">
-      @if(!editMode){
-      <h1>{{person()?.name}}</h1>
-      @if(person()?.dateOfBirth) {
+      @if (!editMode){
+      <h1 class="text-2xl">{{person()?.name}}</h1>
+      @if (person()?.dateOfBirth) {
       <p>Né le {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age()}} ans)}</p>
       }
-      @if(person()?.dateOfDeath) {
+      @if (person()?.dateOfDeath) {
       <p>Décédé le {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath()}} ans)</p>
       }
-      @if(person()?.countries?.length) {
+      @if (person()?.countries?.length) {
       <p>Nationalité(s) :
-        @for(country of person().countries; track country.id) {
+        @for(country of person().countries | orderBy: 'nomFrFr'; track country.id) {
         <a mat-button [routerLink]="['/countries', country.id]">{{country?.nomFrFr}}</a>
         }
       </p>
@@ -42,6 +42,24 @@
               <mat-datepicker #deathPicker></mat-datepicker>
             </mat-form-field>
           </div>
+          <div class="file-upload items-baseline col-span-12 mb-4">
+            <input type="file" accept=".jpg,.jpeg,.png" #fileInput formControlName="photoFileName"
+              (change)="onFileChange($event)" hidden>
+            <button mat-flat-button class="w-full" (click)="fileInput.click()">
+              @if (!photoFormCtrl.value) {
+              Choisir un fichier
+              } @else {
+              <div class="button-label">
+                <span class="filename">{{ photoFormCtrl.value }}</span>
+                <button mat-icon-button matTooltip="Supprimer"
+                  aria-label="Example icon button with a vertical three dot icon"
+                  (click)="deleteFile(); $event.stopPropagation()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+              }
+            </button>
+          </div>
           <app-country-selector class="col-span-12" formGroupName="countries">
           </app-country-selector>
         </div>
@@ -50,24 +68,10 @@
     </div>
   </div>
 
-  @if(person()?.movies?.length) {
-  <div class="h-1/2 mt-4">
-    Films:
-    <div class="grid grid-cols-12 gap-2 items-baseline mt-2">
-      @for (movie of person()?.movies | orderBy: ['title']; track movie.id) {
-      <div class="col-span-12 sm:col-span-4 md:col-span-3 lg:col-span-2 2xl:col-span-1 flex flex-col">
-        <img src="/assets/images/no-image-available.jpg" class="mb-1 cursor-pointer" alt="image" height="240px"
-          width="140px" [routerLink]="['/movies', movie.id]">
-        <span>{{movie?.title}}</span>
-        <span>({{movie?.releaseDate | date: 'YYYY'}})</span>
-      </div>
-      } @empty {
-      <div>Aucun film</div>
-      }
-    </div>
-  </div>
-  }
-  <div class="absolute bottom-5 right-5">
+  <!-- Films associés -->
+  <app-movies-list title="Films associés" [movies]="person()?.movies"></app-movies-list>
+
+  <div class="fixed bottom-5 right-5">
     @if(!editMode){
     <button mat-fab class="float-right m-1" matTooltip="Supprimer" aria-label="Example icon button with a delete icon"
       color="accent" (click)="delete()">

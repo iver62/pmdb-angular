@@ -4,7 +4,7 @@ import { Movie } from "./movie.model";
 export interface Person {
   id?: number,
   name: string,
-  photoPath?: string,
+  photoFileName?: string,
   dateOfBirth?: Date,
   dateOfDeath?: Date,
   creationDate?: Date,
