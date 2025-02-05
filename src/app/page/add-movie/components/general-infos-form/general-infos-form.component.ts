@@ -53,7 +53,7 @@ export class GeneralInfosFormComponent {
   }
 
   get posterFormCtrl() {
-    return this.form.get('poster');
+    return this.form.get('posterFileName');
   }
 
   addGenre(event: Genre) {

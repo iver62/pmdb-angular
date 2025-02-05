@@ -35,8 +35,8 @@
     </mat-form-field>
 
     <div class="file-upload items-baseline col-span-12 md:col-span-6 lg:col-span-3">
-      <input type="file" accept=".jpg,.jpeg,.png" #fileInput formControlName="poster" (change)="onFileChange($event)"
-        hidden>
+      <input type="file" accept=".jpg,.jpeg,.png" #fileInput formControlName="posterFileName"
+        (change)="onFileChange($event)" hidden>
       <button mat-flat-button class="w-full" (click)="fileInput.click()">
         @if (!posterFormCtrl.value) {
         Choisir un fichier

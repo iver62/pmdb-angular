@@ -39,7 +39,7 @@ export class AddMovieComponent {
           runningTime: [],
           budget: [],
           boxOffice: [],
-          poster: [],
+          posterFileName: [],
           countries: [],
           genres: []
         }
