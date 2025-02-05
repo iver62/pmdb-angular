@@ -16,6 +16,6 @@ export class HairDressersComponent {
 
   hairDressers$ = this.hairDresserService.getAll();
 
-  constructor(private hairDresserService: HairDresserService) { }
+  constructor(public hairDresserService: HairDresserService) { }
 
 }

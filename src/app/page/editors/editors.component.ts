@@ -16,6 +16,6 @@ export class EditorsComponent {
 
   editors$ = this.editorService.getAll();
 
-  constructor(private editorService: EditorService) { }
+  constructor(public editorService: EditorService) { }
 
 }

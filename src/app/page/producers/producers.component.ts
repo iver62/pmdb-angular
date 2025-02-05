@@ -16,6 +16,6 @@ export class ProducersComponent {
 
   producers$ = this.producerService.getAll();
 
-  constructor(private producerService: ProducerService) { }
+  constructor(public producerService: ProducerService) { }
 
 }

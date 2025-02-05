@@ -22,56 +22,71 @@
     <app-movies-list title="Films associés" [movies]="country?.movies"></app-movies-list>
 
     <!-- Producteurs associés -->
-    <app-persons-list title="Producteurs associés" [persons]="country?.producers" route="/producers"></app-persons-list>
+    <app-persons-list title="Producteurs associés" [persons]="country?.producers" [service]="producerService"
+      route="/producers">
+    </app-persons-list>
 
     <!-- Réalisateurs associés -->
-    <app-persons-list title="Réalisateurs associés" [persons]="country?.directors"
-      route="/directors"></app-persons-list>
+    <app-persons-list title="Réalisateurs associés" [persons]="country?.directors" [service]="directorService"
+      route="/directors">
+    </app-persons-list>
 
     <!-- Scénaristes associés -->
-    <app-persons-list title="Scénaristes associés" [persons]="country?.screenwriters" route="/screenwriters">
+    <app-persons-list title="Scénaristes associés" [persons]="country?.screenwriters" [service]="screenwriterService"
+      route="/screenwriters">
     </app-persons-list>
 
     <!-- Musiciens associés -->
-    <app-persons-list title="Musiciens associés" [persons]="country?.musicians" route="/musicians"></app-persons-list>
+    <app-persons-list title="Musiciens associés" [persons]="country?.musicians" [service]="musicianService"
+      route="/musicians">
+    </app-persons-list>
 
     <!-- Photographes associés -->
-    <app-persons-list title="Photographes associés" [persons]="country?.photographers" route="/photographers">
+    <app-persons-list title="Photographes associés" [persons]="country?.photographers" [service]="photographerService"
+      route="/photographers">
     </app-persons-list>
 
     <!-- Costumiers associés -->
-    <app-persons-list title="Costumiers associés" [persons]="country?.costumiers"
-      route="/costumiers"></app-persons-list>
+    <app-persons-list title="Costumiers associés" [persons]="country?.costumiers" [service]="costumierService"
+      route="/costumiers">
+    </app-persons-list>
 
     <!-- Décorateurs associés -->
-    <app-persons-list title="Décorateurs associés" [persons]="country?.decorators"
-      route="/decorators"></app-persons-list>
+    <app-persons-list title="Décorateurs associés" [persons]="country?.decorators" [service]="decoratorService"
+      route="/decorators">
+    </app-persons-list>
 
     <!-- Monteurs associés -->
-    <app-persons-list title="Monteurs associés" [persons]="country?.editors" route="/editors"></app-persons-list>
+    <app-persons-list title="Monteurs associés" [persons]="country?.editors" [service]="editorService" route="/editors">
+    </app-persons-list>
 
     <!-- Casteurs associés -->
-    <app-persons-list title="Casteurs associés" [persons]="country?.casters" route="/casters"></app-persons-list>
+    <app-persons-list title="Casteurs associés" [persons]="country?.casters" [service]="casterService" route="/casters">
+    </app-persons-list>
 
     <!-- Directeurs artistiques associés -->
-    <app-persons-list title="Directeurs artistiques associés" [persons]="country?.artDirectors" route="/art-directors">
+    <app-persons-list title="Directeurs artistiques associés" [persons]="country?.artDirectors"
+      [service]="artDirectorService" route="/art-directors">
     </app-persons-list>
 
     <!-- Ingénieurs du son associés -->
-    <app-persons-list title="Ingénieurs du son associés" [persons]="country?.soundEditors" route="/sound-editors">
+    <app-persons-list title="Ingénieurs du son associés" [persons]="country?.soundEditors"
+      [service]="soundEditorService" route="/sound-editors">
     </app-persons-list>
 
     <!-- Spécialistes effets spéciaux associés -->
     <app-persons-list title="Spécialistes effets spéciaux associés" [persons]="country?.visualEffectsSupervisors"
-      route="/visual-effects-supervisors">
+      [service]="visualEffectsSupervisorService" route="/visual-effects-supervisors">
     </app-persons-list>
 
     <!-- Maquilleurs associés -->
-    <app-persons-list title="Maquilleurs associés" [persons]="country?.makeupArtists" route="/makeup-artists">
+    <app-persons-list title="Maquilleurs associés" [persons]="country?.makeupArtists" [service]="makeupArtistService"
+      route="/makeup-artists">
     </app-persons-list>
 
     <!-- Coiffeurs associés -->
-    <app-persons-list title="Coiffeurs associés" [persons]="country?.hairDressers" route="/hair-dressers">
+    <app-persons-list title="Coiffeurs associés" [persons]="country?.hairDressers" [service]="hairDresserService"
+      route="/hair-dressers">
     </app-persons-list>
   </div>
 </div>

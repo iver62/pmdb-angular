@@ -16,6 +16,6 @@ export class CastersComponent {
 
   casters$ = this.casterService.getAll();
 
-  constructor(private casterService: CasterService) { }
+  constructor(public casterService: CasterService) { }
 
 }

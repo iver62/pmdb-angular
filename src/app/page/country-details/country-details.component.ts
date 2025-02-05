@@ -8,7 +8,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { catchError, of, switchMap } from 'rxjs';
 import { MoviesListComponent, PersonsListComponent } from '../../components';
-import { CountryService } from '../../services';
+import { ArtDirectorService, CasterService, CostumierService, CountryService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, VisualEffectSupervisorsService } from '../../services';
 
 @Component({
   selector: 'app-country-details',
@@ -37,8 +37,22 @@ export class CountryDetailsComponent {
   );
 
   constructor(
+    public artDirectorService: ArtDirectorService,
+    public casterService: CasterService,
+    public costumierService: CostumierService,
     private countryService: CountryService,
-    private route: ActivatedRoute
+    public decoratorService: DecoratorService,
+    public directorService: DirectorService,
+    public editorService: EditorService,
+    public hairDresserService: HairDresserService,
+    public makeupArtistService: MakeupArtistService,
+    public musicianService: MusicianService,
+    public photographerService: PhotographerService,
+    public producerService: ProducerService,
+    public screenwriterService: ScreenwriterService,
+    public soundEditorService: SoundEditorService,
+    private route: ActivatedRoute,
+    public visualEffectsSupervisorService: VisualEffectSupervisorsService
   ) { }
 
 }

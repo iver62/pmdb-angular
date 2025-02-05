@@ -16,6 +16,6 @@ export class ScreenwritersComponent {
 
   screenwriters$ = this.screenwriterService.getAll();
 
-  constructor(private screenwriterService: ScreenwriterService) { }
+  constructor(public screenwriterService: ScreenwriterService) { }
 
 }

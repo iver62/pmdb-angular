@@ -16,6 +16,6 @@ export class MusiciansComponent {
 
   musicians$ = this.musicianService.getAll();
 
-  constructor(private musicianService: MusicianService) { }
+  constructor(public musicianService: MusicianService) { }
 
 }

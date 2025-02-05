@@ -16,6 +16,6 @@ export class PhotographersComponent {
 
   photographers$ = this.photographerService.getAll();
 
-  constructor(private photographerService: PhotographerService) { }
+  constructor(public photographerService: PhotographerService) { }
 
 }

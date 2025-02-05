@@ -16,6 +16,6 @@ export class SoundEditorsComponent {
 
   soundEditors$ = this.soundEditorService.getAll();
 
-  constructor(private soundEditorService: SoundEditorService) { }
+  constructor(public soundEditorService: SoundEditorService) { }
 
 }

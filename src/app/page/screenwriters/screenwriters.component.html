@@ -1,1 +1,3 @@
-<app-persons-list title="Scénaristes" [persons]="screenwriters$ | async" route="/screenwriters"></app-persons-list>
+<app-persons-list title="Scénaristes" [persons]="screenwriters$ | async" [service]="screenwriterService"
+    route="/screenwriters">
+</app-persons-list>

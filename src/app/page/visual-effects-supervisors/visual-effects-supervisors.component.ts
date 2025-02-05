@@ -16,6 +16,6 @@ export class VisualEffectsSupervisorsComponent {
 
   visualEffectsSupervisors$ = this.visualEffectsSupervisorService.getAll();
 
-  constructor(private visualEffectsSupervisorService: VisualEffectSupervisorsService) { }
+  constructor(public visualEffectsSupervisorService: VisualEffectSupervisorsService) { }
 
 }

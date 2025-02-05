@@ -16,6 +16,6 @@ export class MakeupArtistsComponent {
 
   makeupArtists$ = this.makeupArtistService.getAll();
 
-  constructor(private makeupArtistService: MakeupArtistService) { }
+  constructor(public makeupArtistService: MakeupArtistService) { }
 
 }

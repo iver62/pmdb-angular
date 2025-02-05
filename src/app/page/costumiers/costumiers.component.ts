@@ -16,6 +16,6 @@ export class CostumiersComponent {
 
   costumiers$ = this.costumierService.getAll();
 
-  constructor(private costumierService: CostumierService) { }
+  constructor(public costumierService: CostumierService) { }
 
 }

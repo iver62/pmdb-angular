@@ -16,5 +16,5 @@ export class ArtDirectorsComponent {
 
   artDirectors$ = this.artDirectorService.getAll();
 
-  constructor(private artDirectorService: ArtDirectorService) { }
+  constructor(public artDirectorService: ArtDirectorService) { }
 }

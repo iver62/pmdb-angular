@@ -1,1 +1,3 @@
-<app-persons-list title="Ingénieurs du son" [persons]="soundEditors$ | async" route="/sound-editors"></app-persons-list>
+<app-persons-list title="Ingénieurs du son" [persons]="soundEditors$ | async" [service]="soundEditorService"
+    route="/sound-editors">
+</app-persons-list>

@@ -16,6 +16,6 @@ export class DirectorsComponent {
 
   directors$ = this.directorService.getAll();
 
-  constructor(private directorService: DirectorService) { }
+  constructor(public directorService: DirectorService) { }
 
 }

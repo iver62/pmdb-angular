@@ -16,6 +16,6 @@ export class DecoratorsComponent {
 
   decorators$ = this.decoratorService.getAll();
 
-  constructor(private decoratorService: DecoratorService) { }
+  constructor(public decoratorService: DecoratorService) { }
 
 }

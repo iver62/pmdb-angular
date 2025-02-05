@@ -1,1 +1,3 @@
-<app-persons-list title="Maquilleurs" [persons]="makeupArtists$ | async" route="/makeup-artists"></app-persons-list>
+<app-persons-list title="Maquilleurs" [persons]="makeupArtists$ | async" [service]="makeupArtistService"
+    route="/makeup-artists">
+</app-persons-list>
