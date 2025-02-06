@@ -20,7 +20,7 @@ export class MovieService {
   }
 
   getPosterUrl(posterFileName: string): string {
-    return `${this.basePath}/poster/${posterFileName}`;
+    return `${this.basePath}/posters/${posterFileName}`;
   }
 
   getProducers(id: number) {

@@ -3,7 +3,7 @@
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
       <mat-label>Titre</mat-label>
       <input matInput placeholder="Titre français" formControlName="title" required>
-      @if (titleFormCtrl.hasError('required')) {
+      @if (titleFormCtrl.hasError('required') && titleFormCtrl.touched) {
       <mat-error>Le titre est requis</mat-error>
       }
     </mat-form-field>
@@ -34,23 +34,9 @@
       <input matInput type="number" min="0" placeholder="Box Office mondial" formControlName="boxOffice">
     </mat-form-field>
 
-    <div class="file-upload items-baseline col-span-12 md:col-span-6 lg:col-span-3">
-      <input type="file" accept=".jpg,.jpeg,.png" #fileInput formControlName="posterFileName"
-        (change)="onFileChange($event)" hidden>
-      <button mat-flat-button class="w-full" (click)="fileInput.click()">
-        @if (!posterFormCtrl.value) {
-        Choisir un fichier
-        } @else {
-        <div class="button-label">
-          <span class="filename">{{ posterFormCtrl.value }}</span>
-          <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a vertical three dot icon"
-            (click)="deleteFile(); $event.stopPropagation()">
-            <mat-icon>close</mat-icon>
-          </button>
-        </div>
-        }
-      </button>
-    </div>
+    <app-file-chooser class="col-span-12 md:col-span-6 lg:col-span-3" accept=".jpg,.jpeg,.png"
+      formGroupName="posterFileName" (selectImage)="onSelectImage($event)" (deleteImage)="onDeleteImage()">
+    </app-file-chooser>
 
     <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries">
     </app-country-selector>

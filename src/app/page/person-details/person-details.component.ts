@@ -12,7 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { catchError, concatMap, forkJoin, map, of, switchMap } from 'rxjs';
-import { CountrySelectorComponent, MoviesListComponent } from '../../components';
+import { CountrySelectorComponent, FileChooserComponent, MoviesListComponent } from '../../components';
 import { Person } from '../../models';
 import { BaseService } from '../../services';
 
@@ -21,6 +21,7 @@ import { BaseService } from '../../services';
   imports: [
     CountrySelectorComponent,
     DatePipe,
+    FileChooserComponent,
     FormsModule,
     MatButtonModule,
     MatDatepickerModule,
@@ -45,7 +46,6 @@ export class PersonDetailsComponent {
   ageOfDeath = computed(() => new Date(this.person().dateOfDeath)?.getFullYear() - new Date(this.person().dateOfBirth)?.getFullYear());
   editMode = false;
   form: FormGroup;
-  selectedFileName: string | null = null;
   selectedFile: File | null = null;
 
   constructor(
@@ -100,21 +100,18 @@ export class PersonDetailsComponent {
     });
   }
 
-  onFileChange(event: any) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      this.selectedFileName = this.selectedFile.name;
-      this.photoFormCtrl.setValue(this.selectedFileName);
-    }
-  }
-
-  deleteFile() {
-    this.photoFormCtrl.reset();
-  }
-
   get photoFormCtrl() {
     return this.form.get('photoFileName');
+  }
+
+  onSelectImage(event: File) {
+    this.selectedFile = event;
+    this.photoFormCtrl.setValue(event.name);
+  }
+
+  onDeleteImage() {
+    this.photoFormCtrl.reset();
+    this.selectedFile = null;
   }
 
   getSafePhotoUrl() {
@@ -135,8 +132,6 @@ export class PersonDetailsComponent {
   }
 
   save() {
-    console.log(this.form.value);
-
     this.service.update(this.selectedFile, { ...this.form.value, creationDate: this.person().creationDate }).pipe(
       concatMap(person => this.service.getCountries(person).pipe(
         map(countries => (
@@ -149,8 +144,6 @@ export class PersonDetailsComponent {
     ).subscribe(
       {
         next: (result: Person) => {
-          console.log('RESULT', result);
-
           this.person.update(current => ({
             ...current,
             name: result.name,

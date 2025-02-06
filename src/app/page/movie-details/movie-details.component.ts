@@ -88,7 +88,7 @@ export class MovieDetailsComponent {
           runningTime: [result.generalInfos.runningTime],
           budget: [result.generalInfos.budget],
           boxOffice: [result.generalInfos.boxOffice],
-          poster: [result.generalInfos.posterFileName],
+          posterFileName: [result.generalInfos.posterFileName],
           countries: [result.countries],
           genres: [result.genres]
         };
@@ -158,7 +158,7 @@ export class MovieDetailsComponent {
   }
 
   get posterFileName() {
-    return this.form.controls['generalFormGroup'].get('poster').value;
+    return this.form.controls['generalFormGroup'].get('posterFileName').value;
   }
 
   get countries() {

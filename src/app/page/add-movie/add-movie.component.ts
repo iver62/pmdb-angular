@@ -77,10 +77,6 @@ export class AddMovieComponent {
     private movieService: MovieService
   ) { }
 
-  // get formValue() {
-  //   return this.form.get('generalFormGroup').value;
-  // }
-
   selectImage(event: any) {
     this.imageFile = event;
   }

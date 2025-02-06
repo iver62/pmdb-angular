@@ -42,26 +42,12 @@
               <mat-datepicker #deathPicker></mat-datepicker>
             </mat-form-field>
           </div>
-          <div class="file-upload items-baseline col-span-12 mb-4">
-            <input type="file" accept=".jpg,.jpeg,.png" #fileInput formControlName="photoFileName"
-              (change)="onFileChange($event)" hidden>
-            <button mat-flat-button class="w-full" (click)="fileInput.click()">
-              @if (!photoFormCtrl.value) {
-              Choisir un fichier
-              } @else {
-              <div class="button-label">
-                <span class="filename">{{ photoFormCtrl.value }}</span>
-                <button mat-icon-button matTooltip="Supprimer"
-                  aria-label="Example icon button with a vertical three dot icon"
-                  (click)="deleteFile(); $event.stopPropagation()">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </div>
-              }
-            </button>
+          <div class="file-chooser-container col-span-12">
+            <app-file-chooser accept=".jpg,.jpeg,.png" formGroupName="photoFileName"
+              (selectImage)="onSelectImage($event)" (deleteImage)="onDeleteImage()">
+            </app-file-chooser>
           </div>
-          <app-country-selector class="col-span-12" formGroupName="countries">
-          </app-country-selector>
+          <app-country-selector class="col-span-12" formGroupName="countries"></app-country-selector>
         </div>
       </form>
       }

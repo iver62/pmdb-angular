@@ -1,0 +1,17 @@
+<div class="file-upload items-baseline h-full w-full">
+  <input type="file" [accept]="accept()" #fileInput formControlName="posterFileName" (change)="onFileChanged($event)"
+    hidden>
+  <button mat-flat-button class="w-full" (click)="fileInput.click()">
+    @if (!control.value) {
+    Choisir un fichier
+    } @else {
+    <div class="button-label">
+      <span class="filename">{{ control.value }}</span>
+      <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a vertical three dot icon"
+        (click)="deleteFile(); $event.stopPropagation()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    }
+  </button>
+</div>
