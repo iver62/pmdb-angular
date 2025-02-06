@@ -52,7 +52,11 @@
     formGroupName="hairDressers" title="Coiffure" label="Hair Dressers selection">
   </app-person-selector>
 
+  <app-person-selector class="col-span-12" [persons]="stuntmen$ | async" [saveFn]="saveStuntman"
+    formGroupName="stuntmen" title="Cascades" label="Stuntmen selection">
+  </app-person-selector>
+
   <app-person-selector class="col-span-12" [persons]="producers$ | async" [saveFn]="saveProducer"
-    formGroupName="producers" title="Production" label="Producers selection">
+    formGroupName="producers" title="Producteurs" label="Producers selection">
   </app-person-selector>
 </form>

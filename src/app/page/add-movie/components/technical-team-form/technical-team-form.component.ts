@@ -1,21 +1,21 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { PersonSelectorComponent } from '../../../../components';
 import { Person } from '../../../../models';
-import { ArtDirectorService, CasterService, CostumierService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, VisualEffectSupervisorsService } from '../../../../services';
+import { ArtDirectorService, CasterService, CostumierService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, StuntmanService, VisualEffectSupervisorsService } from '../../../../services';
 
 @Component({
-  selector: 'app-technical-summary-form',
+  selector: 'app-technical-team-form',
   imports: [
     AsyncPipe,
     PersonSelectorComponent,
     ReactiveFormsModule
   ],
-  templateUrl: './technical-summary-form.component.html',
-  styleUrl: './technical-summary-form.component.css'
+  templateUrl: './technical-team-form.component.html',
+  styleUrl: './technical-team-form.component.css'
 })
-export class TechnicalSummaryFormComponent {
+export class TechnicalTeamFormComponent {
 
   @Input() formGroupName: string;
   form: FormGroup;
@@ -33,6 +33,7 @@ export class TechnicalSummaryFormComponent {
   visualEffectsSupervisors$ = this.visualEffectsSupervisorService.getAll();
   makeupArtists$ = this.makeupArtistService.getAll();
   hairDressers$ = this.hairDresserService.getAll();
+  stuntmen$ = this.stuntmanService.getAll();
   producers$ = this.producerService.getAll();
 
   saveDirector = (person: Person) => this.directorService.save(person);
@@ -48,6 +49,7 @@ export class TechnicalSummaryFormComponent {
   saveVisualEffectsSupervisor = (person: Person) => this.visualEffectsSupervisorService.save(person);
   saveMakeupArtist = (person: Person) => this.makeupArtistService.save(person);
   saveHairDresser = (person: Person) => this.hairDresserService.save(person);
+  saveStuntman = (person: Person) => this.stuntmanService.save(person);
   saveProducer = (person: Person) => this.producerService.save(person);
 
   constructor(
@@ -64,6 +66,7 @@ export class TechnicalSummaryFormComponent {
     public visualEffectsSupervisorService: VisualEffectSupervisorsService,
     public makeupArtistService: MakeupArtistService,
     public hairDresserService: HairDresserService,
+    public stuntmanService: StuntmanService,
     public producerService: ProducerService,
     private rootFormGroup: FormGroupDirective
   ) { }

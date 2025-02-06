@@ -2,7 +2,7 @@ import { Award } from "./award.model";
 import { Country } from "./country.model";
 import { Genre } from "./genre.model";
 import { Person } from "./person.model";
-import { TechnicalSummary } from "./technical-summary.model";
+import { TechnicalTeam } from "./technical-team.model";
 
 export interface Movie {
   id?: number,
@@ -16,7 +16,7 @@ export interface Movie {
   posterFileName?: string,
   creationDate?: Date,
   lastUpdate?: Date,
-  technicalSummary?: TechnicalSummary,
+  technicalTeam?: TechnicalTeam,
   movieActors?: Person[],
   genres?: Genre[],
   countries?: Country[],

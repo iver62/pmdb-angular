@@ -6,7 +6,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Movie } from '../../models';
 import { MovieService } from '../../services';
-import { GeneralInfosFormComponent, TechnicalSummaryFormComponent } from './components';
+import { GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
 @Component({
   selector: 'app-add-movie',
@@ -16,7 +16,7 @@ import { GeneralInfosFormComponent, TechnicalSummaryFormComponent } from './comp
     MatStepperModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    TechnicalSummaryFormComponent
+    TechnicalTeamFormComponent
   ],
   templateUrl: './add-movie.component.html',
   styleUrl: './add-movie.component.css'
@@ -44,7 +44,7 @@ export class AddMovieComponent {
           genres: []
         }
       ),
-      technicalSummaryFormGroup: this.fb.group(
+      technicalTeamFormGroup: this.fb.group(
         {
           producers: [],
           directors: [],
@@ -59,7 +59,8 @@ export class AddMovieComponent {
           soundEditors: [],
           visualEffectsSupervisors: [],
           makeupArtists: [],
-          hairDressers: []
+          hairDressers: [],
+          stuntmen: []
         }
       ),
       castingFormGroup: this.fb.group(
@@ -96,12 +97,12 @@ export class AddMovieComponent {
     );
   }
 
-  saveTechnicalSummary() {
-    this.movieService.saveTechnicalSummay(this.movie.id, this.form.get('technicalSummaryFormGroup').value).subscribe(
+  saveTechnicalTeam() {
+    this.movieService.saveTechnicalTeam(this.movie.id, this.form.get('technicalTeamFormGroup').value).subscribe(
       {
         next: result => {
           this._snackBar.open('Fiche technique ajoutée avec succès', 'Done', { duration: this.durationInSeconds * 1000 });
-          this.movie.technicalSummary = result;
+          this.movie.technicalTeam = result;
         },
         error: error => {
           console.error(error);

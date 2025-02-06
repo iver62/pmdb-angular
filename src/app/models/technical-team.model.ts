@@ -1,6 +1,6 @@
 import { Person } from "./person.model";
 
-export interface TechnicalSummary {
+export interface TechnicalTeam {
   producers?: Person[],
   directors?: Person[],
   screenwriters?: Person[],
@@ -14,5 +14,6 @@ export interface TechnicalSummary {
   soundEditors?: Person[],
   visualEffectsSupervisors?: Person[],
   makeupArtists?: Person[],
-  hairDressers?: Person[]
+  hairDressers?: Person[],
+  stuntmen?: Person[]
 }
