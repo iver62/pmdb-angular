@@ -2,8 +2,17 @@
   @if (view == 'cards') {
   <div class="section">
     <div class="flex flex-row justify-between">
-      <h2 class="section-title">{{title()}} ({{persons()?.length}})</h2>
-      @if (persons()?.length) {
+      <h2 class="section-title">{{title()}} ({{filteredPersons()?.length}})</h2>
+      <mat-form-field class="search-bar">
+        <mat-label>{{title()}}</mat-label>
+        <input matInput [(ngModel)]="searchTerm" placeholder="Rechercher..." />
+        @if (searchTermSignal()) {
+        <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+      </mat-form-field>
+      @if (filteredPersons()?.length) {
       <div class="flex justify-end">
         <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" matTooltip="Tableau"
           (click)="switchView('table')">
@@ -24,7 +33,7 @@
     </div>
 
     <div class="persons-grid">
-      @for (person of persons() | orderBy: 'name'; track person.id) {
+      @for (person of filteredPersons() | orderBy: 'name'; track person.id) {
       <app-person-card [route]="route()" [person]="person" [service]="service"></app-person-card>
       }
     </div>
