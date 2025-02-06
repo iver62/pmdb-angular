@@ -65,7 +65,7 @@
       </ng-template>
 
       <div class="py-4">
-        @if (!editTechnicalSummary) {
+        @if (!editTechnicalTeam) {
         <div>
           @if (directors?.length) {
           <p>RÉALISATEURS :
@@ -161,6 +161,13 @@
             }
           </p>
           }
+          @if (stuntmen?.length) {
+          <p>CASCADES :
+            @for (stuntman of stuntmen | orderBy: 'name'; track stuntman.id) {
+            <a mat-button [routerLink]="['/stuntmen', stuntman.id]">{{stuntman?.name}}</a>
+            }
+          </p>
+          }
           @if (producers?.length) {
           <p>PRODUCTEURS :
             @for (producer of producers | orderBy: 'name'; track producer.id) {
@@ -172,15 +179,15 @@
 
         <div class="fixed bottom-5 right-5">
           <button mat-fab class="float-right m-1" matTooltip="Modifier"
-            aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalSummary=true">
+            aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalTeam=true">
             <mat-icon>edit</mat-icon>
           </button>
         </div>
         } @else {
-        <app-technical-summary-form formGroupName="technicalSummaryFormGroup"></app-technical-summary-form>
+        <app-technical-team-form formGroupName="technicalTeamFormGroup"></app-technical-team-form>
         <div class="fixed bottom-5 right-5">
           <button mat-fab class="float-right m-1" matTooltip="Valider"
-            aria-label="Example icon button with a delete icon" color="accent" (click)="saveTechnicalSummary()">
+            aria-label="Example icon button with a delete icon" color="accent" (click)="saveTechnicalTeam()">
             <mat-icon>check</mat-icon>
           </button>
         </div>

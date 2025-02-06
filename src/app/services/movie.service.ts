@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Award, Country, Genre, Movie, Person, TechnicalSummary } from '../models';
+import { Award, Country, Genre, Movie, Person, TechnicalTeam } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +79,10 @@ export class MovieService {
     return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers`);
   }
 
+  getStuntmen(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/stuntmen`);
+  }
+
   getGenres(id: number) {
     return this.http.get<Genre[]>(`${this.basePath}/${id}/genres`);
   }
@@ -96,8 +100,8 @@ export class MovieService {
     return this.http.post<Movie>(this.basePath, formData);
   }
 
-  saveTechnicalSummay(id: number, technicalSummary: TechnicalSummary) {
-    return this.http.put<TechnicalSummary>(`${this.basePath}/${id}/technical-summary`, technicalSummary);
+  saveTechnicalTeam(id: number, technicalTeam: TechnicalTeam) {
+    return this.http.put<TechnicalTeam>(`${this.basePath}/${id}/technical-team`, technicalTeam);
   }
 
   updateMovie(imageFile: File, movie: Movie) {
@@ -183,6 +187,10 @@ export class MovieService {
 
   removeEditor(movieId: number, personId: number) {
     return this.http.put<Person[]>(`${this.basePath}/${movieId}/editors/${personId}`, null);
+  }
+
+  removeStuntman(movieId: number, personId: number) {
+    return this.http.put<Person[]>(`${this.basePath}/${movieId}/stuntmen/${personId}`, null);
   }
 
   removeGenre(movieId: number, genreId: number) {

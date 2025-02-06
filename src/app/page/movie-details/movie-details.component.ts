@@ -11,7 +11,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { concatMap, forkJoin, map, switchMap, tap } from 'rxjs';
 import { MovieService } from '../../services';
-import { GeneralInfosFormComponent, TechnicalSummaryFormComponent } from '../add-movie/components';
+import { GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
 
 @Component({
   selector: 'app-movie-details',
@@ -26,7 +26,7 @@ import { GeneralInfosFormComponent, TechnicalSummaryFormComponent } from '../add
     NgPipesModule,
     ReactiveFormsModule,
     RouterLink,
-    TechnicalSummaryFormComponent
+    TechnicalTeamFormComponent
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
@@ -38,9 +38,9 @@ export class MovieDetailsComponent {
 
   form: FormGroup;
   generalInfosInitialValues: any;
-  technicalSummaryInitialValues: any;
+  technicalTeamInitialValues: any;
   editGeneralInfos = false;
-  editTechnicalSummary = false;
+  editTechnicalTeam = false;
   editCasting = false;
   imageFile: File | null = null;
 
@@ -74,7 +74,8 @@ export class MovieDetailsComponent {
             soundEditors: this.movieService.getSoundEditors(id),
             visualEffectsSupervisors: this.movieService.getVisualEffectsSupervisors(id),
             makeupArtists: this.movieService.getMakeupArtists(id),
-            hairDressers: this.movieService.getHairDressers(id)
+            hairDressers: this.movieService.getHairDressers(id),
+            stuntmen: this.movieService.getStuntmen(id)
           }
         )
       ),
@@ -92,7 +93,7 @@ export class MovieDetailsComponent {
           countries: [result.countries],
           genres: [result.genres]
         };
-        this.technicalSummaryInitialValues = {
+        this.technicalTeamInitialValues = {
           producers: [result.producers],
           directors: [result.directors],
           screenwriters: [result.screenwriters],
@@ -106,14 +107,15 @@ export class MovieDetailsComponent {
           soundEditors: [result.soundEditors],
           visualEffectsSupervisors: [result.visualEffectsSupervisors],
           makeupArtists: [result.makeupArtists],
-          hairDressers: [result.hairDressers]
+          hairDressers: [result.hairDressers],
+          stuntmen: [result.stuntmen]
         };
       }),
       map(result =>
         this.fb.group(
           {
             generalFormGroup: this.fb.group(this.generalInfosInitialValues),
-            technicalSummaryFormGroup: this.fb.group(this.technicalSummaryInitialValues),
+            technicalTeamFormGroup: this.fb.group(this.technicalTeamInitialValues),
             castingFormGroup: this.fb.group(
               {
 
@@ -170,59 +172,63 @@ export class MovieDetailsComponent {
   }
 
   get producers() {
-    return this.form.controls['technicalSummaryFormGroup'].get('producers').value;
+    return this.form.controls['technicalTeamFormGroup'].get('producers').value;
   }
 
   get directors() {
-    return this.form.controls['technicalSummaryFormGroup'].get('directors').value;
+    return this.form.controls['technicalTeamFormGroup'].get('directors').value;
   }
 
   get screenwriters() {
-    return this.form.controls['technicalSummaryFormGroup'].get('screenwriters').value;
+    return this.form.controls['technicalTeamFormGroup'].get('screenwriters').value;
   }
 
   get musicians() {
-    return this.form.controls['technicalSummaryFormGroup'].get('musicians').value;
+    return this.form.controls['technicalTeamFormGroup'].get('musicians').value;
   }
 
   get decorators() {
-    return this.form.controls['technicalSummaryFormGroup'].get('decorators').value;
+    return this.form.controls['technicalTeamFormGroup'].get('decorators').value;
   }
 
   get costumiers() {
-    return this.form.controls['technicalSummaryFormGroup'].get('costumiers').value;
+    return this.form.controls['technicalTeamFormGroup'].get('costumiers').value;
   }
 
   get photographers() {
-    return this.form.controls['technicalSummaryFormGroup'].get('photographers').value;
+    return this.form.controls['technicalTeamFormGroup'].get('photographers').value;
   }
 
   get editors() {
-    return this.form.controls['technicalSummaryFormGroup'].get('editors').value;
+    return this.form.controls['technicalTeamFormGroup'].get('editors').value;
   }
 
   get casters() {
-    return this.form.controls['technicalSummaryFormGroup'].get('casters').value;
+    return this.form.controls['technicalTeamFormGroup'].get('casters').value;
   }
 
   get artDirectors() {
-    return this.form.controls['technicalSummaryFormGroup'].get('artDirectors').value;
+    return this.form.controls['technicalTeamFormGroup'].get('artDirectors').value;
   }
 
   get soundEditors() {
-    return this.form.controls['technicalSummaryFormGroup'].get('soundEditors').value;
+    return this.form.controls['technicalTeamFormGroup'].get('soundEditors').value;
   }
 
   get visualEffectsSupervisors() {
-    return this.form.controls['technicalSummaryFormGroup'].get('visualEffectsSupervisors').value;
+    return this.form.controls['technicalTeamFormGroup'].get('visualEffectsSupervisors').value;
   }
 
   get makeupArtists() {
-    return this.form.controls['technicalSummaryFormGroup'].get('makeupArtists').value;
+    return this.form.controls['technicalTeamFormGroup'].get('makeupArtists').value;
   }
 
   get hairDressers() {
-    return this.form.controls['technicalSummaryFormGroup'].get('hairDressers').value;
+    return this.form.controls['technicalTeamFormGroup'].get('hairDressers').value;
+  }
+
+  get stuntmen() {
+    return this.form.controls['technicalTeamFormGroup'].get('stuntmen').value;
   }
 
   selectImage(event: any) {
@@ -236,7 +242,7 @@ export class MovieDetailsComponent {
   cancelGeneralInfos() {
     this.editGeneralInfos = false;
     this.form.controls['generalFormGroup'].setValue(this.generalInfosInitialValues);
-    this.form.controls['technicalSummaryFormGroup'].reset(this.technicalSummaryInitialValues);
+    this.form.controls['technicalTeamFormGroup'].reset(this.technicalTeamInitialValues);
   }
 
   deleteMovie(id: number) {
@@ -279,18 +285,18 @@ export class MovieDetailsComponent {
     );
   }
 
-  saveTechnicalSummary() {
-    this.movieService.saveTechnicalSummay(this.id, this.form.get('technicalSummaryFormGroup').value).subscribe(
+  saveTechnicalTeam() {
+    this.movieService.saveTechnicalTeam(this.id, this.form.get('technicalTeamFormGroup').value).subscribe(
       {
         next: result => {
           this._snackBar.open('Fiche technique modifiée avec succès', 'Done', { duration: this.durationInSeconds * 1000 });
-          this.form.controls['technicalSummaryFormGroup'].patchValue(result);
+          this.form.controls['technicalTeamFormGroup'].patchValue(result);
         },
         error: error => {
           console.error(error);
           this._snackBar.open('Erreur lors de la modification de la fiche technique', 'Error', { duration: this.durationInSeconds * 1000 });
         },
-        complete: () => this.editTechnicalSummary = false
+        complete: () => this.editTechnicalTeam = false
       }
     );
   }

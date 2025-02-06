@@ -182,12 +182,27 @@ export const routes: Routes = [
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
   {
+    path: 'stuntmen',
+    loadComponent: () => import('./page/stuntmen/stuntmen.component').then(c => c.StuntmenComponent)
+  },
+  {
+    path: 'stuntmen/:id',
+    resolve: {
+      service: personServiceResolver
+    },
+    loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
+  },
+  {
     path: 'actors',
     component: ActorsComponent
   },
   {
     path: 'genres',
-    component: GenresComponent
+    loadComponent: () => import('./page/genres/genres.component').then(c => c.GenresComponent)
+  },
+  {
+    path: 'genres/:id',
+    loadComponent: () => import('./page/genre-details/genre-details.component').then(c => c.GenreDetailsComponent)
   },
   {
     path: 'countries',

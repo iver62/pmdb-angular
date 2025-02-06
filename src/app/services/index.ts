@@ -12,6 +12,7 @@ export * from './persons/photographer.service';
 export * from './persons/producer.service';
 export * from './persons/screenwriter.service';
 export * from './persons/sound-editor.service';
+export * from './persons/stuntman.service';
 export * from './persons/visual-effects-supervisor.service';
 export * from './award.service';
 export * from './country.service';

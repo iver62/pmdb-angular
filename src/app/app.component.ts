@@ -8,10 +8,18 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterLink, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.css'
+  selector: 'app-root',
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    RouterLink,
+    RouterOutlet
+  ],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'PMDB';
@@ -32,7 +40,7 @@ export class AppComponent {
       routerLink: 'producers'
     },
     {
-      label: 'Metteurs en scène',
+      label: 'Réalisateurs',
       routerLink: 'directors'
     },
     {
@@ -58,6 +66,34 @@ export class AppComponent {
     {
       label: 'Montage',
       routerLink: 'editors'
+    },
+    {
+      label: 'Casteurs',
+      routerLink: 'casters'
+    },
+    {
+      label: 'Directeurs artistiques',
+      routerLink: 'art-directors'
+    },
+    {
+      label: 'Ingénieurs du son',
+      routerLink: 'sound-editors'
+    },
+    {
+      label: 'Spécialiste effets spéciaux',
+      routerLink: 'visual-effects-supervisors'
+    },
+    {
+      label: 'Maquilleurs',
+      routerLink: 'makeup-artists'
+    },
+    {
+      label: 'Coiffeurs',
+      routerLink: 'hair-dressers'
+    },
+    {
+      label: 'Cascadeurs',
+      routerLink: 'stuntmen'
     },
     {
       label: 'Acteurs',
