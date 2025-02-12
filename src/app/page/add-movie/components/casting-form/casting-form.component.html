@@ -1,0 +1,52 @@
+<form [formGroup]="form">
+  <div formArrayName="actors">
+    @for (actor of actors.controls; track $index; let i = $index) {
+    <div class="grid grid-cols-12 gap-2 items-baseline" [formGroupName]="i">
+      <mat-form-field class="col-span-4">
+        <mat-label>Nom de l'acteur</mat-label>
+        <input matInput aria-label="State" [matAutocomplete]="auto" formControlName="name">
+        @if (actor.value.name && !actor.value.id) {
+        <button matSuffix mat-icon-button matTooltip="Sauvegarder" aria-label="Sauvegarder l'acteur en base de données"
+          (click)="saveActor(actor, i)">
+          @if (loading()) {
+          <mat-spinner [diameter]="20"></mat-spinner>
+          } @else {
+          <mat-icon>save</mat-icon>
+          }
+        </button>
+        }
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (actor of filteredActors(i)(); track actor.id) {
+          <mat-option [value]="actor.name">
+            <div class="flex items-center gap-2">
+              <span class="col-span-1 image-container">
+                <img mat-card-image [src]="getSafePhotoUrl(actor.photoFileName)" alt="{{ actor?.photoFileName }}">
+              </span>
+              <span>{{actor.name}}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="col-span-4">
+        <mat-label>Rôle</mat-label>
+        <input matInput formControlName="role" />
+        @if (actor.value.role) {
+        <button matSuffix mat-icon-button matTooltip="Effacer" aria-label="Effacer le rôle" (click)="clearRole(i)">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+      </mat-form-field>
+      <div class="col-span-4">
+        <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a delete icon"
+          (click)="removeActor(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  <button mat-button matTooltip="Ajouter" aria-label="Example icon button with a delete icon" (click)="addActor()">
+    Ajouter un acteur
+  </button>
+</form>

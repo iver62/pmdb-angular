@@ -201,7 +201,49 @@
         Casting
       </ng-template>
 
-      <div></div>
+      <div class="p-4">
+        @if (editCasting) {
+        <app-casting-form formGroupName="castingFormGroup"></app-casting-form>
+        <div class="fixed bottom-5 right-5">
+          <button mat-fab class="float-right m-1" matTooltip="Valider"
+            aria-label="Example icon button with a delete icon" color="accent"
+            [hidden]="form.get('castingFormGroup').pristine" (click)="saveCasting()">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-fab class="float-right m-1" matTooltip="Annuler"
+            aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelCasting()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+        } @else {
+        <div>
+          <div class="grid gap-1">
+            @for (movieActor of movieActors; track movieActor.id) {
+            <div class="grid grid-cols-12 text-xl">
+              <span class="col-span-1 image-container">
+                <img mat-card-image [src]="getSafePhotoUrl(movieActor.actor.photoFileName)"
+                  alt="{{ movieActor.actor.photoFileName }}">
+              </span>
+              <div class="col-span-4">
+                <span class="font-bold cursor-pointer" [routerLink]="['/actors', movieActor?.actor?.id]">
+                  {{movieActor?.actor?.name}}
+                </span>
+              </div>
+              <span class="col-span-4">{{movieActor?.role}}</span>
+            </div>
+            } @empty {
+            Aucun acteur
+            }
+          </div>
+          <div class="fixed bottom-5 right-5">
+            <button mat-fab class="float-right m-1" matTooltip="Modifier"
+              aria-label="Example icon button with a delete icon" color="accent" (click)="editCasting=true">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
     </mat-tab>
   </div>
   }

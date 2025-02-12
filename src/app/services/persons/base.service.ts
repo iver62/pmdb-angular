@@ -7,7 +7,7 @@ import { Country, Movie, Person } from '../../models';
 })
 export class BaseService {
 
-  constructor(protected http: HttpClient, @Inject(String) private basePath: string) { }
+  constructor(protected http: HttpClient, @Inject(String) public basePath: string) { }
 
   get(id: number) {
     return this.http.get<Person>(`${this.basePath}/${id}`);

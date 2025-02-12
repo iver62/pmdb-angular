@@ -2,7 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -10,23 +12,27 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { concatMap, forkJoin, map, switchMap, tap } from 'rxjs';
-import { MovieService } from '../../services';
-import { GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
+import { MovieActor } from '../../models';
+import { ActorService, MovieService } from '../../services';
+import { CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
 
 @Component({
   selector: 'app-movie-details',
   imports: [
+    CastingFormComponent,
     DatePipe,
     GeneralInfosFormComponent,
     MatButtonModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
     MatSnackBarModule,
     MatTabsModule,
     MatTooltipModule,
     NgPipesModule,
     ReactiveFormsModule,
     RouterLink,
-    TechnicalTeamFormComponent
+    TechnicalTeamFormComponent,
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
@@ -34,17 +40,21 @@ import { GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-mo
 export class MovieDetailsComponent {
 
   private _snackBar = inject(MatSnackBar);
-  private readonly durationInSeconds = 5;
+  private readonly duration = 5000;
 
+  actors$ = this.actorService.getAll();
   form: FormGroup;
   generalInfosInitialValues: any;
   technicalTeamInitialValues: any;
+  castingInitialValues: any;
   editGeneralInfos = false;
   editTechnicalTeam = false;
   editCasting = false;
   imageFile: File | null = null;
+  movieActors: MovieActor[] = [];
 
   constructor(
+    private actorService: ActorService,
     private fb: FormBuilder,
     private movieService: MovieService,
     private route: ActivatedRoute,
@@ -61,6 +71,7 @@ export class MovieDetailsComponent {
             generalInfos: this.movieService.getOne(id),
             genres: this.movieService.getGenres(id),
             countries: this.movieService.getCountries(id),
+            movieActors: this.movieService.getActors(id),
             producers: this.movieService.getProducers(id),
             directors: this.movieService.getDirectors(id),
             screenwriters: this.movieService.getScreenwriters(id),
@@ -110,17 +121,25 @@ export class MovieDetailsComponent {
           hairDressers: [result.hairDressers],
           stuntmen: [result.stuntmen]
         };
+        this.movieActors = result.movieActors;
+        this.castingInitialValues = {
+          actors: this.fb.array(
+            result.movieActors.map(a => this.fb.group(
+              {
+                id: [a.actor.id],
+                name: [a.actor.name, Validators.required], // Nom de l'acteur
+                role: [a.role, Validators.required]  // Rôle joué dans le film
+              }
+            ))
+          )
+        }
       }),
       map(result =>
         this.fb.group(
           {
             generalFormGroup: this.fb.group(this.generalInfosInitialValues),
             technicalTeamFormGroup: this.fb.group(this.technicalTeamInitialValues),
-            castingFormGroup: this.fb.group(
-              {
-
-              }
-            )
+            castingFormGroup: this.fb.group(this.castingInitialValues)
           }
         )
       )
@@ -239,10 +258,23 @@ export class MovieDetailsComponent {
     return this.sanitizer.bypassSecurityTrustUrl(this.movieService.getPosterUrl(posterFileName));
   }
 
+  getSafePhotoUrl(photoFileName: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(this.actorService.getPhotoUrl(photoFileName));
+  }
+
   cancelGeneralInfos() {
     this.editGeneralInfos = false;
-    this.form.controls['generalFormGroup'].setValue(this.generalInfosInitialValues);
+    this.form.controls['generalFormGroup'].reset(this.generalInfosInitialValues);
+  }
+
+  cancelTechnicalTeam() {
+    this.editTechnicalTeam = false;
     this.form.controls['technicalTeamFormGroup'].reset(this.technicalTeamInitialValues);
+  }
+
+  cancelCasting() {
+    this.editCasting = false;
+    this.form.controls['castingFormGroup'].patchValue(this.castingInitialValues);
   }
 
   deleteMovie(id: number) {
@@ -272,13 +304,13 @@ export class MovieDetailsComponent {
     ).subscribe(
       {
         next: result => {
-          this._snackBar.open('Film modifié avec succès', 'Done', { duration: this.durationInSeconds * 1000 });
+          this._snackBar.open('Film modifié avec succès', 'Done', { duration: this.duration });
           this.form.controls['generalFormGroup'].patchValue(result);
           this.editGeneralInfos = false;
         },
         error: error => {
           console.error(error);
-          this._snackBar.open('Erreur lors de la modification du film', 'Error', { duration: this.durationInSeconds * 1000 });
+          this._snackBar.open('Erreur lors de la modification du film', 'Error', { duration: this.duration });
         },
         complete: () => this.editGeneralInfos = false
       }
@@ -289,16 +321,47 @@ export class MovieDetailsComponent {
     this.movieService.saveTechnicalTeam(this.id, this.form.get('technicalTeamFormGroup').value).subscribe(
       {
         next: result => {
-          this._snackBar.open('Fiche technique modifiée avec succès', 'Done', { duration: this.durationInSeconds * 1000 });
+          this._snackBar.open('Fiche technique modifiée avec succès', 'Done', { duration: this.duration });
           this.form.controls['technicalTeamFormGroup'].patchValue(result);
         },
         error: error => {
           console.error(error);
-          this._snackBar.open('Erreur lors de la modification de la fiche technique', 'Error', { duration: this.durationInSeconds * 1000 });
+          this._snackBar.open('Erreur lors de la modification de la fiche technique', 'Error', { duration: this.duration });
         },
         complete: () => this.editTechnicalTeam = false
       }
     );
+  }
+
+  saveCasting() {
+    if (this.form.get('castingFormGroup.actors').valid) {
+      const body: MovieActor[] = this.form.get('castingFormGroup.actors').value.map(
+        (ma: any) => (
+          {
+            id: this.movieActors.find(a => a.actor.id == ma.id)?.id,
+            actor: { id: ma.id, name: ma.name },
+            role: ma.role
+          }
+        )
+      );
+
+      this.movieService.saveCasting(this.id, body).subscribe(
+        {
+          next: result => {
+            this._snackBar.open('Casting modifié avec succès', 'Done', { duration: this.duration });
+            this.form.controls['castingFormGroup'].patchValue(result);
+            this.movieActors = result;
+          },
+          error: error => {
+            console.error(error);
+            this._snackBar.open('Erreur lors de la modification du casting', 'Error', { duration: this.duration });
+          },
+          complete: () => this.editCasting = false
+        }
+      )
+    } else {
+      console.error('Le formulaire est invalide');
+    }
   }
 
 }

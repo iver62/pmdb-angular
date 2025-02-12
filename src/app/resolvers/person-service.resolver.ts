@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { throwError } from 'rxjs';
-import { ArtDirectorService, BaseService, CasterService, CostumierService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, StuntmanService, VisualEffectSupervisorsService } from '../services';
+import { ActorService, ArtDirectorService, BaseService, CasterService, CostumierService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, StuntmanService, VisualEffectSupervisorsService } from '../services';
 
 export const personServiceResolver: ResolveFn<BaseService> = (route, state) => {
   // Mapping des types de personnes vers leurs services
   const serviceMap: { [key: string]: BaseService } = {
+    actors: inject(ActorService),
     producers: inject(ProducerService),
     directors: inject(DirectorService),
     screenwriters: inject(ScreenwriterService),
