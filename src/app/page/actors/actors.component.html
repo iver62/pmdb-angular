@@ -1,1 +1,8 @@
-<p>actors works!</p>
+@let actors = actors$ | async;
+
+@if (actors?.length) {
+<app-persons-list title="Acteurs" [persons]="actors" [service]="actorService" route="/actors">
+</app-persons-list>
+} @else {
+<div>Aucun résultat</div>
+}

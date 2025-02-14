@@ -36,6 +36,10 @@ export class AppComponent {
       routerLink: 'movies'
     },
     {
+      label: 'Acteurs',
+      routerLink: 'actors'
+    },
+    {
       label: 'Producteurs',
       routerLink: 'producers'
     },
@@ -94,10 +98,6 @@ export class AppComponent {
     {
       label: 'Cascadeurs',
       routerLink: 'stuntmen'
-    },
-    {
-      label: 'Acteurs',
-      routerLink: 'actors'
     },
     {
       label: 'Genres',

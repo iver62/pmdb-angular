@@ -28,6 +28,17 @@ export const routes: Routes = [
     loadComponent: () => import('./page/movie-details/movie-details.component').then(c => c.MovieDetailsComponent)
   },
   {
+    path: 'actors',
+    loadComponent: () => import('./page/actors/actors.component').then(c => c.ActorsComponent)
+  },
+  {
+    path: 'actors/:id',
+    resolve: {
+      service: personServiceResolver
+    },
+    loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
+  },
+  {
     path: 'producers',
     loadComponent: () => import('./page/producers/producers.component').then(c => c.ProducersComponent)
   },
@@ -191,10 +202,6 @@ export const routes: Routes = [
       service: personServiceResolver
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
-  },
-  {
-    path: 'actors',
-    component: ActorsComponent
   },
   {
     path: 'genres',
