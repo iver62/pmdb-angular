@@ -116,6 +116,26 @@ export class CastingFormComponent {
     );
   }
 
+  get formArray() {
+    return this.form.get('actors') as FormArray;
+  }
+
+  moveUp(index: number) {
+    if (index > 0) {
+      const items = this.formArray.controls;
+      [items[index], items[index - 1]] = [items[index - 1], items[index]];
+      this.form.setControl('actors', this.fb.array(items));
+    }
+  }
+
+  moveDown(index: number) {
+    if (index < this.formArray.value.length - 1) {
+      const items = this.formArray.controls;
+      [items[index], items[index + 1]] = [items[index + 1], items[index]];
+      this.form.setControl('actors', this.fb.array(items));
+    }
+  }
+
   clearRole(index: number) {
     this.actors.at(index).patchValue({ role: null })
   }

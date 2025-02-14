@@ -1,7 +1,7 @@
 <form [formGroup]="form">
   <div formArrayName="actors">
     @for (actor of actors.controls; track $index; let i = $index) {
-    <div class="grid grid-cols-12 gap-2 items-baseline" [formGroupName]="i">
+    <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
       <mat-form-field class="col-span-4">
         <mat-label>Nom de l'acteur</mat-label>
         <input matInput aria-label="State" [matAutocomplete]="auto" formControlName="name">
@@ -37,11 +37,21 @@
         </button>
         }
       </mat-form-field>
-      <div class="col-span-4">
+      <div class="flex col-span-4">
         <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a delete icon"
           (click)="removeActor(i)">
           <mat-icon>delete</mat-icon>
         </button>
+        <div class="flex flex-col">
+          <button mat-icon-button matTooltip="Monter" aria-label="Example icon button with a delete icon"
+            [disabled]="i == 0" (click)="moveUp(i)">
+            <mat-icon>keyboard_arrow_up</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Descendre" aria-label="Example icon button with a delete icon"
+            [disabled]="i == formArray?.value?.length - 1" (click)="moveDown(i)">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
     }
