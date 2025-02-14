@@ -22,6 +22,10 @@
     <app-movies-list title="Films associés" [movies]="country?.movies"></app-movies-list>
 
     <!-- Producteurs associés -->
+    <app-persons-list title="Acteurs associés" [persons]="country?.actors" [service]="actorService" route="/actors">
+    </app-persons-list>
+
+    <!-- Producteurs associés -->
     <app-persons-list title="Producteurs associés" [persons]="country?.producers" [service]="producerService"
       route="/producers">
     </app-persons-list>
@@ -87,6 +91,11 @@
     <!-- Coiffeurs associés -->
     <app-persons-list title="Coiffeurs associés" [persons]="country?.hairDressers" [service]="hairDresserService"
       route="/hair-dressers">
+    </app-persons-list>
+
+    <!-- Cascadeurs associés -->
+    <app-persons-list title="Cascadeurs associés" [persons]="country?.stuntMen" [service]="stuntManService"
+      route="/stuntmen">
     </app-persons-list>
   </div>
 </div>
