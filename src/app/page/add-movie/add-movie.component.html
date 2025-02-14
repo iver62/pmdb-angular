@@ -9,6 +9,10 @@
       <app-technical-team-form formGroupName="technicalTeamFormGroup"></app-technical-team-form>
       <button mat-button matStepperNext (click)="saveTechnicalTeam()">Suivant</button>
     </mat-step>
+    <mat-step [stepControl]="form.get('castingFormGroup')" label="Casting">
+      <app-casting-form formGroupName="castingFormGroup"></app-casting-form>
+      <button mat-button matStepperNext (click)="saveCasting()">Suivant</button>
+    </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
       <p>You are now done.</p>

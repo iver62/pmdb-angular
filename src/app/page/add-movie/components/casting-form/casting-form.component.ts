@@ -1,7 +1,7 @@
 import { Component, computed, effect, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Person } from '../../../../models';
 import { ActorService } from '../../../../services';
 
 @Component({
@@ -60,6 +61,12 @@ export class CastingFormComponent {
    */
   get actors() {
     return this.form.get('actors') as FormArray;
+  }
+
+  selectActor(event: MatAutocompleteSelectedEvent, index: number) {
+    const actor: Person = event.option.value;
+
+    this.actors.at(index).patchValue({ id: actor.id, name: actor.name })
   }
 
   /**

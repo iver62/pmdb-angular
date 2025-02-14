@@ -1,7 +1,7 @@
 import { Award } from "./award.model";
 import { Country } from "./country.model";
 import { Genre } from "./genre.model";
-import { Person } from "./person.model";
+import { MovieActor } from "./movie-actor.model";
 import { TechnicalTeam } from "./technical-team.model";
 
 export interface Movie {
@@ -17,7 +17,7 @@ export interface Movie {
   creationDate?: Date,
   lastUpdate?: Date,
   technicalTeam?: TechnicalTeam,
-  movieActors?: Person[],
+  movieActors?: MovieActor[],
   genres?: Genre[],
   countries?: Country[],
   awards?: Award[]

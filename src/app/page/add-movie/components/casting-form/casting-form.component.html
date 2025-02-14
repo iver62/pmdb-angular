@@ -15,9 +15,9 @@
           }
         </button>
         }
-        <mat-autocomplete #auto="matAutocomplete">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectActor($event, i)">
           @for (actor of filteredActors(i)(); track actor.id) {
-          <mat-option [value]="actor.name">
+          <mat-option [value]="actor">
             <div class="flex items-center gap-2">
               <span class="col-span-1 image-container">
                 <img mat-card-image [src]="getSafePhotoUrl(actor.photoFileName)" alt="{{ actor?.photoFileName }}">
