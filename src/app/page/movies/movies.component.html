@@ -1,6 +1,39 @@
-<div>
+@let movies = movies$ | async;
+
+<div class="h-full">
+  <div class="flex flex-row justify-between items-center">
+    <h2 class="section-title">Films ({{total}})</h2>
+    <mat-form-field class="search-bar md:w-1/3">
+      <mat-label>Films</mat-label>
+      <input appDelayedInput matInput [value]="searchConfig$.value.term" placeholder="Rechercher..."
+        (delayedInput)="onSearch($event)" />
+      @if (searchConfig$.value.term) {
+      <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer" (click)="clearSearch()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </mat-form-field>
+    <div>
+      @if (movies?.length) {
+      <div class="flex justify-end">
+        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" matTooltip="Tableau">
+          <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images">
+          <mat-icon class="material-symbols-outlined">image</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
+          <mat-icon>sort</mat-icon>
+        </button>
+      </div>
+      }
+    </div>
+  </div>
   @if (view == 'cards') {
-  <app-movies-list title="Films" [movies]="movies$ | async"></app-movies-list>
+  <div class="movies-container" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
+    (scrolled)="onScroll()">
+    <app-movies-list [movies]="movies"></app-movies-list>
+  </div>
   } @else {
   <div>
     <div class="example-table-container">

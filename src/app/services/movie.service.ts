@@ -11,8 +11,16 @@ export class MovieService {
 
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    return this.http.get<Movie[]>(this.basePath);
+  getAll(title: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}/all?sort=${sort}&direction=${direction}&title=${title}`, {
+      observe: 'response'
+    });
+  }
+
+  getPaginatedMovies(page = 0, size = 20, title: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&title=${title}`, {
+      observe: 'response'
+    });
   }
 
   getOne(id: number) {

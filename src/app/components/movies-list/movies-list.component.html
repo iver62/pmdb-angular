@@ -1,36 +1,5 @@
-<div class="section">
-  <div class="flex flex-row justify-between">
-    <h2 class="section-title">{{title()}} ({{filteredMovies()?.length}})</h2>
-    <mat-form-field class="search-bar">
-      <mat-label>Films</mat-label>
-      <input matInput [(ngModel)]="searchTerm" placeholder="Rechercher..." />
-      @if (searchTermSignal()) {
-      <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer" (click)="clearSearch()">
-        <mat-icon>close</mat-icon>
-      </button>
-      }
-    </mat-form-field>
-    @if (filteredMovies()?.length) {
-    <div class="flex justify-end">
-      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" matTooltip="Tableau">
-        <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images">
-        <mat-icon class="material-symbols-outlined">image</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Filtrer">
-        <mat-icon>filter_list</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
-        <mat-icon>sort</mat-icon>
-      </button>
-    </div>
-    }
-  </div>
-
-  <div class="movies-grid">
-    @for (movie of filteredMovies() | orderBy: 'title'; track movie.id) {
-    <app-movie-card [movie]="movie"></app-movie-card>
-    }
-  </div>
+<div class="movies-grid">
+  @for (movie of movies(); track movie.id) {
+  <app-movie-card [movie]="movie"></app-movie-card>
+  }
 </div>

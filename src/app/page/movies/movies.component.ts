@@ -1,13 +1,19 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { NgPipesModule } from 'ngx-pipes';
-import { map } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
 import { MoviesListComponent } from '../../components';
-import { Movie } from '../../models';
+import { DelayedInputDirective } from '../../directives';
+import { Movie, SearchConfig } from '../../models';
 import { MovieService } from '../../services';
 
 @Component({
@@ -15,31 +21,59 @@ import { MovieService } from '../../services';
   imports: [
     AsyncPipe,
     DatePipe,
+    DelayedInputDirective,
+    FormsModule,
+    InfiniteScrollDirective,
     MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
-    MoviesListComponent,
-    NgPipesModule
+    MatTooltipModule,
+    MoviesListComponent
   ],
   templateUrl: './movies.component.html',
   styleUrl: './movies.component.css'
 })
 export class MoviesComponent {
 
-  movies$ = this.movieService.getAll().pipe(
-    map(result =>
-      result.map(m => (
-        {
-          id: m.id,
-          title: m.title,
-          releaseDate: m.releaseDate,
-          posterFileName: m.posterFileName
-        }
-      ))
-    )
-  );
   view: 'table' | 'cards' = 'cards';
+  total: number;
+
+  searchConfig$ = new BehaviorSubject<SearchConfig>(
+    {
+      page: 0,
+      size: 20,
+      sort: 'title',
+      direction: 'Ascending',
+      term: ''
+    }
+  );
+
+  movies$ = this.searchConfig$.pipe(
+    switchMap(config =>
+      this.movieService.getPaginatedMovies(config.page, config.size, config.term).pipe(
+        tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
+        map(response =>
+          (response.body ?? []).map(m => (
+            {
+              id: m.id,
+              title: m.title,
+              releaseDate: m.releaseDate,
+              posterFileName: m.posterFileName
+            }
+          ))
+        ),
+        catchError(error => {
+          console.error('Erreur API:', error);
+          return of([]); // Retourne un tableau vide en cas d'erreur
+        })
+      )
+    ),
+    scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 ? result : acc.concat(result), []), // Concatène les nouvelles données
+  );
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -85,6 +119,36 @@ export class MoviesComponent {
 
   switchView(view: 'table' | 'cards') {
     this.view = view;
+  }
+
+  // Effacer la recherche
+  clearSearch() {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        term: ''
+      }
+    );
+  }
+
+  onSearch(event: Event) {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        term: (event.target as HTMLInputElement).value
+      }
+    );
+  }
+
+  onScroll() {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: this.searchConfig$.value.page + 1
+      }
+    );
   }
 
 }
