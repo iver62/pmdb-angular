@@ -7,8 +7,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { catchError, map, tap } from 'rxjs';
+import { BehaviorSubject, catchError, switchMap } from 'rxjs';
 import { GenreService } from '../../services';
+import { Genre } from '../../models';
 
 @Component({
   selector: 'app-genres',
@@ -27,14 +28,18 @@ import { GenreService } from '../../services';
 export class GenresComponent {
 
   private snackBarDuration = 5000;
+  private refresh$ = new BehaviorSubject<void>(void 0);
 
-  genres$ = this.genreService.getAll().pipe(
-    tap(() => console.log('Genres chargés')),
-    catchError(error => {
-      console.error('Erreur de chargement des genres', error);
-      this.snackBar.open('Erreur lors du chargement des genres', 'Error', { duration: this.snackBarDuration });
-      throw error;
-    })
+  genres$ = this.refresh$.pipe(
+    switchMap(() =>
+      this.genreService.getAll().pipe(
+        catchError(error => {
+          console.error('Erreur de chargement des genres', error);
+          this.snackBar.open('Erreur lors du chargement des genres', 'Error', { duration: this.snackBarDuration });
+          throw error;
+        })
+      )
+    )
   );
 
   constructor(
@@ -42,17 +47,16 @@ export class GenresComponent {
     private snackBar: MatSnackBar
   ) { }
 
-  deleteGenre(id: number) {
-    this.genres$ = this.genres$.pipe(
-      map(genres => genres.filter(g => g.id !== id)) // Mise à jour locale sans recharge
-    );
-
-    this.genreService.delete(id).subscribe(
+  deleteGenre(genre: Genre) {
+    this.genreService.delete(genre.id).subscribe(
       {
-        next: () => this.snackBar.open('Genre supprimé avec succès', 'Done', { duration: this.snackBarDuration }),
+        next: () => {
+          this.snackBar.open(`"${genre?.name}" supprimé avec succès`, 'Done', { duration: this.snackBarDuration });
+          this.refresh$.next();
+        },
         error: e => {
           console.error(e);
-          this.snackBar.open('Impossible de supprimer le genre', 'Error', { duration: this.snackBarDuration })
+          this.snackBar.open(`Impossible de supprimer "${genre?.name}"`, 'Error', { duration: this.snackBarDuration })
         }
       }
     );

@@ -12,11 +12,19 @@ export class GenreService {
   constructor(private http: HttpClient) { }
 
   getAll() {
-    return this.http.get<Genre[]>(this.basePath);
+    return this.http.get<Genre[]>(`${this.basePath}`);
   }
 
-  getMovies(id: number) {
-    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies`);
+  getAllMovies(id: number, title: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies/all?sort=${sort}&direction=${direction}&title=${title}`, {
+      observe: 'response'
+    });
+  }
+
+  getMovies(id: number, page = 0, size = 20, title: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction}&title=${title}`, {
+      observe: 'response'
+    });
   }
 
   save(genre: Genre) {

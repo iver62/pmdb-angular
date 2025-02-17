@@ -1,11 +1,11 @@
-<div class="genres-grid">
+<div class="genres-grid mt-4">
   @for (genre of genres$ | async | orderBy: 'name'; track genre.id) {
   <mat-card class="cursor-pointer" appearance="outlined" [routerLink]="['/genres', genre.id]"
     [state]="{name: genre?.name}">
     <mat-card-content class="items-center justify-between">
       <span>{{genre?.name}}</span>
       <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a open in new tab icon"
-        (click)="deleteGenre(genre.id); $event.stopPropagation()" #deleteButton>
+        (click)="deleteGenre(genre); $event.stopPropagation()" #deleteButton>
         <mat-icon class="material-symbols-outlined">delete</mat-icon>
       </button>
     </mat-card-content>
