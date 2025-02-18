@@ -23,63 +23,105 @@ export class CountryService {
     return this.http.get<Country[]>(this.basePath);
   }
 
-  getMovies(id: number) {
-    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies`);
+  getMoviesByCountry(id: number, page = 0, size = 20, title: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction}&title=${title}`, {
+      observe: 'response'
+    });
   }
 
-  getProducers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/producers`);
+  getActorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/actors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getDirectors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/directors`);
+  getDirectorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/directors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getScreenwriters(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/screenwriters`);
+  getScreenwritersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/screenwriters?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getMusicians(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/musicians`);
+  getMusiciansByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/musicians?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getPhotographers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/photographers`);
+  getDecoratorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/decorators?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getCostumiers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/costumiers`);
+  getCostumiersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/costumiers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getDecorators(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/decorators`);
+  getPhotographersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/photographers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getEditors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/editors`);
+  getEditorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/editors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getCasters(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/casters`);
+  getCastersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/casters?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getArtDirectors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/art-directors`);
+  getArtDirectorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/art-directors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getSoundEditors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors`);
+  getSoundEditorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getVisualEffectsSupervisors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/visual-effects-supervisors`);
+  getProducersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/producers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getMakeupArtists(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/makeup-artists`);
+  getVisualEffectsSupervisorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/visual-effects-supervisors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
-  getHairDressers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers`);
+  getMakeupArtistsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/makeup-artists?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
+  }
+
+  getHairDressersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
+  }
+
+  getStuntmenByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/stuntmen?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 }

@@ -10,6 +10,7 @@ export interface Country {
   nomFrFr?: string,
   flag?: string,
   movies?: Movie[],
+  actors?: Person[],
   producers?: Person[],
   directors?: Person[],
   screenwriters?: Person[],
@@ -23,5 +24,6 @@ export interface Country {
   soundEditors?: Person[],
   visualEffectsSupervisors?: Person[],
   makeupArtists?: Person[],
-  hairDressers?: Person[]
+  hairDressers?: Person[],
+  stuntMen?: Person[]
 }

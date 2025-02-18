@@ -1,101 +1,100 @@
-@let country = country$ | async;
-
-<div class="country-details-container">
-  <button mat-button routerLink="/countries">Retour à la liste des pays</button>
-
-  <!-- Country Information -->
-  <mat-card class="country-card">
-    <mat-card-header>
-      <div mat-card-avatar class="country-avatar"></div>
-      <mat-card-title>{{ country?.nomFrFr }}</mat-card-title>
-      <mat-card-subtitle>{{ country?.nomEnGb }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p><strong>Alpha-2 Code:</strong> {{ country?.alpha2 }}</p>
-      <p><strong>Alpha-3 Code:</strong> {{ country?.alpha3 }}</p>
-      <p><strong>Numeric Code:</strong> {{ country?.code }}</p>
-    </mat-card-content>
-  </mat-card>
-
-  <div class="mt-4 grid gap-4">
-    <!-- Films associés -->
-    <app-movies-list title="Films associés" [movies]="country?.movies"></app-movies-list>
-
-    <!-- Producteurs associés -->
-    <app-persons-list title="Acteurs associés" [persons]="country?.actors" [service]="actorService" route="/actors">
-    </app-persons-list>
-
-    <!-- Producteurs associés -->
-    <app-persons-list title="Producteurs associés" [persons]="country?.producers" [service]="producerService"
-      route="/producers">
-    </app-persons-list>
-
-    <!-- Réalisateurs associés -->
-    <app-persons-list title="Réalisateurs associés" [persons]="country?.directors" [service]="directorService"
-      route="/directors">
-    </app-persons-list>
-
-    <!-- Scénaristes associés -->
-    <app-persons-list title="Scénaristes associés" [persons]="country?.screenwriters" [service]="screenwriterService"
-      route="/screenwriters">
-    </app-persons-list>
-
-    <!-- Musiciens associés -->
-    <app-persons-list title="Musiciens associés" [persons]="country?.musicians" [service]="musicianService"
-      route="/musicians">
-    </app-persons-list>
-
-    <!-- Photographes associés -->
-    <app-persons-list title="Photographes associés" [persons]="country?.photographers" [service]="photographerService"
-      route="/photographers">
-    </app-persons-list>
-
-    <!-- Costumiers associés -->
-    <app-persons-list title="Costumiers associés" [persons]="country?.costumiers" [service]="costumierService"
-      route="/costumiers">
-    </app-persons-list>
-
-    <!-- Décorateurs associés -->
-    <app-persons-list title="Décorateurs associés" [persons]="country?.decorators" [service]="decoratorService"
-      route="/decorators">
-    </app-persons-list>
-
-    <!-- Monteurs associés -->
-    <app-persons-list title="Monteurs associés" [persons]="country?.editors" [service]="editorService" route="/editors">
-    </app-persons-list>
-
-    <!-- Casteurs associés -->
-    <app-persons-list title="Casteurs associés" [persons]="country?.casters" [service]="casterService" route="/casters">
-    </app-persons-list>
-
-    <!-- Directeurs artistiques associés -->
-    <app-persons-list title="Directeurs artistiques associés" [persons]="country?.artDirectors"
-      [service]="artDirectorService" route="/art-directors">
-    </app-persons-list>
-
-    <!-- Ingénieurs du son associés -->
-    <app-persons-list title="Ingénieurs du son associés" [persons]="country?.soundEditors"
-      [service]="soundEditorService" route="/sound-editors">
-    </app-persons-list>
-
-    <!-- Spécialistes effets spéciaux associés -->
-    <app-persons-list title="Spécialistes effets spéciaux associés" [persons]="country?.visualEffectsSupervisors"
-      [service]="visualEffectsSupervisorService" route="/visual-effects-supervisors">
-    </app-persons-list>
-
-    <!-- Maquilleurs associés -->
-    <app-persons-list title="Maquilleurs associés" [persons]="country?.makeupArtists" [service]="makeupArtistService"
-      route="/makeup-artists">
-    </app-persons-list>
-
-    <!-- Coiffeurs associés -->
-    <app-persons-list title="Coiffeurs associés" [persons]="country?.hairDressers" [service]="hairDresserService"
-      route="/hair-dressers">
-    </app-persons-list>
-
-    <!-- Cascadeurs associés -->
-    <app-persons-list title="Cascadeurs associés" [persons]="country?.stuntMen" [service]="stuntManService"
-      route="/stuntmen">
-    </app-persons-list>
+<div class="h-full">
+  <div class="flex items-center justify-between">
+    <button mat-button routerLink="/countries">Retour à la liste des pays</button>
+    <h2 class="my-4 text-3xl">{{countryName}}</h2>
+    <div></div>
   </div>
+
+  <!-- Données asociées -->
+  <mat-tab-group (selectedTabChange)="onTabChanged($event)" class="h-[calc(100%-68px)]">
+    <mat-tab label="Films">
+      <div class="flex items-center justify-between mt-4">
+        <h2></h2>
+        <mat-form-field class="search-bar md:w-1/3">
+          <mat-label>Films ({{totalFilms}})</mat-label>
+          <input appDelayedInput matInput [value]="searchMoviesConfig$.value.term" placeholder="Rechercher..."
+            (delayedInput)="onSearch(searchMoviesConfig$, $event)" />
+          @if (searchMoviesConfig$.value.term) {
+          <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer"
+            (click)="clearSearch(searchMoviesConfig$)">
+            <mat-icon>close</mat-icon>
+          </button>
+          }
+        </mat-form-field>
+        <div class="flex justify-end">
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" matTooltip="Tableau">
+            <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
+          </button>
+          <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images">
+            <mat-icon class="material-symbols-outlined">image</mat-icon>
+          </button>
+          <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
+            <mat-icon>sort</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="h-[calc(100%-92px)] overflow-y-auto" infiniteScroll [scrollWindow]="false"
+        (scrolled)="onScroll(searchMoviesConfig$)">
+        <app-movies-list [movies]="movies$ | async"></app-movies-list>
+      </div>
+    </mat-tab>
+    @for (tab of personTabs; track tab.label) {
+    <mat-tab [label]="tab.label">
+      <div class="flex items-center justify-between mt-4">
+        <h2></h2>
+        <mat-form-field class="search-bar md:w-1/3">
+          <mat-label>{{tab?.label}} ({{tab?.total$ | async}})</mat-label>
+          <input appDelayedInput matInput [value]="tab?.config$.value.term" placeholder="Rechercher..."
+            (delayedInput)="onSearch(tab?.config$, $event)" />
+          @if (tab?.config$.value.term) {
+          <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer" (click)="clearSearch(tab?.config$)">
+            <mat-icon>close</mat-icon>
+          </button>
+          }
+        </mat-form-field>
+        <div class="flex justify-end">
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" matTooltip="Tableau">
+            <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
+          </button>
+          <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images">
+            <mat-icon class="material-symbols-outlined">image</mat-icon>
+          </button>
+          <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
+            <mat-icon>sort</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="h-[calc(100%-92px)] overflow-y-auto" infiniteScroll [scrollWindow]="false"
+        (scrolled)="onScroll(tab?.config$)">
+        <app-persons-list [persons]="tab?.data$ | async" [service]="tab?.service" [route]="tab?.route">
+        </app-persons-list>
+      </div>
+    </mat-tab>
+    }
+    <!-- <mat-tab label="Directeurs artistiques">
+      <app-persons-list [persons]="country?.artDirectors" [service]="artDirectorService" route="/art-directors">
+      </app-persons-list>
+    </mat-tab> -->
+    <!-- <mat-tab label="Ingénieurs du son">
+      <app-persons-list [persons]="country?.soundEditors" [service]="soundEditorService" route="/sound-editors">
+      </app-persons-list>
+    </mat-tab> -->
+    <!-- <mat-tab label="Spécialistes effets spéciaux">
+      <app-persons-list [persons]="country?.visualEffectsSupervisors" [service]="visualEffectsSupervisorService"
+        route="/visual-effects-supervisors">
+      </app-persons-list>
+    </mat-tab> -->
+    <!-- <mat-tab label="Maquilleurs">
+      <app-persons-list [persons]="country?.makeupArtists" [service]="makeupArtistService" route="/makeup-artists">
+      </app-persons-list>
+    </mat-tab> -->
+    <!-- <mat-tab label="Coiffeurs">
+      <app-persons-list [persons]="country?.hairDressers" [service]="hairDresserService" route="/hair-dressers">
+      </app-persons-list>
+    </mat-tab> -->
+    <!-- <mat-tab label="Cascadeurs">
+      <app-persons-list [persons]="country?.stuntMen" [service]="stuntManService" route="/stuntmen">
+      </app-persons-list>
+    </mat-tab> -->
+  </mat-tab-group>
 </div>

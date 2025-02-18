@@ -1,4 +1,5 @@
 export * from './persons/art-director.service';
+export * from './persons/actor.service';
 export * from './persons/base.service';
 export * from './persons/caster.service';
 export * from './persons/costumier.service'
