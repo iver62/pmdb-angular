@@ -13,8 +13,14 @@ export class BaseService {
     return this.http.get<Person>(`${this.basePath}/${id}`);
   }
 
-  getAll() {
-    return this.http.get<Person[]>(this.basePath);
+  getAll(name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/all?sort=${sort}&direction=${direction}&name=${name}`);
+  }
+
+  getPersons(page = 0, size = 50, name: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+      observe: 'response'
+    });
   }
 
   getMovies(person: Person) {
