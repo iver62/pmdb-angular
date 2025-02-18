@@ -1,0 +1,10 @@
+<mat-form-field class="w-full">
+  <mat-label>{{label}} ({{total}})</mat-label>
+  <input appDelayedInput matInput [(ngModel)]="pattern" placeholder="Rechercher..." (delayedInput)="onSearch()"
+    #input />
+  @if (input.value) {
+  <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer" (click)="clearSearch()">
+    <mat-icon>close</mat-icon>
+  </button>
+  }
+</mat-form-field>
