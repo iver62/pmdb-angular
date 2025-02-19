@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-import { debounce, distinctUntilChanged, fromEvent, Subject, takeUntil, timer } from 'rxjs';
+import { debounceTime, distinctUntilChanged, fromEvent, map, Subject, takeUntil } from 'rxjs';
 
 @Directive({
   selector: '[appDelayedInput]'
@@ -9,21 +9,19 @@ export class DelayedInputDirective {
   private destroy$ = new Subject<void>();
 
   @Input() delayTime = 500;
-  @Output() delayedInput = new EventEmitter<Event>();
+  @Output() delayedInput = new EventEmitter<string>();
 
   constructor(private elementRef: ElementRef<HTMLInputElement>) { }
 
   ngOnInit() {
     fromEvent(this.elementRef.nativeElement, 'input')
       .pipe(
-        debounce(() => timer(this.delayTime)),
-        distinctUntilChanged(
-          null,
-          (event: Event) => (event.target as HTMLInputElement).value
-        ), // 6️⃣
+        debounceTime(this.delayTime),
+        map(event => (event.target as HTMLInputElement).value),
+        distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
-      .subscribe(e => this.delayedInput.emit(e));
+      .subscribe(value => this.delayedInput.emit(value));
   }
 
   ngOnDestroy() {

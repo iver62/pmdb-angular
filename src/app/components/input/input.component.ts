@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, Input, input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,8 +23,6 @@ import { DelayedInputDirective } from '../../directives';
 })
 export class InputComponent {
 
-  term = input.required<string>();
-
   @Input() label: string;
   @Input() total: number;
 
@@ -32,16 +30,16 @@ export class InputComponent {
 
   pattern: string;
 
-  constructor() {
-    effect(() => this.pattern = this.term());
-  }
-
   clearSearch() {
+    console.log('CLEAR');
+
     this.pattern = '';
     this.change.emit(this.pattern);
   }
 
   onSearch() {
+    console.log('SEARCH');
+
     this.change.emit(this.pattern);
   }
 

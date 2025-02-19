@@ -1,44 +1,5 @@
-<div>
-  @if (view == 'cards') {
-  <div class="section">
-    <div class="flex flex-row justify-between">
-      <h2 class="section-title">{{title()}} ({{filteredPersons()?.length}})</h2>
-      <mat-form-field class="search-bar">
-        <mat-label>{{title()}}</mat-label>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Rechercher..." />
-        @if (searchTermSignal()) {
-        <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer" (click)="clearSearch()">
-          <mat-icon>close</mat-icon>
-        </button>
-        }
-      </mat-form-field>
-      @if (filteredPersons()?.length) {
-      <div class="flex justify-end">
-        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" matTooltip="Tableau"
-          (click)="switchView('table')">
-          <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images"
-          (click)="switchView('cards')">
-          <mat-icon class="material-symbols-outlined">image</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Filtrer">
-          <mat-icon>filter_list</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
-          <mat-icon>sort</mat-icon>
-        </button>
-      </div>
-      }
-    </div>
-
-    <div class="persons-grid">
-      @for (person of filteredPersons() | orderBy: 'name'; track person.id) {
-      <app-person-card [route]="route()" [person]="person" [service]="service"></app-person-card>
-      }
-    </div>
-  </div>
-  } @else {
-
+<div class="persons-grid">
+  @for (person of persons(); track person.id) {
+  <app-person-card [route]="route()" [person]="person" [service]="service"></app-person-card>
   }
 </div>

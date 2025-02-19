@@ -1,16 +1,5 @@
-.section-title {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
-}
-
-.title {
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 24px;
-}
-
 .persons-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 0fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 0fr));
   gap: 1rem;
 }

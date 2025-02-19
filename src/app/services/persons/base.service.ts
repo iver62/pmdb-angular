@@ -9,26 +9,28 @@ export class BaseService {
 
   constructor(protected http: HttpClient, @Inject(String) public basePath: string) { }
 
-  get(id: number) {
+  getById(id: number) {
     return this.http.get<Person>(`${this.basePath}/${id}`);
   }
 
-  getAll(name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/all?sort=${sort}&direction=${direction}&name=${name}`);
+  getAll() {
+    return this.http.get<Person[]>(`${this.basePath}/all`);
   }
 
-  getPersons(page = 0, size = 50, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  get(page = 0, size = 50, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getMovies(person: Person) {
-    return this.http.get<Movie[]>(`${this.basePath}/${person.id}/movies`)
+  getMovies(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
+      observe: 'response'
+    })
   }
 
-  getCountries(person: Person) {
-    return this.http.get<Country[]>(`${this.basePath}/${person.id}/countries`)
+  getCountries(id: number) {
+    return this.http.get<Country[]>(`${this.basePath}/${id}/countries`)
   }
 
   getPhotoUrl(photoFileName: string) {
