@@ -1,0 +1,31 @@
+<div class="flex flex-row">
+  <img mat-card-image [src]="getSafePhotoUrl()" alt="{{ person()?.photoFileName }}" width="220">
+  <div class="ml-4 w-1/2">
+    <div class="flex items-center">
+      <h1 class="text-2xl">{{person()?.name}}</h1>
+      <button mat-icon-button class="mx-2" matTooltip="Modifier" aria-label="Example icon button with a delete icon"
+        color="warn" (click)="onEdit()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a delete icon" color="accent"
+        (click)="onDelete()">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+    @if (person()?.dateOfBirth) {
+    <p>Né le {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age}} ans)}</p>
+    }
+    @if (person()?.dateOfDeath) {
+    <p>Décédé le {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath}} ans)</p>
+    }
+    @if (person()?.countries?.length) {
+    <p>Nationalité(s) :
+      @for (country of person().countries | orderBy: 'nomFrFr'; track country.id) {
+      <a mat-button [routerLink]="['/countries', country.id]" [state]="{name: country?.nomFrFr}">
+        {{country?.nomFrFr}}
+      </a>
+      }
+    </p>
+    }
+  </div>
+</div>

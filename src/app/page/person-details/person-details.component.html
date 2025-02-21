@@ -1,81 +1,55 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full gap-4">
   <button mat-button class="w-fit" routerLink="../">Retour à la liste</button>
-  <div class="flex flex-row h-1/2 mb-4">
-    <img mat-card-image [src]="getSafePhotoUrl()" alt="{{ person()?.photoFileName }}" width="220">
-    <div class="ml-4 w-1/2">
-      @if (!editMode){
-      <h1 class="text-2xl">{{person()?.name}}</h1>
-      @if (person()?.dateOfBirth) {
-      <p>Né le {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age()}} ans)}</p>
-      }
-      @if (person()?.dateOfDeath) {
-      <p>Décédé le {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath()}} ans)</p>
-      }
-      @if (person()?.countries?.length) {
-      <p>Nationalité(s) :
-        @for(country of person().countries | orderBy: 'nomFrFr'; track country.id) {
-        <a mat-button [routerLink]="['/countries', country.id]">{{country?.nomFrFr}}</a>
-        }
-      </p>
-      }
-      } @else {
-      <form [formGroup]="form">
-        <div class="grid grid-cols-12 gap-1">
-          <mat-form-field class="col-span-12">
-            <mat-label>Nom</mat-label>
-            <input matInput placeholder="Nom" formControlName="name" required>
-            @if (form.get('name').hasError('required')) {
-            <mat-error>Le nom est requis</mat-error>
-            }
-          </mat-form-field>
-          <div class="grid grid-cols-12 gap-x-2 col-span-12">
-            <mat-form-field class="col-span-6">
-              <mat-label>Date de naissance</mat-label>
-              <input matInput [matDatepicker]="birthPicker" placeholder="JJ/MM/YYYY" formControlName="dateOfBirth">
-              <mat-datepicker-toggle matIconSuffix [for]="birthPicker"></mat-datepicker-toggle>
-              <mat-datepicker #birthPicker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="col-span-6">
-              <mat-label>Date de décès</mat-label>
-              <input matInput [matDatepicker]="deathPicker" placeholder="JJ/MM/YYYY" formControlName="dateOfDeath">
-              <mat-datepicker-toggle matIconSuffix [for]="deathPicker"></mat-datepicker-toggle>
-              <mat-datepicker #deathPicker></mat-datepicker>
-            </mat-form-field>
+
+  @if (!editMode) {
+  @if (person()) {
+  <div>
+    <app-person-detail [person]="person()" [service]="service" (edit)="editMode = !editMode" (delete)="deletePerson()">
+    </app-person-detail>
+
+    <div class="overflow-y-auto mt-4">
+      <div class="flex flex-row justify-between items-center">
+        <h2></h2>
+        <app-input class="md:w-1/3" label="Films" [total]="total" (change)="onSearch($event)">
+        </app-input>
+        <div>
+          <div class="flex justify-end">
+            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+              matTooltip="Tableau">
+              <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images">
+              <mat-icon class="material-symbols-outlined">image</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
+              <mat-icon>sort</mat-icon>
+            </button>
           </div>
-          <div class="file-chooser-container col-span-12">
-            <app-file-chooser accept=".jpg,.jpeg,.png" formGroupName="photoFileName"
-              (selectImage)="onSelectImage($event)" (deleteImage)="onDeleteImage()">
-            </app-file-chooser>
-          </div>
-          <app-country-selector class="col-span-12" formGroupName="countries"></app-country-selector>
         </div>
-      </form>
-      }
+      </div>
+      <!-- Films associés -->
+      <div class="movies-container" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
+        (scrolled)="onScroll()">
+        <app-movies-list [movies]="person()?.movies"></app-movies-list>
+      </div>
     </div>
   </div>
-
-  <!-- Films associés -->
-  <app-movies-list title="Films associés" [movies]="person()?.movies"></app-movies-list>
-
-  <div class="fixed bottom-5 right-5">
-    @if(!editMode){
-    <button mat-fab class="float-right m-1" matTooltip="Supprimer" aria-label="Example icon button with a delete icon"
-      color="accent" (click)="delete()">
-      <mat-icon>clear</mat-icon>
-    </button>
-    <button mat-fab class="float-right m-1" matTooltip="Modifier" aria-label="Example icon button with a delete icon"
-      color="warn" (click)="editMode = !editMode">
-      <mat-icon>edit</mat-icon>
-    </button>
-    } @else {
-    <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
-      color="accent" [disabled]="form.invalid" (click)="save()">
-      <mat-icon>check</mat-icon>
-    </button>
-    <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a delete icon"
-      color="accent" (click)="cancel()">
-      <mat-icon>cancel</mat-icon>
-    </button>
-    }
+  }
+  } @else {
+  <div class="w-full">
+    <div class="flex justify-center p-2">
+      <app-person-form class="md:w-2/3" [form]="form" (changeImage)="onChangeImage($event)"></app-person-form>
+    </div>
+    <div class="fixed bottom-5 right-5">
+      <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
+        color="accent" [disabled]="form.invalid" (click)="save()">
+        <mat-icon>check</mat-icon>
+      </button>
+      <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a delete icon"
+        color="accent" (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
   </div>
+  }
 </div>
