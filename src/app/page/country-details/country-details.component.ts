@@ -15,11 +15,11 @@ import { MoviesListComponent, PersonsListComponent } from '../../components';
 import { DelayedInputDirective } from '../../directives';
 import { Movie, Person, SearchConfig } from '../../models';
 import { ActorService, ArtDirectorService, CasterService, CostumierService, CountryService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, StuntmanService, VisualEffectSupervisorsService } from '../../services';
-import { PersonUtils } from '../../utils/person.utils';
+import { PersonUtils } from '../../utils';
 
 const INITIAL_CONFIG: SearchConfig = {
   page: 0,
-  size: 20,
+  size: 50,
   sort: 'name',
   direction: 'Ascending',
   term: ''
@@ -544,12 +544,12 @@ export class CountryDetailsComponent {
     );
   }
 
-  onSearch(sub$: BehaviorSubject<SearchConfig>, event: Event) {
+  onSearch(sub$: BehaviorSubject<SearchConfig>, event: string) {
     sub$.next(
       {
         ...sub$.value,
         page: 0,
-        term: (event.target as HTMLInputElement).value
+        term: event
       }
     );
   }

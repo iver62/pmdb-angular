@@ -20,107 +20,113 @@ export class CountryService {
   }
 
   getAll() {
-    return this.http.get<Country[]>(this.basePath);
+    return this.http.get<Country[]>(`${this.basePath}/all`);
   }
 
-  getMoviesByCountry(id: number, page = 0, size = 20, title: string, sort = 'title', direction = 'Ascending') {
-    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction}&title=${title}`, {
+  getCountries(page = 0, size = 50, term: string, sort = 'nomFrFr', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getActorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/actors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getMoviesByCountry(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getDirectorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/directors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getActorsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/actors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getScreenwritersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/screenwriters?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getDirectorsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/directors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getMusiciansByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/musicians?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getScreenwritersByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/screenwriters?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getDecoratorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/decorators?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getMusiciansByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/musicians?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getCostumiersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/costumiers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getDecoratorsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/decorators?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getPhotographersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/photographers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getCostumiersByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/costumiers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getEditorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/editors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getPhotographersByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/photographers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getCastersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/casters?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getEditorsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/editors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getArtDirectorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/art-directors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getCastersByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/casters?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getSoundEditorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getArtDirectorsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/art-directors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getProducersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/producers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getSoundEditorsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getVisualEffectsSupervisorsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/visual-effects-supervisors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getProducersByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/producers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getMakeupArtistsByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/makeup-artists?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getVisualEffectsSupervisorsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/visual-effects-supervisors?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getHairDressersByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getMakeupArtistsByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/makeup-artists?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getStuntmenByCountry(id: number, page = 0, size = 20, name: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/stuntmen?page=${page}&size=${size}&sort=${sort}&direction=${direction}&name=${name}`, {
+  getHairDressersByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
+      observe: 'response'
+    });
+  }
+
+  getStuntmenByCountry(id: number, page = 0, size = 20, term: string, sort = 'name', direction = 'Ascending') {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/stuntmen?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }

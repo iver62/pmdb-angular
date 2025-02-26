@@ -1,0 +1,15 @@
+.country-card {
+  max-width: 400px;
+  margin: 10px;
+  text-align: center;
+}
+
+mat-card-title {
+  font-weight: bold;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}

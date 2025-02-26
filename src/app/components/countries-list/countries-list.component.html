@@ -1,0 +1,5 @@
+<div class="countries-grid">
+  @for (country of countries(); track country.id) {
+  <app-country-card [country]="country"></app-country-card>
+  }
+</div>

@@ -10,7 +10,7 @@
     <mat-tab label="Films">
       <div class="flex items-center justify-between mt-4">
         <h2></h2>
-        <mat-form-field class="search-bar md:w-1/3">
+        <mat-form-field class="md:w-1/3">
           <mat-label>Films ({{totalFilms}})</mat-label>
           <input appDelayedInput matInput [value]="searchMoviesConfig$.value.term" placeholder="Rechercher..."
             (delayedInput)="onSearch(searchMoviesConfig$, $event)" />
@@ -42,7 +42,7 @@
     <mat-tab [label]="tab.label">
       <div class="flex items-center justify-between mt-4">
         <h2></h2>
-        <mat-form-field class="search-bar md:w-1/3">
+        <mat-form-field class="md:w-1/3">
           <mat-label>{{tab?.label}} ({{tab?.total$ | async}})</mat-label>
           <input appDelayedInput matInput [value]="tab?.config$.value.term" placeholder="Rechercher..."
             (delayedInput)="onSearch(tab?.config$, $event)" />
@@ -71,30 +71,5 @@
       </div>
     </mat-tab>
     }
-    <!-- <mat-tab label="Directeurs artistiques">
-      <app-persons-list [persons]="country?.artDirectors" [service]="artDirectorService" route="/art-directors">
-      </app-persons-list>
-    </mat-tab> -->
-    <!-- <mat-tab label="Ingénieurs du son">
-      <app-persons-list [persons]="country?.soundEditors" [service]="soundEditorService" route="/sound-editors">
-      </app-persons-list>
-    </mat-tab> -->
-    <!-- <mat-tab label="Spécialistes effets spéciaux">
-      <app-persons-list [persons]="country?.visualEffectsSupervisors" [service]="visualEffectsSupervisorService"
-        route="/visual-effects-supervisors">
-      </app-persons-list>
-    </mat-tab> -->
-    <!-- <mat-tab label="Maquilleurs">
-      <app-persons-list [persons]="country?.makeupArtists" [service]="makeupArtistService" route="/makeup-artists">
-      </app-persons-list>
-    </mat-tab> -->
-    <!-- <mat-tab label="Coiffeurs">
-      <app-persons-list [persons]="country?.hairDressers" [service]="hairDresserService" route="/hair-dressers">
-      </app-persons-list>
-    </mat-tab> -->
-    <!-- <mat-tab label="Cascadeurs">
-      <app-persons-list [persons]="country?.stuntMen" [service]="stuntManService" route="/stuntmen">
-      </app-persons-list>
-    </mat-tab> -->
   </mat-tab-group>
 </div>

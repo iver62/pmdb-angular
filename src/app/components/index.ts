@@ -1,3 +1,4 @@
+export * from './countries-list/countries-list.component';
 export * from './country-card/country-card.component';
 export * from './country-selector/country-selector.component';
 export * from './file-chooser/file-chooser.component';
@@ -5,6 +6,6 @@ export * from './genre-selector/genre-selector.component';
 export * from './input/input.component';
 export * from './movies-list/movie-card/movie-card.component';
 export * from './movies-list/movies-list.component';
+export * from './person-selector/person-selector.component';
 export * from './persons-list/person-card/person-card.component';
 export * from './persons-list/persons-list.component';
-export * from './person-selector/person-selector.component';

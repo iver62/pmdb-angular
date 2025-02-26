@@ -1,63 +1,76 @@
-import { Component, computed, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { AsyncPipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { NgPipesModule } from 'ngx-pipes';
-import { CountryCardComponent } from '../../components';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
+import { CountriesListComponent, InputComponent } from '../../components';
+import { Country, SearchConfig } from '../../models';
 import { CountryService } from '../../services';
 
 @Component({
   selector: 'app-countries',
   imports: [
-    CountryCardComponent,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatGridListModule,
+    AsyncPipe,
+    CountriesListComponent,
+    InfiniteScrollDirective,
+    InputComponent,
+    MatButtonModule,
     MatIconModule,
-    MatInputModule,
-    NgPipesModule
+    MatTooltipModule
   ],
   templateUrl: './countries.component.html',
   styleUrl: './countries.component.css'
 })
 export class CountriesComponent {
 
-  countries = toSignal(this.countryService.getAll());
-
-  filteredCountries = computed(() => {
-    const term = this.searchTermSignal().toLowerCase();
-
-    // Si le terme de recherche est vide, retourner tous les pays
-    if (!term) {
-      return this.countries();
+  searchConfig$ = new BehaviorSubject<SearchConfig>(
+    {
+      page: 0,
+      size: 50,
+      sort: 'nomFrFr',
+      direction: 'Ascending',
+      term: ''
     }
+  );
 
-    // Sinon, filtrer les pays
-    return this.countries().filter(country => country.nomFrFr.toLowerCase().includes(term));
-  });
+  countries$ = this.searchConfig$.pipe(
+    switchMap(config =>
+      this.countryService.getCountries(config.page, config.size, config.term).pipe(
+        tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
+        map(response => (response.body ?? [])),
+        catchError(error => {
+          console.error('Erreur API:', error);
+          return of([]); // Retourne un tableau vide en cas d'erreur
+        })
+      )
+    ),
+    scan((acc: Country[], result: Country[]) => this.searchConfig$.value.page == 0 ? result : acc.concat(result), []), // Concatène les nouveaux pays
+  );
 
-  searchTermSignal = signal('');
+  total: number;
 
   constructor(private countryService: CountryService) { }
 
-  // Getter pour le signal
-  get searchTerm(): string {
-    return this.searchTermSignal();
+  onSearch(event: string) {
+    if (typeof event === 'string') {
+      this.searchConfig$.next(
+        {
+          ...this.searchConfig$.value,
+          page: 0,
+          term: event
+        }
+      );
+    }
   }
 
-  // Setter pour le signal
-  set searchTerm(value: string) {
-    this.searchTermSignal.set(value);
+  onScroll() {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: this.searchConfig$.value.page + 1
+      }
+    );
   }
-
-  // Effacer la recherche
-  clearSearch(): void {
-    this.searchTermSignal.set('');
-  }
-
 }
