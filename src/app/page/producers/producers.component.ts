@@ -1,16 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
-import { InputComponent, PersonsListComponent, PersonsTableComponent } from '../../components';
+import { InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
 import { Person, SearchConfig, SortOption } from '../../models';
 import { ProducerService } from '../../services';
+import { PersonUtils } from '../../utils';
 
 @Component({
   selector: 'app-producers',
@@ -18,13 +15,10 @@ import { ProducerService } from '../../services';
     AsyncPipe,
     InfiniteScrollDirective,
     InputComponent,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
     MatPaginatorModule,
-    MatTooltipModule,
     PersonsListComponent,
-    PersonsTableComponent
+    PersonsTableComponent,
+    ToolbarComponent
   ],
   templateUrl: './producers.component.html',
   styleUrl: './producers.component.css'
@@ -36,14 +30,7 @@ export class ProducersComponent {
   view = View;
   total: number;
   pageSizeOptions = [25, 50, 100];
-
-  sortOptions: SortOption[] = [
-    { active: 'name', label: 'Nom', direction: 'asc' },
-    { active: 'dateOfBirth', label: 'Date de naissance', direction: '' },
-    { active: 'dateOfDeath', label: 'Date de décès', direction: '' },
-    { active: 'creationDate', label: 'Date de création', direction: '' },
-    { active: 'lastUpdate', label: 'Dernière modification', direction: '' }
-  ]
+  sortOptions = PersonUtils.sortOptions;
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
@@ -86,7 +73,7 @@ export class ProducersComponent {
 
   constructor(public producerService: ProducerService) { }
 
-  switchView(view: View) {
+  onSwitchView(view: View) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
@@ -96,11 +83,7 @@ export class ProducersComponent {
     );
   }
 
-  onSelectSort(selectedSort: SortOption) {
-    this.onSort({ active: selectedSort.active, direction: selectedSort.direction === 'asc' ? 'desc' : 'asc' }); // Déclenche l'événement de tri
-  }
-
-  onSort(event: { active: string, direction: 'asc' | 'desc' }) {
+  onSort(event: SortOption) {
     if (this.searchConfig$.value.view == View.TABLE) {
       this.paginator.firstPage();
     }

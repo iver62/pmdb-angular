@@ -5,46 +5,9 @@
     <h2></h2>
     <app-input class="md:w-1/3" label="Réalisateurs" [total]="total" (change)="onSearch($event)">
     </app-input>
-    <div>
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item [matMenuTriggerFor]="display">Affichage</button>
-        @if (searchConfig$.value.view == view.CARDS) {
-        <button mat-menu-item [matMenuTriggerFor]="sort">Tri</button>
-        }
-      </mat-menu>
-
-      <mat-menu #display="matMenu">
-        <button mat-menu-item (click)="switchView(view.CARDS)">
-          <span>Images</span>
-          @if (searchConfig$.value.view == view.CARDS) {
-          <mat-icon>check</mat-icon>
-          }
-        </button>
-        <button mat-menu-item (click)="switchView(view.TABLE)">
-          <span>Tableau</span>
-          @if (searchConfig$.value.view == view.TABLE) {
-          <mat-icon>check</mat-icon>
-          }
-        </button>
-      </mat-menu>
-
-      <mat-menu #sort="matMenu">
-        @for (sort of sorts$ | async; track $index) {
-        <button mat-menu-item (click)="onSelectSort(sort)">
-          <span>{{sort.label}}</span>
-          @if (sort.direction == 'asc') {
-          <mat-icon>arrow_upward_alt</mat-icon>
-          } @else if (sort.direction == 'desc') {
-          <mat-icon>arrow_downward_alt</mat-icon>
-          }
-        </button>
-        }
-      </mat-menu>
-    </div>
+    <app-toolbar [sorts]="sorts$ | async" (switchView)="onSwitchView($event)" (sort)="onSort($event)"></app-toolbar>
   </div>
+
   @if (searchConfig$.value.view == view.CARDS) {
   <div class="h-[calc(100%-76px)] overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
     (scrolled)="onScroll()">
@@ -52,7 +15,7 @@
     </app-persons-list>
   </div>
   } @else {
-  <div class="mh-[calc(100%-132px)] overflow-y-auto">
+  <div class="max-h-[calc(100%-132px)] overflow-y-auto">
     <app-persons-table [service]="directorService" [dataSource]="directors" [sortActive]="searchConfig$.value.sort"
       [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
     </app-persons-table>

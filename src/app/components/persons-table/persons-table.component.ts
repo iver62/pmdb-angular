@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
@@ -23,7 +23,7 @@ export class PersonsTableComponent {
   @Input() service: BaseService;
   @Input() dataSource: Person[];
   @Input() sortActive: string;
-  @Input() sortDirection: 'asc' | 'desc';
+  @Input() sortDirection: SortDirection;
 
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 

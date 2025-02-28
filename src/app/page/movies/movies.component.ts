@@ -1,14 +1,9 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { Component, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
-import { InputComponent, MoviesListComponent, MoviesTableComponent } from '../../components';
+import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
 import { Movie, SearchConfig, SortOption } from '../../models';
 import { MovieService } from '../../services';
@@ -17,21 +12,19 @@ import { MovieService } from '../../services';
   selector: 'app-movies',
   imports: [
     AsyncPipe,
-    FormsModule,
     InfiniteScrollDirective,
     InputComponent,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
     MatPaginatorModule,
-    MatTooltipModule,
     MoviesListComponent,
-    MoviesTableComponent
+    MoviesTableComponent,
+    ToolbarComponent
   ],
   templateUrl: './movies.component.html',
   styleUrl: './movies.component.scss'
 })
 export class MoviesComponent {
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   view = View;
   total: number;
@@ -85,7 +78,7 @@ export class MoviesComponent {
 
   constructor(private movieService: MovieService) { }
 
-  switchView(view: View) {
+  onSwitchView(view: View) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
@@ -95,11 +88,11 @@ export class MoviesComponent {
     );
   }
 
-  onSelectSort(selectedSort: SortOption) {
-    this.onSort({ active: selectedSort.active, direction: selectedSort.direction === 'asc' ? 'desc' : 'asc' }); // Déclenche l'événement de tri
-  }
+  onSort(event: SortOption) {
+    if (this.searchConfig$.value.view == View.TABLE) {
+      this.paginator.firstPage();
+    }
 
-  onSort(event: { active: string, direction: 'asc' | 'desc' }) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
@@ -131,7 +124,7 @@ export class MoviesComponent {
     );
   }
 
-  onPageChange(event: any) {
+  onPageChange(event: PageEvent) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
