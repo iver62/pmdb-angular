@@ -52,7 +52,7 @@
     </app-persons-list>
   </div>
   } @else {
-  <div class="h-[calc(100%-132px)] overflow-y-auto">
+  <div class="mh-[calc(100%-132px)] overflow-y-auto">
     <app-persons-table [service]="actorService" [dataSource]="actors" [sortActive]="searchConfig$.value.sort"
       [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
     </app-persons-table>
