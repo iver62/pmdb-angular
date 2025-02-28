@@ -1,8 +1,10 @@
+import { View } from "../enums"
+
 export interface SearchConfig {
   page?: number,
   size?: number,
   sort?: string,
-  direction?: 'Ascending' | 'Descending'
+  direction?: 'asc' | 'desc'
   term?: string,
-  view?: 'cards' | 'table'
+  view?: View
 }

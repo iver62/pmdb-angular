@@ -6,5 +6,5 @@ export * from './movie.model';
 export * from './movie-actor.model';
 export * from './person.model';
 export * from './search-config.model';
-export * from './sort.model';
+export * from './sort-option.model';
 export * from './technical-team.model';

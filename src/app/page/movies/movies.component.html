@@ -5,33 +5,35 @@
     <h2></h2>
     <app-input class="md:w-1/3" label="Films" [total]="total" (change)="onSearch($event)">
     </app-input>
-    <div class="flex justify-end">
+    <div>
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item [matMenuTriggerFor]="display">Affichage</button>
+        @if (searchConfig$.value.view == view.CARDS) {
         <button mat-menu-item [matMenuTriggerFor]="sort">Tri</button>
+        }
       </mat-menu>
 
       <mat-menu #display="matMenu">
-        <button mat-menu-item (click)="switchView('cards')">
+        <button mat-menu-item (click)="switchView(view.CARDS)">
           <span>Images</span>
-          @if (searchConfig$.value.view == 'cards') {
+          @if (searchConfig$.value.view == view.CARDS) {
           <mat-icon>check</mat-icon>
           }
         </button>
-        <button mat-menu-item (click)="switchView('table')">
+        <button mat-menu-item (click)="switchView(view.TABLE)">
           <span>Tableau</span>
-          @if (searchConfig$.value.view == 'table') {
+          @if (searchConfig$.value.view == view.TABLE) {
           <mat-icon>check</mat-icon>
           }
         </button>
       </mat-menu>
 
       <mat-menu #sort="matMenu">
-        @for (sort of sorts; track $index) {
-        <button mat-menu-item (click)="onSortChange(sort)">
+        @for (sort of sorts$ | async; track $index) {
+        <button mat-menu-item (click)="onSelectSort(sort)">
           <span>{{sort.label}}</span>
           @if (sort.direction == 'asc') {
           <mat-icon>arrow_upward_alt</mat-icon>
@@ -44,90 +46,19 @@
     </div>
   </div>
 
-  @if (searchConfig$.value.view == 'cards') {
+  @if (searchConfig$.value.view == view.CARDS) {
   <div class="movies-container" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
     (scrolled)="onScroll()">
     <app-movies-list [movies]="movies"></app-movies-list>
   </div>
   } @else {
   <div class="table-container">
-    <table mat-table [dataSource]="movies" class="example-table" matSort [matSortActive]="getSortActive()"
-      matSortDisableClear [matSortDirection]="getSortDirection()" (matSortChange)="onSort($event)">
-      <!-- Poster Column -->
-      <ng-container matColumnDef="poster">
-        <th mat-header-cell *matHeaderCellDef>Affiche</th>
-        <td mat-cell *matCellDef="let row">
-          <img mat-card-image [src]="getSafePosterUrl(row.posterFileName)" alt="{{ row.title }}" />
-        </td>
-      </ng-container>
-
-      <!-- Title Column -->
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Titre</th>
-        <td mat-cell class="font-bold text-lg" *matCellDef="let row">{{row.title}}</td>
-      </ng-container>
-
-      <!-- Original title Column -->
-      <ng-container matColumnDef="originalTitle">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title original</th>
-        <td mat-cell *matCellDef="let row">{{row.originalTitle}}</td>
-      </ng-container>
-
-      <!-- Synopsis Column -->
-      <ng-container matColumnDef="synopsis">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Synopsis</th>
-        <td mat-cell *matCellDef="let row">{{row.synopsis}}</td>
-      </ng-container>
-
-      <!-- Release date Column -->
-      <ng-container matColumnDef="releaseDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de sortie</th>
-        <td mat-cell *matCellDef="let row">{{row.releaseDate | date: 'dd/MM/yyyy'}}</td>
-      </ng-container>
-
-      <!-- Running time Column -->
-      <ng-container matColumnDef="runningTime">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Durée</th>
-        <td mat-cell *matCellDef="let row">{{row.runningTime}} min</td>
-      </ng-container>
-
-      <!-- Budget Column -->
-      <ng-container matColumnDef="budget">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Budget</th>
-        <td mat-cell *matCellDef="let row">{{row.budget}}</td>
-      </ng-container>
-
-      <!-- Box-Office Column -->
-      <ng-container matColumnDef="boxOffice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Box-office</th>
-        <td mat-cell *matCellDef="let row">{{row.boxOffice}}</td>
-      </ng-container>
-
-      <!-- Creation date Column -->
-      <ng-container matColumnDef="creationDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de création</th>
-        <td mat-cell *matCellDef="let row">{{row.creationDate | date: 'dd/MM/yyyy'}}</td>
-      </ng-container>
-
-      <!-- Last update Column -->
-      <ng-container matColumnDef="lastUpdate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Dernière modification</th>
-        <td mat-cell *matCellDef="let row">{{row.lastUpdate | date: 'dd/MM/yyyy'}}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row class="cursor-pointer" *matRowDef="let row; columns: displayedColumns;"
-        [routerLink]="['/movies', row.id]">
-      </tr>
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">
-          Aucun film
-        </td>
-      </tr>
-    </table>
+    <app-movies-table [dataSource]="movies" [sortActive]="searchConfig$.value.sort"
+      [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
+    </app-movies-table>
   </div>
   @if (movies.length) {
-  <mat-paginator [pageSizeOptions]="pageSizeOptions" [length]="total" [pageSize]="pageSize"
+  <mat-paginator [pageSizeOptions]="pageSizeOptions" [length]="total" [pageSize]="searchConfig$.value.size"
     (page)="onPageChange($event)" aria-label="Select page of Movie search results">
   </mat-paginator>
   }

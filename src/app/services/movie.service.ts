@@ -27,7 +27,7 @@ export class MovieService {
    * @returns une liste de films
    */
   getMovies(page = 0, size = 20, term: string, sort = 'title', direction = 'Ascending') {
-    return this.http.get<Movie[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
+    return this.http.get<Movie[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`, {
       observe: 'response'
     });
   }
