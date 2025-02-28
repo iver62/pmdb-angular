@@ -12,7 +12,6 @@ import { PersonCardComponent } from './person-card/person-card.component';
 export class PersonsListComponent {
 
   persons = input.required<Person[]>();
-  route = input.required<string>();
 
   @Input() service: BaseService;
 

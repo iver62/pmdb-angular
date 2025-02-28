@@ -1,0 +1,51 @@
+<table mat-table [dataSource]="dataSource" class="example-table" matSort [matSortActive]="sortActive"
+  matSortDisableClear [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
+  <!-- Photo Column -->
+  <ng-container matColumnDef="photo">
+    <th mat-header-cell *matHeaderCellDef>Photo</th>
+    <td mat-cell *matCellDef="let row">
+      <span class="image-container">
+        <img mat-card-image [src]="getSafePhotoUrl(row.photoFileName)" alt="{{ row.name }}" />
+      </span>
+    </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+    <td mat-cell class="font-bold text-lg" *matCellDef="let row">{{row.name}}</td>
+  </ng-container>
+
+  <!-- Date of Birth Column -->
+  <ng-container matColumnDef="dateOfBirth">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de naissance</th>
+    <td mat-cell *matCellDef="let row">{{row.dateOfBirth | date: 'dd/MM/yyyy'}}</td>
+  </ng-container>
+
+  <!-- Date of Death Column -->
+  <ng-container matColumnDef="dateOfDeath">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de décès</th>
+    <td mat-cell *matCellDef="let row">{{row.dateOfDeath | date: 'dd/MM/yyyy'}}</td>
+  </ng-container>
+
+  <!-- Creation date Column -->
+  <ng-container matColumnDef="creationDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de création</th>
+    <td mat-cell *matCellDef="let row">{{row.creationDate | date: 'dd/MM/yyyy'}}</td>
+  </ng-container>
+
+  <!-- Last update Column -->
+  <ng-container matColumnDef="lastUpdate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Dernière modification</th>
+    <td mat-cell *matCellDef="let row">{{row.lastUpdate | date: 'dd/MM/yyyy'}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+  <tr mat-row class="cursor-pointer" *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]">
+  </tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">
+      Aucun film
+    </td>
+  </tr>
+</table>

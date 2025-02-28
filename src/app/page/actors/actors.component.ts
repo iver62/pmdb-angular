@@ -1,12 +1,15 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
-import { InputComponent, PersonsListComponent } from '../../components';
-import { Person, SearchConfig } from '../../models';
+import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { InputComponent, PersonsListComponent, PersonsTableComponent } from '../../components';
+import { View } from '../../enums';
+import { Person, SearchConfig, SortOption } from '../../models';
 import { ActorService } from '../../services';
 
 @Component({
@@ -17,29 +20,45 @@ import { ActorService } from '../../services';
     InputComponent,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
+    MatPaginatorModule,
     MatTooltipModule,
-    PersonsListComponent
+    PersonsListComponent,
+    PersonsTableComponent
   ],
   templateUrl: './actors.component.html',
   styleUrl: './actors.component.css'
 })
 export class ActorsComponent {
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  view = View;
   total: number;
+  pageSizeOptions = [25, 50, 100];
+
+  sortOptions: SortOption[] = [
+    { active: 'name', label: 'Nom', direction: 'asc' },
+    { active: 'dateOfBirth', label: 'Date de naissance', direction: '' },
+    { active: 'dateOfDeath', label: 'Date de décès', direction: '' },
+    { active: 'creationDate', label: 'Date de création', direction: '' },
+    { active: 'lastUpdate', label: 'Dernière modification', direction: '' }
+  ]
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
       size: 50,
       sort: 'name',
-      direction: 'Ascending',
-      term: ''
+      direction: 'asc',
+      term: '',
+      view: View.CARDS
     }
   );
 
   actors$ = this.searchConfig$.pipe(
     switchMap(config =>
-      this.actorService.get(config.page, config.size, config.term).pipe(
+      this.actorService.get(config.page, config.size, config.term, config.sort, config.direction).pipe(
         tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
@@ -48,19 +67,62 @@ export class ActorsComponent {
         })
       )
     ),
-    scan((acc: Person[], result: Person[]) => this.searchConfig$.value.page == 0 ? result : acc.concat(result), []), // Concatène les nouveaux acteurs
+    scan((acc: Person[], result: Person[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE // Concatène les nouvelles données
+      ? result
+      : acc.concat(result), []
+    )
+  );
+
+  sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(
+    map(config =>
+      this.sortOptions.map(option => ({
+        ...option,
+        direction: option.active === config.sort ? config.direction : '' // Met à jour la direction du tri
+      }))
+    )
   );
 
   constructor(public actorService: ActorService) { }
 
-  onSearch(event: string) {
+  switchView(view: View) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
         page: 0,
-        term: event
+        view: view
       }
     );
+  }
+
+  onSelectSort(selectedSort: SortOption) {
+    this.onSort({ active: selectedSort.active, direction: selectedSort.direction === 'asc' ? 'desc' : 'asc' }); // Déclenche l'événement de tri
+  }
+
+  onSort(event: { active: string, direction: 'asc' | 'desc' }) {
+    if (this.searchConfig$.value.view == View.TABLE) {
+      this.paginator.firstPage();
+    }
+
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        sort: event.active,
+        direction: event.direction
+      }
+    );
+  }
+
+  onSearch(event: string) {
+    if (typeof event === 'string') {
+      this.searchConfig$.next(
+        {
+          ...this.searchConfig$.value,
+          page: 0,
+          term: event
+        }
+      );
+    }
   }
 
   onScroll() {
@@ -68,6 +130,16 @@ export class ActorsComponent {
       {
         ...this.searchConfig$.value,
         page: this.searchConfig$.value.page + 1
+      }
+    );
+  }
+
+  onPageChange(event: any) {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: event.pageIndex,
+        size: event.pageSize
       }
     );
   }

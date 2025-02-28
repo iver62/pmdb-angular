@@ -9,7 +9,6 @@ export interface Person {
   dateOfDeath?: Date,
   creationDate?: Date,
   lastUpdate?: Date,
-  // role?: Role,
   movies?: Movie[],
   countries?: Country[]
 }

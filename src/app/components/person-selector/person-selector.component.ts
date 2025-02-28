@@ -63,11 +63,16 @@ export class PersonSelectorComponent {
 
     if (value && !this.personsSignal().map(p => p.name.toLocaleLowerCase()).includes(value.toLocaleLowerCase())) {
       this.loading = true;
-      this.saveFn({ name: value })?.subscribe(result => {
-        this.selectedPersons().push(result);
-        this.control?.setValue(this.selectedPersons);
-        this.loading = false;
-      });
+      this.saveFn({ name: value })?.subscribe(
+        {
+          next: result => {
+            this.selectedPersons().push(result);
+            this.control?.setValue(this.selectedPersons);
+          },
+          error: e => console.error(e),
+          complete: () => this.loading = false
+        }
+      );
     }
 
     // Add our keyword
