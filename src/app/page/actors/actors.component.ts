@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
@@ -75,10 +75,12 @@ export class ActorsComponent {
 
   sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(
     map(config =>
-      this.sortOptions.map(option => ({
-        ...option,
-        direction: option.active === config.sort ? config.direction : '' // Met à jour la direction du tri
-      }))
+      this.sortOptions.map(option => (
+        {
+          ...option,
+          direction: option.active === config.sort ? config.direction : '' // Met à jour la direction du tri
+        })
+      )
     )
   );
 
@@ -134,7 +136,7 @@ export class ActorsComponent {
     );
   }
 
-  onPageChange(event: any) {
+  onPageChange(event: PageEvent) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,

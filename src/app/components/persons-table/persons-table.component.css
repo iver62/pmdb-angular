@@ -7,7 +7,7 @@
   overflow: hidden;
   /* Cache les bords dépassants */
   display: flex;
-  border: 1px solid #333;
+  border: 1px solid gray;
   /* Bordure optionnelle */
 }
 

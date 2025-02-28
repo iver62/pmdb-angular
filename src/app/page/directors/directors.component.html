@@ -1,23 +1,66 @@
+@let directors = directors$ | async;
+
 <div class="h-full">
   <div class="flex items-center justify-between">
     <h2></h2>
     <app-input class="md:w-1/3" label="Réalisateurs" [total]="total" (change)="onSearch($event)">
     </app-input>
-    <div class="flex justify-end">
-      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" matTooltip="Tableau">
-        <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images">
-        <mat-icon class="material-symbols-outlined">image</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
-        <mat-icon>sort</mat-icon>
-      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="display">Affichage</button>
+        @if (searchConfig$.value.view == view.CARDS) {
+        <button mat-menu-item [matMenuTriggerFor]="sort">Tri</button>
+        }
+      </mat-menu>
+
+      <mat-menu #display="matMenu">
+        <button mat-menu-item (click)="switchView(view.CARDS)">
+          <span>Images</span>
+          @if (searchConfig$.value.view == view.CARDS) {
+          <mat-icon>check</mat-icon>
+          }
+        </button>
+        <button mat-menu-item (click)="switchView(view.TABLE)">
+          <span>Tableau</span>
+          @if (searchConfig$.value.view == view.TABLE) {
+          <mat-icon>check</mat-icon>
+          }
+        </button>
+      </mat-menu>
+
+      <mat-menu #sort="matMenu">
+        @for (sort of sorts$ | async; track $index) {
+        <button mat-menu-item (click)="onSelectSort(sort)">
+          <span>{{sort.label}}</span>
+          @if (sort.direction == 'asc') {
+          <mat-icon>arrow_upward_alt</mat-icon>
+          } @else if (sort.direction == 'desc') {
+          <mat-icon>arrow_downward_alt</mat-icon>
+          }
+        </button>
+        }
+      </mat-menu>
     </div>
   </div>
+  @if (searchConfig$.value.view == view.CARDS) {
   <div class="h-[calc(100%-76px)] overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
     (scrolled)="onScroll()">
-    <app-persons-list title="Réalisateurs" [persons]="directors$ | async" [service]="directorService"
-      route="/directors">
+    <app-persons-list title="Réalisateurs" [persons]="directors$ | async" [service]="directorService">
     </app-persons-list>
   </div>
+  } @else {
+  <div class="h-[calc(100%-132px)] overflow-y-auto">
+    <app-persons-table [service]="directorService" [dataSource]="directors" [sortActive]="searchConfig$.value.sort"
+      [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
+    </app-persons-table>
+  </div>
+  @if (directors.length) {
+  <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="total" [pageSize]="searchConfig$.value.size"
+    (page)="onPageChange($event)" aria-label="Select page of Movie search results">
+  </mat-paginator>
+  }
+  }
+</div>
