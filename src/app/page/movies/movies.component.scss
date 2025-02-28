@@ -1,0 +1,29 @@
+.selected {
+  background-color: var(--mdc-filled-text-field-container-color, var(--mat-sys-surface-variant));
+  font-weight: bold;
+}
+
+.movies-container {
+  overflow-y: auto;
+  height: calc(100% - 76px);
+}
+
+.table-container {
+  overflow-y: auto;
+  max-height: calc(100% - 132px);
+
+  img {
+    height: 130px;
+    width: 90px;
+    max-width: fit-content;
+  }
+}
+
+.mat-mdc-paginator {
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+}
+
+.spacer {
+  flex: 1;
+}

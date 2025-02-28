@@ -1,9 +1,0 @@
-.section-title {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
-}
-
-.movies-container {
-  overflow-y: auto;
-  height: calc(100% - 76px);
-}

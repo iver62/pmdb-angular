@@ -17,8 +17,17 @@ export class MovieService {
     });
   }
 
-  getPaginatedMovies(page = 0, size = 20, title: string, sort = 'title', direction = 'Ascending') {
-    return this.http.get<Movie[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&title=${title}`, {
+  /**
+   * Récupère une liste paginée de n films triés et filtrés. 
+   * @param page la page à récupérer
+   * @param size le nombre de films
+   * @param term le filtre
+   * @param sort la propriété à filtrer
+   * @param direction le sens du tri ('Ascending' ou 'Descending')
+   * @returns une liste de films
+   */
+  getMovies(page = 0, size = 20, term: string, sort = 'title', direction = 'Ascending') {
+    return this.http.get<Movie[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
       observe: 'response'
     });
   }
@@ -33,6 +42,10 @@ export class MovieService {
 
   getActors(id: number) {
     return this.http.get<MovieActor[]>(`${this.basePath}/${id}/actors`);
+  }
+
+  getTechnicalTeam(id: number) {
+    return this.http.get<TechnicalTeam>(`${this.basePath}/${id}/technical-team`);
   }
 
   getProducers(id: number) {

@@ -6,7 +6,7 @@ import { TechnicalTeam } from "./technical-team.model";
 
 export interface Movie {
   id?: number,
-  title: string,
+  title?: string,
   originalTitle?: string,
   synopsis?: string,
   releaseDate?: Date,

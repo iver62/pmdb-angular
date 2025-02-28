@@ -3,5 +3,6 @@ export interface SearchConfig {
   size?: number,
   sort?: string,
   direction?: 'Ascending' | 'Descending'
-  term?: string
+  term?: string,
+  view?: 'cards' | 'table'
 }

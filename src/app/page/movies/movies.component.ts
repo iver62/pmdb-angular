@@ -1,19 +1,19 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DomSanitizer } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
-import { MoviesListComponent } from '../../components';
-import { DelayedInputDirective } from '../../directives';
-import { Movie, SearchConfig } from '../../models';
+import { InputComponent, MoviesListComponent } from '../../components';
+import { Movie, SearchConfig, Sort } from '../../models';
 import { MovieService } from '../../services';
 
 @Component({
@@ -21,125 +21,201 @@ import { MovieService } from '../../services';
   imports: [
     AsyncPipe,
     DatePipe,
-    DelayedInputDirective,
     FormsModule,
     InfiniteScrollDirective,
+    InputComponent,
     MatButtonModule,
-    MatFormFieldModule,
     MatIconModule,
-    MatInputModule,
+    MatMenuModule,
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
     MatTooltipModule,
-    MoviesListComponent
+    MoviesListComponent,
+    RouterLink
   ],
   templateUrl: './movies.component.html',
-  styleUrl: './movies.component.css'
+  styleUrl: './movies.component.scss'
 })
 export class MoviesComponent {
 
-  view: 'table' | 'cards' = 'cards';
   total: number;
+  pageSize = 50;
+  pageSizeOptions = [25, 50, 100];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
-      size: 20,
+      size: 50,
       sort: 'title',
       direction: 'Ascending',
-      term: ''
+      term: '',
+      view: 'cards'
     }
   );
 
   movies$ = this.searchConfig$.pipe(
     switchMap(config =>
-      this.movieService.getPaginatedMovies(config.page, config.size, config.term).pipe(
+      this.movieService.getMovies(config.page, config.size, config.term, config.sort, config.direction).pipe(
         tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
-        map(response =>
-          (response.body ?? []).map(m => (
-            {
-              id: m.id,
-              title: m.title,
-              releaseDate: m.releaseDate,
-              posterFileName: m.posterFileName
-            }
-          ))
-        ),
+        map(response => (response.body ?? [])),
         catchError(error => {
           console.error('Erreur API:', error);
           return of([]); // Retourne un tableau vide en cas d'erreur
         })
       )
     ),
-    scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 ? result : acc.concat(result), []), // Concatène les nouvelles données
+    scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == 'table' // Concatène les nouvelles données
+      ? result
+      : acc.concat(result), []
+    )
   );
 
-  resultsLength = 0;
+  sorts: Sort[] = [
+    {
+      active: 'title',
+      label: 'Titre',
+      direction: 'asc'
+    },
+    {
+      active: 'releaseDate',
+      label: 'Date de sortie',
+      direction: ''
+    },
+    {
+      active: 'runningTime',
+      label: 'Durée',
+      direction: ''
+    },
+    {
+      active: 'budget',
+      label: 'Budget',
+      direction: ''
+    },
+    {
+      active: 'boxOffice',
+      label: 'Box-office',
+      direction: ''
+    },
+    {
+      active: 'creationDate',
+      label: 'Date de création',
+      direction: ''
+    },
+    {
+      active: 'lastUpdate',
+      label: 'Dernière modification',
+      direction: ''
+    }
+  ]
+
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  displayedColumns = ['title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice'];
-  data: Movie[] = [];
+  displayedColumns = ['poster', 'title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice', 'creationDate', 'lastUpdate'];
+  // columns: Column[] = [
+  //   {
+  //     columnDef: 'poster',
+  //     columnLabel: 'Affiche',
+  //     columnValue: (movie: Movie) => movie.posterFileName
+  //   },
+  //   {
+  //     columnDef: 'title',
+  //     columnLabel: 'Titre',
+  //     columnValue: (movie: Movie) => movie.title
+  //   },
+  //   {
+  //     columnDef: 'originalTitle',
+  //     columnLabel: 'Titre original',
+  //     columnValue: (movie: Movie) => movie.originalTitle
+  //   },
+  //   {
+  //     columnDef: 'synopsis',
+  //     columnLabel: 'Synopsis',
+  //     columnValue: (movie: Movie) => movie.synopsis
+  //   },
+  //   {
+  //     columnDef: 'releaseDate',
+  //     columnLabel: 'Date de sortie',
+  //     columnValue: (movie: Movie) => movie.releaseDate
+  //   },
+  //   {
+  //     columnDef: 'runningTime',
+  //     columnLabel: 'Durée',
+  //     columnValue: (movie: Movie) => movie.runningTime
+  //   },
+  //   {
+  //     columnDef: 'budget',
+  //     columnLabel: 'Budget',
+  //     columnValue: (movie: Movie) => movie.budget
+  //   },
+  //   {
+  //     columnDef: 'boxOffice',
+  //     columnLabel: 'Box-office',
+  //     columnValue: (movie: Movie) => movie.boxOffice
+  //   }
+  // ];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  constructor(
+    private movieService: MovieService,
+    private sanitizer: DomSanitizer
+  ) { }
 
-  constructor(private movieService: MovieService) { }
+  getSafePosterUrl(posterFileName: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(this.movieService.getPosterUrl(posterFileName));
+  }
 
-  // ngAfterViewInit() {
-  //   // If the user changes the sort order, reset back to the first page.
-  //   this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+  getSortActive() {
+    return this.searchConfig$.value.sort;
+  }
 
-  //   merge(this.sort.sortChange, this.paginator.page)
-  //     .pipe(
-  //       startWith({}),
-  //       switchMap(() => {
-  //         this.isLoadingResults = true;
-  //         return this.movieService!.getAll().pipe(catchError(() => of(null)));
-  //       }),
-  //       map(data => {
-  //         // Flip flag to show that loading has finished.
-  //         this.isLoadingResults = false;
-  //         this.isRateLimitReached = data === null;
-
-  //         if (data === null) {
-  //           return [];
-  //         }
-
-  //         // Only refresh the result length if there is new data. In case of rate
-  //         // limit errors, we do not want to reset the paginator to zero, as that
-  //         // would prevent users from re-triggering requests.
-  //         // this.resultsLength = data.total_count;
-  //         return data;
-  //       }),
-  //     )
-  //     .subscribe(data => (this.data = data));
-  // }
+  getSortDirection() {
+    return this.searchConfig$.value.direction == 'Ascending' ? 'asc' : 'desc';
+  }
 
   switchView(view: 'table' | 'cards') {
-    this.view = view;
-  }
-
-  // Effacer la recherche
-  clearSearch() {
+    this.pageSize = this.searchConfig$.value.size;
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
         page: 0,
-        term: ''
+        view: view
       }
     );
   }
 
-  onSearch(event: Event) {
+  onSortChange(selectedSort: Sort) {
+    this.sorts.forEach(sort => {
+      if (sort.active !== selectedSort.active) {
+        sort.direction = ''; // Réinitialise les autres directions
+      }
+    });
+    selectedSort.direction = selectedSort.direction === 'asc' ? 'desc' : 'asc'; // Alterne entre 'asc' et 'desc'
+
+    this.onSort(selectedSort); // Déclenche l'événement de tri
+  }
+
+  onSort(event: any) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
         page: 0,
-        term: (event.target as HTMLInputElement).value
+        sort: event.active,
+        direction: event.direction == 'asc' ? 'Ascending' : 'Descending'
       }
     );
+  }
+
+  onSearch(event: string) {
+    if (typeof event === 'string') {
+      this.searchConfig$.next(
+        {
+          ...this.searchConfig$.value,
+          page: 0,
+          term: event
+        }
+      );
+    }
   }
 
   onScroll() {
@@ -151,4 +227,13 @@ export class MoviesComponent {
     );
   }
 
+  onPageChange(event: any) {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: event.pageIndex,
+        size: event.pageSize
+      }
+    );
+  }
 }
