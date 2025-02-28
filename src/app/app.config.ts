@@ -1,33 +1,38 @@
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideRouter } from '@angular/router';
+import 'moment/locale/fr'; // Importation explicite de la locale française pour Moment.js
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { getFrenchPaginatorIntl } from './custom-paginator';
+import { loaderInterceptor } from './interceptors';
 
 export const APP_DATE_FORMATS = {
   parse: {
-    dateInput: 'L'
+    dateInput: 'L' // Format de saisie (ex: 25/02/2025)
   },
   display: {
-    dateInput: 'L',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'L',
-    monthYearA11yLabel: 'MMMM YYYY'
+    dateInput: 'L', // Format d'affichage (ex: 25/02/2025)
+    monthYearLabel: 'MMM YYYY', // Label du mois et de l'année (ex: févr. 2025)
+    dateA11yLabel: 'L', // Accessibilité : affichage complet (ex: 25 février 2025)
+    monthYearA11yLabel: 'MMMM YYYY' // Accessibilité : mois + année (ex: février 2025)
   }
 };
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([loaderInterceptor])
+    ),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    { provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl() },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
-    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+    { provide: MAT_DATE_LOCALE, useValue: 'fr' }
   ]
 };

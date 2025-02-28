@@ -28,6 +28,9 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="sidenav-content">
+      @if (loading$ | async) {
+      <mat-spinner></mat-spinner>
+      }
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

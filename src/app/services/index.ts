@@ -18,5 +18,6 @@ export * from './persons/visual-effects-supervisor.service';
 export * from './award.service';
 export * from './country.service';
 export * from './genre.service';
+export * from './loader.service';
 export * from './movie.service';
 

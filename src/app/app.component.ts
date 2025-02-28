@@ -1,28 +1,36 @@
 import { MediaMatcher } from '@angular/cdk/layout';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { Observable } from 'rxjs';
+import { LoaderService } from './services';
 
 @Component({
   selector: 'app-root',
   imports: [
+    AsyncPipe,
     MatButtonModule,
     MatIconModule,
     MatListModule,
     MatSidenavModule,
+    MatProgressSpinnerModule,
     MatToolbarModule,
     RouterLink,
     RouterOutlet
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'PMDB';
+
+  loading$: Observable<boolean>;
 
   mobileQuery: MediaQueryList;
 
@@ -111,7 +119,12 @@ export class AppComponent {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(
+    changeDetectorRef: ChangeDetectorRef,
+    private loaderService: LoaderService,
+    media: MediaMatcher,
+  ) {
+    this.loading$ = this.loaderService.loading$;
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
