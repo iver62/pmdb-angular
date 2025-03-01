@@ -1,6 +1,7 @@
 import { Person } from "../models";
 
 export class PersonUtils {
+
   static calculateAge(person: Person): number | null {
     if (!person.dateOfBirth) return null;
 

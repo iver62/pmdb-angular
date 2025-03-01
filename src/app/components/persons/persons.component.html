@@ -1,0 +1,29 @@
+@let persons = persons$ | async;
+
+<div class="h-full">
+  <div class="flex items-center justify-between">
+    <h2></h2>
+    <app-input class="md:w-1/3" [label]="viewTitle" [total]="total" (change)="onSearch($event)">
+    </app-input>
+    <app-toolbar [sorts]="sorts$ | async" (switchView)="onSwitchView($event)" (sort)="onSort($event)"></app-toolbar>
+  </div>
+
+  @if (searchConfig$.value.view == view.CARDS) {
+  <div class="h-[calc(100%-76px)] overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
+    (scrolled)="onScroll()">
+    <app-persons-list title="Acteurs" [persons]="persons" [service]="personService">
+    </app-persons-list>
+  </div>
+  } @else {
+  <div class="max-h-[calc(100%-132px)] overflow-y-auto">
+    <app-persons-table [service]="personService" [dataSource]="persons" [sortActive]="searchConfig$.value.sort"
+      [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
+    </app-persons-table>
+  </div>
+  @if (persons.length) {
+  <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="total" [pageSize]="searchConfig$.value.size"
+    (page)="onPageChange($event)" aria-label="Select page of Movie search results">
+  </mat-paginator>
+  }
+  }
+</div>
