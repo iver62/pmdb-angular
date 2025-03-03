@@ -1,0 +1,17 @@
+<mat-form-field class="w-full">
+  <mat-label>{{label}}</mat-label>
+  <mat-date-range-input [rangePicker]="datepicker">
+    <input matStartDate [formControl]="startDateControl" [placeholder]="startDatePlaceholder">
+    <input matEndDate [formControl]="endDateControl" [placeholder]="startDatePlaceholder">
+  </mat-date-range-input>
+  <mat-hint>JJ/MM/YYYY – JJ/MM/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+  <mat-date-range-picker #datepicker></mat-date-range-picker>
+
+  @if (startDateControl.hasError('matStartDateInvalid')) {
+  <mat-error>Date de Début invalide</mat-error>
+  }
+  @if (endDateControl.hasError('matEndDateInvalid')) {
+  <mat-error>Date de Fin invalide</mat-error>
+  }
+</mat-form-field>
