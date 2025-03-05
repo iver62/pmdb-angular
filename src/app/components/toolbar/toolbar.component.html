@@ -1,16 +1,28 @@
 <div>
-  <button mat-icon-button matTooltip="Filtrer" (click)="openFiltersDialog()">
-    <mat-icon class="material-symbols-outlined">filter_alt</mat-icon>
+  <!-- Filtrer -->
+  <button mat-button matTooltip="Filtrer" (click)="openFiltersDialog()">
+    Filtrer
   </button>
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item [matMenuTriggerFor]="display">Affichage</button>
-    @if (currentView == view.CARDS) {
-    <button mat-menu-item [matMenuTriggerFor]="sort">Tri</button>
+
+  <!-- Trier -->
+  @if (currentView == view.CARDS) {
+  <button mat-button [matMenuTriggerFor]="sort">
+    <span>{{selectedSort().label}}</span>
+    @if (selectedSort().direction == 'asc') {
+    <mat-icon>arrow_upward_alt</mat-icon>
+    } @else if (selectedSort().direction == 'desc') {
+    <mat-icon>arrow_downward_alt</mat-icon>
     }
-  </mat-menu>
+  </button>
+  }
+  <!-- Affichage -->
+  <button mat-button [matMenuTriggerFor]="display">
+    @if (currentView == view.CARDS) {
+    <span>Images</span>
+    } @else if (currentView == view.TABLE) {
+    <span>Tableau</span>
+    }
+  </button>
 
   <mat-menu #display="matMenu">
     <button mat-menu-item (click)="onSwitchView(view.CARDS)">
@@ -28,7 +40,7 @@
   </mat-menu>
 
   <mat-menu #sort="matMenu">
-    @for (sort of sorts; track $index) {
+    @for (sort of sorts(); track $index) {
     <button mat-menu-item (click)="onSelectSort(sort)">
       <span>{{sort.label}}</span>
       @if (sort.direction == 'asc') {
