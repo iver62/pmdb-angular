@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Country, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
+import { Country, Filters, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
+import { DateService } from './date.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,10 @@ export class MovieService {
 
   private basePath = ' http://localhost:8080/api/movies'
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private dateService: DateService,
+    private http: HttpClient
+  ) { }
 
   getAll(title: string, sort = 'title', direction = 'Ascending') {
     return this.http.get<Movie[]>(`${this.basePath}/all?sort=${sort}&direction=${direction}&title=${title}`, {
@@ -26,10 +30,24 @@ export class MovieService {
    * @param direction le sens du tri ('Ascending' ou 'Descending')
    * @returns une liste de films
    */
-  getMovies(page = 0, size = 20, term: string, sort = 'title', direction = 'Ascending') {
-    return this.http.get<Movie[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`, {
-      observe: 'response'
-    });
+  getMovies(page = 0, size = 50, term = '', sort = 'title', direction = 'Ascending', filters?: Filters) {
+    const params = new URLSearchParams();
+
+    params.set('page', page.toString());
+    params.set('size', size.toString());
+    params.set('sort', sort);
+    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    term && params.set('term', encodeURIComponent(term));
+    filters?.startReleaseDate && params.set('start-release-date', this.dateService.format(filters.startReleaseDate, 'YYYY-MM-DD'));
+    filters?.endReleaseDate && params.set('end-release-date', this.dateService.format(filters.endReleaseDate, 'YYYY-MM-DD'));
+    filters?.startCreationDate && params.set('start-creation-date', this.dateService.format(filters?.startCreationDate, 'YYYY-MM-DDTHH:mm:ss'));
+    filters?.endCreationDate && params.set('end-creation-date', this.dateService.format(filters?.endCreationDate, 'YYYY-MM-DDTHH:mm:ss'));
+    filters?.startLastUpdate && params.set('start-last-update', this.dateService.format(filters?.startLastUpdate, 'YYYY-MM-DDTHH:mm:ss'));
+    filters?.endLastUpdate && params.set('end-last-update', this.dateService.format(filters?.endLastUpdate, 'YYYY-MM-DDTHH:mm:ss'));
+    filters?.countries?.forEach(country => params.append('country', country.id.toString()));
+    filters?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
+
+    return this.http.get<Movie[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }
 
   getOne(id: number) {

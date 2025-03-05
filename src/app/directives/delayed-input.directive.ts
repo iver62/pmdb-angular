@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-import { debounceTime, distinctUntilChanged, fromEvent, map, Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, fromEvent, map, Subject, takeUntil } from 'rxjs';
 
 @Directive({
   selector: '[appDelayedInput]'
@@ -16,6 +16,7 @@ export class DelayedInputDirective {
   ngOnInit() {
     fromEvent(this.elementRef.nativeElement, 'input')
       .pipe(
+        filter(event => event instanceof InputEvent),
         debounceTime(this.delayTime),
         map(event => (event.target as HTMLInputElement).value),
         distinctUntilChanged(),

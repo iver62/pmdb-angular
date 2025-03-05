@@ -31,15 +31,11 @@ export class InputComponent {
   pattern: string;
 
   clearSearch() {
-    console.log('CLEAR');
-
     this.pattern = '';
     this.change.emit(this.pattern);
   }
 
   onSearch() {
-    console.log('SEARCH');
-
     this.change.emit(this.pattern);
   }
 

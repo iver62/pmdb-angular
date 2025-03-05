@@ -5,7 +5,9 @@
     <h2></h2>
     <app-input class="md:w-1/3" label="Films" [total]="total" (change)="onSearch($event)">
     </app-input>
-    <app-toolbar [sorts]="sorts$ | async" (switchView)="onSwitchView($event)" (sort)="onSort($event)"></app-toolbar>
+    <app-toolbar [sorts]="sorts$ | async" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
+      (sort)="onSort($event)">
+    </app-toolbar>
   </div>
 
   @if (searchConfig$.value.view == view.CARDS) {

@@ -2,10 +2,11 @@ import { AsyncPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
 import { Movie, SearchConfig, SortOption } from '../../models';
+import { Filters } from '../../models/filters.model';
 import { MovieService } from '../../services';
 
 @Component({
@@ -37,7 +38,7 @@ export class MoviesComponent {
     { active: 'boxOffice', label: 'Box-office', direction: '' },
     { active: 'creationDate', label: 'Date de création', direction: '' },
     { active: 'lastUpdate', label: 'Dernière modification', direction: '' }
-  ]
+  ];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
@@ -46,13 +47,15 @@ export class MoviesComponent {
       sort: 'title',
       direction: 'asc',
       term: '',
+      filters: {},
       view: View.CARDS
     }
   );
 
   movies$ = this.searchConfig$.pipe(
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.filters === c2.filters),
     switchMap(config =>
-      this.movieService.getMovies(config.page, config.size, config.term, config.sort, config.direction).pipe(
+      this.movieService.getMovies(config.page, config.size, config.term, config.sort, config.direction, config.filters).pipe(
         tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
@@ -77,6 +80,16 @@ export class MoviesComponent {
   );
 
   constructor(private movieService: MovieService) { }
+
+  onFilter(event: Filters) {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        filters: event
+      }
+    );
+  }
 
   onSwitchView(view: View) {
     this.searchConfig$.next(
@@ -109,7 +122,7 @@ export class MoviesComponent {
         {
           ...this.searchConfig$.value,
           page: 0,
-          term: event
+          term: event.trim()
         }
       );
     }

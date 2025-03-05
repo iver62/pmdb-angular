@@ -1,9 +1,16 @@
 <mat-form-field class="w-full">
   <mat-label>{{label}}</mat-label>
-  <mat-select [placeholder]="placeholder" [formControl]="control" multiple>
+  <mat-select [placeholder]="placeholder" [formControl]="control" [compareWith]="compareObjects"
+    (openedChange)="openedChange($event)" multiple>
+    <mat-select-trigger>
+      {{control.value?.[0].display() || ''}}
+      @if ((control.value?.length || 0) > 1) {
+      (+{{(control.value?.length || 0) - 1}} {{' autres'}})
+      }
+    </mat-select-trigger>
     <mat-option>
       <ngx-mat-select-search appDelayedInput (delayedInput)="updateSearch($event)" [placeholderLabel]="placeholderLabel"
-        [noEntriesFoundLabel]="noEntriesFoundLabel">
+        [noEntriesFoundLabel]="noEntriesFoundLabel" [showToggleAllCheckbox]="true" (toggleAll)="onToggleAll($event)">
       </ngx-mat-select-search>
     </mat-option>
     @for (item of items; track item.id) {
