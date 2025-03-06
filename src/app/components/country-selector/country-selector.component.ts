@@ -1,24 +1,24 @@
-import { ENTER } from '@angular/cdk/keycodes';
-import { Component, computed, effect, input, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { AsyncPipe } from '@angular/common';
+import { Component, effect, ElementRef, input, signal, ViewChild } from '@angular/core';
+import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { NgPipesModule } from 'ngx-pipes';
-import { Country } from '../../models';
+import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
+import { DelayedInputDirective } from '../../directives';
+import { Country, SearchConfig } from '../../models';
 import { CountryService } from '../../services';
 
 @Component({
   selector: 'app-country-selector',
   imports: [
-    FormsModule,
+    AsyncPipe,
+    DelayedInputDirective,
     MatAutocompleteModule,
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
-    NgPipesModule,
     ReactiveFormsModule
   ],
   templateUrl: './country-selector.component.html',
@@ -26,20 +26,58 @@ import { CountryService } from '../../services';
 })
 export class CountrySelectorComponent {
 
+  @ViewChild('input') input: ElementRef<HTMLInputElement>;
+  @ViewChild('auto', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
+
   formGroupName = input.required<string>();
-
-  countries = toSignal(this.countryService.getAll());
   selectedCountries = signal<Country[]>([]);
-  currentCountry = signal<string>('');
 
-  readonly filteredCountries = computed(() => this.countries()
-    ?.filter(country => !this.selectedCountries().some(c => c.id === country.id))
-    ?.filter(country => country.nomFrFr.toLowerCase().includes(this.currentCountry()?.toLowerCase()))
+  searchConfig$ = new BehaviorSubject<SearchConfig>(
+    {
+      page: 0,
+      size: 50,
+      sort: 'nomFrFr',
+      direction: 'asc',
+      term: ''
+    }
   );
 
-  readonly separatorKeysCodes: number[] = [ENTER];
+  // Liste des pays filtrés
+  readonly countries$ = this.searchConfig$.pipe(
+    tap(() => this.isLoadingMore = true),
+    switchMap(config => this.countryService.getCountries(config.page, config.size, config.term).pipe(
+      tap(response => {
+        this.isLoadingMore = false;
+        this.total = +(response.headers.get('X-Total-Count') ?? 0)
+      }),
+      map(response => response.body),
+      tap(result => result.map(c => console.log(c.nomFrFr))),
+      map(countries =>
+        countries
+          .filter(country => !this.selectedCountries().some(c => c.id === country.id))
+          .map(c => new Country(c))
+      ),
+      catchError(() => {
+        this.isLoadingMore = false;
+        return of([]);
+      })
+    )),
+    scan((acc: Country[], result: Country[]) => {
+      if (this.searchConfig$.value.page == 0) {
+        this.loaded = result.length;
+        return result;
+      } else {
+        const newArray = acc.concat(result);
+        this.loaded = newArray.length;
+        return newArray;
+      }
+    }, [])
+  );
 
   control: FormControl;
+  total: number;
+  loaded = 0;
+  private isLoadingMore = false;
 
   constructor(
     private countryService: CountryService,
@@ -51,35 +89,54 @@ export class CountrySelectorComponent {
     });
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+  ngAfterViewInit() {
+    this.matAutocomplete.opened.subscribe(() => {
+      setTimeout(() => {
+        const panel = document.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
+        if (panel) {
+          panel.addEventListener('scroll', this.onScroll.bind(this));
+        }
+      }, 100);
+    });
+  }
 
-    // Add our keyword
-    if (value && this.countries().map(country => country.nomFrFr).includes(value)) {
-      this.control.setValue(this.selectedCountries);
+  onOpenedAutocomplete() {
+    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: '' });
+  }
+
+  onSearch(event: string) {
+    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event });
+  }
+
+  private onScroll(event: Event) {
+    const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded < this.total) {
+      this.searchConfig$.next({ ...this.searchConfig$.value, page: this.searchConfig$.value.page + 1 }
+      )
     }
-
-    // Clear the input value
-    this.currentCountry.set('');
   }
 
   remove(country: Country) {
     const index = this.selectedCountries().findIndex(c => c.id === country.id);
 
     if (index >= 0) {
-      this.selectedCountries().splice(index, 1);
-      this.control.setValue(this.selectedCountries);
-      // this.announcer.announce(`Utilisateur ${user.firstName} ${user.lastName} supprimé`);
+      this.selectedCountries.update(countries => countries.filter(c => c.id !== country.id));
+      this.control.setValue([...this.selectedCountries()]);
+      this.searchConfig$.next({ ...this.searchConfig$.value, term: '' });
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  selected(event: MatAutocompleteSelectedEvent) {
     const country: Country = event.option.value;
 
     if (!this.selectedCountries().some(c => c.id === country.id)) {
-      this.selectedCountries().push(country);
-      this.control.setValue(this.selectedCountries);
-      this.currentCountry.set('');
+      this.selectedCountries.set([...this.selectedCountries(), country]);
+      this.control.setValue([...this.selectedCountries()]);
+
+      if (input) {
+        this.input.nativeElement.value = ''; // Clear the input value
+      }
     }
   }
 

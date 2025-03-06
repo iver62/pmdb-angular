@@ -1,4 +1,4 @@
-<mat-form-field class="w-full">
+<mat-form-field class="w-full" [style.height.px]="92">
   <mat-label>Pays</mat-label>
   <mat-chip-grid #countriesChipGrid aria-label="Country selection" [formControl]="control">
     @for (country of selectedCountries(); track country.id) {
@@ -9,12 +9,11 @@
       </button>
     </mat-chip-row>
     }
-    <input placeholder="Ajouter..." [(ngModel)]="currentCountry" [matChipInputFor]="countriesChipGrid"
-      [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
-      [ngModelOptions]="{standalone: true}" />
+    <input #input appDelayedInput (delayedInput)="onSearch($event)" placeholder="Ajouter..."
+      [matChipInputFor]="countriesChipGrid" [matAutocomplete]="auto" />
   </mat-chip-grid>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    @for (country of filteredCountries() | orderBy: ['nomFrFr']; track country.id) {
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" (opened)="onOpenedAutocomplete()">
+    @for (country of countries$ | async; track country.id) {
     <mat-option [value]="country">{{country?.nomFrFr}}</mat-option>
     }
   </mat-autocomplete>
