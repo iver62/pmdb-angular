@@ -1,9 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { BehaviorSubject, catchError, map, of, switchMap } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
 import { Country, Genre } from '../../models';
 import { CountryService, GenreService } from '../../services';
 import { DateRangePickerComponent } from "../date-range-picker/date-range-picker.component";
@@ -25,12 +26,12 @@ import { MultiselectComponent } from '../multiselect/multiselect.component';
 export class FiltersDialogComponent {
 
   // Termes de recherche
-  searchCountryTerm = new BehaviorSubject('');
-  searchGenreTerm = new BehaviorSubject('');
+  searchCountryTerm = new BehaviorSubject(EMPTY_STRING);
+  searchGenreTerm = new BehaviorSubject(EMPTY_STRING);
 
   // Liste des genres filtrés
   genres$ = this.searchGenreTerm.pipe(
-    switchMap(term => this.genreService.getGenres(term)
+    switchMap(term => this.genreService.getAll(term)
       .pipe(
         map(genres => genres.map(g => new Genre(g))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
@@ -50,26 +51,25 @@ export class FiltersDialogComponent {
 
   readonly form = new FormGroup(
     {
-      startReleaseDate: new FormControl<Date | null>(null),
-      endReleaseDate: new FormControl<Date | null>(null),
-      minRunningTime: new FormControl<number | null>(0),
-      maxRunningTime: new FormControl<number | null>(300),
-      minBudget: new FormControl<number | null>(0),
-      maxBudget: new FormControl<number | null>(1000000000),
-      minBoxOffice: new FormControl<number | null>(0),
-      maxBoxOffice: new FormControl<number | null>(1000000000),
+      fromReleaseDate: new FormControl<Date | null>(null),
+      toReleaseDate: new FormControl<Date | null>(null),
+      fromBirthDate: new FormControl<Date | null>(null),
+      toBirthDate: new FormControl<Date | null>(null),
+      fromDeathDate: new FormControl<Date | null>(null),
+      toDeathDate: new FormControl<Date | null>(null),
       genres: new FormControl<number[]>(null),
       countries: new FormControl<number[]>(null),
-      startCreationDate: new FormControl<Date | null>(null),
-      endCreationDate: new FormControl<Date | null>(null),
-      startLastUpdate: new FormControl<Date | null>(null),
-      endLastUpdate: new FormControl<Date | null>(null)
+      fromCreationDate: new FormControl<Date | null>(null),
+      toCreationDate: new FormControl<Date | null>(null),
+      fromLastUpdate: new FormControl<Date | null>(null),
+      toLastUpdate: new FormControl<Date | null>(null)
     }
   );
 
   constructor(
     private countryService: CountryService,
-    private genreService: GenreService
+    private genreService: GenreService,
+    @Inject(MAT_DIALOG_DATA) public data: string[]
   ) { }
 
   // Fonction pour mettre à jour la recherche
@@ -80,16 +80,5 @@ export class FiltersDialogComponent {
   // Fonction pour mettre à jour la recherche
   updateGenreSearch(term: string) {
     this.searchGenreTerm.next(term);
-  }
-
-  formatLabel(value: number) {
-    if (value >= 1000 && value < 1000000) {
-      return Math.round(value / 1000) + 'k';
-    } else if (value >= 1000000 && value < 1000000000) {
-      return Math.round(value / 1000000) + 'M';
-    } else if (value >= 1000000000) {
-      return Math.round(value / 1000000000) + 'G';
-    }
-    return `${value}`;
   }
 }

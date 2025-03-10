@@ -1,3 +1,5 @@
+import { EMPTY_STRING } from "../app.component";
+
 export class Genre {
   id?: number;
   name?: string;
@@ -9,6 +11,6 @@ export class Genre {
   }
 
   display?() {
-    return this.name ?? '';
+    return this.name ?? EMPTY_STRING;
   }
 }

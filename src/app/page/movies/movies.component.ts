@@ -2,12 +2,14 @@ import { AsyncPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { BehaviorSubject, catchError, distinctUntilChanged, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
 import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
 import { Movie, SearchConfig, SortOption } from '../../models';
 import { Filters } from '../../models/filters.model';
 import { MovieService } from '../../services';
+import { HttpUtils } from '../../utils';
 
 @Component({
   selector: 'app-movies',
@@ -32,12 +34,12 @@ export class MoviesComponent {
   pageSizeOptions = [25, 50, 100];
   sortOptions: SortOption[] = [
     { active: 'title', label: 'Titre', direction: 'asc' },
-    { active: 'releaseDate', label: 'Date de sortie', direction: '' },
-    { active: 'runningTime', label: 'Durée', direction: '' },
-    { active: 'budget', label: 'Budget', direction: '' },
-    { active: 'boxOffice', label: 'Box-office', direction: '' },
-    { active: 'creationDate', label: 'Date de création', direction: '' },
-    { active: 'lastUpdate', label: 'Dernière modification', direction: '' }
+    { active: 'releaseDate', label: 'Date de sortie', direction: EMPTY_STRING },
+    { active: 'runningTime', label: 'Durée', direction: EMPTY_STRING },
+    { active: 'budget', label: 'Budget', direction: EMPTY_STRING },
+    { active: 'boxOffice', label: 'Box-office', direction: EMPTY_STRING },
+    { active: 'creationDate', label: 'Date de création', direction: EMPTY_STRING },
+    { active: 'lastUpdate', label: 'Dernière modification', direction: EMPTY_STRING }
   ];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
@@ -46,7 +48,7 @@ export class MoviesComponent {
       size: 50,
       sort: 'title',
       direction: 'asc',
-      term: '',
+      term: EMPTY_STRING,
       filters: {},
       view: View.CARDS
     }
@@ -56,7 +58,7 @@ export class MoviesComponent {
     distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.filters === c2.filters),
     switchMap(config =>
       this.movieService.getMovies(config.page, config.size, config.term, config.sort, config.direction, config.filters).pipe(
-        tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
+        tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -74,7 +76,7 @@ export class MoviesComponent {
     map(config =>
       this.sortOptions.map(option => ({
         ...option,
-        direction: option.active === config.sort ? config.direction : '' // Met à jour la direction du tri
+        direction: option.active === config.sort ? config.direction : EMPTY_STRING // Met à jour la direction du tri
       }))
     )
   );

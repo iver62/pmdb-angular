@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 
 @Component({
@@ -31,7 +32,7 @@ export class InputComponent {
   pattern: string;
 
   clearSearch() {
-    this.pattern = '';
+    this.pattern = EMPTY_STRING;
     this.change.emit(this.pattern);
   }
 

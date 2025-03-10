@@ -5,9 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
 import { CountriesListComponent, InputComponent } from '../../components';
 import { Country, SearchConfig } from '../../models';
 import { CountryService } from '../../services';
+import { HttpUtils } from '../../utils';
 
 @Component({
   selector: 'app-countries',
@@ -30,15 +32,15 @@ export class CountriesComponent {
       page: 0,
       size: 50,
       sort: 'nomFrFr',
-      direction: 'Ascending',
-      term: ''
+      direction: 'asc',
+      term: EMPTY_STRING
     }
   );
 
   countries$ = this.searchConfig$.pipe(
     switchMap(config =>
       this.countryService.getCountries(config.page, config.size, config.term).pipe(
-        tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
+        tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
           console.error('Erreur API:', error);

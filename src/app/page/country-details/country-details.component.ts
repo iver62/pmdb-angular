@@ -11,18 +11,19 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { NgPipesModule } from 'ngx-pipes';
 import { BehaviorSubject, catchError, combineLatest, filter, map, of, scan, Subject, switchMap, tap } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
 import { MoviesListComponent, PersonsListComponent } from '../../components';
 import { DelayedInputDirective } from '../../directives';
 import { Movie, Person, SearchConfig } from '../../models';
 import { ActorService, ArtDirectorService, CasterService, CostumierService, CountryService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, StuntmanService, VisualEffectSupervisorsService } from '../../services';
-import { PersonUtils } from '../../utils';
+import { HttpUtils, PersonUtils } from '../../utils';
 
 const INITIAL_CONFIG: SearchConfig = {
   page: 0,
   size: 50,
   sort: 'name',
-  direction: 'Ascending',
-  term: ''
+  direction: 'asc',
+  term: EMPTY_STRING
 }
 
 @Component({
@@ -111,7 +112,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 0), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getMoviesByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalFilms = +(response.headers.get('X-Total-Count') ?? 0)),
+        tap(response => this.totalFilms = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response =>
           (response.body ?? []).map(m => (
             {
@@ -135,7 +136,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 1), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getActorsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalActors$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalActors$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -150,7 +151,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 2), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getDirectorsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalDirectors$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalDirectors$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -165,7 +166,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 3), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getScreenwritersByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalScreenwriters$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalScreenwriters$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -180,7 +181,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 4), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getMusiciansByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalMusicians$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalMusicians$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -195,7 +196,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 5), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getDecoratorsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalDecorators$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalDecorators$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -210,7 +211,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 6), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getCostumiersByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalCostumiers$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalCostumiers$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -225,7 +226,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 7), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getPhotographersByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalPhotographers$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalPhotographers$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -240,7 +241,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 8), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getEditorsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalEditors$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalEditors$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -255,7 +256,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 9), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getCastersByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalCasters$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalCasters$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -270,7 +271,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 10), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getArtDirectorsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalArtDirectors$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalArtDirectors$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -285,7 +286,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 11), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getSoundEditorsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalSoundEditors$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalSoundEditors$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -300,7 +301,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 12), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getVisualEffectsSupervisorsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalVisualEffectsSupervisors$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalVisualEffectsSupervisors$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -315,7 +316,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 13), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getMakeupArtistsByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalMakeupArtists$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalMakeupArtists$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -330,7 +331,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 14), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getHairDressersByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalHairDressers$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalHairDressers$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -345,7 +346,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 15), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getStuntmenByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalStuntmen$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalStuntmen$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -360,7 +361,7 @@ export class CountryDetailsComponent {
     filter(([_, params, tabIndex]) => !!params.get('id') && tabIndex == 16), // Ignore si l'id est null
     switchMap(([config, params]) =>
       this.countryService.getProducersByCountry(+params.get('id'), config.page, config.size, config.term).pipe(
-        tap(response => this.totalProducers$.next(+(response.headers.get('X-Total-Count') ?? 0))),
+        tap(response => this.totalProducers$.next(+(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0))),
         map(response => (response.body ?? []).map(p => PersonUtils.toLightPerson(p))),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -539,7 +540,7 @@ export class CountryDetailsComponent {
       {
         ...sub$.value,
         page: 0,
-        term: ''
+        term: EMPTY_STRING
       }
     );
   }

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EMPTY_STRING } from '../app.component';
 import { Genre, Movie } from '../models';
 
 @Injectable({
@@ -11,18 +12,18 @@ export class GenreService {
 
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    return this.http.get<Genre[]>(`${this.basePath}`);
+  getAll(term = EMPTY_STRING, sort = 'name', direction = 'asc') {
+    return this.http.get<Genre[]>(`${this.basePath}?sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`);
   }
 
-  getAllMovies(id: number, title: string, sort = 'title', direction = 'Ascending') {
-    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies/all?sort=${sort}&direction=${direction}&title=${title}`, {
+  getAllMovies(id: number, term: string, sort = 'title', direction = 'asc') {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies/all?sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`, {
       observe: 'response'
     });
   }
 
-  getMovies(id: number, page = 0, size = 20, title: string, sort = 'title', direction = 'Ascending') {
-    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction}&title=${title}`, {
+  getMovies(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'asc') {
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`, {
       observe: 'response'
     });
   }

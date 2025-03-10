@@ -3,6 +3,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Country, Genre } from '../../models';
 
@@ -31,7 +32,7 @@ export class MultiselectComponent {
 
   openedChange(event: boolean) {
     if (event) {
-      this.update.emit('');
+      this.update.emit(EMPTY_STRING);
     }
   }
 

@@ -1,3 +1,4 @@
+import { EMPTY_STRING } from "../app.component";
 import { Movie } from "./movie.model";
 import { Person } from "./person.model";
 
@@ -32,6 +33,6 @@ export class Country {
   }
 
   display?() {
-    return this.nomFrFr ?? '';
+    return this.nomFrFr ?? EMPTY_STRING;
   }
 }

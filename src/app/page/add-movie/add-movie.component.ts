@@ -1,11 +1,12 @@
 
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
-import { Movie, MovieActor, Person } from '../../models';
-import { ActorService, MovieService } from '../../services';
+import { EMPTY_STRING } from '../../app.component';
+import { Movie, MovieActor } from '../../models';
+import { MovieService } from '../../services';
 import { CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
 @Component({
@@ -24,61 +25,53 @@ import { CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormCompo
 })
 export class AddMovieComponent {
 
-  private _snackBar = inject(MatSnackBar);
   movie: Movie;
   duration = 5000;
   imageFile: File | null = null;
 
-  actors$ = this.actorService.getAll();
-  saveActor = (person: Person) => this.actorService.save(person);
-
-  form = this.fb.group(
+  generalInfosForm = this.fb.group(
     {
-      generalFormGroup: this.fb.group(
-        {
-          title: ['', Validators.required],
-          originalTitle: [],
-          synopsis: [],
-          releaseDate: [],
-          runningTime: [],
-          budget: [],
-          boxOffice: [],
-          posterFileName: [],
-          countries: [],
-          genres: []
-        }
-      ),
-      technicalTeamFormGroup: this.fb.group(
-        {
-          producers: [],
-          directors: [],
-          screenwriters: [],
-          musicians: [],
-          decorators: [],
-          costumiers: [],
-          photographers: [],
-          editors: [],
-          casters: [],
-          artDirectors: [],
-          soundEditors: [],
-          visualEffectsSupervisors: [],
-          makeupArtists: [],
-          hairDressers: [],
-          stuntmen: []
-        }
-      ),
-      castingFormGroup: this.fb.group(
-        {
-          actors: this.fb.array<MovieActor>([])
-        }
-      )
+      title: [EMPTY_STRING, Validators.required],
+      originalTitle: [],
+      synopsis: [],
+      releaseDate: [],
+      runningTime: [],
+      budget: [],
+      boxOffice: [],
+      posterFileName: [],
+      countries: [],
+      genres: []
+    }
+  );
+  technicalTeamForm = this.fb.group(
+    {
+      producers: [],
+      directors: [],
+      screenwriters: [],
+      musicians: [],
+      decorators: [],
+      costumiers: [],
+      photographers: [],
+      editors: [],
+      casters: [],
+      artDirectors: [],
+      soundEditors: [],
+      visualEffectsSupervisors: [],
+      makeupArtists: [],
+      hairDressers: [],
+      stuntmen: []
+    }
+  );
+  castingForm = this.fb.group(
+    {
+      actors: this.fb.array<MovieActor>([])
     }
   );
 
   isLinear = true;
 
   constructor(
-    private actorService: ActorService,
+    private _snackBar: MatSnackBar,
     private fb: FormBuilder,
     private movieService: MovieService
   ) { }
@@ -88,8 +81,8 @@ export class AddMovieComponent {
   }
 
   saveMovie() {
-    if (this.form.get('generalFormGroup').valid) {
-      this.movieService.saveMovie(this.imageFile, this.form.get('generalFormGroup').value).subscribe(
+    if (this.generalInfosForm.valid) {
+      this.movieService.saveMovie(this.imageFile, this.generalInfosForm.value).subscribe(
         {
           next: result => {
             this._snackBar.open('Film créé avec succès', 'Done', { duration: this.duration });
@@ -107,8 +100,8 @@ export class AddMovieComponent {
   }
 
   saveTechnicalTeam() {
-    if (this.form.get('technicalTeamFormGroup').valid) {
-      this.movieService.saveTechnicalTeam(this.movie.id, this.form.get('technicalTeamFormGroup').value).subscribe(
+    if (this.technicalTeamForm.valid) {
+      this.movieService.saveTechnicalTeam(this.movie.id, this.technicalTeamForm.value).subscribe(
         {
           next: result => {
             this._snackBar.open('Fiche technique ajoutée avec succès', 'Done', { duration: this.duration });
@@ -126,12 +119,18 @@ export class AddMovieComponent {
   }
 
   saveCasting() {
-    console.log(this.form.get('castingFormGroup.actors').value);
+    if (this.castingForm.valid) {
+      const body: MovieActor[] = this.castingForm.get('actors').value.map(
+        (ma: any, index: number) => (
+          {
+            actor: { id: ma.id, name: ma.name },
+            role: ma.role,
+            rank: index
+          }
+        )
+      );
 
-    if (this.form.get('castingFormGroup.actors').valid) {
-      console.log(this.form.get('castingFormGroup.actors').value);
-
-      this.movieService.saveCasting(this.movie.id, this.form.get('castingFormGroup.actors').value).subscribe(
+      this.movieService.saveCasting(this.movie.id, body).subscribe(
         {
           next: result => {
             this._snackBar.open('Casting ajouté avec succès', 'Done', { duration: this.duration });

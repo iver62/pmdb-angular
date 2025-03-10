@@ -11,6 +11,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LoaderService } from './services';
 
+export const EMPTY_STRING = '';
+
 @Component({
   selector: 'app-root',
   imports: [

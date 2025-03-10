@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EMPTY_STRING } from '../app.component';
 import { Country, Filters, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
+import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
 @Injectable({
@@ -15,7 +17,7 @@ export class MovieService {
     private http: HttpClient
   ) { }
 
-  getAll(title: string, sort = 'title', direction = 'Ascending') {
+  getAll(title: string, sort = 'title', direction = 'asc') {
     return this.http.get<Movie[]>(`${this.basePath}/all?sort=${sort}&direction=${direction}&title=${title}`, {
       observe: 'response'
     });
@@ -30,7 +32,7 @@ export class MovieService {
    * @param direction le sens du tri ('Ascending' ou 'Descending')
    * @returns une liste de films
    */
-  getMovies(page = 0, size = 50, term = '', sort = 'title', direction = 'Ascending', filters?: Filters) {
+  getMovies(page = 0, size = 50, term = EMPTY_STRING, sort = 'title', direction = 'asc', filters?: Filters) {
     const params = new URLSearchParams();
 
     params.set('page', page.toString());
@@ -38,12 +40,12 @@ export class MovieService {
     params.set('sort', sort);
     params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
     term && params.set('term', encodeURIComponent(term));
-    filters?.startReleaseDate && params.set('start-release-date', this.dateService.format(filters.startReleaseDate, 'YYYY-MM-DD'));
-    filters?.endReleaseDate && params.set('end-release-date', this.dateService.format(filters.endReleaseDate, 'YYYY-MM-DD'));
-    filters?.startCreationDate && params.set('start-creation-date', this.dateService.format(filters?.startCreationDate, 'YYYY-MM-DDTHH:mm:ss'));
-    filters?.endCreationDate && params.set('end-creation-date', this.dateService.format(filters?.endCreationDate, 'YYYY-MM-DDTHH:mm:ss'));
-    filters?.startLastUpdate && params.set('start-last-update', this.dateService.format(filters?.startLastUpdate, 'YYYY-MM-DDTHH:mm:ss'));
-    filters?.endLastUpdate && params.set('end-last-update', this.dateService.format(filters?.endLastUpdate, 'YYYY-MM-DDTHH:mm:ss'));
+    filters?.fromReleaseDate && params.set('start-release-date', this.dateService.format(filters.fromReleaseDate, DateUtils.API_DATE_FORMAT));
+    filters?.toReleaseDate && params.set('end-release-date', this.dateService.format(filters.toReleaseDate, DateUtils.API_DATE_FORMAT));
+    filters?.fromCreationDate && params.set('start-creation-date', this.dateService.format(filters?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.toCreationDate && params.set('end-creation-date', this.dateService.format(filters?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.fromLastUpdate && params.set('start-last-update', this.dateService.format(filters?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.toLastUpdate && params.set('end-last-update', this.dateService.format(filters?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     filters?.countries?.forEach(country => params.append('country', country.id.toString()));
     filters?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
 

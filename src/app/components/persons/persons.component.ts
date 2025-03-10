@@ -3,9 +3,11 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
 import { View } from '../../enums';
-import { Person, SearchConfig, SortOption } from '../../models';
+import { Filters, Person, SearchConfig, SortOption } from '../../models';
 import { BaseService } from '../../services';
+import { HttpUtils } from '../../utils';
 import { InputComponent } from '../input/input.component';
 import { PersonsListComponent } from '../persons-list/persons-list.component';
 import { PersonsTableComponent } from '../persons-table/persons-table.component';
@@ -30,17 +32,17 @@ export class PersonsComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   @Input() personService!: BaseService; // Service injecté dynamiquement
-  @Input() viewTitle: string = ''; // Permet de personnaliser le titre
+  @Input() viewTitle = EMPTY_STRING; // Permet de personnaliser le titre
 
   view = View;
   total: number;
   pageSizeOptions = [25, 50, 100];
   sortOptions: SortOption[] = [
     { active: 'name', label: 'Nom', direction: 'asc' },
-    { active: 'dateOfBirth', label: 'Date de naissance', direction: '' },
-    { active: 'dateOfDeath', label: 'Date de décès', direction: '' },
-    { active: 'creationDate', label: 'Date de création', direction: '' },
-    { active: 'lastUpdate', label: 'Dernière modification', direction: '' }
+    { active: 'dateOfBirth', label: 'Date de naissance', direction: EMPTY_STRING },
+    { active: 'dateOfDeath', label: 'Date de décès', direction: EMPTY_STRING },
+    { active: 'creationDate', label: 'Date de création', direction: EMPTY_STRING },
+    { active: 'lastUpdate', label: 'Dernière modification', direction: EMPTY_STRING }
   ];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
@@ -49,15 +51,16 @@ export class PersonsComponent {
       size: 50,
       sort: 'name',
       direction: 'asc',
-      term: '',
+      term: EMPTY_STRING,
+      filters: {},
       view: View.CARDS
     }
   );
 
   persons$ = this.searchConfig$.pipe(
     switchMap(config =>
-      this.personService.get(config.page, config.size, config.term, config.sort, config.direction).pipe(
-        tap(response => this.total = +(response.headers.get('X-Total-Count') ?? 0)),
+      this.personService.get(config.page, config.size, config.term, config.sort, config.direction, config.filters).pipe(
+        tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
           console.error('Erreur API:', error);
@@ -76,11 +79,21 @@ export class PersonsComponent {
       this.sortOptions.map(option => (
         {
           ...option,
-          direction: option.active === config.sort ? config.direction : '' // Met à jour la direction du tri
+          direction: option.active === config.sort ? config.direction : EMPTY_STRING // Met à jour la direction du tri
         })
       )
     )
   );
+
+  onFilter(event: Filters) {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        filters: event
+      }
+    );
+  }
 
   onSwitchView(view: View) {
     this.searchConfig$.next(

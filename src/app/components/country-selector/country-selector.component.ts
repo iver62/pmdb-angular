@@ -6,9 +6,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Country, SearchConfig } from '../../models';
 import { CountryService } from '../../services';
+import { HttpUtils } from '../../utils';
 
 @Component({
   selector: 'app-country-selector',
@@ -38,7 +40,7 @@ export class CountrySelectorComponent {
       size: 50,
       sort: 'nomFrFr',
       direction: 'asc',
-      term: ''
+      term: EMPTY_STRING
     }
   );
 
@@ -48,15 +50,10 @@ export class CountrySelectorComponent {
     switchMap(config => this.countryService.getCountries(config.page, config.size, config.term).pipe(
       tap(response => {
         this.isLoadingMore = false;
-        this.total = +(response.headers.get('X-Total-Count') ?? 0)
+        this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
       }),
       map(response => response.body),
-      tap(result => result.map(c => console.log(c.nomFrFr))),
-      map(countries =>
-        countries
-          .filter(country => !this.selectedCountries().some(c => c.id === country.id))
-          .map(c => new Country(c))
-      ),
+      map(countries => countries.filter(country => !this.selectedCountries().some(c => c.id === country.id))),
       catchError(() => {
         this.isLoadingMore = false;
         return of([]);
@@ -101,7 +98,7 @@ export class CountrySelectorComponent {
   }
 
   onOpenedAutocomplete() {
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: '' });
+    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
   }
 
   onSearch(event: string) {
@@ -123,7 +120,7 @@ export class CountrySelectorComponent {
     if (index >= 0) {
       this.selectedCountries.update(countries => countries.filter(c => c.id !== country.id));
       this.control.setValue([...this.selectedCountries()]);
-      this.searchConfig$.next({ ...this.searchConfig$.value, term: '' });
+      this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
     }
   }
 
@@ -135,7 +132,7 @@ export class CountrySelectorComponent {
       this.control.setValue([...this.selectedCountries()]);
 
       if (input) {
-        this.input.nativeElement.value = ''; // Clear the input value
+        this.input.nativeElement.value = EMPTY_STRING; // Clear the input value
       }
     }
   }
