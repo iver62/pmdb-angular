@@ -52,8 +52,7 @@ export class CountrySelectorComponent {
         this.isLoadingMore = false;
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
       }),
-      map(response => response.body),
-      map(countries => countries.filter(country => !this.selectedCountries().some(c => c.id === country.id))),
+      map(response => response.body.filter(country => !this.selectedCountries().some(c => c.id === country.id))),
       catchError(() => {
         this.isLoadingMore = false;
         return of([]);

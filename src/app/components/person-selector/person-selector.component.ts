@@ -51,7 +51,7 @@ export class PersonSelectorComponent {
     }
   );
 
-  // Liste des pays filtrés
+  // Liste des personnes filtrées
   readonly persons$ = this.searchConfig$.pipe(
     tap(() => this.isLoadingMore = true),
     switchMap(config => this.service().get(config.page, config.size, config.term).pipe(
@@ -59,8 +59,7 @@ export class PersonSelectorComponent {
         this.isLoadingMore = false;
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
       }),
-      map(response => response.body),
-      map(persons => persons.filter(person => !this.selectedPersons().some(p => p.id === person.id))),
+      map(response => response.body.filter(person => !this.selectedPersons().some(p => p.id === person.id))),
       catchError(() => {
         this.isLoadingMore = false;
         return of([]);

@@ -1,34 +1,36 @@
 <form [formGroup]="form">
   <div formArrayName="actors">
-    @for (actor of actors.controls; track $index; let i = $index) {
+    @for (actor of formArray.controls; track $index; let i = $index) {
     <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
       <mat-form-field class="col-span-4">
         <mat-label>Nom de l'acteur</mat-label>
-        <input matInput aria-label="State" [matAutocomplete]="auto" formControlName="name">
+        <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="State" [matAutocomplete]="auto"
+          formControlName="name">
         @if (actor.value.name && !actor.value.id) {
         <button matSuffix mat-icon-button matTooltip="Sauvegarder" aria-label="Sauvegarder l'acteur en base de données"
           (click)="saveActor(actor, i)">
-          @if (loading()) {
+          @if (loading) {
           <mat-spinner [diameter]="20"></mat-spinner>
           } @else {
-          <mat-icon>save</mat-icon>
+          <mat-icon class="text-red-700">save</mat-icon>
           }
         </button>
         }
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectActor($event, i)">
-          @for (actor of filteredActors(i)(); track actor.id) {
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectActor($event, i)"
+          (opened)="onOpenedAutocomplete()">
+          @for (actor of actors$ | async; track actor.id) {
           <mat-option [value]="actor">
             <div class="flex items-center gap-2">
               <span class="col-span-1 image-container">
                 <img mat-card-image [src]="getSafePhotoUrl(actor.photoFileName)" alt="{{ actor?.photoFileName }}">
               </span>
-              <span>{{actor.name}}</span>
+              <span>{{actor?.name}}</span>
             </div>
           </mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="col-span-4">
+      <mat-form-field class="col-span-6">
         <mat-label>Rôle</mat-label>
         <input matInput formControlName="role" />
         @if (actor.value.role) {
@@ -37,20 +39,24 @@
         </button>
         }
       </mat-form-field>
-      <div class="flex col-span-4">
+      <div class="flex col-span-2">
         <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a delete icon"
           (click)="removeActor(i)">
           <mat-icon>delete</mat-icon>
         </button>
         <div class="flex flex-col">
+          @if (i > 0) {
           <button mat-icon-button matTooltip="Monter" aria-label="Example icon button with a delete icon"
             [disabled]="i == 0" (click)="moveUp(i)">
             <mat-icon>keyboard_arrow_up</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Descendre" aria-label="Example icon button with a delete icon"
-            [disabled]="i == formArray?.value?.length - 1" (click)="moveDown(i)">
+          }
+          @if (i < formArray?.value?.length - 1) { <button mat-icon-button matTooltip="Descendre"
+            aria-label="Example icon button with a delete icon" [disabled]="i == formArray?.value?.length - 1"
+            (click)="moveDown(i)">
             <mat-icon>keyboard_arrow_down</mat-icon>
-          </button>
+            </button>
+            }
         </div>
       </div>
     </div>
