@@ -1,6 +1,6 @@
 <mat-form-field class="w-full">
   <mat-label>{{title()}}</mat-label>
-  <mat-chip-grid #personsChipGrid [attr.aria-label]="label" [formControl]="control" class="flex items-center">
+  <mat-chip-grid #personsChipGrid [attr.aria-label]="label" [formControl]="control">
     @for (person of selectedPersons(); track person) {
     <mat-chip-row (removed)="remove(person)" [value]="person">
       {{person?.name}}
@@ -9,15 +9,15 @@
       </button>
     </mat-chip-row>
     }
-    @if (loading) {
+    @if (saving) {
     <mat-spinner [diameter]="20"></mat-spinner>
     }
-    <input placeholder="Ajouter..." [(ngModel)]="currentPerson" [matChipInputFor]="personsChipGrid"
-      [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
-      [ngModelOptions]="{standalone: true}" />
+    <input #input appDelayedInput (delayedInput)="onSearch($event)" placeholder="Ajouter..."
+      [matChipInputFor]="personsChipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)" />
   </mat-chip-grid>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    @for (person of filteredPersons() | orderBy: ['name']; track person.id) {
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" (opened)="onOpenedAutocomplete()">
+    @for (person of persons$ | async; track person.id) {
     <mat-option [value]="person">{{person?.name}}</mat-option>
     }
   </mat-autocomplete>

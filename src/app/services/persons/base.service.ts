@@ -1,13 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Country, Movie, Person } from '../../models';
+import { Filters, Movie, Person } from '../../models';
+import { DateUtils } from '../../utils';
+import { DateService } from '../date.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BaseService {
 
-  constructor(protected http: HttpClient, @Inject(String) public basePath: string) { }
+  constructor(
+    protected http: HttpClient,
+    private dateService: DateService,
+    @Inject(String) public basePath: string
+  ) { }
 
   getById(id: number) {
     return this.http.get<Person>(`${this.basePath}/${id}`);
@@ -17,20 +23,45 @@ export class BaseService {
     return this.http.get<Person[]>(`${this.basePath}/all`);
   }
 
-  get(page = 0, size = 50, term: string, sort = 'name', direction = 'Ascending') {
-    return this.http.get<Person[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
-      observe: 'response'
-    });
+  get(page = 0, size = 50, term: string, sort = 'name', direction = 'asc', filters?: Filters) {
+    const params = new URLSearchParams();
+
+    params.set('page', page.toString());
+    params.set('size', size.toString());
+    params.set('sort', sort);
+    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    term && params.set('term', term);
+    filters?.fromBirthDate && params.set('from-birth-date', this.dateService.format(filters.fromBirthDate, DateUtils.API_DATE_FORMAT));
+    filters?.toBirthDate && params.set('to-birth-date', this.dateService.format(filters.toBirthDate, DateUtils.API_DATE_FORMAT));
+    filters?.fromDeathDate && params.set('from-death-date', this.dateService.format(filters.fromDeathDate, DateUtils.API_DATE_FORMAT));
+    filters?.toDeathDate && params.set('to-death-date', this.dateService.format(filters.toDeathDate, DateUtils.API_DATE_FORMAT));
+    filters?.fromCreationDate && params.set('from-creation-date', this.dateService.format(filters?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.toCreationDate && params.set('to-creation-date', this.dateService.format(filters?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.fromLastUpdate && params.set('from-last-update', this.dateService.format(filters?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.toLastUpdate && params.set('to-last-update', this.dateService.format(filters?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.countries?.forEach(country => params.append('country', country.id.toString()));
+
+    return this.http.get<Person[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }
 
-  getMovies(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'Ascending') {
-    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?page=${page}&size=${size}&sort=${sort}&direction=${direction}&term=${term}`, {
-      observe: 'response'
-    })
-  }
+  getMovies(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'asc', filters?: Filters) {
+    const params = new URLSearchParams();
 
-  getCountries(id: number) {
-    return this.http.get<Country[]>(`${this.basePath}/${id}/countries`)
+    params.set('page', page.toString());
+    params.set('size', size.toString());
+    params.set('sort', sort);
+    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    term && params.set('term', encodeURIComponent(term));
+    filters?.fromReleaseDate && params.set('start-release-date', this.dateService.format(filters.fromReleaseDate, DateUtils.API_DATE_FORMAT));
+    filters?.toReleaseDate && params.set('end-release-date', this.dateService.format(filters.toReleaseDate, DateUtils.API_DATE_FORMAT));
+    filters?.fromCreationDate && params.set('start-creation-date', this.dateService.format(filters?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.toCreationDate && params.set('end-creation-date', this.dateService.format(filters?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.fromLastUpdate && params.set('start-last-update', this.dateService.format(filters?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.toLastUpdate && params.set('end-last-update', this.dateService.format(filters?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    filters?.countries?.forEach(country => params.append('country', country.id.toString()));
+    filters?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
+
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' })
   }
 
   getPhotoUrl(photoFileName: string) {

@@ -1,62 +1,61 @@
 <form class="form grid grid-cols-12" [formGroup]="form">
-  <app-person-selector class="col-span-12" [persons]="directors$ | async" [saveFn]="saveDirector"
-    formGroupName="directors" title="Réalisation" label="Directors selection">
+  <app-person-selector class="col-span-12" [service]="directorService" formGroupName="directors" title="Réalisation"
+    label="Directors selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="screenwriters$ | async" [saveFn]="saveScreenwriter"
-    formGroupName="screenwriters" title="Scénario" label="Screenwriters selection">
+  <app-person-selector class="col-span-12" [service]="screenwriterService" formGroupName="screenwriters"
+    title="Scénario" label="Screenwriters selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="musicians$ | async" [saveFn]="saveMusician"
-    formGroupName="musicians" title="Musique" label="Musicians selection">
+  <app-person-selector class="col-span-12" [service]="musicianService" formGroupName="musicians" title="Musique"
+    label="Musicians selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="decorators$ | async" [saveFn]="saveDecorator"
-    formGroupName="decorators" title="Décors" label="Decorators selection">
+  <app-person-selector class="col-span-12" [service]="decoratorService" formGroupName="decorators" title="Décors"
+    label="Decorators selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="costumiers$ | async" [saveFn]="saveCostumier"
-    formGroupName="costumiers" title="Costumes" label="Costumiers selection">
+  <app-person-selector class="col-span-12" [service]="costumierService" formGroupName="costumiers" title="Costumes"
+    label="Costumiers selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="photographers$ | async" [saveFn]="savePhotographer"
-    formGroupName="photographers" title="Photographie" label="Photographers selection">
+  <app-person-selector class="col-span-12" [service]="photographerService" formGroupName="photographers"
+    title="Photographie" label="Photographers selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="editors$ | async" [saveFn]="saveEditor" formGroupName="editors"
-    title="Montage" label="Editors selection">
+  <app-person-selector class="col-span-12" [service]="editorService" formGroupName="editors" title="Montage"
+    label="Editors selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="casters$ | async" [saveFn]="saveCaster" formGroupName="casters"
-    title="Casting" label="Casters selection">
+  <app-person-selector class="col-span-12" [service]="casterService" formGroupName="casters" title="Casting"
+    label="Casters selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="artDirectors$ | async" [saveFn]="saveArtDirector"
-    formGroupName="artDirectors" title="Direction artistique" label="Art Directors selection">
+  <app-person-selector class="col-span-12" [service]="artDirectorService" formGroupName="artDirectors"
+    title="Direction artistique" label="Art Directors selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="soundEditors$ | async" [saveFn]="saveSoundEditor"
-    formGroupName="soundEditors" title="Son" label="Sound Editors selection">
+  <app-person-selector class="col-span-12" [service]="soundEditorService" formGroupName="soundEditors" title="Son"
+    label="Sound Editors selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="visualEffectsSupervisors$ | async"
-    [saveFn]="saveVisualEffectsSupervisor" formGroupName="visualEffectsSupervisors" title="Effets spéciaux"
-    label="Visual Effects Supervisor selection">
+  <app-person-selector class="col-span-12" [service]="visualEffectsSupervisorService"
+    formGroupName="visualEffectsSupervisors" title="Effets spéciaux" label="Visual Effects Supervisor selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="makeupArtists$ | async" [saveFn]="saveMakeupArtist"
-    formGroupName="makeupArtists" title="Maquillage" label="Make-up Artists selection">
+  <app-person-selector class="col-span-12" [service]="makeupArtistService" formGroupName="makeupArtists"
+    title="Maquillage" label="Make-up Artists selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="hairDressers$ | async" [saveFn]="saveHairDresser"
-    formGroupName="hairDressers" title="Coiffure" label="Hair Dressers selection">
+  <app-person-selector class="col-span-12" [service]="hairDresserService" formGroupName="hairDressers" title="Coiffure"
+    label="Hair Dressers selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="stuntmen$ | async" [saveFn]="saveStuntman"
-    formGroupName="stuntmen" title="Cascades" label="Stuntmen selection">
+  <app-person-selector class="col-span-12" [service]="stuntmanService" formGroupName="stuntmen" title="Cascades"
+    label="Stuntmen selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [persons]="producers$ | async" [saveFn]="saveProducer"
-    formGroupName="producers" title="Producteurs" label="Producers selection">
+  <app-person-selector class="col-span-12" [service]="producerService" formGroupName="producers" title="Producteurs"
+    label="Producers selection">
   </app-person-selector>
 </form>

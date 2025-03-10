@@ -1,14 +1,11 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PersonSelectorComponent } from '../../../../components';
-import { Person } from '../../../../models';
 import { ArtDirectorService, CasterService, CostumierService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, StuntmanService, VisualEffectSupervisorsService } from '../../../../services';
 
 @Component({
   selector: 'app-technical-team-form',
   imports: [
-    AsyncPipe,
     PersonSelectorComponent,
     ReactiveFormsModule
   ],
@@ -17,40 +14,7 @@ import { ArtDirectorService, CasterService, CostumierService, DecoratorService, 
 })
 export class TechnicalTeamFormComponent {
 
-  @Input() formGroupName: string;
-  form: FormGroup;
-
-  directors$ = this.directorService.getAll();
-  screenwriters$ = this.screenwriterService.getAll();
-  musicians$ = this.musicianService.getAll();
-  photographers$ = this.photographerService.getAll();
-  costumiers$ = this.costumierService.getAll();
-  decorators$ = this.decoratorService.getAll();
-  editors$ = this.editorService.getAll();
-  casters$ = this.casterService.getAll();
-  artDirectors$ = this.artDirectorService.getAll();
-  soundEditors$ = this.soundEditorService.getAll();
-  visualEffectsSupervisors$ = this.visualEffectsSupervisorService.getAll();
-  makeupArtists$ = this.makeupArtistService.getAll();
-  hairDressers$ = this.hairDresserService.getAll();
-  stuntmen$ = this.stuntmanService.getAll();
-  producers$ = this.producerService.getAll();
-
-  saveDirector = (person: Person) => this.directorService.save(person);
-  saveScreenwriter = (person: Person) => this.screenwriterService.save(person);
-  saveMusician = (person: Person) => this.musicianService.save(person);
-  savePhotographer = (person: Person) => this.photographerService.save(person);
-  saveCostumier = (person: Person) => this.costumierService.save(person);
-  saveDecorator = (person: Person) => this.decoratorService.save(person);
-  saveEditor = (person: Person) => this.editorService.save(person);
-  saveCaster = (person: Person) => this.casterService.save(person);
-  saveArtDirector = (person: Person) => this.artDirectorService.save(person);
-  saveSoundEditor = (person: Person) => this.soundEditorService.save(person);
-  saveVisualEffectsSupervisor = (person: Person) => this.visualEffectsSupervisorService.save(person);
-  saveMakeupArtist = (person: Person) => this.makeupArtistService.save(person);
-  saveHairDresser = (person: Person) => this.hairDresserService.save(person);
-  saveStuntman = (person: Person) => this.stuntmanService.save(person);
-  saveProducer = (person: Person) => this.producerService.save(person);
+  @Input() form: FormGroup;
 
   constructor(
     public directorService: DirectorService,
@@ -68,10 +32,5 @@ export class TechnicalTeamFormComponent {
     public hairDresserService: HairDresserService,
     public stuntmanService: StuntmanService,
     public producerService: ProducerService,
-    private rootFormGroup: FormGroupDirective
   ) { }
-
-  ngOnInit() {
-    this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-  }
 }
