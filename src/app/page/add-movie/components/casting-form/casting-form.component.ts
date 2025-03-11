@@ -1,41 +1,32 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, effect, Input, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Component, effect, Input } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DomSanitizer } from '@angular/platform-browser';
-import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
+import { NgPipesModule } from 'ngx-pipes';
+import { BehaviorSubject } from 'rxjs';
 import { EMPTY_STRING } from '../../../../app.component';
-import { DelayedInputDirective } from '../../../../directives';
+import { AutocompleteComponent } from '../../../../components';
 import { Person, SearchConfig } from '../../../../models';
-import { ActorService } from '../../../../services';
-import { HttpUtils } from '../../../../utils';
 
 @Component({
   selector: 'app-casting-form',
   imports: [
-    AsyncPipe,
-    DelayedInputDirective,
-    MatAutocompleteModule,
+    AutocompleteComponent,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatProgressSpinnerModule,
     MatTooltipModule,
+    NgPipesModule,
     ReactiveFormsModule
   ],
   templateUrl: './casting-form.component.html',
   styleUrl: './casting-form.component.css'
 })
 export class CastingFormComponent {
-
-  @ViewChild('auto', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
 
   @Input() form: FormGroup;
 
@@ -49,37 +40,6 @@ export class CastingFormComponent {
     }
   );
 
-  // Liste des acteurs filtrés
-  readonly actors$ = this.searchConfig$.pipe(
-    tap(() => this.isLoadingMore = true),
-    switchMap(config => this.actorService.get(config.page, config.size, config.term).pipe(
-      tap(response => {
-        this.isLoadingMore = false;
-        this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0);
-      }),
-      map(response => response.body.filter(actor => !this.formArray?.value?.find((a: Person) => a.id == actor.id))),
-      catchError(() => {
-        this.isLoadingMore = false;
-        return of([]);
-      })
-    )),
-    scan((acc: Person[], result: Person[]) => {
-      if (this.searchConfig$.value.page == 0) {
-        this.loaded = result.length;
-        return result;
-      } else {
-        const newArray = acc.concat(result);
-        this.loaded = newArray.length;
-        return newArray;
-      }
-    }, [])
-  );
-
-  loading = false;
-  total: number;
-  loaded = 0;
-  private isLoadingMore = false;
-
   /**
    * Getter pour accéder au FormArray facilement
    */
@@ -87,11 +47,7 @@ export class CastingFormComponent {
     return this.form.get('actors') as FormArray;
   }
 
-  constructor(
-    private actorService: ActorService,
-    private fb: FormBuilder,
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(private fb: FormBuilder) {
     effect(() => {
       if (this.formArray.length < 1) {
         this.addActor();
@@ -99,46 +55,8 @@ export class CastingFormComponent {
     });
   }
 
-  ngAfterViewInit() {
-    this.matAutocomplete.opened.subscribe(() => {
-      setTimeout(() => {
-        const panel = document.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
-        if (panel) {
-          panel.addEventListener('scroll', this.onScroll.bind(this));
-        }
-      }, 100);
-    });
-
-    this.matAutocomplete.closed.subscribe(() => {
-      const panel = document.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
-      if (panel) {
-        panel.removeEventListener('scroll', this.onScroll.bind(this));
-      }
-    });
-  }
-
-  onOpenedAutocomplete() {
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
-  }
-
-  onSearch(event: string) {
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event.trim() });
-  }
-
-  private onScroll(event: Event) {
-    const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement;
-
-    if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded + this.formArray.value.length < this.total) {
-      this.searchConfig$.next({ ...this.searchConfig$.value, page: this.searchConfig$.value.page + 1 }
-      )
-    }
-  }
-
-  selectActor(event: MatAutocompleteSelectedEvent, index: number) {
-    const actor: Person = event.option.value;
-
-    this.formArray.at(index).patchValue({ id: actor.id, name: actor.name });
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
+  selectActor(event: Person, index: number) {
+    this.formArray.at(index).patchValue({ id: event.id, name: event.name });
   }
 
   /**
@@ -168,27 +86,8 @@ export class CastingFormComponent {
     this.formArray.removeAt(index);
   }
 
-  /**
-   * Persister un acteur dans la base de données
-   * @param actor l'acteur à persister
-   */
-  saveActor(actor: AbstractControl, index: number) {
-    if (!actor.value.name?.trim()) {
-      console.warn('Le nom de l\'acteur est vide !');
-      return;
-    }
-
-    this.loading = true;
-    this.actorService.save({ name: actor.value.name?.trim() }).subscribe(
-      {
-        next: result => this.formArray.at(index).patchValue({ id: result.id }),
-        error: e => console.error(e),
-        complete: () => {
-          this.loading = false;
-          this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
-        }
-      }
-    );
+  saveActor(actor: Person, index: number) {
+    this.formArray.at(index).patchValue({ id: actor.id })
   }
 
   moveUp(index: number) {
@@ -209,10 +108,6 @@ export class CastingFormComponent {
 
   clearRole(index: number) {
     this.formArray.at(index).patchValue({ role: null })
-  }
-
-  getSafePhotoUrl(photoFileName: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(this.actorService.getPhotoUrl(photoFileName));
   }
 
 }

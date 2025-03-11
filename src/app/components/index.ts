@@ -1,3 +1,4 @@
+export * from './autocomplete/autocomplete.component';
 export * from './countries-list/countries-list.component';
 export * from './country-card/country-card.component';
 export * from './country-selector/country-selector.component';
@@ -16,4 +17,3 @@ export * from './persons-list/persons-list.component';
 export * from './persons-table/persons-table.component';
 export * from './persons/persons.component';
 export * from './toolbar/toolbar.component';
-
