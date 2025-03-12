@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
@@ -11,8 +14,11 @@ import { Country, Genre } from '../../models';
   selector: 'app-multiselect',
   imports: [
     DelayedInputDirective,
+    MatButtonModule,
     MatFormFieldModule,
+    MatIconModule,
     MatSelectModule,
+    MatTooltipModule,
     NgxMatSelectSearchModule,
     ReactiveFormsModule
   ],
@@ -41,7 +47,13 @@ export class MultiselectComponent {
   }
 
   onToggleAll(event: boolean) {
-    this.control.patchValue(event ? this.items.map(i => i.id) : []);
+    this.control.patchValue(event ? this.items : []);
+    this.control.markAsDirty();
+  }
+
+  clearSelection() {
+    this.control.patchValue([]);
+    this.control.markAsDirty();
   }
 
   compareObjects(o1: Country | Genre, o2: Country | Genre) {
