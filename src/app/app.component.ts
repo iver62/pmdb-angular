@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { NgPipesModule } from 'ngx-pipes';
 import { Observable } from 'rxjs';
 import { LoaderService } from './services';
 
@@ -23,6 +24,7 @@ export const EMPTY_STRING = '';
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    NgPipesModule,
     RouterLink,
     RouterOutlet
   ],
@@ -39,83 +41,103 @@ export class AppComponent {
   navs = [
     {
       label: 'Accueil',
-      routerLink: 'dashboard'
+      routerLink: 'dashboard',
+      active: true
     },
     {
       label: 'Films',
-      routerLink: 'movies'
+      routerLink: 'movies',
+      active: true
     },
     {
       label: 'Acteurs',
-      routerLink: 'actors'
+      routerLink: 'actors',
+      active: true
     },
     {
       label: 'Producteurs',
-      routerLink: 'producers'
+      routerLink: 'producers',
+      active: true
     },
     {
       label: 'Réalisateurs',
-      routerLink: 'directors'
+      routerLink: 'directors',
+      active: true
     },
     {
       label: 'Scénaristes',
-      routerLink: 'screenwriters'
+      routerLink: 'screenwriters',
+      active: true
     },
     {
       label: 'Musique',
-      routerLink: 'musicians'
+      routerLink: 'musicians',
+      active: true
     },
     {
       label: 'Décors',
-      routerLink: 'decorators'
+      routerLink: 'decorators',
+      active: true
     },
     {
       label: 'Costumes',
-      routerLink: 'costumiers'
+      routerLink: 'costumiers',
+      active: true
     },
     {
       label: 'Photographie',
-      routerLink: 'photographers'
+      routerLink: 'photographers',
+      active: true
     },
     {
       label: 'Montage',
-      routerLink: 'editors'
+      routerLink: 'editors',
+      active: true
     },
     {
       label: 'Casteurs',
-      routerLink: 'casters'
+      routerLink: 'casters',
+      active: true
     },
     {
       label: 'Directeurs artistiques',
-      routerLink: 'art-directors'
+      routerLink: 'art-directors',
+      active: true
     },
     {
       label: 'Ingénieurs du son',
-      routerLink: 'sound-editors'
+      routerLink: 'sound-editors',
+      active: true
     },
     {
       label: 'Spécialiste effets spéciaux',
-      routerLink: 'visual-effects-supervisors'
+      routerLink: 'visual-effects-supervisors',
+      active: true
     },
     {
       label: 'Maquilleurs',
-      routerLink: 'makeup-artists'
+      routerLink: 'makeup-artists',
+      active: true
     },
     {
       label: 'Coiffeurs',
-      routerLink: 'hair-dressers'
+      routerLink: 'hair-dressers',
+      active: true
     },
     {
       label: 'Cascadeurs',
-      routerLink: 'stuntmen'
+      routerLink: 'stuntmen',
+      active: true
     },
     {
       label: 'Genres',
-      routerLink: 'genres'
+      routerLink: 'genres',
+      active: false
     },
     {
       label: 'Pays',
-      routerLink: 'countries'
+      routerLink: 'countries',
+      active: false
     }
   ];
 

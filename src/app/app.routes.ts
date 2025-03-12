@@ -1,23 +1,20 @@
 import { Routes } from '@angular/router';
-import { ActorsComponent } from './page/actors/actors.component';
-import { AddMovieComponent } from './page/add-movie/add-movie.component';
-import { DashboardComponent } from './page/dashboard/dashboard.component';
-import { GenresComponent } from './page/genres/genres.component';
 import { personServiceResolver } from './resolvers';
+import { EMPTY_STRING } from './app.component';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: EMPTY_STRING,
     pathMatch: 'full',
     redirectTo: 'dashboard'
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    loadComponent: () => import('./page/dashboard/dashboard.component').then(c => c.DashboardComponent)
   },
   {
     path: 'add-movie',
-    component: AddMovieComponent
+    loadComponent: () => import('./page/add-movie/add-movie.component').then(c => c.AddMovieComponent)
   },
   {
     path: 'movies',
@@ -203,21 +200,21 @@ export const routes: Routes = [
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
-  {
-    path: 'genres',
-    loadComponent: () => import('./page/genres/genres.component').then(c => c.GenresComponent)
-  },
-  {
-    path: 'genres/:id',
-    loadComponent: () => import('./page/genre-details/genre-details.component').then(c => c.GenreDetailsComponent)
-  },
-  {
-    path: 'countries',
-    loadComponent: () => import('./page/countries/countries.component').then(c => c.CountriesComponent)
-  },
-  {
-    path: 'countries/:id',
-    loadComponent: () => import('./page/country-details/country-details.component').then(c => c.CountryDetailsComponent)
-  },
+  // {
+  //   path: 'genres',
+  //   loadComponent: () => import('./page/genres/genres.component').then(c => c.GenresComponent)
+  // },
+  // {
+  //   path: 'genres/:id',
+  //   loadComponent: () => import('./page/genre-details/genre-details.component').then(c => c.GenreDetailsComponent)
+  // },
+  // {
+  //   path: 'countries',
+  //   loadComponent: () => import('./page/countries/countries.component').then(c => c.CountriesComponent)
+  // },
+  // {
+  //   path: 'countries/:id',
+  //   loadComponent: () => import('./page/country-details/country-details.component').then(c => c.CountryDetailsComponent)
+  // },
   // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
 ];
