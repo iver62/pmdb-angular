@@ -1,17 +1,24 @@
 <mat-form-field class="w-full">
   <mat-label>{{label}}</mat-label>
   <mat-date-range-input [rangePicker]="datepicker">
-    <input matStartDate [formControl]="startDateControl" [placeholder]="startDatePlaceholder">
-    <input matEndDate [formControl]="endDateControl" [placeholder]="startDatePlaceholder">
+    <input matStartDate [formControl]="fromDateControl" [placeholder]="fromDatePlaceholder">
+    <input matEndDate [formControl]="toDateControl" [placeholder]="toDatePlaceholder">
   </mat-date-range-input>
   <mat-hint>JJ/MM/YYYY – JJ/MM/YYYY</mat-hint>
   <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
   <mat-date-range-picker #datepicker></mat-date-range-picker>
 
-  @if (startDateControl.hasError('matStartDateInvalid')) {
+  @if (fromDateControl.hasError('matStartDateInvalid')) {
   <mat-error>Date de Début invalide</mat-error>
   }
-  @if (endDateControl.hasError('matEndDateInvalid')) {
+  @if (toDateControl.hasError('matEndDateInvalid')) {
   <mat-error>Date de Fin invalide</mat-error>
+  }
+
+  <!-- Bouton pour effacer les dates -->
+  @if (fromDateControl.value || toDateControl.value) {
+  <button mat-icon-button matSuffix matTooltip="Effacer" (click)="clearDates()">
+    <mat-icon>clear</mat-icon>
+  </button>
   }
 </mat-form-field>
