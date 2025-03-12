@@ -1,13 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
-import { Movie, SearchConfig, SortOption } from '../../models';
-import { Filters } from '../../models/filters.model';
+import { Criterias, Movie, SearchConfig, SortOption } from '../../models';
 import { MovieService } from '../../services';
 import { HttpUtils } from '../../utils';
 
@@ -43,21 +43,22 @@ export class MoviesComponent {
   ];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
+    JSON.parse(this.cookieService.get('movies-config')) ||
     {
       page: 0,
       size: 50,
       sort: 'title',
       direction: 'asc',
       term: EMPTY_STRING,
-      filters: {},
+      criterias: {},
       view: View.CARDS
     }
   );
 
   movies$ = this.searchConfig$.pipe(
-    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.filters === c2.filters),
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.criterias === c2.criterias),
     switchMap(config =>
-      this.movieService.getMovies(config.page, config.size, config.term, config.sort, config.direction, config.filters).pipe(
+      this.movieService.getMovies(config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
@@ -81,16 +82,21 @@ export class MoviesComponent {
     )
   );
 
-  constructor(private movieService: MovieService) { }
+  constructor(
+    private cookieService: CookieService,
+    private movieService: MovieService
+  ) { }
 
-  onFilter(event: Filters) {
+  onFilter(event: Criterias) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
         page: 0,
-        filters: event
+        criterias: event
       }
     );
+
+    this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSwitchView(view: View) {
@@ -101,6 +107,8 @@ export class MoviesComponent {
         view: view
       }
     );
+
+    this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSort(event: SortOption) {
@@ -116,6 +124,8 @@ export class MoviesComponent {
         direction: event.direction
       }
     );
+
+    this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSearch(event: string) {
