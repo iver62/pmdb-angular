@@ -5,7 +5,7 @@ import { HairDresserService } from '../../services';
 @Component({
   selector: 'app-hair-dressers',
   imports: [PersonsComponent],
-  template: '<app-persons [personService]="hairDresserService" viewTitle="Coiffeurs"></app-persons>'
+  template: '<app-persons [personService]="hairDresserService" viewTitle="Coiffeurs" cookieName="hair-dressers-config"></app-persons>'
 })
 export class HairDressersComponent {
 

@@ -5,7 +5,7 @@ import { SoundEditorService } from '../../services';
 @Component({
   selector: 'app-sound-editors',
   imports: [PersonsComponent],
-  template: '<app-persons [personService]="soundEditorService" viewTitle="Ingénieurs du son"></app-persons>'
+  template: '<app-persons [personService]="soundEditorService" viewTitle="Ingénieurs du son" cookieName="sound-editors-config"></app-persons>'
 })
 export class SoundEditorsComponent {
 

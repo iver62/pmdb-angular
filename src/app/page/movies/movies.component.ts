@@ -43,15 +43,14 @@ export class MoviesComponent {
   ];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
-    JSON.parse(this.cookieService.get('movies-config')) ||
     {
       page: 0,
       size: 50,
-      sort: 'title',
-      direction: 'asc',
+      sort: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).sort : 'title',
+      direction: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).direction : 'asc',
       term: EMPTY_STRING,
-      criterias: {},
-      view: View.CARDS
+      criterias: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).criterias : {},
+      view: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).view : View.CARDS
     }
   );
 
@@ -75,10 +74,12 @@ export class MoviesComponent {
 
   sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(
     map(config =>
-      this.sortOptions.map(option => ({
-        ...option,
-        direction: option.active === config.sort ? config.direction : EMPTY_STRING // Met à jour la direction du tri
-      }))
+      this.sortOptions.map(option => (
+        {
+          ...option,
+          direction: option.active === config.sort ? config.direction : EMPTY_STRING // Met à jour la direction du tri
+        }
+      ))
     )
   );
 
@@ -88,26 +89,12 @@ export class MoviesComponent {
   ) { }
 
   onFilter(event: Criterias) {
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: 0,
-        criterias: event
-      }
-    );
-
+    this.updateSearchConfig({ page: 0, criterias: event });
     this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSwitchView(view: View) {
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: 0,
-        view: view
-      }
-    );
-
+    this.updateSearchConfig({ page: 0, view: view });
     this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
@@ -116,45 +103,27 @@ export class MoviesComponent {
       this.paginator.firstPage();
     }
 
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: 0,
-        sort: event.active,
-        direction: event.direction
-      }
-    );
-
+    this.updateSearchConfig({ page: 0, sort: event.active, direction: event.direction });
     this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSearch(event: string) {
-    if (typeof event === 'string') {
-      this.searchConfig$.next(
-        {
-          ...this.searchConfig$.value,
-          page: 0,
-          term: event.trim()
-        }
-      );
-    }
+    typeof event == 'string' ? this.updateSearchConfig({ page: 0, term: event?.trim() }) : this.updateSearchConfig({ page: 0, term: '' });
   }
 
   onScroll() {
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: this.searchConfig$.value.page + 1
-      }
-    );
+    this.updateSearchConfig({ page: this.searchConfig$.value.page + 1 });
   }
 
   onPageChange(event: PageEvent) {
+    this.updateSearchConfig({ page: event.pageIndex, size: event.pageSize });
+  }
+
+  private updateSearchConfig(newConfig: Partial<SearchConfig>) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
-        page: event.pageIndex,
-        size: event.pageSize
+        ...newConfig
       }
     );
   }

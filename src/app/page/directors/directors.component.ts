@@ -5,7 +5,7 @@ import { DirectorService } from '../../services';
 @Component({
   selector: 'app-directors',
   imports: [PersonsComponent],
-  template: '<app-persons [personService]="directorService" viewTitle="Réalisateurs"></app-persons>'
+  template: '<app-persons [personService]="directorService" viewTitle="Réalisateurs" cookieName="directors-config"></app-persons>'
 })
 export class DirectorsComponent {
 

@@ -5,7 +5,7 @@ import { ScreenwriterService } from '../../services';
 @Component({
   selector: 'app-screenwriters',
   imports: [PersonsComponent],
-  template: '<app-persons [personService]="screenwriterService" viewTitle="Scénaristes"></app-persons>'
+  template: '<app-persons [personService]="screenwriterService" viewTitle="Scénaristes" cookieName="screenwriters-config"></app-persons>'
 })
 export class ScreenwritersComponent {
 

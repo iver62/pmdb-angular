@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, effect, input, Input, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '..';
@@ -30,6 +31,7 @@ export class PersonsComponent {
 
   @Input() personService!: BaseService; // Service injecté dynamiquement
   @Input() viewTitle = EMPTY_STRING; // Permet de personnaliser le titre
+  cookieName = input<string>();
 
   view = View;
   total: number;
@@ -82,24 +84,30 @@ export class PersonsComponent {
     )
   );
 
+  constructor(private cookieService: CookieService) {
+    effect(() => {
+      this.searchConfig$.next(
+        {
+          page: 0,
+          size: 50,
+          sort: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).sort : 'name',
+          direction: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).direction : 'asc',
+          term: EMPTY_STRING,
+          criterias: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).criterias : {},
+          view: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).view : View.CARDS
+        }
+      )
+    });
+  }
+
   onFilter(event: Criterias) {
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: 0,
-        criterias: event
-      }
-    );
+    this.updateSearchConfig({ page: 0, criterias: event });
+    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSwitchView(view: View) {
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: 0,
-        view: view
-      }
-    );
+    this.updateSearchConfig({ page: 0, view: view });
+    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSort(event: SortOption) {
@@ -107,43 +115,27 @@ export class PersonsComponent {
       this.paginator.firstPage();
     }
 
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: 0,
-        sort: event.active,
-        direction: event.direction
-      }
-    );
+    this.updateSearchConfig({ page: 0, sort: event.active, direction: event.direction });
+    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSearch(event: string) {
-    if (typeof event === 'string') {
-      this.searchConfig$.next(
-        {
-          ...this.searchConfig$.value,
-          page: 0,
-          term: event
-        }
-      );
-    }
+    typeof event == 'string' ? this.updateSearchConfig({ page: 0, term: event?.trim() }) : this.updateSearchConfig({ page: 0, term: '' });
   }
 
   onScroll() {
-    this.searchConfig$.next(
-      {
-        ...this.searchConfig$.value,
-        page: this.searchConfig$.value.page + 1
-      }
-    );
+    this.updateSearchConfig({ page: this.searchConfig$.value.page + 1 });
   }
 
   onPageChange(event: PageEvent) {
+    this.updateSearchConfig({ page: event.pageIndex, size: event.pageSize });
+  }
+
+  private updateSearchConfig(newConfig: Partial<SearchConfig>) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
-        page: event.pageIndex,
-        size: event.pageSize
+        ...newConfig
       }
     );
   }
