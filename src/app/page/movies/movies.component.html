@@ -5,7 +5,7 @@
     <h2></h2>
     <app-input class="md:w-1/3" label="Films" [total]="total" (change)="onSearch($event)">
     </app-input>
-    <app-toolbar [filters]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
+    <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
       [sorts]="sorts$ | async" [selectedCriterias]="searchConfig$.value.criterias" (filter)="onFilter($event)"
       (switchView)="onSwitchView($event)" (sort)="onSort($event)">
     </app-toolbar>

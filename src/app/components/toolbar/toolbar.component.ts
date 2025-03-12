@@ -1,19 +1,18 @@
-import { Component, computed, EventEmitter, input, Input, Output } from '@angular/core';
+import { Component, computed, EventEmitter, input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Direction, View } from '../../enums';
-import { SortOption } from '../../models';
-import { FiltersDialogComponent } from '../filters-dialog/filters-dialog.component';
 import { NgPipesModule } from 'ngx-pipes';
-import { JsonPipe } from '@angular/common';
+import { filter, take } from 'rxjs';
+import { View } from '../../enums';
+import { Criterias, SortOption } from '../../models';
+import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.component';
 
 @Component({
   selector: 'app-toolbar',
   imports: [
-    JsonPipe,
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
@@ -27,6 +26,8 @@ import { JsonPipe } from '@angular/common';
 export class ToolbarComponent {
 
   sorts = input.required<SortOption[]>();
+  criterias = input.required<string[]>();
+  selectedCriterias = input<Criterias>();
 
   selectedSort = computed(() => this.sorts().find(s => ['asc', 'desc'].includes(s.direction)));
 
@@ -37,18 +38,20 @@ export class ToolbarComponent {
   view = View;
   currentView = View.CARDS;
 
-  constructor(private dialog: MatDialog) {
-    console.log(this.sorts);
+  constructor(private dialog: MatDialog) { }
 
-  }
-
-  openFiltersDialog() {
-    const dialogRef = this.dialog.open(FiltersDialogComponent, {
-      width: '75vw',  // Définit la largeur à 80% de l'écran
-      maxHeight: '90vh', // Définit la hauteur à 60% de l'écran
-    });
-
-    dialogRef.afterClosed().subscribe(result => this.filter.emit(result.value));
+  openCriteriasDialog() {
+    this.dialog.open(CriteriasDialogComponent, {
+      width: '75vw',  // Définit la largeur à 75% de l'écran
+      maxHeight: '90vh', // Définit la hauteur à 90% de l'écran
+      data: {
+        criterias: this.criterias(),
+        selectedCriterias: this.selectedCriterias()
+      }
+    }).afterClosed().pipe(
+      filter(result => result != null && result.value != null),
+      take(1) // Assure qu'on ne prend que le premier résultat et que l'abonnement se termine automatiquement
+    ).subscribe(result => this.filter.emit(result.value));
   }
 
   onSwitchView(view: View) {

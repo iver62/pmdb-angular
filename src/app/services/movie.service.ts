@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY_STRING } from '../app.component';
-import { Country, Filters, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
+import { Country, Criterias, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -32,7 +32,7 @@ export class MovieService {
    * @param direction le sens du tri ('Ascending' ou 'Descending')
    * @returns une liste de films
    */
-  getMovies(page = 0, size = 50, term = EMPTY_STRING, sort = 'title', direction = 'asc', filters?: Filters) {
+  getMovies(page = 0, size = 50, term = EMPTY_STRING, sort = 'title', direction = 'asc', criterias?: Criterias) {
     const params = new URLSearchParams();
 
     params.set('page', page.toString());
@@ -40,14 +40,14 @@ export class MovieService {
     params.set('sort', sort);
     params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
     term && params.set('term', encodeURIComponent(term));
-    filters?.fromReleaseDate && params.set('start-release-date', this.dateService.format(filters.fromReleaseDate, DateUtils.API_DATE_FORMAT));
-    filters?.toReleaseDate && params.set('end-release-date', this.dateService.format(filters.toReleaseDate, DateUtils.API_DATE_FORMAT));
-    filters?.fromCreationDate && params.set('start-creation-date', this.dateService.format(filters?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.toCreationDate && params.set('end-creation-date', this.dateService.format(filters?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.fromLastUpdate && params.set('start-last-update', this.dateService.format(filters?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.toLastUpdate && params.set('end-last-update', this.dateService.format(filters?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.countries?.forEach(country => params.append('country', country.id.toString()));
-    filters?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
+    criterias?.fromReleaseDate && params.set('start-release-date', this.dateService.format(criterias.fromReleaseDate, DateUtils.API_DATE_FORMAT));
+    criterias?.toReleaseDate && params.set('end-release-date', this.dateService.format(criterias.toReleaseDate, DateUtils.API_DATE_FORMAT));
+    criterias?.fromCreationDate && params.set('start-creation-date', this.dateService.format(criterias?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toCreationDate && params.set('end-creation-date', this.dateService.format(criterias?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.fromLastUpdate && params.set('start-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toLastUpdate && params.set('end-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
+    criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
 
     return this.http.get<Movie[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }

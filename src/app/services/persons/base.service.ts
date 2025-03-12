@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Filters, Movie, Person } from '../../models';
+import { Criterias, Movie, Person } from '../../models';
 import { DateUtils } from '../../utils';
 import { DateService } from '../date.service';
 
@@ -23,7 +23,7 @@ export class BaseService {
     return this.http.get<Person[]>(`${this.basePath}/all`);
   }
 
-  get(page = 0, size = 50, term: string, sort = 'name', direction = 'asc', filters?: Filters) {
+  get(page = 0, size = 50, term: string, sort = 'name', direction = 'asc', criterias?: Criterias) {
     const params = new URLSearchParams();
 
     params.set('page', page.toString());
@@ -31,20 +31,20 @@ export class BaseService {
     params.set('sort', sort);
     params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
     term && params.set('term', term);
-    filters?.fromBirthDate && params.set('from-birth-date', this.dateService.format(filters.fromBirthDate, DateUtils.API_DATE_FORMAT));
-    filters?.toBirthDate && params.set('to-birth-date', this.dateService.format(filters.toBirthDate, DateUtils.API_DATE_FORMAT));
-    filters?.fromDeathDate && params.set('from-death-date', this.dateService.format(filters.fromDeathDate, DateUtils.API_DATE_FORMAT));
-    filters?.toDeathDate && params.set('to-death-date', this.dateService.format(filters.toDeathDate, DateUtils.API_DATE_FORMAT));
-    filters?.fromCreationDate && params.set('from-creation-date', this.dateService.format(filters?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.toCreationDate && params.set('to-creation-date', this.dateService.format(filters?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.fromLastUpdate && params.set('from-last-update', this.dateService.format(filters?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.toLastUpdate && params.set('to-last-update', this.dateService.format(filters?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.countries?.forEach(country => params.append('country', country.id.toString()));
+    criterias?.fromBirthDate && params.set('from-birth-date', this.dateService.format(criterias.fromBirthDate, DateUtils.API_DATE_FORMAT));
+    criterias?.toBirthDate && params.set('to-birth-date', this.dateService.format(criterias.toBirthDate, DateUtils.API_DATE_FORMAT));
+    criterias?.fromDeathDate && params.set('from-death-date', this.dateService.format(criterias.fromDeathDate, DateUtils.API_DATE_FORMAT));
+    criterias?.toDeathDate && params.set('to-death-date', this.dateService.format(criterias.toDeathDate, DateUtils.API_DATE_FORMAT));
+    criterias?.fromCreationDate && params.set('from-creation-date', this.dateService.format(criterias?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toCreationDate && params.set('to-creation-date', this.dateService.format(criterias?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.fromLastUpdate && params.set('from-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toLastUpdate && params.set('to-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
 
     return this.http.get<Person[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }
 
-  getMovies(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'asc', filters?: Filters) {
+  getMovies(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'asc', criterias?: Criterias) {
     const params = new URLSearchParams();
 
     params.set('page', page.toString());
@@ -52,14 +52,14 @@ export class BaseService {
     params.set('sort', sort);
     params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
     term && params.set('term', encodeURIComponent(term));
-    filters?.fromReleaseDate && params.set('start-release-date', this.dateService.format(filters.fromReleaseDate, DateUtils.API_DATE_FORMAT));
-    filters?.toReleaseDate && params.set('end-release-date', this.dateService.format(filters.toReleaseDate, DateUtils.API_DATE_FORMAT));
-    filters?.fromCreationDate && params.set('start-creation-date', this.dateService.format(filters?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.toCreationDate && params.set('end-creation-date', this.dateService.format(filters?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.fromLastUpdate && params.set('start-last-update', this.dateService.format(filters?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.toLastUpdate && params.set('end-last-update', this.dateService.format(filters?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
-    filters?.countries?.forEach(country => params.append('country', country.id.toString()));
-    filters?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
+    criterias?.fromReleaseDate && params.set('start-release-date', this.dateService.format(criterias.fromReleaseDate, DateUtils.API_DATE_FORMAT));
+    criterias?.toReleaseDate && params.set('end-release-date', this.dateService.format(criterias.toReleaseDate, DateUtils.API_DATE_FORMAT));
+    criterias?.fromCreationDate && params.set('start-creation-date', this.dateService.format(criterias?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toCreationDate && params.set('end-creation-date', this.dateService.format(criterias?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.fromLastUpdate && params.set('start-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toLastUpdate && params.set('end-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
+    criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
 
     return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' })
   }

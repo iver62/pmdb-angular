@@ -13,7 +13,9 @@
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-    <td mat-cell class="font-bold text-lg" *matCellDef="let row">{{row.name}}</td>
+    <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+      <span class="cursor-pointer hover:underline" [routerLink]="[row.id]">{{row.name}}</span>
+    </td>
   </ng-container>
 
   <!-- Date of Birth Column -->
@@ -41,7 +43,7 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-  <tr mat-row class="cursor-pointer" *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]">
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;">
   </tr>
   <tr class="mat-row" *matNoDataRow>
     <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">

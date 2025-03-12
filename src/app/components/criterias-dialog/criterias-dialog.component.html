@@ -1,0 +1,52 @@
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="form" class="flex flex-col gap-4">
+    @if (data?.criterias?.includes('releaseDate')) {
+    <app-date-range-picker label="Date de sortie" fromDatePlaceholder="Début date de sortie"
+      toDatePlaceholder="Fin date de sortie" [fromDateControl]="form.controls.fromReleaseDate"
+      [toDateControl]="form.controls.toReleaseDate">
+    </app-date-range-picker>
+    }
+
+    @if (data?.criterias?.includes('birthDate')) {
+    <app-date-range-picker label="Date de naissance" fromDatePlaceholder="Début date de naissance"
+      toDatePlaceholder="Fin date de naissance" [fromDateControl]="form.controls.fromBirthDate"
+      [toDateControl]="form.controls.toBirthDate">
+    </app-date-range-picker>
+    }
+
+    @if (data?.criterias?.includes('deathDate')) {
+    <app-date-range-picker label="Date de décès" fromDatePlaceholder="Début date de décès"
+      toDatePlaceholder="Fin date de décès" [fromDateControl]="form.controls.fromDeathDate"
+      [toDateControl]="form.controls.toDeathDate">
+    </app-date-range-picker>
+    }
+
+    @if (data?.criterias?.includes('genres')) {
+    <app-multiselect [control]="form.controls.genres" label="Genres" placeholder="Ajouter des genres"
+      placeholderLabel="Rechercher un genre..." noEntriesFoundLabel="Aucun genre trouvé" [items]="genres$ | async"
+      (update)="updateGenreSearch($event)">
+    </app-multiselect>
+    }
+
+    <app-multiselect [control]="form.controls.countries" label="Pays" placeholder="Ajouter des pays"
+      placeholderLabel="Rechercher un pays..." noEntriesFoundLabel="Aucun pays trouvé" [items]="countries$ | async"
+      (update)="updateCountrySearch($event)">
+    </app-multiselect>
+
+    <app-date-range-picker label="Date de création" fromDatePlaceholder="Début date de création"
+      toDatePlaceholder="Fin date de création" [fromDateControl]="form.controls.fromCreationDate"
+      [toDateControl]="form.controls.toCreationDate">
+    </app-date-range-picker>
+
+    <app-date-range-picker label="Date de dernière modification"
+      fromDatePlaceholder="Début date de dernière modification" toDatePlaceholder="Fin date de dernière modification"
+      [fromDateControl]="form.controls.fromLastUpdate" [toDateControl]="form.controls.toLastUpdate">
+    </app-date-range-picker>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="form" cdkFocusInitial [disabled]="form.invalid || form.pristine">
+    Valider
+  </button>
+</mat-dialog-actions>

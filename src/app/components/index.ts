@@ -4,7 +4,6 @@ export * from './country-card/country-card.component';
 export * from './country-selector/country-selector.component';
 export * from './date-range-picker/date-range-picker.component';
 export * from './file-chooser/file-chooser.component';
-export * from './filters-dialog/filters-dialog.component';
 export * from './genre-selector/genre-selector.component';
 export * from './input/input.component';
 export * from './movies-list/movie-card/movie-card.component';

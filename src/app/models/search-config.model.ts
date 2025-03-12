@@ -1,6 +1,6 @@
 import { SortDirection } from "@angular/material/sort"
 import { View } from "../enums"
-import { Filters } from "./filters.model"
+import { Criterias } from "./criterias.model"
 
 export interface SearchConfig {
   page?: number,
@@ -8,6 +8,6 @@ export interface SearchConfig {
   sort?: string,
   direction?: SortDirection
   term?: string,
-  filters?: Filters,
+  criterias?: Criterias,
   view?: View
 }

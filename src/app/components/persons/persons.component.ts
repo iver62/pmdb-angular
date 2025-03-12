@@ -3,15 +3,12 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '..';
 import { EMPTY_STRING } from '../../app.component';
 import { View } from '../../enums';
-import { Filters, Person, SearchConfig, SortOption } from '../../models';
+import { Criterias, Person, SearchConfig, SortOption } from '../../models';
 import { BaseService } from '../../services';
 import { HttpUtils } from '../../utils';
-import { InputComponent } from '../input/input.component';
-import { PersonsListComponent } from '../persons-list/persons-list.component';
-import { PersonsTableComponent } from '../persons-table/persons-table.component';
-import { ToolbarComponent } from '../toolbar/toolbar.component';
 
 @Component({
   selector: 'app-persons',
@@ -52,14 +49,14 @@ export class PersonsComponent {
       sort: 'name',
       direction: 'asc',
       term: EMPTY_STRING,
-      filters: {},
+      criterias: {},
       view: View.CARDS
     }
   );
 
   persons$ = this.searchConfig$.pipe(
     switchMap(config =>
-      this.personService.get(config.page, config.size, config.term, config.sort, config.direction, config.filters).pipe(
+      this.personService.get(config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
@@ -85,12 +82,12 @@ export class PersonsComponent {
     )
   );
 
-  onFilter(event: Filters) {
+  onFilter(event: Criterias) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
         page: 0,
-        filters: event
+        criterias: event
       }
     );
   }

@@ -3,15 +3,15 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { Moment } from 'moment';
 import { BehaviorSubject, catchError, map, of, switchMap } from 'rxjs';
+import { DateRangePickerComponent, MultiselectComponent } from "..";
 import { EMPTY_STRING } from '../../app.component';
-import { Country, Genre } from '../../models';
+import { Country, Criterias, Genre } from '../../models';
 import { CountryService, GenreService } from '../../services';
-import { DateRangePickerComponent } from "../date-range-picker/date-range-picker.component";
-import { MultiselectComponent } from '../multiselect/multiselect.component';
 
 @Component({
-  selector: 'app-filters-dialog',
+  selector: 'app-criterias-dialog',
   imports: [
     AsyncPipe,
     DateRangePickerComponent,
@@ -20,10 +20,10 @@ import { MultiselectComponent } from '../multiselect/multiselect.component';
     MultiselectComponent,
     ReactiveFormsModule
   ],
-  templateUrl: './filters-dialog.component.html',
-  styleUrl: './filters-dialog.component.css'
+  templateUrl: './criterias-dialog.component.html',
+  styleUrl: './criterias-dialog.component.css'
 })
-export class FiltersDialogComponent {
+export class CriteriasDialogComponent {
 
   // Termes de recherche
   searchCountryTerm = new BehaviorSubject(EMPTY_STRING);
@@ -51,25 +51,25 @@ export class FiltersDialogComponent {
 
   readonly form = new FormGroup(
     {
-      fromReleaseDate: new FormControl<Date | null>(null),
-      toReleaseDate: new FormControl<Date | null>(null),
-      fromBirthDate: new FormControl<Date | null>(null),
-      toBirthDate: new FormControl<Date | null>(null),
-      fromDeathDate: new FormControl<Date | null>(null),
-      toDeathDate: new FormControl<Date | null>(null),
-      genres: new FormControl<number[]>(null),
-      countries: new FormControl<number[]>(null),
-      fromCreationDate: new FormControl<Date | null>(null),
-      toCreationDate: new FormControl<Date | null>(null),
-      fromLastUpdate: new FormControl<Date | null>(null),
-      toLastUpdate: new FormControl<Date | null>(null)
+      fromReleaseDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromReleaseDate),
+      toReleaseDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toReleaseDate),
+      fromBirthDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromBirthDate),
+      toBirthDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toBirthDate),
+      fromDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromDeathDate),
+      toDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toDeathDate),
+      genres: new FormControl<Genre[]>(this.data?.selectedCriterias?.genres?.map(g => new Genre(g))),
+      countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => new Country(c))),
+      fromCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromCreationDate),
+      toCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toCreationDate),
+      fromLastUpdate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromLastUpdate),
+      toLastUpdate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toLastUpdate)
     }
   );
 
   constructor(
     private countryService: CountryService,
     private genreService: GenreService,
-    @Inject(MAT_DIALOG_DATA) public data: string[]
+    @Inject(MAT_DIALOG_DATA) public data: { criterias: string[], selectedCriterias: Criterias }
   ) { }
 
   // Fonction pour mettre à jour la recherche
