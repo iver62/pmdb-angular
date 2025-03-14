@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { API_URL } from '../app.config';
 import { Award } from '../models';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Award } from '../models';
 })
 export class AwardService {
 
-  private basePath = ' http://localhost:8080/api/awards'
+  private basePath = `${API_URL}/awards`
 
   constructor(private http: HttpClient) { }
 

@@ -4,13 +4,14 @@ import { EMPTY_STRING } from '../app.component';
 import { Country, Criterias, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
+import { API_URL } from '../app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-  private basePath = ' http://localhost:8080/api/movies'
+  private basePath = `${API_URL}/movies`
 
   constructor(
     private dateService: DateService,

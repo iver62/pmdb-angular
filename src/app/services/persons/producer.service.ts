@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { API_URL } from '../../app.config';
 import { DateService } from '../date.service';
 import { BaseService } from './base.service';
 
@@ -9,6 +10,6 @@ import { BaseService } from './base.service';
 export class ProducerService extends BaseService {
 
   constructor(http: HttpClient, dateService: DateService) {
-    super(http, dateService, 'http://localhost:8080/api/producers');
+    super(http, dateService, `${API_URL}/producers`);
   }
 }

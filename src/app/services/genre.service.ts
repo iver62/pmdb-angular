@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY_STRING } from '../app.component';
+import { API_URL } from '../app.config';
 import { Genre, Movie } from '../models';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Genre, Movie } from '../models';
 })
 export class GenreService {
 
-  private basePath = ' http://localhost:8080/api/genres'
+  private basePath = `${API_URL}/genres`
 
   constructor(private http: HttpClient) { }
 
