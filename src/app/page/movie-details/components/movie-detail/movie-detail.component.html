@@ -1,0 +1,28 @@
+<div class="grid grid-cols-12 gap-2">
+  <div class="col-span-9 grid gap-2">
+    <p>TITRE : {{movie?.title}}</p>
+    <p>TITRE ORIGINAL : {{movie?.originalTitle}}</p>
+    <p>SYNOPSIS : {{movie?.synopsis}}</p>
+    <p>DATE DE SORTIE : {{movie?.releaseDate | date: 'dd/MM/yyyy'}}</p>
+    <p>DURÉE : {{movie?.runningTime}} @if (movie?.runningTime) {minutes}</p>
+    <p>BUDGET : {{movie?.budget}} @if (movie?.budget) {$}</p>
+    <p>BOX-OFFICE : {{movie?.boxOffice}} @if (movie?.boxOffice) {$}</p>
+    <p>GENRES :
+      @for (genre of movie?.genres | orderBy: 'name'; track genre.id; let last = $last) {
+      <span class="cursor-pointer hover:underline" [routerLink]="['/genres', genre.id]" [state]="{name: genre?.name}">
+        {{genre?.name}}@if (!last) {<span>,</span>}
+      </span>
+      }
+    </p>
+    <p>PAYS :
+      @for (country of movie?.countries | orderBy: 'nomFrFr'; track country.id; let last = $last) {
+      <span class="cursor-pointer hover:underline" [routerLink]="['/countries', country.id]">
+        {{country?.nomFrFr}}@if (!last) {<span>,</span>}
+      </span>
+      }
+    </p>
+  </div>
+  <div class="col-span-3 mr-4">
+    <img mat-card-image [src]="getSafePosterUrl(movie?.posterFileName)" alt="{{ movie?.title }}" />
+  </div>
+</div>
