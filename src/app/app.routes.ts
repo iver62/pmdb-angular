@@ -18,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'add-movie',
     canActivate: [authGuard],
-    data: { roless: ['admin', 'user'] },
+    data: { roles: ['admin', 'user'] },
     loadComponent: () => import('./page/add-movie/add-movie.component').then(c => c.AddMovieComponent)
   },
   {
@@ -297,5 +297,8 @@ export const routes: Routes = [
   // canActivate: [authGuard],
   //   loadComponent: () => import('./page/country-details/country-details.component').then(c => c.CountryDetailsComponent)
   // },
-  // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
+  {
+    path: '**',
+    loadComponent: () => import('./page/not-found/not-found.component').then(c => c.NotFoundComponent)
+  }
 ];
