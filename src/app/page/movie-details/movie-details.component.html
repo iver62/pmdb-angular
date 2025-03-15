@@ -1,250 +1,105 @@
 <button mat-button routerLink="../">Retour à la liste des films</button>
 
-<mat-tab-group>
-  @if (form) {
-  <div [formGroup]="form">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon material-symbols-outlined">movie</mat-icon>
-        Infos générales
-      </ng-template>
+<mat-tab-group (selectedTabChange)="onTabChanged($event)">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon material-symbols-outlined">movie</mat-icon>
+      Infos générales
+    </ng-template>
 
-      <div class="py-4">
-        @if (!editGeneralInfos) {
-        <div class="grid grid-cols-12 gap-2">
-          <div class="col-span-9 grid gap-2">
-            <p>TITRE : {{title}}</p>
-            <p>TITRE ORIGINAL : {{originalTitle}}</p>
-            <p>SYNOPSIS : {{synopsis}}</p>
-            <p>DATE DE SORTIE : {{releaseDate | date: 'dd/MM/yyyy'}}</p>
-            <p>DURÉE : {{runningTime}} @if (runningTime) {minutes}</p>
-            <p>BUDGET : {{budget}} @if (budget) {$}</p>
-            <p>BOX-OFFICE : {{boxOffice}} @if (boxOffice) {$}</p>
-            <p>GENRES :
-              @for (genre of genres | orderBy: 'name'; track genre.id) {
-              <a mat-button [routerLink]="['/genres', genre.id]" [state]="{name: genre?.name}">{{genre?.name}}</a>
-              }
-            </p>
-            <p>PAYS :
-              @for (country of countries | orderBy: 'nomFrFr'; track country.id) {
-              <a mat-button [routerLink]="['/countries', country.id]">{{country?.nomFrFr}}</a>
-              }
-          </div>
-          <div class="col-span-3 mr-4">
-            <img mat-card-image [src]="getSafePosterUrl(posterFileName)" alt="{{ title }}" />
-          </div>
-        </div>
+    <div class="py-4">
+      @if (editGeneralInfos) {
+      <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
+      </app-general-infos-form>
+
+      <div class="fixed bottom-5 right-5">
+        <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a check icon"
+          color="accent" (click)="saveGeneralInfos()">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
+          color="accent" (click)="cancelGeneralInfos()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+      } @else {
+      <app-movie-detail [movie]="generalInfos"></app-movie-detail>
+
+      <div class="fixed bottom-5 right-5">
+        <button mat-fab class="float-right m-1" matTooltip="Modifier"
+          aria-label="Example icon button with a delete icon" color="accent" (click)="editGeneralInfos=true">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      }
+    </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon material-symbols-outlined">group</mat-icon>
+      Fiche technique
+    </ng-template>
+
+    <div class="py-4">
+      @if (editTechnicalTeam) {
+      <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
+
+      <div class="fixed bottom-5 right-5">
+        <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
+          color="accent" (click)="saveTechnicalTeam()">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
+          color="accent" (click)="cancelTechnicalTeam()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+      } @else {
+      <app-technical-team [technicalTeam]="technicalTeam"></app-technical-team>
+
+      <div class="fixed bottom-5 right-5">
+        <button mat-fab class="float-right m-1" matTooltip="Modifier"
+          aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalTeam=true">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      }
+    </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon material-symbols-outlined">theater_comedy</mat-icon>
+      Casting
+    </ng-template>
+
+    <div class="p-4">
+      @if (editCasting) {
+      <app-casting-form [form]="castingForm"></app-casting-form>
+
+      <div class="fixed bottom-5 right-5">
+        <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
+          color="accent" (click)="saveCasting()">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
+          color="accent" (click)="cancelCasting()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+      } @else {
+      <div>
+        <app-casting [casting]="casting"></app-casting>
 
         <div class="fixed bottom-5 right-5">
           <button mat-fab class="float-right m-1" matTooltip="Modifier"
-            aria-label="Example icon button with a delete icon" color="accent" (click)="editGeneralInfos=true">
+            aria-label="Example icon button with a delete icon" color="accent" (click)="editCasting=true">
             <mat-icon>edit</mat-icon>
           </button>
         </div>
-        } @else {
-        <app-general-infos-form formGroupName="generalFormGroup" (selectImage)="selectImage($event)">
-        </app-general-infos-form>
-        <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1" matTooltip="Valider"
-            aria-label="Example icon button with a check icon" color="accent" (click)="saveGeneralInfos()">
-            <mat-icon>check</mat-icon>
-          </button>
-          <button mat-fab class="float-right m-1" matTooltip="Annuler"
-            aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelGeneralInfos()">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </div>
-        }
       </div>
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon material-symbols-outlined">group</mat-icon>
-        Fiche technique
-      </ng-template>
-
-      <div class="py-4">
-        @if (!editTechnicalTeam) {
-        <div>
-          @if (directors?.length) {
-          <p>RÉALISATEURS :
-            @for (director of directors | orderBy: 'name'; track director.id) {
-            <a mat-button [routerLink]="['/directors', director.id]">{{director?.name}}</a>
-            }
-          </p>
-          }
-          @if (screenwriters?.length) {
-          <p>SCÉNARISTES :
-            @for(screenwriter of screenwriters | orderBy: 'name'; track screenwriter.id) {
-            <a mat-button [routerLink]="['/screenwriters', screenwriter.id]">{{screenwriter?.name}}</a>
-            }
-          </p>
-          }
-          @if (musicians?.length) {
-          <p>MUSIQUE :
-            @for(musician of musicians | orderBy: 'name'; track musician.id) {
-            <a mat-button [routerLink]="['/musicians', musician.id]">{{musician?.name}}</a>
-            }
-          </p>
-          }
-          @if (photographers?.length) {
-          <p>PHOTOGRAPHIE :
-            @for (photographer of photographers | orderBy: 'name'; track photographer.id) {
-            <a mat-button [routerLink]="['/photographers', photographer.id]">{{photographer?.name}}</a>
-            }
-          </p>
-          }
-          @if (costumiers?.length) {
-          <p>COSTUMES :
-            @for (costumier of costumiers | orderBy: 'name'; track costumier.id) {
-            <a mat-button [routerLink]="['/costumiers', costumier.id]">{{costumier?.name}}</a>
-            }
-          </p>
-          }
-          @if (decorators?.length) {
-          <p>DÉCORS :
-            @for (decorator of decorators | orderBy: 'name'; track decorator.id) {
-            <a mat-button [routerLink]="['/decorators', decorator.id]">{{decorator?.name}}</a>
-            }
-          </p>
-          }
-          @if (editors?.length) {
-          <p>MONTAGE :
-            @for (editor of editors | orderBy: 'name'; track editor.id) {
-            <a mat-button [routerLink]="['/editors', editor.id]">{{editor?.name}}</a>
-            }
-          </p>
-          }
-          @if (casters?.length) {
-          <p>CASTING :
-            @for (caster of casters | orderBy: 'name'; track caster.id) {
-            <a mat-button [routerLink]="['/casters', caster.id]">{{caster?.name}}</a>
-            }
-          </p>
-          }
-          @if (artDirectors?.length) {
-          <p>DIRECTION ARTISTIQUE :
-            @for (artDirector of artDirectors | orderBy: 'name'; track artDirector.id) {
-            <a mat-button [routerLink]="['/art-directors', artDirector.id]">{{artDirector?.name}}</a>
-            }
-          </p>
-          }
-          @if (soundEditors?.length) {
-          <p>SON :
-            @for (soundEditor of soundEditors | orderBy: 'name'; track soundEditor.id) {
-            <a mat-button [routerLink]="['/sound-editors', soundEditor.id]">{{soundEditor?.name}}</a>
-            }
-          </p>
-          }
-          @if (visualEffectsSupervisors?.length) {
-          <p>EFFETS SPECIAUX :
-            @for (visualEffectsSupervisor of visualEffectsSupervisors | orderBy: 'name'; track
-            visualEffectsSupervisor.id) {
-            <a mat-button [routerLink]="['/visual-effects-supervisors', visualEffectsSupervisor.id]">
-              {{visualEffectsSupervisor?.name}}
-            </a>
-            }
-          </p>
-          }
-          @if (makeupArtists?.length) {
-          <p>MAQUILLAGE :
-            @for (makeupArtist of makeupArtists | orderBy: 'name'; track makeupArtist.id) {
-            <a mat-button [routerLink]="['/makeup-artists', makeupArtist.id]">{{makeupArtist?.name}}</a>
-            }
-          </p>
-          }
-          @if (hairDressers?.length) {
-          <p>COIFFURE :
-            @for (hairDresser of hairDressers | orderBy: 'name'; track hairDresser.id) {
-            <a mat-button [routerLink]="['/hair-dressers', hairDresser.id]">{{hairDresser?.name}}</a>
-            }
-          </p>
-          }
-          @if (stuntmen?.length) {
-          <p>CASCADES :
-            @for (stuntman of stuntmen | orderBy: 'name'; track stuntman.id) {
-            <a mat-button [routerLink]="['/stuntmen', stuntman.id]">{{stuntman?.name}}</a>
-            }
-          </p>
-          }
-          @if (producers?.length) {
-          <p>PRODUCTEURS :
-            @for (producer of producers | orderBy: 'name'; track producer.id) {
-            <a mat-button [routerLink]="['/producers', producer.id]">{{producer?.name}}</a>
-            }
-          </p>
-          }
-        </div>
-
-        <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1" matTooltip="Modifier"
-            aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalTeam=true">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-        } @else {
-        <app-technical-team-form formGroupName="technicalTeamFormGroup"></app-technical-team-form>
-        <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1" matTooltip="Valider"
-            aria-label="Example icon button with a delete icon" color="accent" (click)="saveTechnicalTeam()">
-            <mat-icon>check</mat-icon>
-          </button>
-        </div>
-        }
-      </div>
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon material-symbols-outlined">theater_comedy</mat-icon>
-        Casting
-      </ng-template>
-
-      <div class="p-4">
-        @if (editCasting) {
-        <app-casting-form formGroupName="castingFormGroup"></app-casting-form>
-        <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1" matTooltip="Valider"
-            aria-label="Example icon button with a delete icon" color="accent"
-            [hidden]="form.get('castingFormGroup').pristine" (click)="saveCasting()">
-            <mat-icon>check</mat-icon>
-          </button>
-          <button mat-fab class="float-right m-1" matTooltip="Annuler"
-            aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelCasting()">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </div>
-        } @else {
-        <div>
-          <div class="grid gap-1">
-            @for (movieActor of movieActors; track movieActor.id) {
-            <div class="grid grid-cols-12 text-xl">
-              <span class="col-span-1 image-container">
-                <img mat-card-image [src]="getSafePhotoUrl(movieActor.actor.photoFileName)"
-                  alt="{{ movieActor.actor.photoFileName }}">
-              </span>
-              <div class="col-span-4">
-                <span class="font-bold cursor-pointer" [routerLink]="['/actors', movieActor?.actor?.id]">
-                  {{movieActor?.actor?.name}}
-                </span>
-              </div>
-              <span class="col-span-4">{{movieActor?.role}}</span>
-            </div>
-            } @empty {
-            Aucun acteur
-            }
-          </div>
-          <div class="fixed bottom-5 right-5">
-            <button mat-fab class="float-right m-1" matTooltip="Modifier"
-              aria-label="Example icon button with a delete icon" color="accent" (click)="editCasting=true">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </div>
-        </div>
-        }
-      </div>
-    </mat-tab>
-  </div>
-  }
+      }
+    </div>
+  </mat-tab>
 </mat-tab-group>

@@ -2,14 +2,6 @@
   margin-right: 8px;
 }
 
-.title {
-  width: fit-content;
-}
-
-ul li {
-  display: inline;
-}
-
 .mat-mdc-tab-group {
   height: calc(100% - 40px);
 
@@ -17,27 +9,4 @@ ul li {
     height: calc(100% - 49px);
     overflow-y: auto;
   }
-}
-
-.image-container {
-  width: 30px;
-  /* Taille du cercle */
-  height: 30px;
-  border-radius: 50%;
-  /* Rend l'image circulaire */
-  overflow: hidden;
-  /* Cache les bords dépassants */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #333;
-  /* Bordure optionnelle */
-}
-
-.image-container img {
-  width: 100%;
-  /* Ajuste l'image à la taille du conteneur */
-  height: 100%;
-  object-fit: cover;
-  /* Coupe l'image pour remplir le cercle */
 }
