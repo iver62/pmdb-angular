@@ -1,0 +1,141 @@
+<div class="flex flex-col gap-4">
+  @if (technicalTeam?.directors?.length) {
+  <div>RÉALISATEURS :
+    @for (director of technicalTeam?.directors | orderBy: 'name'; track director.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/directors', director.id]">
+      {{director?.name}}@if (!last) {,}
+    </span>
+
+    }
+  </div>
+  }
+  @if (technicalTeam?.screenwriters?.length) {
+  <div>SCÉNARISTES :
+    @for(screenwriter of technicalTeam?.screenwriters | orderBy: 'name'; track screenwriter.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/screenwriters', screenwriter.id]">
+      {{screenwriter?.name}}@if (!last) {,}
+    </span>
+
+    }
+  </div>
+  }
+  @if (technicalTeam?.musicians?.length) {
+  <div>MUSIQUE :
+    @for(musician of technicalTeam?.musicians | orderBy: 'name'; track musician.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/musicians', musician.id]">
+      {{musician?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.photographers?.length) {
+  <div>PHOTOGRAPHIE :
+    @for (photographer of technicalTeam?.photographers | orderBy: 'name'; track photographer.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/photographers', photographer.id]">
+      {{photographer?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.costumiers?.length) {
+  <div>COSTUMES :
+    @for (costumier of technicalTeam?.costumiers | orderBy: 'name'; track costumier.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/costumiers', costumier.id]">
+      {{costumier?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.decorators?.length) {
+  <div>DÉCORS :
+    @for (decorator of technicalTeam?.decorators | orderBy: 'name'; track decorator.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/decorators', decorator.id]">
+      {{decorator?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.editors?.length) {
+  <div>MONTAGE :
+    @for (editor of technicalTeam?.editors | orderBy: 'name'; track editor.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/editors', editor.id]">
+      {{editor?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.casters?.length) {
+  <div>CASTING :
+    @for (caster of technicalTeam?.casters | orderBy: 'name'; track caster.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/casters', caster.id]">
+      {{caster?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.artDirectors?.length) {
+  <div>DIRECTION ARTISTIQUE :
+    @for (artDirector of technicalTeam?.artDirectors | orderBy: 'name'; track artDirector.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/art-directors', artDirector.id]">
+      {{artDirector?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.soundEditors?.length) {
+  <div>SON :
+    @for (soundEditor of technicalTeam?.soundEditors | orderBy: 'name'; track soundEditor.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/sound-editors', soundEditor.id]">
+      {{soundEditor?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.visualEffectsSupervisors?.length) {
+  <div>EFFETS SPECIAUX :
+    @for (visualEffectsSupervisor of technicalTeam?.visualEffectsSupervisors | orderBy: 'name'; track
+    visualEffectsSupervisor.id; let last = $last) {
+    <span class="cursor-pointer hover:underline"
+      [routerLink]="['/visual-effects-supervisors', visualEffectsSupervisor.id]">
+      {{visualEffectsSupervisor?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.makeupArtists?.length) {
+  <div>MAQUILLAGE :
+    @for (makeupArtist of technicalTeam?.makeupArtists | orderBy: 'name'; track makeupArtist.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/makeup-artists', makeupArtist.id]">
+      {{makeupArtist?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.hairDressers?.length) {
+  <div>COIFFURE :
+    @for (hairDresser of technicalTeam?.hairDressers | orderBy: 'name'; track hairDresser.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/hair-dressers', hairDresser.id]">
+      {{hairDresser?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.stuntmen?.length) {
+  <div>CASCADES :
+    @for (stuntman of technicalTeam?.stuntmen | orderBy: 'name'; track stuntman.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/stuntmen', stuntman.id]">
+      {{stuntman?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+  @if (technicalTeam?.producers?.length) {
+  <div>PRODUCTEURS :
+    @for (producer of technicalTeam?.producers | orderBy: 'name'; track producer.id; let last = $last) {
+    <span class="cursor-pointer hover:underline" [routerLink]="['/producers', producer.id]">
+      {{producer?.name}}@if (!last) {,}
+    </span>
+    }
+  </div>
+  }
+</div>
