@@ -120,7 +120,9 @@ export class PersonsComponent {
   }
 
   onSearch(event: string) {
-    typeof event == 'string' ? this.updateSearchConfig({ page: 0, term: event?.trim() }) : this.updateSearchConfig({ page: 0, term: '' });
+    if (typeof event == 'string') {
+      this.updateSearchConfig({ page: 0, term: event?.trim() });
+    }
   }
 
   onScroll() {
