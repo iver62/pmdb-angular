@@ -9,3 +9,4 @@ export * from './person.model';
 export * from './search-config.model';
 export * from './sort-option.model';
 export * from './technical-team.model';
+export * from './user.model';

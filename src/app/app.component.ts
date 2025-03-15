@@ -2,15 +2,18 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { Observable } from 'rxjs';
-import { LoaderService } from './services';
+import { UserDialogComponent } from './components';
+import { AuthService, LoaderService } from './services';
 
 export const EMPTY_STRING = '';
 
@@ -24,6 +27,7 @@ export const EMPTY_STRING = '';
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    MatTooltipModule,
     NgPipesModule,
     RouterLink,
     RouterOutlet
@@ -143,7 +147,11 @@ export class AppComponent {
 
   private _mobileQueryListener: () => void;
 
+  user$ = this.authService.loadUserProfile();
+
   constructor(
+    private authService: AuthService,
+    private dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef,
     private loaderService: LoaderService,
     media: MediaMatcher,
@@ -152,6 +160,18 @@ export class AppComponent {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  openProfileDialog() {
+    this.dialog.open(UserDialogComponent, {
+      minWidth: '30vw',  // Définit la largeur à 75% de l'écran
+      minHeight: '50vh', // Définit la hauteur à 90% de l'écran
+      data: this.user$
+    })
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   ngOnDestroy(): void {

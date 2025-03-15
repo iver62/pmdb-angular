@@ -4,7 +4,7 @@
       <button mat-icon-button (click)="snav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <h1 class="example-app-name">{{title}}</h1>
+      <h1 class="example-app-name cursor-pointer" routerLink="/">{{title}}</h1>
     </div>
     <h1>
       <button mat-button routerLink="/add-movie">
@@ -12,9 +12,14 @@
         <span>Ajouter un film</span>
       </button>
     </h1>
-    <button mat-icon-button>
-      <mat-icon>account_circle</mat-icon>
-    </button>
+    <div>
+      <button mat-icon-button matTooltip="Mon Profil" (click)="openProfileDialog()">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Se déconnecter" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">

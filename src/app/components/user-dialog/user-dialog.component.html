@@ -1,0 +1,12 @@
+@let user = data | async;
+
+<h2 mat-dialog-title class="text-center">Informations de l'utilisateur</h2>
+<mat-dialog-content class="content-center">
+  <div class="text-lg"><strong>Pseudo :</strong> {{ user?.username }}</div>
+  <div class="text-lg"><strong>Email :</strong> {{ user?.email }}</div>
+  <div class="text-lg"><strong>Nom :</strong> {{ user?.lastName }}</div>
+  <div class="text-lg"><strong>Prénom :</strong> {{ user?.firstName }}</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fermer</button>
+</mat-dialog-actions>
