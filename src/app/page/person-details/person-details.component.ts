@@ -1,51 +1,75 @@
-import { Component, effect, signal } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, effect, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { BehaviorSubject, catchError, combineLatest, concatMap, forkJoin, map, of, switchMap, tap } from 'rxjs';
-import { InputComponent, MoviesListComponent } from '../../components';
-import { Person, SearchConfig } from '../../models';
+import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
+import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
+import { View } from '../../enums';
+import { Criterias, Movie, Person, SearchConfig, SortOption } from '../../models';
 import { BaseService } from '../../services';
-import { PersonDetailComponent } from './components';
-import { PersonFormComponent } from "./components/person-form/person-form.component";
+import { HttpUtils } from '../../utils';
+import { PersonDetailComponent, PersonFormComponent } from './components';
 
 @Component({
   selector: 'app-person-details',
   imports: [
+    AsyncPipe,
     InfiniteScrollDirective,
     InputComponent,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
     MatInputModule,
+    MatPaginatorModule,
     MatTooltipModule,
     MoviesListComponent,
+    MoviesTableComponent,
     PersonDetailComponent,
     PersonFormComponent,
-    RouterLink
+    RouterLink,
+    ToolbarComponent
   ],
   templateUrl: './person-details.component.html',
   styleUrl: './person-details.component.css'
 })
 export class PersonDetailsComponent {
 
-  total: number;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
       size: 20,
       sort: 'title',
-      direction: 'Ascending',
-      term: ''
+      direction: 'asc',
+      term: EMPTY_STRING,
+      criterias: {},
+      view: View.CARDS
     }
   );
+
+  sortOptions: SortOption[] = [
+    { active: 'title', label: 'Titre', direction: 'asc' },
+    { active: 'releaseDate', label: 'Date de sortie', direction: EMPTY_STRING },
+    { active: 'runningTime', label: 'Durée', direction: EMPTY_STRING },
+    { active: 'budget', label: 'Budget', direction: EMPTY_STRING },
+    { active: 'boxOffice', label: 'Box-office', direction: EMPTY_STRING },
+    { active: 'creationDate', label: 'Date de création', direction: EMPTY_STRING },
+    { active: 'lastUpdate', label: 'Dernière modification', direction: EMPTY_STRING }
+  ];
+
+  total: number;
+  view = View;
+  pageSizeOptions = [25, 50, 100];
   duration = 5000;
   service: BaseService = this.route.snapshot.data['service'];
   person = signal<Person>(null);
@@ -53,13 +77,42 @@ export class PersonDetailsComponent {
   form: FormGroup;
   selectedFile: File | null = null;
 
+  sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(
+    map(config =>
+      this.sortOptions.map(option => (
+        {
+          ...option,
+          direction: option.active === config.sort ? config.direction : EMPTY_STRING // Met à jour la direction du tri
+        }
+      ))
+    )
+  );
+
+  movies$ = this.searchConfig$.pipe(
+    filter(() => !!this.person()),
+    switchMap(config =>
+      this.service.getMovies(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
+        tap(response => this.total = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
+        map(response => response.body ?? []),
+        catchError(error => {
+          console.error('Erreur lors de la récupération des films:', error);
+          return of(null); // Retourne un observable avec null en cas d'erreur
+        })
+      )
+    ),
+    scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE // Concatène les nouvelles données
+      ? result
+      : acc.concat(result), []
+    )
+  );
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
-    // ✅ Effect ensures form updates when `person` changes
+    // Effect ensures form updates when `person` changes
     effect(() => {
       if (this.person()) {
         this.form = this.fb.group({
@@ -76,44 +129,14 @@ export class PersonDetailsComponent {
   }
 
   ngOnInit() {
-    combineLatest([
-      this.route.paramMap.pipe(
-        switchMap(params => this.service.getById(+params.get('id'))),
-        catchError(error => {
-          console.error('Erreur lors de la récupération de la personne:', error);
-          return of(null); // Retourne un observable avec null en cas d'erreur
-        })
-      ),
-      this.searchConfig$
-    ]).pipe(
-      switchMap(([person, config]) =>
-        forkJoin(
-          {
-            movies: this.service.getMovies(person.id, config.page, config.size, config.term).pipe(
-              tap(response => this.total = +response.headers.get('X-Total-Count')),
-              map(response => response.body ?? []),
-              catchError(error => {
-                console.error('Erreur lors de la récupération des films:', error);
-                return of(null); // Retourne un observable avec null en cas d'erreur
-              })
-            ),
-            countries: this.service.getCountries(person.id).pipe(
-              catchError(error => {
-                console.error('Erreur lors de la récupération des pays:', error);
-                return of(null); // Retourne un observable avec null en cas d'erreur
-              })
-            )
-          }
-        ).pipe(
-          map(result => (
-            {
-              ...person,
-              movies: result.movies,
-              countries: result.countries
-            }
-          ))
-        )
-      )
+    this.route.paramMap.pipe(
+      switchMap(params => this.service.getById(+params.get('id'))),
+      catchError(error => {
+        console.error('Erreur lors de la récupération de la personne:', error);
+        return of(null); // Retourne un observable avec null en cas d'erreur
+      })
+    ).pipe(
+      filter(person => !!person), // Empêche d'exécuter la requête si `person` est null
     ).subscribe(result => this.person.set(result));
   }
 
@@ -121,14 +144,51 @@ export class PersonDetailsComponent {
     this.selectedFile = event;
   }
 
-  onSearch(event: string) {
+  onFilter(event: Criterias) {
     this.searchConfig$.next(
       {
         ...this.searchConfig$.value,
         page: 0,
-        term: event
+        criterias: event
       }
     );
+  }
+
+  onSwitchView(view: View) {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        view: view
+      }
+    );
+  }
+
+  onSort(event: SortOption) {
+    if (this.searchConfig$.value.view == View.TABLE) {
+      this.paginator.firstPage();
+    }
+
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        sort: event.active,
+        direction: event.direction
+      }
+    );
+  }
+
+  onSearch(event: string) {
+    if (typeof event === 'string') {
+      this.searchConfig$.next(
+        {
+          ...this.searchConfig$.value,
+          page: 0,
+          term: event
+        }
+      );
+    }
   }
 
   onScroll() {
@@ -136,6 +196,16 @@ export class PersonDetailsComponent {
       {
         ...this.searchConfig$.value,
         page: this.searchConfig$.value.page + 1
+      }
+    );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: event.pageIndex,
+        size: event.pageSize
       }
     );
   }
@@ -154,26 +224,10 @@ export class PersonDetailsComponent {
   }
 
   save() {
-    this.service.update(this.selectedFile, this.form.value).pipe(
-      concatMap(person => this.service.getCountries(person.id).pipe(
-        map(countries => (
-          {
-            ...person,
-            countries: countries
-          }
-        ))
-      ))
-    ).subscribe(
+    this.service.update(this.selectedFile, this.form.value).subscribe(
       {
         next: (result: Person) => {
-          this.person.update(current => ({
-            ...current,
-            name: result.name,
-            photoFileName: result.photoFileName,
-            dateOfBirth: result.dateOfBirth,
-            dateOfDeath: result.dateOfDeath,
-            countries: result.countries
-          }));
+          this.person.set(result);
           this.editMode = false;
           this.snackBar.open(`${this.person().name} modifié avec succès`, 'Done', { duration: this.duration });
         },

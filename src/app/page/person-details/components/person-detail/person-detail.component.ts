@@ -25,13 +25,16 @@ import { PersonUtils } from '../../../../utils';
 })
 export class PersonDetailComponent {
 
-  @Input() service: BaseService;
   person = input.required<Person>();
-  age: number;
-  ageOfDeath: number;
+
+  @Input() service: BaseService;
+  @Input() canDelete: boolean;
 
   @Output() edit = new EventEmitter();
   @Output() delete = new EventEmitter();
+
+  age: number;
+  ageOfDeath: number;
 
   constructor(private sanitizer: DomSanitizer) {
     effect(() => {

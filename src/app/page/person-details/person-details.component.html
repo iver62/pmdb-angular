@@ -3,35 +3,42 @@
 
   @if (!editMode) {
   @if (person()) {
-  <div>
-    <app-person-detail [person]="person()" [service]="service" (edit)="editMode = !editMode" (delete)="deletePerson()">
+  @let movies = movies$ | async;
+
+  <div class="h-full">
+    <app-person-detail [person]="person()" [service]="service" [canDelete]="movies?.length > 0"
+      (edit)="editMode = !editMode" (delete)="deletePerson()">
     </app-person-detail>
 
-    <div class="overflow-y-auto mt-4">
+    <div class="mt-4">
       <div class="flex flex-row justify-between items-center">
         <h2></h2>
         <app-input class="md:w-1/3" label="Films" [total]="total" (change)="onSearch($event)">
         </app-input>
-        <div>
-          <div class="flex justify-end">
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
-              matTooltip="Tableau">
-              <mat-icon class="material-symbols-outlined">table_rows</mat-icon>
-            </button>
-            <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Images">
-              <mat-icon class="material-symbols-outlined">image</mat-icon>
-            </button>
-            <button mat-icon-button aria-label="Example icon button with a open in new tab icon" matTooltip="Trier">
-              <mat-icon>sort</mat-icon>
-            </button>
-          </div>
-        </div>
+        <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
+          [sorts]="sorts$ | async" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
+          (sort)="onSort($event)">
+        </app-toolbar>
       </div>
       <!-- Films associés -->
-      <div class="movies-container" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
-        (scrolled)="onScroll()">
-        <app-movies-list [movies]="person()?.movies"></app-movies-list>
+      @if (searchConfig$.value.view == view.CARDS) {
+      <div class="h-[calc(100%-76px)] overflow-y-auto" infiniteScroll [scrollWindow]="false"
+        [infiniteScrollDistance]="1" (scrolled)="onScroll()">
+        <app-movies-list [movies]="movies"></app-movies-list>
       </div>
+      } @else {
+      <div class="max-h-[calc(100%-132px)] overflow-y-auto">
+        <app-movies-table [dataSource]="movies" [sortActive]="searchConfig$.value.sort"
+          [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
+        </app-movies-table>
+      </div>
+      @if (movies?.length) {
+      <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="total"
+        [pageSize]="searchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
+        aria-label="Select page of Movie search results">
+      </mat-paginator>
+      }
+      }
     </div>
   </div>
   }

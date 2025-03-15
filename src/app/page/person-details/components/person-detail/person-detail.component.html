@@ -8,22 +8,23 @@
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a delete icon" color="accent"
-        (click)="onDelete()">
-        <mat-icon>clear</mat-icon>
+        [disabled]="canDelete" (click)="onDelete()">
+        <mat-icon>delete</mat-icon>
       </button>
     </div>
     @if (person()?.dateOfBirth) {
-    <p>Né le {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age}} ans)}</p>
+    <p>Né le: {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age}} ans)}</p>
     }
     @if (person()?.dateOfDeath) {
-    <p>Décédé le {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath}} ans)</p>
+    <p>Décédé le: {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath}} ans)</p>
     }
     @if (person()?.countries?.length) {
     <p>Nationalité(s) :
-      @for (country of person().countries | orderBy: 'nomFrFr'; track country.id) {
-      <a mat-button [routerLink]="['/countries', country.id]" [state]="{name: country?.nomFrFr}">
-        {{country?.nomFrFr}}
-      </a>
+      @for (country of person().countries | orderBy: 'nomFrFr'; track country.id; let last = $last) {
+      <span class="cursor-pointer hover:underline" [routerLink]="['/countries', country.id]"
+        [state]="{name: country?.nomFrFr}">
+        {{country?.nomFrFr}}@if (!last) {<span>,</span>}
+      </span>
       }
     </p>
     }
