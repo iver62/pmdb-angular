@@ -81,4 +81,9 @@ export class CriteriasDialogComponent {
   updateGenreSearch(term: string) {
     this.searchGenreTerm.next(term);
   }
+
+  eraseCriterias() {
+    this.form.reset();
+    this.form.markAsDirty();
+  }
 }
