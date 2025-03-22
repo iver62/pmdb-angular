@@ -1,1 +1,60 @@
-<p>dashboard works!</p>
+@let decadeRepartition = decadeRepartition$ | async;
+@let genreRepartition = genreRepartition$ | async;
+@let countryRepartition = countryRepartition$ | async;
+@let userRepartition = userRepartition$ | async;
+@let creationDateRepartition = creationDateRepartition$ | async;
+@let creationDateEvolution = creationDateEvolution$ | async;
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3">
+  <mat-card appearance="outlined" class="col-span-3">
+    <mat-card-header>Nombre de films</mat-card-header>
+    <mat-card-content class="text-3xl text-center">{{moviesNumber$ | async}}</mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-3">
+    <mat-card-header>Nombre d'acteurs</mat-card-header>
+    <mat-card-content class="text-3xl text-center">{{actorsNumber$ | async}}</mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-2 pb-2">
+    <mat-card-header class="items-center justify-between mb-2">
+      <mat-card-title>Sortie</mat-card-title>
+    </mat-card-header>
+    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="decadeRepartition"></app-bar-chart>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-4 pb-2">
+    <mat-card-header class="items-center justify-between mb-2">
+      <mat-card-title>Pays</mat-card-title>
+    </mat-card-header>
+    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="countryRepartition"></app-bar-chart>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-2 pb-2">
+    <mat-card-header class="items-center justify-between mb-2">
+      <mat-card-title>Genres</mat-card-title>
+    </mat-card-header>
+    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="genreRepartition"></app-bar-chart>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-4 pb-2">
+    <mat-card-header class="items-center justify-between mb-2">
+      <mat-card-title>Contributeurs</mat-card-title>
+    </mat-card-header>
+    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="userRepartition"></app-bar-chart>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-6 pb-2">
+    <mat-card-header class="items-center justify-between mb-2">
+      <mat-card-title>Date d'ajout</mat-card-title>
+    </mat-card-header>
+    <app-bar-chart class="max-h-[400px]" [barChartData]="creationDateRepartition"></app-bar-chart>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-6 pb-2">
+    <mat-card-header class="items-center justify-between mb-2">
+      <mat-card-title>Nombre de films</mat-card-title>
+    </mat-card-header>
+    <app-line-chart class="max-h-[400px]" [lineChartData]="creationDateEvolution"></app-line-chart>
+  </mat-card>
+</div>
