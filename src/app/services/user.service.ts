@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
-import { API_URL } from '../app.config';
 import { User } from '../models';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { User } from '../models';
 })
 export class UserService {
 
-  private basePath = `${API_URL}/users`;
+  private basePath = `${environment.apiBaseUrl}/users`;
 
   constructor(private http: HttpClient) { }
 

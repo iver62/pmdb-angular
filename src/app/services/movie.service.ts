@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
-import { Country, Criterias, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
+import { Country, Criterias, Genre, Movie, MovieActor, Person, Repartition, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
-import { API_URL } from '../app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-  private basePath = `${API_URL}/movies`
+  private basePath = `${environment.apiBaseUrl}/movies`
 
   constructor(
     private dateService: DateService,
@@ -143,27 +143,27 @@ export class MovieService {
   }
 
   getEvolutionCreationDate() {
-    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/creation-date-evolution`);
+    return this.http.get<Repartition[]>(`${this.basePath}/creation-date-evolution`);
   }
 
   getRepartitionByCreationDate() {
-    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/creation-date-repartition`);
+    return this.http.get<Repartition[]>(`${this.basePath}/creation-date-repartition`);
   }
 
   getRepartitionByDecade() {
-    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/decade-repartition`);
+    return this.http.get<Repartition[]>(`${this.basePath}/decade-repartition`);
   }
 
   getRepartitionByCountry() {
-    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/country-repartition`);
+    return this.http.get<Repartition[]>(`${this.basePath}/country-repartition`);
   }
 
   getRepartitionByGenre() {
-    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/genre-repartition`);
+    return this.http.get<Repartition[]>(`${this.basePath}/genre-repartition`);
   }
 
   getRepartitionByUser() {
-    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/user-repartition`);
+    return this.http.get<Repartition[]>(`${this.basePath}/user-repartition`);
   }
 
   saveMovie(imageFile: File, movie: Movie) {

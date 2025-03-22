@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_URL } from '../app.config';
+import { environment } from '../../environments/environment';
 import { Country, Movie, Person } from '../models';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Country, Movie, Person } from '../models';
 })
 export class CountryService {
 
-  private basePath = `${API_URL}/countries`
+  private basePath = `${environment.apiBaseUrl}/countries`
 
   constructor(private http: HttpClient) { }
 

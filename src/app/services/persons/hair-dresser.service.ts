@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_URL } from '../../app.config';
+import { environment } from '../../../environments/environment';
 import { DateService } from '../date.service';
 import { BaseService } from './base.service';
 
@@ -10,6 +10,6 @@ import { BaseService } from './base.service';
 export class HairDresserService extends BaseService {
 
   constructor(http: HttpClient, dateService: DateService) {
-    super(http, dateService, `${API_URL}/hair-dressers`);
+    super(http, dateService, `${environment.apiBaseUrl}/hair-dressers`);
   }
 }

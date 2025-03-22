@@ -6,13 +6,11 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import 'moment/locale/fr'; // Importation explicite de la locale française pour Moment.js
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideKeycloakAngular } from '../keycloak-init';
 import { routes } from './app.routes';
 import { getFrenchPaginatorIntl } from './custom-paginator';
 import { loaderInterceptor } from './interceptors';
-
-export const API_DOMAIN = 'http://localhost:8085';
-export const API_URL = `${API_DOMAIN}/api`
 
 export const APP_DATE_FORMATS = {
   parse: {
@@ -35,6 +33,7 @@ export const appConfig: ApplicationConfig = {
     provideNativeDateAdapter(),
     provideKeycloakAngular(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideCharts(withDefaultRegisterables()),
     provideRouter(routes),
     { provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl() },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
