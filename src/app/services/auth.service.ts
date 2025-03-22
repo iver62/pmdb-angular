@@ -25,10 +25,10 @@ export class AuthService {
           username: profile?.username || 'Inconnu',
           email: profile?.email || 'Non renseigné',
           firstName: profile?.firstName || 'Non renseigné',
-          lastName: profile.lastName || 'Non renseigné'
+          lastName: profile?.lastName || 'Non renseigné'
         }
       ) as User)
-    )
+    );
   }
 
   logout() {

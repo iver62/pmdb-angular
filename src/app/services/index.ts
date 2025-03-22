@@ -22,3 +22,4 @@ export * from './date.service';
 export * from './genre.service';
 export * from './loader.service';
 export * from './movie.service';
+export * from './user.service';

@@ -18,6 +18,10 @@ export class MovieService {
     private http: HttpClient
   ) { }
 
+  countMovies() {
+    return this.http.get<number>(`${this.basePath}/count`);
+  }
+
   getAll(title: string, sort = 'title', direction = 'asc') {
     return this.http.get<Movie[]>(`${this.basePath}/all?sort=${sort}&direction=${direction}&title=${title}`, {
       observe: 'response'
@@ -49,6 +53,7 @@ export class MovieService {
     criterias?.toLastUpdate && params.set('end-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
     criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
+    criterias?.users?.forEach(user => params.append('user', user.username));
 
     return this.http.get<Movie[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }
@@ -135,6 +140,30 @@ export class MovieService {
 
   getCountries(id: number) {
     return this.http.get<Country[]>(`${this.basePath}/${id}/countries`);
+  }
+
+  getEvolutionCreationDate() {
+    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/creation-date-evolution`);
+  }
+
+  getRepartitionByCreationDate() {
+    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/creation-date-repartition`);
+  }
+
+  getRepartitionByDecade() {
+    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/decade-repartition`);
+  }
+
+  getRepartitionByCountry() {
+    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/country-repartition`);
+  }
+
+  getRepartitionByGenre() {
+    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/genre-repartition`);
+  }
+
+  getRepartitionByUser() {
+    return this.http.get<{ label: string, total: number }[]>(`${this.basePath}/user-repartition`);
   }
 
   saveMovie(imageFile: File, movie: Movie) {

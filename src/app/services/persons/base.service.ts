@@ -15,6 +15,10 @@ export class BaseService {
     @Inject(String) public basePath: string
   ) { }
 
+  count() {
+    return this.http.get<number>(`${this.basePath}/count`);
+  }
+
   getById(id: number) {
     return this.http.get<Person>(`${this.basePath}/${id}`);
   }
