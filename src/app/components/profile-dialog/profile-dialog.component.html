@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Informations de l'utilisateur</h2>
+<mat-dialog-content class="flex flew-col gap-5">
+  <div><strong>Pseudo :</strong> {{ data.username }}</div>
+  <div><strong>Email :</strong> {{ data.email }}</div>
+  <div><strong>Nom :</strong> {{ data.lastName }}</div>
+  <div><strong>Prénom :</strong> {{ data.firstName }}</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fermer</button>
+</mat-dialog-actions>
