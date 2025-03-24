@@ -1,28 +1,30 @@
 <mat-form-field class="w-full">
-  <mat-label>{{label}}</mat-label>
-  <mat-select [placeholder]="placeholder" [formControl]="control" [compareWith]="compareObjects"
-    (openedChange)="openedChange($event)" multiple>
-    @if (control?.value?.length) {
+  <mat-label>{{label()}}</mat-label>
+  <mat-select [placeholder]="placeholder()" [formControl]="control()" [compareWith]="compareObjects"
+    (openedChange)="openedChange($event)" (selectionChange)="selectionChange($event)" multiple>
+    @if (control()?.value?.length) {
     <mat-select-trigger>
       <div>
-        {{control?.value?.[0].display() || ''}}
-        @if ((control?.value?.length || 0) > 1) {
-        (+{{(control?.value?.length || 0) - 1}} {{' autres'}})
+        {{control()?.value?.[0].display() || ''}}
+        @if ((control()?.value?.length || 0) > 1) {
+        (+{{(control()?.value?.length || 0) - 1}} {{' autres'}})
         }
       </div>
     </mat-select-trigger>
     }
     <mat-option>
-      <ngx-mat-select-search appDelayedInput (delayedInput)="updateSearch($event)" [placeholderLabel]="placeholderLabel"
-        [noEntriesFoundLabel]="noEntriesFoundLabel" [showToggleAllCheckbox]="true" (toggleAll)="onToggleAll($event)">
+      <ngx-mat-select-search appDelayedInput [placeholderLabel]="placeholderLabel()"
+        [toggleAllCheckboxChecked]="checkboxChecked()" [toggleAllCheckboxIndeterminate]="checkboxIndeterminate()"
+        [noEntriesFoundLabel]="noEntriesFoundLabel()" [showToggleAllCheckbox]="true"
+        (delayedInput)="updateSearch($event)" (toggleAll)="onToggleAll($event)">
       </ngx-mat-select-search>
     </mat-option>
-    @for (item of items; track item.id) {
+    @for (item of items(); track item.id) {
     <mat-option [value]="item">{{item?.display()}}</mat-option>
     }
   </mat-select>
   <!-- Bouton pour effacer la sélection -->
-  @if (control.value?.length) {
+  @if (control().value?.length) {
   <button mat-icon-button matSuffix matTooltip="Effacer la sélection"
     (click)="clearSelection(); $event.stopPropagation()">
     <mat-icon>clear</mat-icon>
