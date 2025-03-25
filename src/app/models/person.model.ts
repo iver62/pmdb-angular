@@ -10,5 +10,6 @@ export interface Person {
   creationDate?: Date,
   lastUpdate?: Date,
   movies?: Movie[],
-  countries?: Country[]
+  countries?: Country[],
+  numberOfMovies?: number
 }

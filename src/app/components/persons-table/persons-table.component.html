@@ -1,5 +1,5 @@
-<table mat-table [dataSource]="dataSource" class="example-table" matSort [matSortActive]="sortActive"
-  matSortDisableClear [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
+<table mat-table [dataSource]="dataSource" matSort [matSortActive]="sortActive" matSortDisableClear
+  [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
   <!-- Photo Column -->
   <ng-container matColumnDef="photo">
     <th mat-header-cell *matHeaderCellDef>Photo</th>
@@ -28,6 +28,14 @@
   <ng-container matColumnDef="dateOfDeath">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de décès</th>
     <td mat-cell *matCellDef="let row">{{row.dateOfDeath | date: 'dd/MM/yyyy'}}</td>
+  </ng-container>
+
+  <!-- Number of Movies Column -->
+  <ng-container matColumnDef="numberOfMovies">
+    <th mat-header-cell *matHeaderCellDef>Nombre de films</th>
+    <td mat-cell *matCellDef="let row">
+      {{row.numberOfMovies}}
+    </td>
   </ng-container>
 
   <!-- Creation date Column -->

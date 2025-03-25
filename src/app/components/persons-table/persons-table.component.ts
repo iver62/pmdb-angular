@@ -27,7 +27,7 @@ export class PersonsTableComponent {
 
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 
-  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'creationDate', 'lastUpdate'];
+  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'numberOfMovies', 'creationDate', 'lastUpdate'];
 
   constructor(private sanitizer: DomSanitizer) { }
 
