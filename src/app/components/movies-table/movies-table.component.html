@@ -1,5 +1,5 @@
-<table mat-table [dataSource]="dataSource" class="example-table" matSort [matSortActive]="sortActive"
-  matSortDisableClear [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
+<table mat-table [dataSource]="dataSource" matSort [matSortActive]="sortActive" matSortDisableClear
+  [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
   <!-- Poster Column -->
   <ng-container matColumnDef="poster">
     <th mat-header-cell *matHeaderCellDef>Affiche</th>
@@ -48,6 +48,12 @@
   <ng-container matColumnDef="boxOffice">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Box-office</th>
     <td mat-cell *matCellDef="let row">{{row.boxOffice}}</td>
+  </ng-container>
+
+  <!-- User Column -->
+  <ng-container matColumnDef="user">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Utilisateur</th>
+    <td mat-cell *matCellDef="let row">{{row?.user?.username}}</td>
   </ng-container>
 
   <!-- Creation date Column -->

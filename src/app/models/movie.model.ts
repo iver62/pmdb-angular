@@ -3,6 +3,7 @@ import { Country } from "./country.model";
 import { Genre } from "./genre.model";
 import { MovieActor } from "./movie-actor.model";
 import { TechnicalTeam } from "./technical-team.model";
+import { User } from "./user.model";
 
 export interface Movie {
   id?: number,
@@ -16,6 +17,7 @@ export interface Movie {
   posterFileName?: string,
   creationDate?: Date,
   lastUpdate?: Date,
+  user?: User,
   technicalTeam?: TechnicalTeam,
   movieActors?: MovieActor[],
   genres?: Genre[],

@@ -53,7 +53,7 @@ export class MovieService {
     criterias?.toLastUpdate && params.set('end-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
     criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
-    criterias?.users?.forEach(user => params.append('user', user.username));
+    criterias?.users?.forEach(user => params.append('user', user.id));
 
     return this.http.get<Movie[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }

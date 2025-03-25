@@ -1,10 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
-import { Direction } from '../../enums/directon.enum';
 import { Movie } from '../../models';
 import { MovieService } from '../../services';
 
@@ -23,11 +22,11 @@ export class MoviesTableComponent {
 
   @Input() dataSource: Movie[];
   @Input() sortActive: string;
-  @Input() sortDirection: 'asc' | 'desc';
+  @Input() sortDirection: SortDirection;
 
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 
-  displayedColumns = ['poster', 'title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice', 'creationDate', 'lastUpdate'];
+  displayedColumns = ['poster', 'title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice', 'user', 'creationDate', 'lastUpdate'];
 
   constructor(
     private movieService: MovieService,

@@ -142,6 +142,11 @@ export class AppComponent {
       label: 'Pays',
       routerLink: 'countries',
       active: false
+    },
+    {
+      label: 'Utilisateurs',
+      routerLink: 'users',
+      active: true
     }
   ];
 
@@ -165,7 +170,7 @@ export class AppComponent {
   openProfileDialog() {
     this.dialog.open(UserDialogComponent, {
       minWidth: '30vw',  // Définit la largeur à 75% de l'écran
-      minHeight: '50vh', // Définit la hauteur à 90% de l'écran
+      minHeight: '30vh', // Définit la hauteur à 90% de l'écran
       data: this.user$
     })
   }

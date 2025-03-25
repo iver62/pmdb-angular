@@ -1,4 +1,4 @@
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography bg-gray-200 pb-2">
   <form [formGroup]="form" class="flex flex-col gap-4">
     @if (data?.criterias?.includes('releaseDate')) {
     <app-date-range-picker label="Date de sortie" fromDatePlaceholder="Début date de sortie"
@@ -32,6 +32,13 @@
       placeholderLabel="Rechercher un pays..." noEntriesFoundLabel="Aucun pays trouvé" [items]="countries$ | async"
       (update)="updateCountrySearch($event)">
     </app-multiselect>
+
+    @if (data?.criterias?.includes('users')) {
+    <app-multiselect [control]="form.controls.users" label="Utilisateurs" placeholder="Ajouter des utilisateurs"
+      placeholderLabel="Rechercher un utilisateur..." noEntriesFoundLabel="Aucun utilisateur trouvé"
+      [items]="users$ | async" (update)="updateUserSearch($event)">
+    </app-multiselect>
+    }
 
     <app-date-range-picker label="Date de création" fromDatePlaceholder="Début date de création"
       toDatePlaceholder="Fin date de création" [fromDateControl]="form.controls.fromCreationDate"

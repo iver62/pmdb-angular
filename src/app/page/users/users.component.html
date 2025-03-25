@@ -1,0 +1,70 @@
+@let users = users$ | async;
+
+<div class="h-full">
+  <div class="flex flex-row justify-between items-center">
+    <h2></h2>
+    <app-input class="md:w-1/3" label="Utilisateurs" placeholder="Rechercher un pseudo..." [total]="total"
+      (change)="onSearch($event)">
+    </app-input>
+  </div>
+
+  <div class="max-h-[calc(100%-132px)] overflow-y-auto rounded-t-lg">
+    <table mat-table [dataSource]="users" matSort [matSortActive]="searchConfig$.value.sort" matSortDisableClear
+      [matSortDirection]="searchConfig$.value.direction" (matSortChange)="onSort($event)">
+      <!-- Username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pseudo</th>
+        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+          {{row.username}}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+          {{row.name}}
+        </td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+          {{row.email}}
+        </td>
+      </ng-container>
+
+      <!-- Email Verified Column -->
+      <ng-container matColumnDef="emailVerified">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email vérifié</th>
+        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+          {{row.emailVerified}}
+        </td>
+      </ng-container>
+
+      <!-- Number of Movies Column -->
+      <ng-container matColumnDef="numberOfMovies">
+        <th mat-header-cell *matHeaderCellDef>Nombre de films</th>
+        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+          {{row.numberOfMovies}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">
+          Aucun utilisateur
+        </td>
+      </tr>
+    </table>
+  </div>
+  @if (users?.length) {
+  <mat-paginator #paginator class="rounded-b-lg" [pageSizeOptions]="pageSizeOptions" [length]="total"
+    [pageSize]="searchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
+    aria-label="Select page of Movie search results">
+  </mat-paginator>
+  }
+</div>
