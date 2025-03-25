@@ -15,6 +15,8 @@ export class LineChartComponent {
   @Input() lineChartData: ChartData<'line'>;
 
   lineChartOptions: ChartConfiguration['options'] = {
+    responsive: true,  // Rend le graphique réactif
+    maintainAspectRatio: false, // Permet au graphique de s'adapter
     scales: {
       y: {
         min: 0

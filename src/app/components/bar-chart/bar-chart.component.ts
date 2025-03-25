@@ -11,8 +11,9 @@ import { BaseChartDirective } from 'ng2-charts';
 export class BarChartComponent {
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective<'bar'> | undefined;
-
   barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,  // Rend le graphique réactif
+    maintainAspectRatio: false, // Permet au graphique de s'adapter
     scales: {
       x: {
         grid: {
