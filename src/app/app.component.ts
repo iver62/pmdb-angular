@@ -46,91 +46,109 @@ export class AppComponent {
     {
       label: 'Accueil',
       routerLink: 'dashboard',
+      icon: 'dashboard',
       active: true
     },
     {
       label: 'Films',
       routerLink: 'movies',
+      icon: 'movie',
       active: true
     },
     {
       label: 'Acteurs',
       routerLink: 'actors',
+      icon: 'person',
       active: true
     },
     {
       label: 'Producteurs',
       routerLink: 'producers',
+      icon: 'person',
       active: true
     },
     {
       label: 'Réalisateurs',
       routerLink: 'directors',
+      icon: 'person',
       active: true
     },
     {
       label: 'Scénaristes',
       routerLink: 'screenwriters',
+      icon: 'person',
       active: true
     },
     {
       label: 'Musique',
       routerLink: 'musicians',
+      icon: 'person',
       active: true
     },
     {
       label: 'Décors',
       routerLink: 'decorators',
+      icon: 'person',
       active: true
     },
     {
       label: 'Costumes',
       routerLink: 'costumiers',
+      icon: 'person',
       active: true
     },
     {
       label: 'Photographie',
       routerLink: 'photographers',
+      icon: 'person',
       active: true
     },
     {
       label: 'Montage',
       routerLink: 'editors',
+      icon: 'person',
       active: true
     },
     {
       label: 'Casteurs',
       routerLink: 'casters',
+      icon: 'person',
       active: true
     },
     {
       label: 'Directeurs artistiques',
       routerLink: 'art-directors',
+      icon: 'person',
       active: true
     },
     {
       label: 'Ingénieurs du son',
       routerLink: 'sound-editors',
+      icon: 'person',
       active: true
     },
     {
       label: 'Spécialiste effets spéciaux',
       routerLink: 'visual-effects-supervisors',
+      icon: 'person',
       active: true
     },
     {
       label: 'Maquilleurs',
       routerLink: 'makeup-artists',
+      icon: 'person',
       active: true
     },
     {
       label: 'Coiffeurs',
       routerLink: 'hair-dressers',
+      icon: 'person',
       active: true
     },
     {
       label: 'Cascadeurs',
       routerLink: 'stuntmen',
+      icon: 'person',
       active: true
     },
     {
@@ -146,6 +164,7 @@ export class AppComponent {
     {
       label: 'Utilisateurs',
       routerLink: 'users',
+      icon: 'account_circle',
       active: true
     }
   ];

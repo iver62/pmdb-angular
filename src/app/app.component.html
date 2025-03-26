@@ -27,12 +27,15 @@
       fixedTopGap="56">
       <mat-nav-list>
         @for (nav of navs | filterBy: ['active']: true; track nav) {
-        <a mat-list-item [routerLink]="nav.routerLink">{{nav.label}}</a>
+        <a mat-list-item [routerLink]="nav.routerLink">
+          <mat-icon class="align-sub material-symbols-outlined mr-2">{{nav.icon}}</mat-icon>
+          {{nav.label}}
+        </a>
         }
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content class="sidenav-content">
+    <mat-sidenav-content class="p-3 bg-gray-200">
       @if (loading$ | async) {
       <mat-spinner></mat-spinner>
       }
