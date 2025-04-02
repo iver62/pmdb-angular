@@ -4,10 +4,10 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
-import { InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '..';
+import { CriteriasReminderComponent, InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '..';
 import { EMPTY_STRING } from '../../app.component';
 import { View } from '../../enums';
-import { Criterias, Person, SearchConfig, SortOption } from '../../models';
+import { Country, Criterias, Person, SearchConfig, SortOption } from '../../models';
 import { BaseService } from '../../services';
 import { HttpUtils } from '../../utils';
 
@@ -15,6 +15,7 @@ import { HttpUtils } from '../../utils';
   selector: 'app-persons',
   imports: [
     AsyncPipe,
+    CriteriasReminderComponent,
     InfiniteScrollDirective,
     InputComponent,
     MatPaginatorModule,
@@ -98,6 +99,19 @@ export class PersonsComponent {
         }
       )
     });
+  }
+
+  onDeleteCountry(country: Country) {
+    this.updateSearchConfig(
+      {
+        page: 0,
+        criterias: {
+          ...this.searchConfig$.value.criterias,
+          countries: this.searchConfig$.value.criterias.countries.filter(c => c.id != country.id)
+        }
+      }
+    );
+    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onFilter(event: Criterias) {

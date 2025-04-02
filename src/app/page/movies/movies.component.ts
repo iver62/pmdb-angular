@@ -6,8 +6,9 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
+import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
-import { Criterias, Movie, SearchConfig, SortOption } from '../../models';
+import { Country, Criterias, Genre, Movie, SearchConfig, SortOption, User } from '../../models';
 import { MovieService } from '../../services';
 import { HttpUtils } from '../../utils';
 
@@ -15,6 +16,7 @@ import { HttpUtils } from '../../utils';
   selector: 'app-movies',
   imports: [
     AsyncPipe,
+    CriteriasReminderComponent,
     InfiniteScrollDirective,
     InputComponent,
     MatPaginatorModule,
@@ -38,7 +40,7 @@ export class MoviesComponent {
     { active: 'runningTime', label: 'Durée', direction: EMPTY_STRING },
     { active: 'budget', label: 'Budget', direction: EMPTY_STRING },
     { active: 'boxOffice', label: 'Box-office', direction: EMPTY_STRING },
-    { active: 'creationDate', label: 'Date de création', direction: EMPTY_STRING },
+    { active: 'creationDate', label: 'Date d\'ajout', direction: EMPTY_STRING },
     { active: 'lastUpdate', label: 'Dernière modification', direction: EMPTY_STRING }
   ];
 
@@ -88,6 +90,45 @@ export class MoviesComponent {
     private movieService: MovieService
   ) { }
 
+  onDeleteGenre(genre: Genre) {
+    this.updateSearchConfig(
+      {
+        page: 0,
+        criterias: {
+          ...this.searchConfig$.value.criterias,
+          genres: this.searchConfig$.value.criterias.genres.filter(g => g.id != genre.id)
+        }
+      }
+    );
+    this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
+  }
+
+  onDeleteCountry(country: Country) {
+    this.updateSearchConfig(
+      {
+        page: 0,
+        criterias: {
+          ...this.searchConfig$.value.criterias,
+          countries: this.searchConfig$.value.criterias.countries.filter(c => c.id != country.id)
+        }
+      }
+    );
+    this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
+  }
+
+  onDeleteUser(user: User) {
+    this.updateSearchConfig(
+      {
+        page: 0,
+        criterias: {
+          ...this.searchConfig$.value.criterias,
+          users: this.searchConfig$.value.criterias.users.filter(u => u.id != user.id)
+        }
+      }
+    );
+    this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
+  }
+
   onFilter(event: Criterias) {
     this.updateSearchConfig({ page: 0, criterias: event });
     this.cookieService.set('movies-config', JSON.stringify(this.searchConfig$.value), 7);
@@ -108,7 +149,9 @@ export class MoviesComponent {
   }
 
   onSearch(event: string) {
-    typeof event == 'string' ? this.updateSearchConfig({ page: 0, term: event?.trim() }) : this.updateSearchConfig({ page: 0, term: '' });
+    if (typeof event == 'string') {
+      this.updateSearchConfig({ page: 0, term: event?.trim() })
+    };
   }
 
   onScroll() {

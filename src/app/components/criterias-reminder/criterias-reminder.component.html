@@ -1,0 +1,20 @@
+<div class="py-2">
+  @for (genre of (criterias() | pluck: 'genres' | values); track genre) {
+  <span class="inline-flex items-center mr-3">
+    {{genre.name}}
+    <mat-icon class="cursor-pointer ml-1" (click)="deleteGenre.emit(genre)">close</mat-icon>
+  </span>
+  }
+  @for (country of (criterias() | pluck: 'countries' | values); track country) {
+  <span class="inline-flex items-center mr-3">
+    {{country.nomFrFr}}
+    <mat-icon class="cursor-pointer ml-1" (click)="deleteCountry.emit(country)">close</mat-icon>
+  </span>
+  }
+  @for (user of (criterias() | pluck: 'users' | values); track user) {
+  <span class="inline-flex items-center mr-3">
+    {{user.username}}
+    <mat-icon class="cursor-pointer ml-1" (click)="deleteUser.emit(user)">close</mat-icon>
+  </span>
+  }
+</div>

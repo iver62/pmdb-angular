@@ -3,6 +3,7 @@ export * from './bar-chart/bar-chart.component';
 export * from './countries-list/countries-list.component';
 export * from './country-card/country-card.component';
 export * from './country-selector/country-selector.component';
+export * from './criterias-reminder/criterias-reminder.component';
 export * from './date-range-picker/date-range-picker.component';
 export * from './file-chooser/file-chooser.component';
 export * from './genre-selector/genre-selector.component';
