@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
-import { Country, Criterias, Genre, Movie, MovieActor, Person, Repartition, TechnicalTeam } from '../models';
+import { Award, Country, Criterias, Genre, Movie, MovieActor, Person, Repartition, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -45,12 +45,12 @@ export class MovieService {
     params.set('sort', sort);
     params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
     term && params.set('term', encodeURIComponent(term));
-    criterias?.fromReleaseDate && params.set('start-release-date', this.dateService.format(criterias.fromReleaseDate, DateUtils.API_DATE_FORMAT));
-    criterias?.toReleaseDate && params.set('end-release-date', this.dateService.format(criterias.toReleaseDate, DateUtils.API_DATE_FORMAT));
-    criterias?.fromCreationDate && params.set('start-creation-date', this.dateService.format(criterias?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    criterias?.toCreationDate && params.set('end-creation-date', this.dateService.format(criterias?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
-    criterias?.fromLastUpdate && params.set('start-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
-    criterias?.toLastUpdate && params.set('end-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.fromReleaseDate && params.set('from-release-date', this.dateService.format(criterias.fromReleaseDate, DateUtils.API_DATE_FORMAT));
+    criterias?.toReleaseDate && params.set('to-release-date', this.dateService.format(criterias.toReleaseDate, DateUtils.API_DATE_FORMAT));
+    criterias?.fromCreationDate && params.set('from-creation-date', this.dateService.format(criterias?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toCreationDate && params.set('to-creation-date', this.dateService.format(criterias?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.fromLastUpdate && params.set('from-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toLastUpdate && params.set('to-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
     criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
     criterias?.users?.forEach(user => params.append('user', user.id));
@@ -72,6 +72,10 @@ export class MovieService {
 
   getTechnicalTeam(id: number) {
     return this.http.get<TechnicalTeam>(`${this.basePath}/${id}/technical-team`);
+  }
+
+  getAwards(id: number) {
+    return this.http.get<Award[]>(`${this.basePath}/${id}/awards`);
   }
 
   getProducers(id: number) {
@@ -181,6 +185,10 @@ export class MovieService {
 
   saveCasting(id: number, movieActors: MovieActor[]) {
     return this.http.put<MovieActor[]>(`${this.basePath}/${id}/casting`, movieActors);
+  }
+
+  saveAwards(id: number, awards: Award[]) {
+    return this.http.put<Award[]>(`${this.basePath}/${id}/awards`, awards);
   }
 
   updateMovie(imageFile: File, movie: Movie) {

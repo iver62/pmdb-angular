@@ -7,14 +7,16 @@ import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
-import { Movie, MovieActor, TechnicalTeam } from '../../models';
+import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
-import { CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
-import { CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
+import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
+import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
 
 @Component({
   selector: 'app-movie-details',
   imports: [
+    AwardsComponent,
+    AwardsFormComponent,
     CastingComponent,
     CastingFormComponent,
     GeneralInfosFormComponent,
@@ -30,7 +32,7 @@ import { CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from '
     TechnicalTeamComponent
   ],
   templateUrl: './movie-details.component.html',
-  styleUrl: './movie-details.component.css'
+  styleUrl: './movie-details.component.scss'
 })
 export class MovieDetailsComponent {
 
@@ -42,19 +44,23 @@ export class MovieDetailsComponent {
   generalInfos: Movie;
   technicalTeam: TechnicalTeam;
   casting: MovieActor[];
+  awards: Award[];
 
   id: number;
   generalInfosForm: FormGroup;
   technicalTeamForm: FormGroup;
   castingForm: FormGroup;
+  awardsForm: FormGroup;
 
   generalInfosFormInitialValues: any;
   technicalTeamInitialValues: any;
   castingInitialValues: { actors: FormArray };
+  awardsInitialValues: { awards: FormArray };
 
   editGeneralInfos = false;
   editTechnicalTeam = false;
   editCasting = false;
+  editAwards = false;
 
   imageFile: File | null = null;
 
@@ -76,6 +82,7 @@ export class MovieDetailsComponent {
             if (tabIndex === 0) return this.movieService.getOne(id).pipe(map(res => ({ type: 'movie', data: res })));
             if (tabIndex === 1) return this.movieService.getTechnicalTeam(id).pipe(map(res => ({ type: 'team', data: res })));
             if (tabIndex === 2) return this.movieService.getActors(id).pipe(map(res => ({ type: 'actors', data: res })));
+            if (tabIndex === 3) return this.movieService.getAwards(id).pipe(map(res => ({ type: 'awards', data: res })));
             return of(null);
           })
         );
@@ -96,6 +103,10 @@ export class MovieDetailsComponent {
           this.casting = result.data as MovieActor[];
           this.initCastingForm();
           break;
+        case 'awards':
+          this.awards = result.data as Award[];
+          this.initAwardsForm();
+          break;
       }
     });
   }
@@ -114,7 +125,8 @@ export class MovieDetailsComponent {
       boxOffice: [this.generalInfos.boxOffice],
       posterFileName: [this.generalInfos.posterFileName],
       countries: [this.generalInfos.countries],
-      genres: [this.generalInfos.genres]
+      genres: [this.generalInfos.genres],
+      user: [this.generalInfos.user]
     };
 
     if (!this.generalInfosForm) {
@@ -122,6 +134,10 @@ export class MovieDetailsComponent {
     } else {
       this.generalInfosForm.patchValue(this.generalInfosFormInitialValues);
     }
+  }
+
+  private compare(a: Award, b: Award) {
+    return a.ceremony.localeCompare(b.ceremony) || a.name.localeCompare(b.name);
   }
 
   private initTechnicalTeamForm() {
@@ -174,6 +190,31 @@ export class MovieDetailsComponent {
     }
   }
 
+  private initAwardsForm() {
+    if (!this.awards) return;
+
+    this.awardsInitialValues = {
+      awards: this.fb.array(
+        this.awards
+          .sort(this.compare)
+          .map(award =>
+            this.fb.group({
+              id: [award.id],
+              ceremony: [award.ceremony, Validators.required], // Cérémonie de la récompense
+              name: [award.name, Validators.required], // Nom de la récompense
+              year: [award.year], // Année de la récompense
+            })
+          )
+      ),
+    };
+
+    if (!this.awardsForm) {
+      this.awardsForm = this.fb.group(this.awardsInitialValues);
+    } else {
+      this.awardsForm.patchValue(this.awardsInitialValues.awards);
+    }
+  }
+
   onTabChanged(event: MatTabChangeEvent) {
     this.selectedTab$.next(event.index);
   }
@@ -184,7 +225,7 @@ export class MovieDetailsComponent {
 
   cancelGeneralInfos() {
     this.editGeneralInfos = false;
-    this.generalInfosForm.reset(this.generalInfosFormInitialValues);
+    this.generalInfosForm.patchValue(this.generalInfosFormInitialValues);
   }
 
   cancelTechnicalTeam() {
@@ -197,12 +238,19 @@ export class MovieDetailsComponent {
     this.castingForm.patchValue(this.castingInitialValues);
   }
 
+  cancelAwards() {
+    this.editAwards = false;
+    this.awardsForm.patchValue(this.awardsInitialValues);
+  }
+
   saveGeneralInfos() {
     if (this.generalInfosForm.valid) {
       this.movieService.updateMovie(this.imageFile, this.generalInfosForm.value).subscribe(
         {
           next: result => {
             this.generalInfos = result;
+            this.generalInfosFormInitialValues = result;
+            this.generalInfosForm.patchValue(result); // TODO: recréer un nouvel objet
             this._snackBar.open('Film modifié avec succès', 'Done', { duration: this.duration })
           },
           error: error => {
@@ -223,6 +271,7 @@ export class MovieDetailsComponent {
         {
           next: result => {
             this.technicalTeam = result;
+            this.technicalTeamForm.patchValue(result); // TODO: recréer un nouvel objet
             this._snackBar.open('Fiche technique modifiée avec succès', 'Done', { duration: this.duration });
           },
           error: error => {
@@ -254,7 +303,7 @@ export class MovieDetailsComponent {
         {
           next: result => {
             this._snackBar.open('Casting modifié avec succès', 'Done', { duration: this.duration });
-            // this.castingForm.patchValue(result);
+            this.castingForm.patchValue(result); // TODO: recréer un nouvel objet
             this.casting = result;
           },
           error: error => {
@@ -266,6 +315,27 @@ export class MovieDetailsComponent {
       )
     } else {
       console.error('Le formulaire est invalide');
+    }
+  }
+
+  saveAwards() {
+    if (this.awardsForm.valid) {
+      this.movieService.saveAwards(this.id, this.awardsForm.value['awards']).subscribe(
+        {
+          next: result => {
+            this._snackBar.open('Récompenses modifiées avec succès', 'Done', { duration: this.duration });
+            this.awardsForm.patchValue(result); // TODO: recréer un nouvel objet
+            this.awards = result;
+          },
+          error: error => {
+            console.error(error);
+            this._snackBar.open('Erreur lors de la modification des récompenses', 'Error', { duration: this.duration });
+          },
+          complete: () => this.editAwards = false
+        }
+      )
+    } else {
+      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
     }
   }
 }

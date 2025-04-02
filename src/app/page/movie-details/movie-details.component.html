@@ -1,6 +1,6 @@
 <button mat-button routerLink="../">Retour à la liste des films</button>
 
-<mat-tab-group (selectedTabChange)="onTabChanged($event)">
+<mat-tab-group (selectedTabChange)="onTabChanged($event)" class="tab-group">
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon material-symbols-outlined">movie</mat-icon>
@@ -14,7 +14,7 @@
 
       <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a check icon"
-          color="accent" (click)="saveGeneralInfos()">
+          color="accent" [disabled]="generalInfosForm?.invalid" (click)="saveGeneralInfos()">
           <mat-icon>check</mat-icon>
         </button>
         <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
@@ -70,7 +70,7 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="tab-icon material-symbols-outlined">theater_comedy</mat-icon>
+      <mat-icon class="tab-icon material-symbols-outlined">comedy_mask</mat-icon>
       Casting
     </ng-template>
 
@@ -95,6 +95,41 @@
         <div class="fixed bottom-5 right-5">
           <button mat-fab class="float-right m-1" matTooltip="Modifier"
             aria-label="Example icon button with a delete icon" color="accent" (click)="editCasting=true">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon material-symbols-outlined">trophy</mat-icon>
+      Récompenses
+    </ng-template>
+
+    <div class="p-4">
+      @if (editAwards) {
+      <app-awards-form [form]="awardsForm"></app-awards-form>
+
+      <div class="fixed bottom-5 right-5">
+        <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
+          color="accent" (click)="saveAwards()">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
+          color="accent" (click)="cancelAwards()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+      } @else {
+      <div>
+        <app-awards [awards]="awards"></app-awards>
+
+        <div class="fixed bottom-5 right-5">
+          <button mat-fab class="float-right m-1" matTooltip="Modifier"
+            aria-label="Example icon button with a delete icon" color="accent" (click)="editAwards=true">
             <mat-icon>edit</mat-icon>
           </button>
         </div>

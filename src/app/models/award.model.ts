@@ -1,10 +1,6 @@
-import { Movie } from "./movie.model";
-import { Person } from "./person.model";
-
 export interface Award {
   id?: number;
-  name?: string;
+  ceremony: string;
+  name: string;
   year?: number;
-  movie?: Movie;
-  person?: Person;
 }

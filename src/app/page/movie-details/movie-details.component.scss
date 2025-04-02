@@ -1,14 +1,19 @@
-.tab-icon {
-  margin-right: 8px;
-}
+@use '@angular/material' as mat;
 
 .mat-mdc-tab-group {
+  @include mat.tabs-overrides((active-indicator-color: black,
+      active-focus-indicator-color: black));
+
   height: calc(100% - 40px);
 
   .mat-mdc-tab-body-wrapper {
     height: calc(100% - 49px);
     overflow-y: auto;
   }
+}
+
+.tab-icon {
+  margin-right: 8px;
 }
 
 .mat-mdc-button {

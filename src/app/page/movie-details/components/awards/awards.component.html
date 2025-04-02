@@ -1,0 +1,11 @@
+@for (award of awards | orderBy: ['ceremony', 'name']; track award.id) {
+<div class="flex items-center p-1 text-xl">
+  <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
+  <div>
+    <span class="font-bold">{{award?.ceremony}}</span>&nbsp;-&nbsp;
+    <span>{{award?.name}} @if (award?.year) {({{award.year}})}</span>
+  </div>
+</div>
+} @empty {
+Aucune récompense
+}
