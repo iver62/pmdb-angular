@@ -1,4 +1,4 @@
-<mat-dialog-content class="mat-typography bg-gray-200 pb-2">
+<mat-dialog-content class="mat-typography bg-gray-200">
   <form [formGroup]="form" class="flex flex-col gap-4">
     @if (data?.criterias?.includes('releaseDate')) {
     <app-date-range-picker label="Date de sortie" fromDatePlaceholder="Début date de sortie"
@@ -55,7 +55,7 @@
   <button mat-button (click)="eraseCriterias()">Effacer tout</button>
   <div>
     <button mat-button mat-dialog-close>Annuler</button>
-    <button mat-button [mat-dialog-close]="form" cdkFocusInitial [disabled]="form.invalid || form.pristine">
+    <button mat-button [mat-dialog-close]="form" [disabled]="form.invalid || form.pristine">
       Valider
     </button>
   </div>

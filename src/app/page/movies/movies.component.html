@@ -5,7 +5,8 @@
     <h2></h2>
     <app-input class="md:w-1/3" label="Films" placeholder="Rechercher..." [total]="total" (change)="onSearch($event)">
     </app-input>
-    <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
+    <app-toolbar [countries$]="movieService.getCountries"
+      [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
       [sorts]="sorts$ | async" [selectedCriterias]="searchConfig$?.value?.criterias" cookieName="movies-config"
       (filter)="onFilter($event)" (switchView)="onSwitchView($event)" (sort)="onSort($event)">
     </app-toolbar>

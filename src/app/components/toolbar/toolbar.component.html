@@ -1,4 +1,4 @@
-<div>
+<div class="flex gap-2">
   <!-- Filtrer -->
   <button mat-button matTooltip="Filtrer" (click)="openCriteriasDialog()">
     Filtrer
@@ -7,10 +7,10 @@
   <!-- Trier -->
   @if (currentView == view.CARDS) {
   <button mat-button [matMenuTriggerFor]="sort">
-    <span>{{selectedSort().label}}</span>
+    <span>{{selectedSort()?.label}}</span>
     @if (selectedSort().direction == 'asc') {
     <mat-icon>arrow_upward_alt</mat-icon>
-    } @else if (selectedSort().direction == 'desc') {
+    } @else if (selectedSort()?.direction == 'desc') {
     <mat-icon>arrow_downward_alt</mat-icon>
     }
   </button>

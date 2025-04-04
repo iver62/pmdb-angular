@@ -87,7 +87,7 @@ export class MoviesComponent {
 
   constructor(
     private cookieService: CookieService,
-    private movieService: MovieService
+    public movieService: MovieService
   ) { }
 
   onDeleteGenre(genre: Genre) {

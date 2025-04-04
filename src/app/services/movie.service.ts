@@ -66,6 +66,10 @@ export class MovieService {
     return `${this.basePath}/posters/${posterFileName}`;
   }
 
+  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', direction = 'asc') =>
+    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`);
+
+
   getActors(id: number) {
     return this.http.get<MovieActor[]>(`${this.basePath}/${id}/actors`);
   }
@@ -142,7 +146,7 @@ export class MovieService {
     return this.http.get<Genre[]>(`${this.basePath}/${id}/genres`);
   }
 
-  getCountries(id: number) {
+  getCountriesByMovie(id: number) {
     return this.http.get<Country[]>(`${this.basePath}/${id}/countries`);
   }
 

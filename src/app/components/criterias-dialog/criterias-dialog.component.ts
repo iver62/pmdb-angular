@@ -4,11 +4,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Moment } from 'moment';
-import { BehaviorSubject, catchError, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, switchMap } from 'rxjs';
 import { DateRangePickerComponent, MultiselectComponent } from "..";
 import { EMPTY_STRING } from '../../app.component';
 import { Country, Criterias, Genre, User } from '../../models';
-import { CountryService, GenreService, UserService } from '../../services';
+import { GenreService, UserService } from '../../services';
 
 @Component({
   selector: 'app-criterias-dialog',
@@ -21,18 +21,19 @@ import { CountryService, GenreService, UserService } from '../../services';
     ReactiveFormsModule
   ],
   templateUrl: './criterias-dialog.component.html',
-  styleUrl: './criterias-dialog.component.css'
+  styleUrl: './criterias-dialog.component.scss'
 })
 export class CriteriasDialogComponent {
 
   // Termes de recherche
-  searchCountryTerm$ = new BehaviorSubject(EMPTY_STRING);
-  searchGenreTerm$ = new BehaviorSubject(EMPTY_STRING);
-  searchUserTerm$ = new BehaviorSubject(EMPTY_STRING);
+  searchTerms$ = {
+    country: new BehaviorSubject(EMPTY_STRING),
+    genre: new BehaviorSubject(EMPTY_STRING),
+    user: new BehaviorSubject(EMPTY_STRING)
+  };
 
   // Liste des genres filtrés
-  genres$ = this.searchGenreTerm$.pipe(
-    tap(result => console.log(result)),
+  genres$ = this.searchTerms$.genre.pipe(
     switchMap(term => this.genreService.getAll(term)
       .pipe(
         map(genres => genres.map(g => new Genre(g))),
@@ -42,8 +43,8 @@ export class CriteriasDialogComponent {
   );
 
   // Liste des pays filtrés
-  countries$ = this.searchCountryTerm$.pipe(
-    switchMap(term => this.countryService.getAll(term)
+  countries$ = this.searchTerms$.country.pipe(
+    switchMap(term => this.data.countriesObs$(term)
       .pipe(
         map(countries => countries.map(c => new Country(c))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
@@ -52,7 +53,7 @@ export class CriteriasDialogComponent {
   );
 
   // Liste des utilisateurs filtrés
-  users$ = this.searchUserTerm$.pipe(
+  users$ = this.searchTerms$.user.pipe(
     switchMap(term => this.userService.getAll(term)
       .pipe(
         map(users => users.map(u => new User(u))),
@@ -80,25 +81,28 @@ export class CriteriasDialogComponent {
   );
 
   constructor(
-    private countryService: CountryService,
     private genreService: GenreService,
     private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: { criterias: string[], selectedCriterias: Criterias }
+    @Inject(MAT_DIALOG_DATA) public data: {
+      criterias: string[],
+      selectedCriterias: Criterias,
+      countriesObs$: (term: string) => Observable<Country[]>
+    }
   ) { }
 
   // Fonction pour mettre à jour la recherche
-  updateCountrySearch(term: string) {
-    this.searchCountryTerm$.next(term);
+  updateGenreSearch(term: string) {
+    this.searchTerms$.genre.next(term);
   }
 
   // Fonction pour mettre à jour la recherche
-  updateGenreSearch(term: string) {
-    this.searchGenreTerm$.next(term);
+  updateCountrySearch(term: string) {
+    this.searchTerms$.country.next(term);
   }
 
   // Fonction pour mettre à jour la recherche
   updateUserSearch(term: string) {
-    this.searchUserTerm$.next(term);
+    this.searchTerms$.user.next(term);
   }
 
   eraseCriterias() {

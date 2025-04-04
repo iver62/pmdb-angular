@@ -1,13 +1,14 @@
-import { Component, computed, EventEmitter, input, Output } from '@angular/core';
+import { Component, computed, effect, EventEmitter, input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CookieService } from 'ngx-cookie-service';
 import { NgPipesModule } from 'ngx-pipes';
-import { filter, take } from 'rxjs';
+import { filter, Observable, of, take } from 'rxjs';
 import { View } from '../../enums';
-import { Criterias, SortOption } from '../../models';
+import { Country, Criterias, SearchConfig, SortOption } from '../../models';
 import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.component';
 
 @Component({
@@ -25,9 +26,11 @@ import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.c
 })
 export class ToolbarComponent {
 
+  countries$ = input<(term: string) => Observable<Country[]>>(() => of([]));
   sorts = input.required<SortOption[]>();
-  criterias = input.required<string[]>();
-  selectedCriterias = input<Criterias>();
+  criterias = input<string[]>([]);
+  selectedCriterias = input<Criterias>({} as Criterias);
+  cookieName = input<string>();
 
   selectedSort = computed(() => this.sorts().find(s => ['asc', 'desc'].includes(s.direction)));
 
@@ -35,10 +38,28 @@ export class ToolbarComponent {
   @Output() switchView = new EventEmitter<View>();
   @Output() sort = new EventEmitter<SortOption>();
 
-  view = View;
   currentView = View.CARDS;
+  view = View;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private cookieService: CookieService,
+    private dialog: MatDialog
+  ) {
+    effect(() => {
+      const cookieValue = this.cookieService.get(this.cookieName());
+      if (cookieValue) {
+        try {
+          const parsedConfig = JSON.parse(cookieValue) as SearchConfig;
+          if (parsedConfig?.view) {
+            this.currentView = parsedConfig.view;
+          }
+        } catch (error) {
+          console.error("Erreur de parsing du cookie:", error);
+          this.currentView = View.CARDS; // Fallback en cas d'erreur
+        }
+      }
+    });
+  }
 
   openCriteriasDialog() {
     this.dialog.open(CriteriasDialogComponent, {
@@ -46,7 +67,8 @@ export class ToolbarComponent {
       maxHeight: '90vh', // Définit la hauteur à 90% de l'écran
       data: {
         criterias: this.criterias(),
-        selectedCriterias: this.selectedCriterias()
+        selectedCriterias: this.selectedCriterias(),
+        countriesObs$: this.countries$()
       }
     }).afterClosed().pipe(
       filter(result => result != null && result.value != null),
