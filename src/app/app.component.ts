@@ -58,97 +58,97 @@ export class AppComponent {
     {
       label: 'Acteurs',
       routerLink: 'actors',
-      icon: 'person',
+      icon: 'comedy_mask',
       active: true
     },
     {
       label: 'Producteurs',
       routerLink: 'producers',
-      icon: 'person',
+      icon: 'attach_money',
       active: true
     },
     {
       label: 'Réalisateurs',
       routerLink: 'directors',
-      icon: 'person',
+      icon: 'video_camera_front',
       active: true
     },
     {
       label: 'Scénaristes',
       routerLink: 'screenwriters',
-      icon: 'person',
+      icon: 'edit_square',
       active: true
     },
     {
       label: 'Musique',
       routerLink: 'musicians',
-      icon: 'person',
+      icon: 'music_note',
       active: true
     },
     {
       label: 'Décors',
       routerLink: 'decorators',
-      icon: 'person',
+      icon: 'curtains',
       active: true
     },
     {
       label: 'Costumes',
       routerLink: 'costumiers',
-      icon: 'person',
+      icon: 'styler',
       active: true
     },
     {
       label: 'Photographie',
       routerLink: 'photographers',
-      icon: 'person',
+      icon: 'photo_camera',
       active: true
     },
     {
       label: 'Montage',
       routerLink: 'editors',
-      icon: 'person',
+      icon: 'cut',
       active: true
     },
     {
       label: 'Casteurs',
       routerLink: 'casters',
-      icon: 'person',
+      icon: 'theater_comedy',
       active: true
     },
     {
       label: 'Directeurs artistiques',
       routerLink: 'art-directors',
-      icon: 'person',
+      icon: 'palette',
       active: true
     },
     {
       label: 'Ingénieurs du son',
       routerLink: 'sound-editors',
-      icon: 'person',
+      icon: 'volume_up',
       active: true
     },
     {
       label: 'Spécialiste effets spéciaux',
       routerLink: 'visual-effects-supervisors',
-      icon: 'person',
+      icon: 'explosion',
       active: true
     },
     {
       label: 'Maquilleurs',
       routerLink: 'makeup-artists',
-      icon: 'person',
+      icon: 'ink_marker',
       active: true
     },
     {
       label: 'Coiffeurs',
       routerLink: 'hair-dressers',
-      icon: 'person',
+      icon: 'health_and_beauty',
       active: true
     },
     {
       label: 'Cascadeurs',
       routerLink: 'stuntmen',
-      icon: 'person',
+      icon: 'sprint',
       active: true
     },
     {
