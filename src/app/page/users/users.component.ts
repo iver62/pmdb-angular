@@ -51,7 +51,7 @@ export class UsersComponent {
     )
   );
 
-  displayedColumns = ['username', 'name', 'email', 'emailVerified', 'numberOfMovies'];
+  displayedColumns = ['id', 'username', 'name', 'email', 'emailVerified', 'numberOfMovies'];
   total: number;
   pageSizeOptions = [25, 50, 100];
 
