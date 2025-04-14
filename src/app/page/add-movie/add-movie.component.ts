@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { catchError, of, switchMap } from 'rxjs';
+import { catchError, of, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { Award, Movie, MovieActor } from '../../models';
 import { AuthService, MovieService } from '../../services';
@@ -93,6 +93,7 @@ export class AddMovieComponent {
   saveMovie() {
     if (this.generalInfosForm.valid) {
       this.authService.loadUserProfile().pipe(
+        tap(user => console.log({ ...this.generalInfosForm.value, user: user })),
         switchMap(user => this.movieService.saveMovie(this.imageFile, { ...this.generalInfosForm.value, user: user })
           .pipe(
             catchError(response => {
@@ -155,7 +156,7 @@ export class AddMovieComponent {
           },
           error: error => {
             console.error(error);
-            this._snackBar.open('Erreur lors de la modification du casting', 'Error', { duration: this.duration });
+            this._snackBar.open('Erreur lors de l\'ajout du casting', 'Error', { duration: this.duration });
           }
         }
       )
@@ -165,6 +166,23 @@ export class AddMovieComponent {
   }
 
   saveAwards() {
+    if (this.awardsForm.valid) {
+      this.movieService.saveAwards(this.movie.id, this.awardsForm.value['awards']).subscribe(
+        {
+          next: result => {
+            this._snackBar.open('Récompenses ajoutées avec succès', 'Done', { duration: this.duration });
+            this.stepper.next();
+            this.movie.awards = result;
+          },
+          error: error => {
+            console.error(error);
+            this._snackBar.open('Erreur lors de l\'ajout des récompenses', 'Error', { duration: this.duration });
+          }
+        }
+      )
+    } else {
+      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
+    }
     if (this.awardsForm.valid) {
     } else {
       this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });

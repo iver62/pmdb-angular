@@ -16,16 +16,13 @@
   margin-right: 8px;
 }
 
+.mat-mdc-fab,
 .mat-mdc-button {
-  background-color: white;
-  color: darkslategrey;
-}
-
-.mat-mdc-fab {
   background-color: #555555;
   color: white;
 }
 
-.mat-mdc-fab:hover {
+.mat-mdc-fab:hover,
+.mat-mdc-button:hover {
   background-color: #444444;
 }

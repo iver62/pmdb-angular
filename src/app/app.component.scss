@@ -8,6 +8,15 @@
   right: 0;
 }
 
+.mat-mdc-button {
+  background-color: #555555;
+  color: white !important;
+}
+
+.mat-mdc-button:hover {
+  background-color: #444444;
+}
+
 .example-is-mobile .example-toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */

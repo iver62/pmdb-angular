@@ -42,13 +42,13 @@
       <span>&nbsp;{{movie()?.boxOffice | number}} @if (movie()?.boxOffice) {$}</span>
     </p>
     }
-    @if (movie()?.genres) {
+    @if (movie()?.genres?.length) {
     <p>
       <span class="font-bold">GENRES :</span>
       <span>&nbsp;{{(movie()?.genres | pluck: 'name' | orderBy)?.join(', ')}}</span>
     </p>
     }
-    @if (movie()?.countries) {
+    @if (movie()?.countries?.length) {
     <p>
       <span class="font-bold">PAYS :</span>
       <span>&nbsp;{{(movie()?.countries | pluck: 'nomFrFr' | orderBy)?.join(', ')}}</span>

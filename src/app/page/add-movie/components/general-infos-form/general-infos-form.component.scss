@@ -5,6 +5,5 @@ textarea {
 }
 
 .form {
-  @include mat.form-field-overrides((filled-container-color: white,
-      filled-focus-active-indicator-color: black));
+  @include mat.form-field-overrides((filled-focus-active-indicator-color: black));
 }

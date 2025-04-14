@@ -1,11 +1,10 @@
 @use '@angular/material' as mat;
 
-.form {
-  @include mat.form-field-overrides((filled-container-color: white,
-      filled-container-shape: 10px));
+.mat-mdc-button {
+  background-color: #555555;
+  color: white;
 }
 
-.mat-mdc-button {
-  background-color: white;
-  color: darkslategrey;
+.mat-mdc-button:hover {
+  background-color: #444444;
 }

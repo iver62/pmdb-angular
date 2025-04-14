@@ -13,7 +13,7 @@ import { User } from '../../models';
     MatDialogModule
   ],
   templateUrl: './user-dialog.component.html',
-  styleUrl: './user-dialog.component.css'
+  styleUrl: './user-dialog.component.scss'
 })
 export class UserDialogComponent {
 
