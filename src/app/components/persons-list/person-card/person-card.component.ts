@@ -1,13 +1,15 @@
-import { Component, Input, input } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, effect, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Person } from '../../../models';
 import { BaseService } from '../../../services';
 
 @Component({
   selector: 'app-person-card',
   imports: [
+    AsyncPipe,
     MatCardModule,
     RouterLink
   ],
@@ -17,13 +19,12 @@ import { BaseService } from '../../../services';
 export class PersonCardComponent {
 
   person = input.required<Person>();
+  service = input.required<BaseService>();
 
-  @Input() service: BaseService;
+  photoUrl$: Observable<string>;
 
-  constructor(private sanitizer: DomSanitizer) { }
-
-  getSafePhotoUrl(photoFileName: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(this.service.getPhotoUrl(photoFileName));
+  constructor() {
+    effect(() => this.photoUrl$ = (this.service().getPhotoUrl(this.person().photoFileName)));
   }
 
 }

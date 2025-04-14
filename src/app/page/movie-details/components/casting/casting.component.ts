@@ -1,26 +1,33 @@
-import { Component, Input } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { AsyncPipe } from '@angular/common';
+import { Component, effect, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MovieActor } from '../../../../models';
+import { MovieActor, PersonWithPhoto } from '../../../../models';
 import { ActorService } from '../../../../services';
 
 @Component({
   selector: 'app-casting',
-  imports: [RouterLink],
+  imports: [
+    AsyncPipe,
+    RouterLink
+  ],
   templateUrl: './casting.component.html',
   styleUrl: './casting.component.css'
 })
 export class CastingComponent {
 
-  @Input() casting: MovieActor[];
+  actors = input.required<MovieActor[]>();
+  enrichedActors = signal<PersonWithPhoto[]>([]);
 
-  constructor(
-    private actorService: ActorService,
-    private sanitizer: DomSanitizer
-  ) { }
-
-  getSafePhotoUrl(photoFileName: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(this.actorService.getPhotoUrl(photoFileName));
+  constructor(private actorService: ActorService) {
+    // Transformer les acteurs en ajoutant les URLs
+    effect(() => {
+      const persons = this.actors()?.map(a => (
+        {
+          ...a,
+          photoUrl$: this.actorService.getPhotoUrl(a.actor.photoFileName) // Observable pour l'affiche
+        }
+      ));
+      this.enrichedActors.set(persons);
+    });
   }
-
 }

@@ -1,28 +1,63 @@
 <div class="grid grid-cols-12 gap-2">
   <div class="col-span-9 grid gap-2">
-    <p>TITRE : {{movie?.title}}</p>
-    <p>TITRE ORIGINAL : {{movie?.originalTitle}}</p>
-    <p>SYNOPSIS : {{movie?.synopsis}}</p>
-    <p>DATE DE SORTIE : {{movie?.releaseDate | date: 'dd/MM/yyyy'}}</p>
-    <p>DURÉE : {{movie?.runningTime}} @if (movie?.runningTime) {minutes}</p>
-    <p>BUDGET : {{movie?.budget}} @if (movie?.budget) {$}</p>
-    <p>BOX-OFFICE : {{movie?.boxOffice}} @if (movie?.boxOffice) {$}</p>
-    <p>GENRES :
-      @for (genre of movie?.genres | orderBy: 'name'; track genre.id; let last = $last) {
-      <span class="cursor-pointer hover:underline" [routerLink]="['/genres', genre.id]" [state]="{name: genre?.name}">
-        {{genre?.name}}@if (!last) {<span>,</span>}
-      </span>
-      }
+    @if (movie()?.title) {
+    <p>
+      <span class="font-bold">TITRE :</span>
+      <span>&nbsp;{{movie()?.title}}</span>
     </p>
-    <p>PAYS :
-      @for (country of movie?.countries | orderBy: 'nomFrFr'; track country.id; let last = $last) {
-      <span class="cursor-pointer hover:underline" [routerLink]="['/countries', country.id]">
-        {{country?.nomFrFr}}@if (!last) {<span>,</span>}
-      </span>
-      }
+    }
+    @if (movie()?.originalTitle) {
+    <p>
+      <span class="font-bold">TITRE ORIGINAL :</span>
+      <span>&nbsp;{{movie()?.originalTitle}}</span>
     </p>
+    }
+    @if (movie()?.synopsis) {
+    <p>
+      <span class="font-bold">SYNOPSIS :</span>
+      <span>&nbsp;{{movie()?.synopsis}}</span>
+    </p>
+    }
+    @if (movie()?.releaseDate) {
+    <p>
+      <span class="font-bold">DATE DE SORTIE :</span>
+      <span>&nbsp;{{movie()?.releaseDate | date: 'dd/MM/yyyy'}}</span>
+    </p>
+    }
+    @if (movie()?.runningTime) {
+    <p>
+      <span class="font-bold">DURÉE :</span>
+      <span>&nbsp;{{movie()?.runningTime}} @if (movie()?.runningTime) {minutes}</span>
+    </p>
+    }
+    @if (movie()?.budget) {
+    <p>
+      <span class="font-bold">BUDGET :</span>
+      <span>&nbsp;{{movie()?.budget | number}} @if (movie()?.budget) {$}</span>
+    </p>
+    }
+    @if (movie()?.boxOffice) {
+    <p>
+      <span class="font-bold">BOX-OFFICE :</span>
+      <span>&nbsp;{{movie()?.boxOffice | number}} @if (movie()?.boxOffice) {$}</span>
+    </p>
+    }
+    @if (movie()?.genres) {
+    <p>
+      <span class="font-bold">GENRES :</span>
+      <span>&nbsp;{{(movie()?.genres | pluck: 'name' | orderBy)?.join(', ')}}</span>
+    </p>
+    }
+    @if (movie()?.countries) {
+    <p>
+      <span class="font-bold">PAYS :</span>
+      <span>&nbsp;{{(movie()?.countries | pluck: 'nomFrFr' | orderBy)?.join(', ')}}</span>
+    </p>
+    }
   </div>
   <div class="col-span-3 mr-4">
-    <img mat-card-image [src]="getSafePosterUrl(movie?.posterFileName)" alt="{{ movie?.title }}" />
+    @if (movie()?.posterFileName) {
+    <img mat-card-image [src]="posterUrl$ | async" alt="{{ movie()?.title }}" />
+    }
   </div>
 </div>

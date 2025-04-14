@@ -1,11 +1,11 @@
-<table mat-table [dataSource]="dataSource" matSort [matSortActive]="sortActive" matSortDisableClear
+<table mat-table [dataSource]="enrichedPersons()" matSort [matSortActive]="sortActive" matSortDisableClear
   [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
   <!-- Photo Column -->
   <ng-container matColumnDef="photo">
     <th mat-header-cell *matHeaderCellDef>Photo</th>
     <td mat-cell *matCellDef="let row">
       <span class="image-container">
-        <img mat-card-image [src]="getSafePhotoUrl(row.photoFileName)" alt="{{ row.name }}" />
+        <img mat-card-image [src]="row?.photoUrl$ | async" alt="{{ row.name }}" />
       </span>
     </td>
   </ng-container>

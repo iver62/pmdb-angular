@@ -1,5 +1,5 @@
 <mat-card class="person-card items-center justify-around cursor-pointer w-full" [routerLink]="[person().id]">
-  <img mat-card-image [src]="getSafePhotoUrl(person().photoFileName)" alt="{{ person().photoFileName }}">
+  <img mat-card-image [src]="photoUrl$ | async" alt="{{ person().photoFileName }}">
   <mat-card-content class="overflow-y-auto">
     <div>{{ person().name }}</div>
   </mat-card-content>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
 import { Award, Country, Criterias, Genre, Movie, MovieActor, Person, Repartition, TechnicalTeam } from '../models';
@@ -62,8 +63,10 @@ export class MovieService {
     return this.http.get<Movie>(`${this.basePath}/${id}`);
   }
 
-  getPosterUrl(posterFileName: string): string {
-    return `${this.basePath}/posters/${posterFileName}`;
+  getPosterUrl(posterFileName: string) {
+    return this.http.get(`${this.basePath}/posters/${posterFileName}`, { responseType: 'blob' }).pipe(
+      map(blob => URL.createObjectURL(blob)) // Convertit le blob en URL locale utilisable dans <img>
+    );
   }
 
   getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', direction = 'asc') =>

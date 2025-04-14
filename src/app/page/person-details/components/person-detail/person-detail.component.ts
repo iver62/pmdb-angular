@@ -1,24 +1,23 @@
-import { DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, effect, EventEmitter, Input, input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DomSanitizer } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
+import { Observable } from 'rxjs';
 import { Person } from '../../../../models';
-import { BaseService } from '../../../../services';
+import { AuthService, BaseService } from '../../../../services';
 import { PersonUtils } from '../../../../utils';
 
 @Component({
   selector: 'app-person-detail',
   imports: [
+    AsyncPipe,
     DatePipe,
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    NgPipesModule,
-    RouterLink
+    NgPipesModule
   ],
   templateUrl: './person-detail.component.html',
   styleUrl: './person-detail.component.css'
@@ -26,25 +25,24 @@ import { PersonUtils } from '../../../../utils';
 export class PersonDetailComponent {
 
   person = input.required<Person>();
+  service = input.required<BaseService>();
 
-  @Input() service: BaseService;
   @Input() canDelete: boolean;
 
   @Output() edit = new EventEmitter();
   @Output() delete = new EventEmitter();
 
+  photoUrl$: Observable<string>;
+
   age: number;
   ageOfDeath: number;
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(public authService: AuthService) {
     effect(() => {
+      this.photoUrl$ = this.service().getPhotoUrl(this.person()?.photoFileName)
       this.age = PersonUtils.calculateAge(this.person());
       this.ageOfDeath = new Date(this.person().dateOfDeath)?.getFullYear() - new Date(this.person().dateOfBirth)?.getFullYear();
-    })
-  }
-
-  getSafePhotoUrl() {
-    return this.sanitizer.bypassSecurityTrustUrl(this.service.getPhotoUrl(this.person()?.photoFileName));
+    });
   }
 
   onEdit() {

@@ -1,9 +1,5 @@
-import { Award } from "./award.model";
-import { Country } from "./country.model";
-import { Genre } from "./genre.model";
-import { MovieActor } from "./movie-actor.model";
-import { TechnicalTeam } from "./technical-team.model";
-import { User } from "./user.model";
+import { Observable } from "rxjs";
+import { Award, Country, Genre, MovieActor, TechnicalTeam, User } from "./";
 
 export interface Movie {
   id?: number,
@@ -23,4 +19,8 @@ export interface Movie {
   genres?: Genre[],
   countries?: Country[],
   awards?: Award[]
+}
+
+export interface MovieWithPoster extends Movie {
+  posterUrl$: Observable<string>
 }

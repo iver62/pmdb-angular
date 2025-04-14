@@ -1,17 +1,19 @@
-<table mat-table [dataSource]="dataSource" matSort [matSortActive]="sortActive" matSortDisableClear
+<table mat-table [dataSource]="enrichedMovies()" matSort [matSortActive]="sortActive" matSortDisableClear
   [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
   <!-- Poster Column -->
   <ng-container matColumnDef="poster">
     <th mat-header-cell *matHeaderCellDef>Affiche</th>
     <td mat-cell *matCellDef="let row">
-      <img mat-card-image [src]="getSafePosterUrl(row.posterFileName)" alt="{{ row.title }}" />
+      <img mat-card-image [src]="row?.posterUrl$ | async" alt="{{ row.title }}" />
     </td>
   </ng-container>
 
   <!-- Title Column -->
   <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Titre</th>
-    <td mat-cell class="font-bold text-lg" *matCellDef="let row">{{row.title}}</td>
+    <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+      <span class="cursor-pointer hover:underline" [routerLink]="['/movies', row.id]">{{row.title}}</span>
+    </td>
   </ng-container>
 
   <!-- Original title Column -->
@@ -35,30 +37,36 @@
   <!-- Running time Column -->
   <ng-container matColumnDef="runningTime">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Durée</th>
-    <td mat-cell *matCellDef="let row">{{row.runningTime}} min</td>
+    <td mat-cell *matCellDef="let row">{{row.runningTime}} @if (row.runningTime) {min}</td>
   </ng-container>
 
   <!-- Budget Column -->
   <ng-container matColumnDef="budget">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Budget</th>
-    <td mat-cell *matCellDef="let row">{{row.budget}}</td>
+    <td mat-cell *matCellDef="let row">{{row.budget | number}}</td>
   </ng-container>
 
   <!-- Box-Office Column -->
   <ng-container matColumnDef="boxOffice">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Box-office</th>
-    <td mat-cell *matCellDef="let row">{{row.boxOffice}}</td>
+    <td mat-cell *matCellDef="let row">{{row.boxOffice | number}}</td>
   </ng-container>
 
   <!-- User Column -->
   <ng-container matColumnDef="user">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Utilisateur</th>
+    <th mat-header-cell *matHeaderCellDef>Utilisateur</th>
     <td mat-cell *matCellDef="let row">{{row?.user?.username}}</td>
+  </ng-container>
+
+  <!-- Number of awards Column -->
+  <ng-container matColumnDef="numberOfAwards">
+    <th mat-header-cell *matHeaderCellDef>Nombre de récompenses</th>
+    <td mat-cell *matCellDef="let row">{{row?.awards?.length}}</td>
   </ng-container>
 
   <!-- Creation date Column -->
   <ng-container matColumnDef="creationDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de création</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date d'ajout</th>
     <td mat-cell *matCellDef="let row">{{row.creationDate | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
@@ -69,8 +77,7 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-  <tr mat-row class="cursor-pointer" *matRowDef="let row; columns: displayedColumns;"
-    [routerLink]="['/movies', row.id]">
+  <tr mat-row class="hover:bg-gray-200" *matRowDef="let row; columns: displayedColumns;">
   </tr>
   <tr class="mat-row" *matNoDataRow>
     <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">

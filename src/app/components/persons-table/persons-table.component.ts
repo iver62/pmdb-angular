@@ -1,15 +1,15 @@
-import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { Component, effect, EventEmitter, input, Input, Output, signal } from '@angular/core';
 import { MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
-import { Person } from '../../models';
+import { Person, PersonWithPhotoUrl } from '../../models';
 import { BaseService } from '../../services';
 
 @Component({
   selector: 'app-persons-table',
   imports: [
+    AsyncPipe,
     DatePipe,
     MatSortModule,
     MatTableModule,
@@ -20,8 +20,10 @@ import { BaseService } from '../../services';
 })
 export class PersonsTableComponent {
 
+  dataSource = input.required<Person[]>();
+  enrichedPersons = signal<PersonWithPhotoUrl[]>([]);
+
   @Input() service: BaseService;
-  @Input() dataSource: Person[];
   @Input() sortActive: string;
   @Input() sortDirection: SortDirection;
 
@@ -29,13 +31,20 @@ export class PersonsTableComponent {
 
   displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'numberOfMovies', 'creationDate', 'lastUpdate'];
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor() {
+    // Transformer les films en ajoutant les URLs
+    effect(() => {
+      const persons = this.dataSource().map(p => (
+        {
+          ...p,
+          photoUrl$: this.service.getPhotoUrl(p.photoFileName) // Observable pour la photo
+        }
+      ));
+      this.enrichedPersons.set(persons);
+    });
+  }
 
   onSort(event: any) {
     this.sort.emit(event);
-  }
-
-  getSafePhotoUrl(photoFileName: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(this.service.getPhotoUrl(photoFileName));
   }
 }

@@ -1,32 +1,31 @@
-import { DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { Component, effect, input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { NgPipesModule } from 'ngx-pipes';
+import { Observable } from 'rxjs';
 import { Movie } from '../../../../models';
 import { MovieService } from '../../../../services';
 
 @Component({
   selector: 'app-movie-detail',
   imports: [
+    AsyncPipe,
     DatePipe,
-    NgPipesModule,
-    RouterLink
+    DecimalPipe,
+    MatIconModule,
+    NgPipesModule
   ],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.css'
 })
 export class MovieDetailComponent {
 
-  @Input() movie: Movie;
+  movie = input.required<Movie>();
 
-  constructor(
-    private movieService: MovieService,
-    private sanitizer: DomSanitizer
-  ) { }
+  posterUrl$: Observable<string>;
 
-  getSafePosterUrl(posterFileName: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(this.movieService.getPosterUrl(posterFileName));
+  constructor(movieService: MovieService) {
+    effect(() => this.posterUrl$ = movieService.getPosterUrl(this.movie()?.posterFileName));
   }
 
 }

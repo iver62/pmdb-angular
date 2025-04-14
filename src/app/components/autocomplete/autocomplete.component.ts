@@ -8,11 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
-import { Person, SearchConfig } from '../../models';
+import { Person, PersonWithPhotoUrl, SearchConfig } from '../../models';
 import { ActorService } from '../../services';
 import { HttpUtils } from '../../utils';
 
@@ -48,7 +47,7 @@ export class AutocompleteComponent {
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
-      size: 50,
+      size: 20,
       sort: 'nomFrFr',
       direction: 'asc',
       term: EMPTY_STRING
@@ -63,12 +62,18 @@ export class AutocompleteComponent {
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0);
       }),
       map(response => response.body.filter(person => !this.personsToExclude()?.includes(person.id))),
+      map(persons => persons.map(p => (
+        {
+          ...p,
+          photoUrl$: this.actorService.getPhotoUrl(p.photoFileName) // Observable pour la photo
+        }
+      ))),
       catchError(() => {
         this.isLoadingMore = false;
         return of([]);
       })
     )),
-    scan((acc: Person[], result: Person[]) => {
+    scan((acc: PersonWithPhotoUrl[], result: PersonWithPhotoUrl[]) => {
       if (this.searchConfig$.value.page == 0) {
         this.loaded = result.length;
         return result;
@@ -86,10 +91,7 @@ export class AutocompleteComponent {
   private loaded = 0;
   private isLoadingMore = false;
 
-  constructor(
-    private actorService: ActorService,
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(private actorService: ActorService,) {
     effect(() => this.formControl = this.control() as FormControl);
   }
 
@@ -163,9 +165,4 @@ export class AutocompleteComponent {
     this.select.emit({ id: actor.id, name: actor.name });
     this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
   }
-
-  getSafePhotoUrl(photoFileName: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(this.actorService.getPhotoUrl(photoFileName));
-  }
-
 }

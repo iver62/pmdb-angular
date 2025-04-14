@@ -1,10 +1,9 @@
 <div class="grid gap-1">
-  @for (movieActor of casting; track movieActor.id) {
+  @for (movieActor of enrichedActors(); track movieActor.id) {
   <div class="grid grid-cols-12 text-xl">
     <div class="col-span-4 flex">
       <span class="image-container">
-        <img mat-card-image [src]="getSafePhotoUrl(movieActor.actor.photoFileName)"
-          alt="{{ movieActor.actor.photoFileName }}">
+        <img mat-card-image [src]="movieActor.photoUrl$ | async" alt="{{ movieActor.actor.photoFileName }}">
       </span>
       <span class="font-bold cursor-pointer hover:underline" [routerLink]="['/actors', movieActor?.actor?.id]">
         {{movieActor?.actor?.name}}

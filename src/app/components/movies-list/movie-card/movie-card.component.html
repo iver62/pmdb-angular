@@ -1,5 +1,5 @@
 <mat-card class="movie-card cursor-pointer w-full" [routerLink]="['/movies', movie().id]">
-  <img mat-card-image [src]="getSafePosterUrl(movie().posterFileName)" alt="{{ movie().title }}" />
+  <img mat-card-image [src]="posterUrl$ | async" alt="{{ movie().title }}" />
   <mat-card-content class="flex flex-col overflow-y-auto">
     <div>{{ movie().title }}</div>
     <div>({{ movie().releaseDate | date: 'yyyy' }})</div>
