@@ -5,7 +5,7 @@ import { CasterService } from '../../services';
 @Component({
   selector: 'app-casters',
   imports: [PersonsComponent],
-  template: '<app-persons [personService]="casterService" viewTitle="Casteurs" cookieName="casters-config"></app-persons>'
+  template: '<app-persons [countries$]="casterService.getCountries" [personService]="casterService" viewTitle="Casteurs" cookieName="casters-config"></app-persons>'
 })
 export class CastersComponent {
 

@@ -6,9 +6,10 @@
     <app-input class="md:w-1/3" [label]="viewTitle" placeholder="Rechercher..." [total]="total"
       (change)="onSearch($event)">
     </app-input>
-    <app-toolbar [criterias]="['birthDate', 'deathDate', 'countries', 'creationDate', 'lastUpdate']"
-      [sorts]="sorts$ | async" [selectedCriterias]="searchConfig$?.value?.criterias" [cookieName]="cookieName()"
-      (filter)="onFilter($event)" (switchView)="onSwitchView($event)" (sort)="onSort($event)">
+    <app-toolbar [countries$]="countries$()"
+      [criterias]="['birthDate', 'deathDate', 'countries', 'creationDate', 'lastUpdate']" [sorts]="sorts$ | async"
+      [selectedCriterias]="searchConfig$?.value?.criterias" [cookieName]="cookieName()" (filter)="onFilter($event)"
+      (switchView)="onSwitchView($event)" (sort)="onSort($event)">
     </app-toolbar>
   </div>
 

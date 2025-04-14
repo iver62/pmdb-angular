@@ -32,6 +32,7 @@ export class PersonsComponent {
 
   @Input() personService!: BaseService; // Service injecté dynamiquement
   @Input() viewTitle = EMPTY_STRING; // Permet de personnaliser le titre
+  countries$ = input.required<(term: string) => Observable<Country[]>>();
   cookieName = input<string>();
 
   view = View;

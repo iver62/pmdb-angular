@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Criterias, Movie, Person } from '../../models';
+import { map } from 'rxjs';
+import { Country, Criterias, Movie, Person } from '../../models';
 import { DateUtils } from '../../utils';
 import { DateService } from '../date.service';
 
@@ -11,7 +12,7 @@ export class BaseService {
 
   constructor(
     protected http: HttpClient,
-    private dateService: DateService,
+    protected dateService: DateService,
     @Inject(String) public basePath: string
   ) { }
 
@@ -68,8 +69,14 @@ export class BaseService {
     return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' })
   }
 
+  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', direction = 'asc') =>
+    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`);
+
+
   getPhotoUrl(photoFileName: string) {
-    return `${this.basePath}/photos/${photoFileName}`;
+    return this.http.get(`${this.basePath}/photos/${photoFileName}`, { responseType: 'blob' }).pipe(
+      map(blob => URL.createObjectURL(blob)) // Convertit le blob en URL locale utilisable dans <img>
+    );
   }
 
   save(person: Person) {
