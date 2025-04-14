@@ -12,7 +12,8 @@
         <span>Ajouter un film</span>
       </button>
     </h1>
-    <div>
+    <div class="flex items-center gap-1">
+      <span>{{(user$ | async)?.username}}</span>
       <button mat-icon-button matTooltip="Mon Profil" (click)="openProfileDialog()">
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -26,7 +27,7 @@
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56">
       <mat-nav-list>
-        @for (nav of navs | filterBy: ['active']: true; track nav) {
+        @for (nav of navs | filterBy: ['active']: true | filterBy: ['display']: true; track nav) {
         <a mat-list-item [routerLink]="nav.routerLink">
           <mat-icon class="align-sub material-symbols-outlined mr-2">{{nav.icon}}</mat-icon>
           {{nav.label}}

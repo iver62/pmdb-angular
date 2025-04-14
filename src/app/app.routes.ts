@@ -273,10 +273,6 @@ export const routes: Routes = [
     },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
-  {
-    path: 'forbidden',
-    loadComponent: () => import('./page/forbidden/forbidden.component').then(c => c.ForbiddenComponent)
-  },
   // {
   //   path: 'genres',
   // canActivate: [authGuard],
@@ -297,6 +293,16 @@ export const routes: Routes = [
   // canActivate: [authGuard],
   //   loadComponent: () => import('./page/country-details/country-details.component').then(c => c.CountryDetailsComponent)
   // },
+  {
+    path: 'users',
+    canActivate: [authGuard],
+    data: { roles: ['admin'] },
+    loadComponent: () => import('./page/users/users.component').then(c => c.UsersComponent)
+  },
+  {
+    path: 'forbidden',
+    loadComponent: () => import('./page/forbidden/forbidden.component').then(c => c.ForbiddenComponent)
+  },
   {
     path: '**',
     loadComponent: () => import('./page/not-found/not-found.component').then(c => c.NotFoundComponent)

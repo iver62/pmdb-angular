@@ -1,29 +1,16 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { AuthService } from '../services';
 
-/**
- * The logic below is a simple example, please make it more robust when implementing in your application.
- *
- * Reason: isAccessGranted is not validating the resource, since it is merging all roles. Two resources might
- * have the same role name and it makes sense to validate it more granular.
- */
-const isAccessAllowed = async (route: ActivatedRouteSnapshot, __: RouterStateSnapshot, authData: AuthGuardData): Promise<boolean | UrlTree> => {
-  const { authenticated, grantedRoles } = authData;
+export const authGuard = (route: ActivatedRouteSnapshot, __: RouterStateSnapshot) => {
+  const authService = inject(AuthService);
+  const requiredRoles: string[] = route.data['roles'];
 
-  const requiredRoles = route.data['roles'];
-  if (!requiredRoles) {
-    return false;
-  }
-
-  const hasRequiredRole = (roles: string[]) => grantedRoles.resourceRoles['angular-app'].some(role => roles.includes(role))
-
-  if (authenticated && hasRequiredRole(requiredRoles)) {
+  // Si aucun rôle spécifique n'est requis, on autorise l'accès
+  if (!requiredRoles || requiredRoles.length === 0) {
     return true;
   }
 
   const router = inject(Router);
-  return router.parseUrl('/forbidden');
-};
-
-export const authGuard = createAuthGuard<CanActivateFn>(isAccessAllowed);
+  return authService.isAuthenticated() && requiredRoles.some(role => authService.hasRole(role)) ? true : router.parseUrl('/forbidden');
+}

@@ -10,7 +10,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideKeycloakAngular } from '../keycloak-init';
 import { routes } from './app.routes';
 import { getFrenchPaginatorIntl } from './custom-paginator';
-import { loaderInterceptor } from './interceptors';
+import { authInterceptor, loaderInterceptor } from './interceptors';
 
 export const APP_DATE_FORMATS = {
   parse: {
@@ -27,7 +27,7 @@ export const APP_DATE_FORMATS = {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(
-      withInterceptors([loaderInterceptor])
+      withInterceptors([authInterceptor, loaderInterceptor])
     ),
     provideAnimationsAsync(),
     provideNativeDateAdapter(),

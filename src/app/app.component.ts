@@ -47,124 +47,145 @@ export class AppComponent {
       label: 'Accueil',
       routerLink: 'dashboard',
       icon: 'dashboard',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Films',
       routerLink: 'movies',
       icon: 'movie',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Acteurs',
       routerLink: 'actors',
       icon: 'comedy_mask',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Producteurs',
       routerLink: 'producers',
       icon: 'attach_money',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Réalisateurs',
       routerLink: 'directors',
       icon: 'video_camera_front',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Scénaristes',
       routerLink: 'screenwriters',
       icon: 'edit_square',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Musique',
       routerLink: 'musicians',
       icon: 'music_note',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Décors',
       routerLink: 'decorators',
       icon: 'curtains',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Costumes',
       routerLink: 'costumiers',
       icon: 'styler',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Photographie',
       routerLink: 'photographers',
       icon: 'photo_camera',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Montage',
       routerLink: 'editors',
       icon: 'cut',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Casteurs',
       routerLink: 'casters',
       icon: 'theater_comedy',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Directeurs artistiques',
       routerLink: 'art-directors',
       icon: 'palette',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Ingénieurs du son',
       routerLink: 'sound-editors',
       icon: 'volume_up',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Spécialiste effets spéciaux',
       routerLink: 'visual-effects-supervisors',
       icon: 'explosion',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Maquilleurs',
       routerLink: 'makeup-artists',
       icon: 'ink_marker',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Coiffeurs',
       routerLink: 'hair-dressers',
       icon: 'health_and_beauty',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Cascadeurs',
       routerLink: 'stuntmen',
       icon: 'sprint',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
       label: 'Genres',
       routerLink: 'genres',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: false
     },
     {
       label: 'Pays',
       routerLink: 'countries',
+      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: false
     },
     {
       label: 'Utilisateurs',
       routerLink: 'users',
       icon: 'account_circle',
+      display: this.authService.hasRole('admin') || this.authService.hasRole('admin'),
       active: true
     }
   ];

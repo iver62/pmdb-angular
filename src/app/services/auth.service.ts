@@ -15,17 +15,22 @@ export class AuthService {
   }
 
   hasRole(role: string) {
-    return this.keycloak.hasResourceRole(role);
+    return this.keycloak.hasRealmRole(role);
+  }
+
+  getToken() {
+    return this.keycloak.token;
   }
 
   loadUserProfile() {
     return from(this.keycloak.loadUserProfile()).pipe(
       map(profile => (
         {
+          id: profile?.id,
           username: profile?.username || 'Inconnu',
           email: profile?.email || 'Non renseigné',
-          firstName: profile?.firstName || 'Non renseigné',
-          lastName: profile?.lastName || 'Non renseigné'
+          emailVerified: profile.emailVerified,
+          name: `${profile?.firstName} ${profile?.lastName}` || 'Non renseigné'
         }
       ) as User)
     );
