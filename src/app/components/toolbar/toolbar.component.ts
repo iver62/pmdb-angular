@@ -6,7 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CookieService } from 'ngx-cookie-service';
 import { NgPipesModule } from 'ngx-pipes';
-import { filter, Observable, of, take } from 'rxjs';
+import { filter, Observable, take } from 'rxjs';
 import { View } from '../../enums';
 import { Country, Criterias, SearchConfig, SortOption } from '../../models';
 import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.component';
@@ -26,7 +26,7 @@ import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.c
 })
 export class ToolbarComponent {
 
-  countries$ = input<(term: string) => Observable<Country[]>>(() => of([]));
+  countries$ = input<(term: string) => Observable<Country[]>>();
   sorts = input.required<SortOption[]>();
   criterias = input<string[]>([]);
   selectedCriterias = input<Criterias>({} as Criterias);

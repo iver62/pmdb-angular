@@ -37,7 +37,7 @@ export class CountrySelectorComponent {
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
-      size: 50,
+      size: 20,
       sort: 'nomFrFr',
       direction: 'asc',
       term: EMPTY_STRING
@@ -71,8 +71,8 @@ export class CountrySelectorComponent {
   );
 
   control: FormControl;
-  total: number;
-  loaded = 0;
+  private total: number;
+  private loaded = 0;
   private isLoadingMore = false;
 
   constructor(

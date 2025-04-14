@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+.mat-mdc-button {
+  background-color: white;
+  color: darkslategrey;
+}
+
+.mat-mdc-fab {
+  background-color: #555555;
+  color: white;
+}
+
+.mat-mdc-fab:hover {
+  background-color: #444444;
+}

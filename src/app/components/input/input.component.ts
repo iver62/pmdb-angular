@@ -20,11 +20,12 @@ import { DelayedInputDirective } from '../../directives';
     MatTooltipModule
   ],
   templateUrl: './input.component.html',
-  styleUrl: './input.component.css'
+  styleUrl: './input.component.scss'
 })
 export class InputComponent {
 
   @Input() label: string;
+  @Input() placeholder: string;
   @Input() total: number;
 
   @Output() change = new EventEmitter<string>();

@@ -24,7 +24,7 @@ import { Person, SearchConfig } from '../../../../models';
     ReactiveFormsModule
   ],
   templateUrl: './casting-form.component.html',
-  styleUrl: './casting-form.component.css'
+  styleUrl: './casting-form.component.scss'
 })
 export class CastingFormComponent {
 

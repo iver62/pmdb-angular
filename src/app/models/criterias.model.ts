@@ -1,7 +1,5 @@
 import { Moment } from "moment";
-import { Country } from "./country.model";
-import { Genre } from "./genre.model";
-import { User } from "./user.model";
+import { Country, Genre, User } from "./";
 
 export interface Criterias {
   countries?: Country[],

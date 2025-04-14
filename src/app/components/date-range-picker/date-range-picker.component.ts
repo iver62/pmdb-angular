@@ -19,7 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReactiveFormsModule
   ],
   templateUrl: './date-range-picker.component.html',
-  styleUrl: './date-range-picker.component.css'
+  styleUrl: './date-range-picker.component.scss'
 })
 export class DateRangePickerComponent {
 

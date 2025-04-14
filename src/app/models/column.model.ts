@@ -1,5 +1,4 @@
-import { Movie } from "./movie.model";
-import { Person } from "./person.model";
+import { Movie, Person } from "./";
 
 export interface Column {
   columnDef: string,

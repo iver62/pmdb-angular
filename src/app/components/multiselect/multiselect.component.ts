@@ -23,7 +23,7 @@ import { Country, Genre, User } from '../../models';
     ReactiveFormsModule
   ],
   templateUrl: './multiselect.component.html',
-  styleUrl: './multiselect.component.css'
+  styleUrl: './multiselect.component.scss'
 })
 export class MultiselectComponent {
 
@@ -36,10 +36,10 @@ export class MultiselectComponent {
 
   @Output() update = new EventEmitter<string>();
 
-  // Signal pour stocker les valeurs du formulaire
+  // Signal pour stocker les valeurs du multiselect
   selectedValues = signal<(Country | Genre | User)[]>([]);
 
-  checkboxChecked = computed(() => this.selectedValues()?.length === this.items()?.length);
+  checkboxChecked = computed(() => this.selectedValues()?.length > 0 && this.selectedValues()?.length === this.items()?.length);
   checkboxIndeterminate = computed(() => !this.checkboxChecked() && this.selectedValues()?.length > 0);
 
   constructor() {
@@ -70,6 +70,10 @@ export class MultiselectComponent {
     this.selectedValues.set([])
     this.control().patchValue([]);
     this.control().markAsDirty();
+  }
+
+  eraseSearch() {
+    this.update.emit(EMPTY_STRING)
   }
 
   compareObjects(o1: Country | Genre, o2: Country | Genre) {

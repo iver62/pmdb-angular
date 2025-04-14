@@ -2,12 +2,12 @@
   <mat-label>{{label()}}</mat-label>
   <mat-select [placeholder]="placeholder()" [formControl]="control()" [compareWith]="compareObjects"
     (openedChange)="openedChange($event)" (selectionChange)="selectionChange($event)" multiple>
-    @if (control()?.value?.length) {
+    @if (selectedValues()?.length) {
     <mat-select-trigger>
       <div>
-        {{control()?.value?.[0].display() || ''}}
-        @if ((control()?.value?.length || 0) > 1) {
-        (+{{(control()?.value?.length || 0) - 1}} {{' autres'}})
+        {{selectedValues()?.at(0).display() || ''}}
+        @if ((selectedValues()?.length || 0) > 1) {
+        (+{{(selectedValues()?.length || 0) - 1}} {{' autres'}})
         }
       </div>
     </mat-select-trigger>
@@ -17,6 +17,7 @@
         [toggleAllCheckboxChecked]="checkboxChecked()" [toggleAllCheckboxIndeterminate]="checkboxIndeterminate()"
         [noEntriesFoundLabel]="noEntriesFoundLabel()" [showToggleAllCheckbox]="true"
         (delayedInput)="updateSearch($event)" (toggleAll)="onToggleAll($event)">
+        <mat-icon ngxMatSelectSearchClear matTooltip="Effacer" (click)="eraseSearch()">clear</mat-icon>
       </ngx-mat-select-search>
     </mat-option>
     @for (item of items(); track item.id) {

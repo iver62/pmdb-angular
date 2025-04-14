@@ -1,4 +1,4 @@
-import { Person } from "./person.model";
+import { Person } from "./";
 
 export interface TechnicalTeam {
   producers?: Person[],

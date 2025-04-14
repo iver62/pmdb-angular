@@ -81,8 +81,8 @@ export class MovieDetailsComponent {
           switchMap(tabIndex => {
             if (tabIndex === 0) return this.movieService.getOne(id).pipe(map(res => ({ type: 'movie', data: res })));
             if (tabIndex === 1) return this.movieService.getTechnicalTeam(id).pipe(map(res => ({ type: 'team', data: res })));
-            if (tabIndex === 2) return this.movieService.getActors(id).pipe(map(res => ({ type: 'actors', data: res })));
-            if (tabIndex === 3) return this.movieService.getAwards(id).pipe(map(res => ({ type: 'awards', data: res })));
+            if (tabIndex === 2) return this.movieService.getActors(id).pipe(map(res => ({ type: 'actors', data: res || [] })));
+            if (tabIndex === 3) return this.movieService.getAwards(id).pipe(map(res => ({ type: 'awards', data: res || [] })));
             return of(null);
           })
         );
@@ -191,7 +191,7 @@ export class MovieDetailsComponent {
   }
 
   private initAwardsForm() {
-    if (!this.awards) return;
+    // if (!this.awards) return;
 
     this.awardsInitialValues = {
       awards: this.fb.array(
@@ -210,6 +210,7 @@ export class MovieDetailsComponent {
 
     if (!this.awardsForm) {
       this.awardsForm = this.fb.group(this.awardsInitialValues);
+
     } else {
       this.awardsForm.patchValue(this.awardsInitialValues.awards);
     }

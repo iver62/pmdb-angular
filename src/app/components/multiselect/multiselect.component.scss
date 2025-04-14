@@ -1,0 +1,5 @@
+@use '@angular/material' as mat;
+
+.mat-mdc-form-field {
+  @include mat.form-field-overrides((filled-container-color: white));
+}

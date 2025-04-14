@@ -4,6 +4,10 @@
   @include mat.progress-spinner-overrides((active-indicator-color: black));
 }
 
+.w-full {
+  @include mat.form-field-overrides((filled-container-shape: 10px));
+}
+
 .mat-mdc-progress-spinner {
   align-self: center;
 }

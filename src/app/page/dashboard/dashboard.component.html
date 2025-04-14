@@ -5,56 +5,85 @@
 @let creationDateRepartition = creationDateRepartition$ | async;
 @let creationDateEvolution = creationDateEvolution$ | async;
 
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3">
-  <mat-card appearance="outlined" class="col-span-3">
-    <mat-card-header>Nombre de films</mat-card-header>
+<div class="grid grid-cols-2 lg:grid-cols-6 gap-3">
+  <mat-card appearance="outlined" class="col-span-1 lg:col-span-3">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2" fontSize="large">movie</mat-icon>
+        <span>Nombre de films</span>
+      </mat-card-title>
+    </mat-card-header>
     <mat-card-content class="text-3xl text-center">{{moviesNumber$ | async}}</mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-3">
-    <mat-card-header>Nombre d'acteurs</mat-card-header>
+  <mat-card appearance="outlined" class="col-span-1 lg:col-span-3">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">comedy_mask©</mat-icon>
+        <span>Nombre d'acteurs</span>
+      </mat-card-title>
+    </mat-card-header>
     <mat-card-content class="text-3xl text-center">{{actorsNumber$ | async}}</mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>Sortie</mat-card-title>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">event</mat-icon>
+        <span>Sorties</span>
+      </mat-card-title>
     </mat-card-header>
-    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="decadeRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="decadeRepartition"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-4 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>Pays</mat-card-title>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">flag</mat-icon>
+        <span>Pays</span>
+      </mat-card-title>
     </mat-card-header>
-    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="countryRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="countryRepartition"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>Genres</mat-card-title>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">category</mat-icon>
+        <span>Genres</span>
+      </mat-card-title>
     </mat-card-header>
-    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="genreRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="genreRepartition"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-4 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>Contributeurs</mat-card-title>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">account_circle</mat-icon>
+        <span>Contributeurs</span>
+      </mat-card-title>
     </mat-card-header>
-    <app-bar-chart class="max-h-[400px] mt-auto" [barChartData]="userRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="userRepartition"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-6 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>Date d'ajout</mat-card-title>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">bar_chart</mat-icon>
+        <span>Date d'ajout</span>
+      </mat-card-title>
     </mat-card-header>
-    <app-bar-chart class="max-h-[400px]" [barChartData]="creationDateRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="creationDateRepartition"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-6 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>Nombre de films</mat-card-title>
+      <mat-card-title></mat-card-title>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">show_chart</mat-icon>
+        <span>Evolution du nombre de films</span>
+      </mat-card-title>
     </mat-card-header>
-    <app-line-chart class="max-h-[400px]" [lineChartData]="creationDateEvolution"></app-line-chart>
+    <app-line-chart [lineChartData]="creationDateEvolution"></app-line-chart>
   </mat-card>
 </div>

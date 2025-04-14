@@ -52,7 +52,7 @@
         </button>
         <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
           color="accent" (click)="cancelTechnicalTeam()">
-          <mat-icon>cancel</mat-icon>
+          <mat-icon>close</mat-icon>
         </button>
       </div>
       } @else {
@@ -85,12 +85,12 @@
         </button>
         <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
           color="accent" (click)="cancelCasting()">
-          <mat-icon>cancel</mat-icon>
+          <mat-icon>close</mat-icon>
         </button>
       </div>
       } @else {
       <div>
-        <app-casting [casting]="casting"></app-casting>
+        <app-casting [actors]="casting"></app-casting>
 
         <div class="fixed bottom-5 right-5">
           <button mat-fab class="float-right m-1" matTooltip="Modifier"
@@ -120,7 +120,7 @@
         </button>
         <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a cancel icon"
           color="accent" (click)="cancelAwards()">
-          <mat-icon>cancel</mat-icon>
+          <mat-icon>close</mat-icon>
         </button>
       </div>
       } @else {

@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
+import { CountryCardComponent } from '..';
 import { Country } from '../../models';
-import { CountryCardComponent } from '../country-card/country-card.component';
 
 @Component({
   selector: 'app-countries-list',

@@ -1,23 +1,26 @@
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, computed, effect, EventEmitter, input, Input, Output, signal } from '@angular/core';
-import { FormControl, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
+import { Component, effect, ElementRef, input, signal, ViewChild } from '@angular/core';
+import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { NgPipesModule } from 'ngx-pipes';
+import { BehaviorSubject, catchError, filter, map, of, switchMap, take } from 'rxjs';
+import { EMPTY_STRING } from '../../app.component';
+import { DelayedInputDirective } from '../../directives';
 import { Genre } from '../../models';
 import { GenreService } from '../../services';
 
 @Component({
   selector: 'app-genre-selector',
   imports: [
-    FormsModule,
+    AsyncPipe,
+    DelayedInputDirective,
     MatAutocompleteModule,
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
-    NgPipesModule,
     ReactiveFormsModule
   ],
   templateUrl: './genre-selector.component.html',
@@ -25,75 +28,100 @@ import { GenreService } from '../../services';
 })
 export class GenreSelectorComponent {
 
-  @Input() formGroupName: string;
+  @ViewChild('input') input: ElementRef<HTMLInputElement>;
 
-  @Output() addGenre = new EventEmitter<Genre>();
-
-  genres = input.required<Genre[]>();
-
-  genresSignal = signal<Genre[]>(null);
+  formGroupName = input.required<string>();
+  searchTerm = new BehaviorSubject(EMPTY_STRING);
   selectedGenres = signal<Genre[]>([]);
-  currentGenre = signal<string>('');
 
-  readonly filteredGenres = computed(() =>
-    this.genresSignal()
-      ?.filter(genre => !this.selectedGenres().some(g => g.id === genre.id))
-      ?.filter(genre => genre.name.toLowerCase().includes(this.currentGenre()?.toLowerCase()))
+  readonly filteredGenres$ = this.searchTerm.pipe(
+    switchMap(term => this.genreService.getAll(term)
+      .pipe(
+        map(genres =>
+          genres
+            .filter(genre => !this.selectedGenres().some(g => g.id === genre.id))
+            .map(g => new Genre(g))
+        ),
+        catchError(() => of([])) // En cas d'erreur, retourner une liste vide
+      )
+    )
   );
 
-  control: FormControl;
-
   readonly separatorKeysCodes: number[] = [ENTER];
+
+  control: FormControl<Genre[]>;
 
   constructor(
     private genreService: GenreService,
     private rootFormGroup: FormGroupDirective
   ) {
-    effect(() => this.genresSignal.set(this.genres()));
+    effect(() => {
+      this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
+      this.selectedGenres.set(this.control.value || []);
+    });
   }
 
-  ngOnInit() {
-    this.control = this.rootFormGroup.control.get(this.formGroupName) as FormControl;
+  panelOpen = false; // État pour savoir si le panel est ouvert
+
+
+  onPanelClosed(event: any) {
+    if (this.panelOpen) {
+      setTimeout(() => {
+        this.panelOpen = false;
+        this.input.nativeElement.focus();
+      }, 0);
+    }
+
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+  add(event: MatChipInputEvent) {
+    const value = (event.value || EMPTY_STRING).trim();
 
-    if (value && !this.genresSignal().map(g => g.name.toLocaleLowerCase()).includes(value.toLocaleLowerCase())) {
-      this.genreService.save({ name: value }).subscribe(result => {
-        // this.genresSignal.update(genres => [...genres, result]);
-        this.addGenre.emit(result);
-        this.selectedGenres().push(result);
-        this.control.setValue(this.selectedGenres);
-      });
-    }
+    this.filteredGenres$.pipe(
+      filter(() => value != EMPTY_STRING),
+      take(1)
+    ).subscribe(genres => {
+      if (value) {
+        // Si l'input ne correspond à aucun genre existant
+        if (!genres.map(g => g.name.toLocaleLowerCase()).includes(value.toLocaleLowerCase())) {
+          this.genreService.save({ name: value }).subscribe(result => {
+            this.selectedGenres().push(result);
+            this.control.setValue(this.selectedGenres());
+          });
+        } else {
+          this.selectedGenres().push(genres.find(g => g.name.toLocaleLowerCase() == value.toLocaleLowerCase()));
+          this.control.setValue(this.selectedGenres());
+        }
+      }
 
-    // Add our keyword
-    if (value && this.genresSignal().map(g => g.name.toLocaleLowerCase()).includes(value.toLocaleLowerCase())) {
-      this.selectedGenres().push(this.genresSignal().find(g => g.name.toLocaleLowerCase() == value.toLocaleLowerCase()));
-      this.control.setValue(this.selectedGenres);
-    }
-
-    // Clear the input value
-    // this.genreCtrl.setValue('');
-    this.currentGenre.set('');
+      // Clear the input value
+      this.searchTerm.next(EMPTY_STRING);
+      this.input.nativeElement.value = EMPTY_STRING;
+    });
   }
 
   remove(genre: Genre) {
     const index = this.selectedGenres().findIndex(g => g.id === genre.id);
+
     if (index >= 0) {
       this.selectedGenres.update(genres => genres.filter(g => g.id !== genre.id));
-      this.control.setValue(this.selectedGenres);
+      this.control.setValue([...this.selectedGenres()]);
+      this.searchTerm.next(EMPTY_STRING);
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  selected(event: MatAutocompleteSelectedEvent) {
     const genre: Genre = event.option.value;
 
     if (!this.selectedGenres().some(g => g.id === genre.id)) {
       this.selectedGenres().push(genre);
-      this.control.setValue(this.selectedGenres);
-      this.currentGenre.set('');
+      this.control.setValue(this.selectedGenres());
+
+      this.panelOpen = true;
+
+      if (this.input) {
+        this.input.nativeElement.value = EMPTY_STRING; // Clear the input value
+      }
     }
   }
 

@@ -10,7 +10,7 @@ import { ArtDirectorService, CasterService, CostumierService, DecoratorService, 
     ReactiveFormsModule
   ],
   templateUrl: './technical-team-form.component.html',
-  styleUrl: './technical-team-form.component.css'
+  styleUrl: './technical-team-form.component.scss'
 })
 export class TechnicalTeamFormComponent {
 

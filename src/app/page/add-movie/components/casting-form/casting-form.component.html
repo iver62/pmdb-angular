@@ -1,11 +1,11 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="form">
   <div formArrayName="actors">
-    @for (control of formArray.controls; track $index; let i = $index) {
+    @for (actor of formArray.controls; track actor; let i = $index) {
     <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
 
       <!-- Autocomplete acteur -->
-      <app-autocomplete class="col-span-4" [control]="control.get('name')" label="Nom de l'acteur"
-        [personsToExclude]="formArray?.value | pluck: 'id'" [toSave]="control?.value?.name && !control?.value?.id"
+      <app-autocomplete class="col-span-4" [control]="actor.get('name')" label="Nom de l'acteur"
+        [personsToExclude]="formArray?.value | pluck: 'id'" [toSave]="actor?.value?.name && !actor?.value?.id"
         (select)="selectActor($event, i)" (save)="saveActor($event, i)">
       </app-autocomplete>
 
@@ -13,7 +13,7 @@
       <mat-form-field class="col-span-6">
         <mat-label>Rôle</mat-label>
         <input matInput formControlName="role" />
-        @if (control.value.role) {
+        @if (actor.value.role) {
         <button matSuffix mat-icon-button matTooltip="Effacer" aria-label="Effacer le rôle" (click)="clearRole(i)">
           <mat-icon>close</mat-icon>
         </button>
@@ -44,7 +44,8 @@
     </div>
     }
   </div>
-  <button mat-button matTooltip="Ajouter" aria-label="Example icon button with a delete icon" (click)="addActor()">
+  <button mat-button class="mb-2" matTooltip="Ajouter" aria-label="Example icon button with a delete icon"
+    (click)="addActor()">
     Ajouter un acteur
   </button>
 </form>

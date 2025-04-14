@@ -1,3 +1,11 @@
+@use '@angular/material' as mat;
+
+.form {
+  @include mat.form-field-overrides((filled-container-color: white,
+      filled-container-shape: 10px));
+
+}
+
 .image-container {
   width: 24px;
   /* Taille du cercle */
@@ -19,4 +27,9 @@
   height: 100%;
   object-fit: cover;
   /* Coupe l'image pour remplir le cercle */
+}
+
+.mat-mdc-button {
+  background-color: white;
+  color: darkslategrey;
 }

@@ -39,7 +39,7 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
     ToolbarComponent
   ],
   templateUrl: './person-details.component.html',
-  styleUrl: './person-details.component.css'
+  styleUrl: './person-details.component.scss'
 })
 export class PersonDetailsComponent {
 

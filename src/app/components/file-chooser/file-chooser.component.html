@@ -1,7 +1,7 @@
-<div class="file-upload items-baseline h-full w-full">
+<div class="file-chooser items-baseline h-full w-full">
   <input type="file" [accept]="accept()" #fileInput formControlName="posterFileName" (change)="onFileChanged($event)"
     hidden>
-  <button mat-flat-button class="w-full" (click)="fileInput.click()">
+  <button mat-flat-button class="opener" (click)="fileInput.click()">
     @if (!control.value) {
     Choisir un fichier
     } @else {

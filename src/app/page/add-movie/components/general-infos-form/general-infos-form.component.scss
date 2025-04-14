@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+textarea {
+  field-sizing: content;
+}
+
+.form {
+  @include mat.form-field-overrides((filled-container-color: white,
+      filled-focus-active-indicator-color: black));
+}

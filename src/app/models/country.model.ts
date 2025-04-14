@@ -1,6 +1,5 @@
 import { EMPTY_STRING } from "../app.component";
-import { Movie } from "./movie.model";
-import { Person } from "./person.model";
+import { Movie, Person } from "./";
 
 export class Country {
   id?: number;

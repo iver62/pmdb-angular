@@ -2,7 +2,7 @@
   <div class="grid grid-cols-12 gap-2">
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
       <mat-label>Titre</mat-label>
-      <input matInput placeholder="Titre français" formControlName="title" required>
+      <input matInput placeholder="Titre français" formControlName="title">
       @if (titleFormCtrl.hasError('required') && titleFormCtrl.touched) {
       <mat-error>Le titre est requis</mat-error>
       }
@@ -16,6 +16,9 @@
       <input matInput [matDatepicker]="picker" placeholder="JJ/MM/YYYY" formControlName="releaseDate">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+      @if (releaseDateFormCtrl.hasError('required') && releaseDateFormCtrl.touched) {
+      <mat-error>La date de sortie est requise</mat-error>
+      }
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-12">
       <mat-label>Synopsis</mat-label>
@@ -41,7 +44,7 @@
     <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries">
     </app-country-selector>
 
-    <app-genre-selector class="col-span-12 lg:col-span-6" [genres]="genres" formGroupName="genres">
+    <app-genre-selector class="col-span-12 lg:col-span-6" formGroupName="genres">
     </app-genre-selector>
   </div>
 </form>

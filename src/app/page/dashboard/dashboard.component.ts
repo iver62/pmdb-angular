@@ -1,12 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgPipesModule } from 'ngx-pipes';
 import { map } from 'rxjs';
 import { BarChartComponent, LineChartComponent } from '../../components';
+import { Repartition } from '../../models';
 import { ActorService, MovieService } from '../../services';
 
 @Component({
@@ -15,11 +13,8 @@ import { ActorService, MovieService } from '../../services';
     AsyncPipe,
     BarChartComponent,
     LineChartComponent,
-    MatButtonModule,
     MatCardModule,
-    MatIconModule,
-    MatTooltipModule,
-    NgPipesModule
+    MatIconModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -44,7 +39,18 @@ export class DashboardComponent {
     map(dataset => this.formatBarChartDataset(dataset))
   );
   creationDateEvolution$ = this.movieService.getEvolutionCreationDate().pipe(
-    map(dataset => this.formatBarChartDataset(dataset))
+    map(dataset => (
+      {
+        labels: dataset.map(d => d.label),
+        datasets: [
+          {
+            data: dataset.map(d => d.total),
+            borderColor: '#36A2EB',
+            pointBorderColor: '#36A2EB',
+          }
+        ]
+      }
+    ))
   );
 
   colors = ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384', '#9966FF', '#FF9F40', '#8E5EA2'];
@@ -54,12 +60,12 @@ export class DashboardComponent {
     private movieService: MovieService
   ) { }
 
-  private formatBarChartDataset(dataset: { label: string, total: number }[]) {
+  private formatBarChartDataset(repartition: Repartition[]) {
     return {
-      labels: dataset.map(d => d.label),
+      labels: repartition.map(d => d.label),
       datasets: [
         {
-          data: dataset.map(d => d.total),
+          data: repartition.map(d => d.total),
           backgroundColor: this.colors
         }
       ]

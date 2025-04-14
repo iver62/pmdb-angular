@@ -12,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule
   ],
   templateUrl: './file-chooser.component.html',
-  styleUrl: './file-chooser.component.css'
+  styleUrl: './file-chooser.component.scss'
 })
 export class FileChooserComponent {
 
