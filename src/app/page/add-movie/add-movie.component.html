@@ -1,25 +1,27 @@
-<ng-container [formGroup]="form">
-  <mat-stepper [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="form.get('generalFormGroup')" label="Informations générales">
-      <app-general-infos-form formGroupName="generalFormGroup" (selectImage)="selectImage($event)">
-      </app-general-infos-form>
-      <button mat-button matStepperNext (click)="saveMovie()">Suivant</button>
-    </mat-step>
-    <mat-step [stepControl]="form.get('generalFormGroup')" label="Fiche technique">
-      <app-technical-team-form formGroupName="technicalTeamFormGroup"></app-technical-team-form>
-      <button mat-button matStepperNext (click)="saveTechnicalTeam()">Suivant</button>
-    </mat-step>
-    <mat-step [stepControl]="form.get('castingFormGroup')" label="Casting">
-      <app-casting-form formGroupName="castingFormGroup"></app-casting-form>
-      <button mat-button matStepperNext (click)="saveCasting()">Suivant</button>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
-      </div>
-    </mat-step>
-  </mat-stepper>
-</ng-container>
+<mat-stepper class="rounded-lg mb-2" [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="generalInfosForm" label="Informations générales">
+    <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
+    </app-general-infos-form>
+    <button mat-button class="mt-4" (click)="saveMovie()">Suivant</button>
+  </mat-step>
+  <mat-step [stepControl]="technicalTeamForm" label="Fiche technique">
+    <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
+    <button mat-button (click)="saveTechnicalTeam()">Suivant</button>
+  </mat-step>
+  <mat-step [stepControl]="castingForm" label="Casting">
+    <app-casting-form [form]="castingForm"></app-casting-form>
+    <button mat-button (click)="saveCasting()">Suivant</button>
+  </mat-step>
+  <mat-step [stepControl]="awardsForm" label="Récompenses">
+    <app-awards-form [form]="awardsForm"></app-awards-form>
+    <button mat-button (click)="saveAwards()">Suivant</button>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p class="mb-2">You are now done.</p>
+    <div>
+      <button mat-button class="mr-2" matStepperPrevious>Back</button>
+      <button mat-button color="warn" (click)="stepper.reset()">Réinitialiser</button>
+    </div>
+  </mat-step>
+</mat-stepper>

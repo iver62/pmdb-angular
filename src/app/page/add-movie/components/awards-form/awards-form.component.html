@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="form">
   <div formArrayName="awards" class="col-span-12">
-    @for (award of formArray.controls; track award; let i = $index) {
+    @for (award of formArray?.controls; track award; let i = $index) {
     <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
       <!-- Champ cérémonie -->
       <mat-form-field class="col-span-3">

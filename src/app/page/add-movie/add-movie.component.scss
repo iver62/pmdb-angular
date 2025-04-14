@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+
+.mat-stepper-horizontal {
+  @include mat.stepper-overrides((container-color: #e5e7eb));
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  margin-bottom: 1rem !important;
+}
+
+.mat-mdc-button {
+  background-color: white;
+  color: darkslategrey;
+}

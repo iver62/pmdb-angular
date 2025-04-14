@@ -8,11 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgPipesModule } from 'ngx-pipes';
+import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../../../app.component';
 import { DelayedInputDirective } from '../../../../directives';
-import { AwardService } from '../../../../services';
-import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
 import { SearchConfig } from '../../../../models';
+import { AwardService } from '../../../../services';
 import { HttpUtils } from '../../../../utils';
 
 @Component({
@@ -58,7 +58,7 @@ export class AwardsFormComponent {
   );
 
   get formArray() {
-    return this.form.get('awards') as FormArray;
+    return this.form?.get('awards') as FormArray;
   }
 
   private total: number;
@@ -70,7 +70,7 @@ export class AwardsFormComponent {
     private fb: FormBuilder
   ) {
     effect(() => {
-      if (this.formArray.length < 1) {
+      if (this.formArray?.length < 1) {
         this.addAward();
       }
     });

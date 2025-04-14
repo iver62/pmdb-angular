@@ -1,17 +1,19 @@
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { catchError, of, switchMap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { Movie, MovieActor } from '../../models';
-import { MovieService } from '../../services';
-import { CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
+import { Award, Movie, MovieActor } from '../../models';
+import { AuthService, MovieService } from '../../services';
+import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
 @Component({
   selector: 'app-add-movie',
   imports: [
+    AwardsFormComponent,
     CastingFormComponent,
     GeneralInfosFormComponent,
     MatButtonModule,
@@ -21,9 +23,11 @@ import { CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormCompo
     TechnicalTeamFormComponent,
   ],
   templateUrl: './add-movie.component.html',
-  styleUrl: './add-movie.component.css'
+  styleUrl: './add-movie.component.scss'
 })
 export class AddMovieComponent {
+
+  @ViewChild('stepper') stepper!: MatStepper;
 
   movie: Movie;
   duration = 5000;
@@ -34,7 +38,7 @@ export class AddMovieComponent {
       title: [EMPTY_STRING, Validators.required],
       originalTitle: [],
       synopsis: [],
-      releaseDate: [],
+      releaseDate: [Validators.required],
       runningTime: [],
       budget: [],
       boxOffice: [],
@@ -67,11 +71,17 @@ export class AddMovieComponent {
       actors: this.fb.array<MovieActor>([])
     }
   );
+  awardsForm = this.fb.group(
+    {
+      awards: this.fb.array<Award>([])
+    }
+  );
 
   isLinear = true;
 
   constructor(
     private _snackBar: MatSnackBar,
+    private authService: AuthService,
     private fb: FormBuilder,
     private movieService: MovieService
   ) { }
@@ -82,39 +92,45 @@ export class AddMovieComponent {
 
   saveMovie() {
     if (this.generalInfosForm.valid) {
-      this.movieService.saveMovie(this.imageFile, this.generalInfosForm.value).subscribe(
-        {
-          next: result => {
-            this._snackBar.open('Film créé avec succès', 'Done', { duration: this.duration });
-            this.movie = result;
-          },
-          error: error => {
-            console.error(error);
-            this._snackBar.open('Erreur lors de la création du film', 'Error', { duration: this.duration });
-          }
+      this.authService.loadUserProfile().pipe(
+        switchMap(user => this.movieService.saveMovie(this.imageFile, { ...this.generalInfosForm.value, user: user })
+          .pipe(
+            catchError(response => {
+              console.error('Erreur lors de la création du film.', response.error);
+              this._snackBar.open(`Erreur lors de la création du film. ${response.error}`, 'Error', { duration: this.duration });
+              return of(null);
+            })
+          )
+        )
+      ).subscribe(result => {
+        if (result) {
+          this._snackBar.open('Film créé avec succès', 'Done', { duration: this.duration });
+          this.stepper.next();
+          this.movie = result;
         }
-      );
+      });
     } else {
-      console.error('Le formulaire est invalide');
+      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
     }
   }
 
   saveTechnicalTeam() {
     if (this.technicalTeamForm.valid) {
-      this.movieService.saveTechnicalTeam(this.movie.id, this.technicalTeamForm.value).subscribe(
-        {
-          next: result => {
-            this._snackBar.open('Fiche technique ajoutée avec succès', 'Done', { duration: this.duration });
-            this.movie.technicalTeam = result;
-          },
-          error: error => {
-            console.error(error);
-            this._snackBar.open('Erreur lors de l\'ajout de la fiche technique', 'Error', { duration: this.duration });
-          }
+      this.movieService.saveTechnicalTeam(this.movie.id, this.technicalTeamForm.value).pipe(
+        catchError(error => {
+          console.error(error);
+          this._snackBar.open('Erreur lors de l\'ajout de la fiche technique', 'Error', { duration: this.duration });
+          return of(null);
+        })
+      ).subscribe(result => {
+        if (result) {
+          this._snackBar.open('Fiche technique ajoutée avec succès', 'Done', { duration: this.duration });
+          this.stepper.next();
+          this.movie.technicalTeam = result;
         }
-      );
+      });
     } else {
-      console.error('Le formulaire est invalide');
+      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
     }
   }
 
@@ -134,6 +150,7 @@ export class AddMovieComponent {
         {
           next: result => {
             this._snackBar.open('Casting ajouté avec succès', 'Done', { duration: this.duration });
+            this.stepper.next();
             this.movie.movieActors = result;
           },
           error: error => {
@@ -143,7 +160,14 @@ export class AddMovieComponent {
         }
       )
     } else {
-      console.error('Le formulaire est invalide');
+      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
+    }
+  }
+
+  saveAwards() {
+    if (this.awardsForm.valid) {
+    } else {
+      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
     }
   }
 }

@@ -1,7 +1,8 @@
 @use '@angular/material' as mat;
 
 .form {
-  @include mat.form-field-overrides((filled-container-color: white));
+  @include mat.form-field-overrides((filled-container-color: white,
+      filled-container-shape: 10px));
 }
 
 .mat-mdc-button {
