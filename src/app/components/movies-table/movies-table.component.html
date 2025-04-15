@@ -53,8 +53,8 @@
   </ng-container>
 
   <!-- User Column -->
-  <ng-container matColumnDef="user">
-    <th mat-header-cell *matHeaderCellDef>Utilisateur</th>
+  <ng-container matColumnDef="user.username">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Utilisateur</th>
     <td mat-cell *matCellDef="let row">{{row?.user?.username}}</td>
   </ng-container>
 

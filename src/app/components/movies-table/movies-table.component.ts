@@ -31,12 +31,12 @@ export class MoviesTableComponent {
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 
   env = environment;
-  displayedColumns = ['title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice', 'user', 'numberOfAwards', 'creationDate', 'lastUpdate'];
+  displayedColumns = ['title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice', 'user.username', 'numberOfAwards', 'creationDate', 'lastUpdate'];
 
   constructor(private movieService: MovieService) {
     // Transformer les films en ajoutant les URLs
     effect(() => {
-      const movies = this.dataSource().map(m => (
+      const movies = this.dataSource()?.map(m => (
         {
           ...m,
           posterUrl$: this.movieService.getPosterUrl(m.posterFileName) // Observable pour l'affiche
