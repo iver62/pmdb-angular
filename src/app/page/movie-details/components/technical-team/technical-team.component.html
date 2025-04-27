@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-4 text-xl">
   @if (technicalTeam?.directors?.length) {
   <div>
-    <span class="font-bold">RÉALISATEURS :</span>
+    <span class="font-bold">{{'app.directors' | translate | uppercase}} :</span>
     @for (director of technicalTeam?.directors | orderBy: 'name'; track director.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/directors', director.id]">
       {{director?.name}}@if (!last) {,}
@@ -12,7 +12,7 @@
   }
   @if (technicalTeam?.screenwriters?.length) {
   <div>
-    <span class="font-bold">SCÉNARISTES :</span>
+    <span class="font-bold">{{'app.screenwriters' | translate | uppercase}} :</span>
     @for(screenwriter of technicalTeam?.screenwriters | orderBy: 'name'; track screenwriter.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/screenwriters', screenwriter.id]">
       {{screenwriter?.name}}@if (!last) {,}
@@ -23,7 +23,7 @@
   }
   @if (technicalTeam?.musicians?.length) {
   <div>
-    <span class="font-bold">MUSIQUE :</span>
+    <span class="font-bold">{{'app.music' | translate | uppercase}} :</span>
     @for(musician of technicalTeam?.musicians | orderBy: 'name'; track musician.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/musicians', musician.id]">
       {{musician?.name}}@if (!last) {,}
@@ -33,7 +33,7 @@
   }
   @if (technicalTeam?.photographers?.length) {
   <div>
-    <span class="font-bold">PHOTOGRAPHIE :</span>
+    <span class="font-bold">{{'app.photography' | translate | uppercase}} :</span>
     @for (photographer of technicalTeam?.photographers | orderBy: 'name'; track photographer.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/photographers', photographer.id]">
       {{photographer?.name}}@if (!last) {,}
@@ -43,7 +43,7 @@
   }
   @if (technicalTeam?.costumiers?.length) {
   <div>
-    <span class="font-bold">COSTUMES :</span>
+    <span class="font-bold">{{'app.costumes' | translate | uppercase}} :</span>
     @for (costumier of technicalTeam?.costumiers | orderBy: 'name'; track costumier.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/costumiers', costumier.id]">
       {{costumier?.name}}@if (!last) {,}
@@ -53,7 +53,7 @@
   }
   @if (technicalTeam?.decorators?.length) {
   <div>
-    <span class="font-bold">DÉCORS :</span>
+    <span class="font-bold">{{'app.sets' | translate | uppercase}} :</span>
     @for (decorator of technicalTeam?.decorators | orderBy: 'name'; track decorator.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/decorators', decorator.id]">
       {{decorator?.name}}@if (!last) {,}
@@ -63,7 +63,7 @@
   }
   @if (technicalTeam?.editors?.length) {
   <div>
-    <span class="font-bold">MONTAGE :</span>
+    <span class="font-bold">{{'app.editing' | translate | uppercase}} :</span>
     @for (editor of technicalTeam?.editors | orderBy: 'name'; track editor.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/editors', editor.id]">
       {{editor?.name}}@if (!last) {,}
@@ -73,7 +73,7 @@
   }
   @if (technicalTeam?.casters?.length) {
   <div>
-    <span class="font-bold">CASTING :</span>
+    <span class="font-bold">{{'app.casting' | translate | uppercase}} :</span>
     @for (caster of technicalTeam?.casters | orderBy: 'name'; track caster.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/casters', caster.id]">
       {{caster?.name}}@if (!last) {,}
@@ -83,7 +83,7 @@
   }
   @if (technicalTeam?.artDirectors?.length) {
   <div>
-    <span class="font-bold">DIRECTION ARTISTIQUE :</span>
+    <span class="font-bold">{{'app.art_directors' | translate | uppercase}} :</span>
     @for (artDirector of technicalTeam?.artDirectors | orderBy: 'name'; track artDirector.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/art-directors', artDirector.id]">
       {{artDirector?.name}}@if (!last) {,}
@@ -93,7 +93,7 @@
   }
   @if (technicalTeam?.soundEditors?.length) {
   <div>
-    <span class="font-bold">SON :</span>
+    <span class="font-bold">{{'app.sound_editors' | translate | uppercase}} :</span>
     @for (soundEditor of technicalTeam?.soundEditors | orderBy: 'name'; track soundEditor.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/sound-editors', soundEditor.id]">
       {{soundEditor?.name}}@if (!last) {,}
@@ -103,7 +103,7 @@
   }
   @if (technicalTeam?.visualEffectsSupervisors?.length) {
   <div>
-    <span class="font-bold">EFFETS SPECIAUX :</span>
+    <span class="font-bold">{{'app.special_effects' | translate | uppercase}} :</span>
     @for (visualEffectsSupervisor of technicalTeam?.visualEffectsSupervisors | orderBy: 'name'; track
     visualEffectsSupervisor.id; let last = $last) {
     <span class="cursor-pointer hover:underline"
@@ -115,7 +115,7 @@
   }
   @if (technicalTeam?.makeupArtists?.length) {
   <div>
-    <span class="font-bold">MAQUILLAGE :</span>
+    <span class="font-bold">{{'app.makeup' | translate | uppercase}} :</span>
     @for (makeupArtist of technicalTeam?.makeupArtists | orderBy: 'name'; track makeupArtist.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/makeup-artists', makeupArtist.id]">
       {{makeupArtist?.name}}@if (!last) {,}
@@ -125,7 +125,7 @@
   }
   @if (technicalTeam?.hairDressers?.length) {
   <div>
-    <span class="font-bold">COIFFURE :</span>
+    <span class="font-bold">{{'app.hair_dressers' | translate | uppercase}} :</span>
     @for (hairDresser of technicalTeam?.hairDressers | orderBy: 'name'; track hairDresser.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/hair-dressers', hairDresser.id]">
       {{hairDresser?.name}}@if (!last) {,}
@@ -135,7 +135,7 @@
   }
   @if (technicalTeam?.stuntmen?.length) {
   <div>
-    <span class="font-bold">CASCADES :</span>
+    <span class="font-bold">{{'app.stuntmen' | translate | uppercase}} :</span>
     @for (stuntman of technicalTeam?.stuntmen | orderBy: 'name'; track stuntman.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/stuntmen', stuntman.id]">
       {{stuntman?.name}}@if (!last) {,}
@@ -145,7 +145,7 @@
   }
   @if (technicalTeam?.producers?.length) {
   <div>
-    <span class="font-bold">PRODUCTEURS :</span>
+    <span class="font-bold">{{'app.producers' | translate | uppercase}} :</span>
     @for (producer of technicalTeam?.producers | orderBy: 'name'; track producer.id; let last = $last) {
     <span class="cursor-pointer hover:underline" [routerLink]="['/producers', producer.id]">
       {{producer?.name}}@if (!last) {,}

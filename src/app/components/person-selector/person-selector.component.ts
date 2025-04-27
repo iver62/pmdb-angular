@@ -7,6 +7,7 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, filter, iif, map, of, scan, switchMap, take, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
@@ -24,7 +25,8 @@ import { HttpUtils } from '../../utils';
     MatFormFieldModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './person-selector.component.html',
   styleUrl: './person-selector.component.scss'

@@ -5,7 +5,7 @@ import { StuntmanService } from '../../services';
 @Component({
   selector: 'app-stuntmen',
   imports: [PersonsComponent],
-  template: '<app-persons [countries$]="stuntmanService.getCountries" [personService]="stuntmanService" viewTitle="Cascadeurs" cookieName="stuntmen-config"></app-persons>'
+  template: '<app-persons [countries$]="stuntmanService.getCountries" [personService]="stuntmanService" viewTitle="app.stuntmen" cookieName="stuntmen-config"></app-persons>'
 })
 export class StuntmenComponent {
 

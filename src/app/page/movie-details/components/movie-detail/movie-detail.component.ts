@@ -1,6 +1,7 @@
-import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe, UpperCasePipe } from '@angular/common';
 import { Component, effect, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { Observable } from 'rxjs';
 import { Movie } from '../../../../models';
@@ -13,7 +14,9 @@ import { MovieService } from '../../../../services';
     DatePipe,
     DecimalPipe,
     MatIconModule,
-    NgPipesModule
+    NgPipesModule,
+    TranslatePipe,
+    UpperCasePipe
   ],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.css'

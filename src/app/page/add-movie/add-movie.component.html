@@ -1,27 +1,27 @@
 <mat-stepper class="rounded-lg mb-2" [linear]="isLinear" #stepper>
-  <mat-step [stepControl]="generalInfosForm" label="Informations générales">
+  <mat-step [stepControl]="generalInfosForm" [label]="'app.general_infos' | translate">
     <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
     </app-general-infos-form>
-    <button mat-button class="mt-4" (click)="saveMovie()">Suivant</button>
+    <button mat-button class="mt-4" (click)="saveMovie()">{{'app.next' | translate}}</button>
   </mat-step>
-  <mat-step [stepControl]="technicalTeamForm" label="Fiche technique">
+  <mat-step [stepControl]="technicalTeamForm" [label]="'app.technical_team' | translate">
     <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
-    <button mat-button (click)="saveTechnicalTeam()">Suivant</button>
+    <button mat-button (click)="saveTechnicalTeam()">{{'app.next' | translate}}</button>
   </mat-step>
-  <mat-step [stepControl]="castingForm" label="Casting">
+  <mat-step [stepControl]="castingForm" [label]="'app.casting' | translate">
     <app-casting-form [form]="castingForm"></app-casting-form>
-    <button mat-button (click)="saveCasting()">Suivant</button>
+    <button mat-button (click)="saveCasting()">{{'app.next' | translate}}</button>
   </mat-step>
-  <mat-step [stepControl]="awardsForm" label="Récompenses">
+  <mat-step [stepControl]="awardsForm" [label]="'app.awards' | translate">
     <app-awards-form [form]="awardsForm"></app-awards-form>
-    <button mat-button (click)="saveAwards()">Suivant</button>
+    <button mat-button (click)="saveAwards()">{{'app.next' | translate}}</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>
     <p class="mb-2">You are now done.</p>
     <div>
-      <button mat-button class="mr-2" matStepperPrevious>Back</button>
-      <button mat-button color="warn" (click)="stepper.reset()">Réinitialiser</button>
+      <button mat-button class="mr-2" matStepperPrevious>{{'app.back' | translate}}</button>
+      <button mat-button color="warn" (click)="stepper.reset()">{{'app.reset' | translate}}</button>
     </div>
   </mat-step>
 </mat-stepper>

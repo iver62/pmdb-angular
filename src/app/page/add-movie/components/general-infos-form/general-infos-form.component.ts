@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { CountrySelectorComponent, FileChooserComponent, GenreSelectorComponent } from '../../../../components';
 
@@ -22,7 +23,8 @@ import { CountrySelectorComponent, FileChooserComponent, GenreSelectorComponent 
     MatInputModule,
     MatTooltipModule,
     NgPipesModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './general-infos-form.component.html',
   styleUrl: './general-infos-form.component.scss'

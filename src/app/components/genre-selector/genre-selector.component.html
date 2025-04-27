@@ -1,5 +1,5 @@
 <mat-form-field class="w-full" [style.height.px]="92">
-  <mat-label>Genres</mat-label>
+  <mat-label>{{'app.categories' | translate}}</mat-label>
   <mat-chip-grid #genresChipGrid aria-label="Genre selection" [formControl]="control">
     @for (genre of selectedGenres(); track genre.id) {
     <mat-chip-row (removed)="remove(genre)" [value]="genre">
@@ -9,7 +9,7 @@
       </button>
     </mat-chip-row>
     }
-    <input #input appDelayedInput (delayedInput)="searchTerm.next($event)" placeholder="Ajouter..."
+    <input #input appDelayedInput (delayedInput)="searchTerm.next($event)" [placeholder]="'app.add' | translate"
       [matChipInputFor]="genresChipGrid" [matAutocomplete]="autoGenres"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
   </mat-chip-grid>

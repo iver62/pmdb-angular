@@ -3,11 +3,12 @@
     hidden>
   <button mat-flat-button class="opener" (click)="fileInput.click()">
     @if (!control.value) {
-    Choisir un fichier
+    {{'app.choose_file' | translate}}
     } @else {
     <div class="button-label">
       <span class="filename">{{ control.value }}</span>
-      <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a vertical three dot icon"
+      <button mat-icon-button [matTooltip]="'app.delete' | translate"
+        aria-label="Example icon button with a vertical three dot icon"
         (click)="deleteFile(); $event.stopPropagation()">
         <mat-icon>close</mat-icon>
       </button>

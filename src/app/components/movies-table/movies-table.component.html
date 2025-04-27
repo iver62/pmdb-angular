@@ -2,7 +2,7 @@
   [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
   <!-- Poster Column -->
   <ng-container matColumnDef="poster">
-    <th mat-header-cell *matHeaderCellDef>Affiche</th>
+    <th mat-header-cell *matHeaderCellDef>{{'app.poster' | translate}}</th>
     <td mat-cell *matCellDef="let row">
       <img mat-card-image [src]="row?.posterUrl$ | async" alt="{{ row.title }}" />
     </td>
@@ -10,7 +10,7 @@
 
   <!-- Title Column -->
   <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Titre</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.title' | translate}}</th>
     <td mat-cell class="font-bold text-lg" *matCellDef="let row">
       <span class="cursor-pointer hover:underline" [routerLink]="['/movies', row.id]">{{row.title}}</span>
     </td>
@@ -18,61 +18,61 @@
 
   <!-- Original title Column -->
   <ng-container matColumnDef="originalTitle">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Title original</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.original_title' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.originalTitle}}</td>
   </ng-container>
 
   <!-- Synopsis Column -->
   <ng-container matColumnDef="synopsis">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Synopsis</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.synopsis' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.synopsis}}</td>
   </ng-container>
 
   <!-- Release date Column -->
   <ng-container matColumnDef="releaseDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de sortie</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.release_date' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.releaseDate | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
   <!-- Running time Column -->
   <ng-container matColumnDef="runningTime">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Durée</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.duration' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.runningTime}} @if (row.runningTime) {min}</td>
   </ng-container>
 
   <!-- Budget Column -->
   <ng-container matColumnDef="budget">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Budget</th>
-    <td mat-cell *matCellDef="let row">{{row.budget | number}}</td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.budget' | translate}}</th>
+    <td mat-cell *matCellDef="let row">{{row.budget | currency}}</td>
   </ng-container>
 
   <!-- Box-Office Column -->
   <ng-container matColumnDef="boxOffice">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Box-office</th>
-    <td mat-cell *matCellDef="let row">{{row.boxOffice | number}}</td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.box_office' | translate}}</th>
+    <td mat-cell *matCellDef="let row">{{row.boxOffice | currency}}</td>
   </ng-container>
 
   <!-- User Column -->
   <ng-container matColumnDef="user.username">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Utilisateur</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.user' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row?.user?.username}}</td>
   </ng-container>
 
   <!-- Number of awards Column -->
-  <ng-container matColumnDef="numberOfAwards">
-    <th mat-header-cell *matHeaderCellDef>Nombre de récompenses</th>
+  <ng-container matColumnDef="awardsCount">
+    <th mat-header-cell *matHeaderCellDef>{{'app.count_awards' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row?.awards?.length}}</td>
   </ng-container>
 
   <!-- Creation date Column -->
   <ng-container matColumnDef="creationDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date d'ajout</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.add_date' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.creationDate | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
   <!-- Last update Column -->
   <ng-container matColumnDef="lastUpdate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Dernière modification</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.last_update' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.lastUpdate | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 

@@ -10,27 +10,27 @@
     <mat-card-header>
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2" fontSize="large">movie</mat-icon>
-        <span>Nombre de films</span>
+        <span>{{'app.number_of_movies' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content class="text-3xl text-center">{{moviesNumber$ | async}}</mat-card-content>
+    <mat-card-content class="text-3xl text-center">{{moviesNumber$ | async | number}} </mat-card-content>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-1 lg:col-span-3">
     <mat-card-header>
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2">comedy_mask©</mat-icon>
-        <span>Nombre d'acteurs</span>
+        <span>{{'app.number_of_actors' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content class="text-3xl text-center">{{actorsNumber$ | async}}</mat-card-content>
+    <mat-card-content class="text-3xl text-center">{{actorsNumber$ | async | number}}</mat-card-content>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">
     <mat-card-header class="items-center justify-between mb-2">
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2">event</mat-icon>
-        <span>Sorties</span>
+        <span>{{'app.release_dates' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
     <app-bar-chart [barChartData]="decadeRepartition"></app-bar-chart>
@@ -40,7 +40,7 @@
     <mat-card-header class="items-center justify-between mb-2">
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2">flag</mat-icon>
-        <span>Pays</span>
+        <span>{{'app.countries' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
     <app-bar-chart [barChartData]="countryRepartition"></app-bar-chart>
@@ -50,7 +50,7 @@
     <mat-card-header class="items-center justify-between mb-2">
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2">category</mat-icon>
-        <span>Genres</span>
+        <span>{{'app.categories' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
     <app-bar-chart [barChartData]="genreRepartition"></app-bar-chart>
@@ -60,7 +60,7 @@
     <mat-card-header class="items-center justify-between mb-2">
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2">account_circle</mat-icon>
-        <span>Contributeurs</span>
+        <span>{{'app.contributors' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
     <app-bar-chart [barChartData]="userRepartition"></app-bar-chart>
@@ -70,7 +70,7 @@
     <mat-card-header class="items-center justify-between mb-2">
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2">bar_chart</mat-icon>
-        <span>Date d'ajout</span>
+        <span>{{'app.add_date' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
     <app-bar-chart [barChartData]="creationDateRepartition"></app-bar-chart>
@@ -81,7 +81,7 @@
       <mat-card-title></mat-card-title>
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2">show_chart</mat-icon>
-        <span>Evolution du nombre de films</span>
+        <span>{{'app.number_of_movies_evolution' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
     <app-line-chart [lineChartData]="creationDateEvolution"></app-line-chart>

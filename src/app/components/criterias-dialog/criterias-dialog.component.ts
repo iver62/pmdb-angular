@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Moment } from 'moment';
 import { BehaviorSubject, catchError, map, Observable, of, switchMap } from 'rxjs';
 import { DateRangePickerComponent, MultiselectComponent } from "..";
@@ -18,7 +19,8 @@ import { GenreService, UserService } from '../../services';
     MatButtonModule,
     MatDialogModule,
     MultiselectComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './criterias-dialog.component.html',
   styleUrl: './criterias-dialog.component.scss'
@@ -46,7 +48,7 @@ export class CriteriasDialogComponent {
   countries$ = this.searchTerms$.country.pipe(
     switchMap(term => this.data.countriesObs$(term)
       .pipe(
-        map(countries => countries.map(c => new Country(c))),
+        map(countries => countries.map(c => new Country(this.translate, c))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
       )
     )
@@ -71,7 +73,7 @@ export class CriteriasDialogComponent {
       fromDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromDeathDate),
       toDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toDeathDate),
       genres: new FormControl<Genre[]>(this.data?.selectedCriterias?.genres?.map(g => new Genre(g))),
-      countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => new Country(c))),
+      countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => new Country(this.translate, c))),
       users: new FormControl<User[]>(this.data?.selectedCriterias?.users?.map(u => new User(u))),
       fromCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromCreationDate),
       toCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toCreationDate),
@@ -82,6 +84,7 @@ export class CriteriasDialogComponent {
 
   constructor(
     private genreService: GenreService,
+    private translate: TranslateService,
     private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: {
       criterias: string[],

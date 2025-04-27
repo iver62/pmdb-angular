@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { BehaviorSubject } from 'rxjs';
 import { EMPTY_STRING } from '../../../../app.component';
@@ -21,7 +22,8 @@ import { Person, SearchConfig } from '../../../../models';
     MatInputModule,
     MatTooltipModule,
     NgPipesModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './casting-form.component.html',
   styleUrl: './casting-form.component.scss'

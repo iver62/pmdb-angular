@@ -5,7 +5,7 @@ import { VisualEffectSupervisorsService } from '../../services';
 @Component({
   selector: 'app-visual-effects-supervisors',
   imports: [PersonsComponent],
-  template: '<app-persons [countries$]="visualEffectsSupervisorService.getCountries" [countries$]="visualEffectsSupervisorService.getCountries" [personService]="visualEffectsSupervisorService" viewTitle="Spécialistes effets spéciaux" cookieName="visual-effects-supervisors-config"></app-persons>'
+  template: '<app-persons [countries$]="visualEffectsSupervisorService.getCountries" [countries$]="visualEffectsSupervisorService.getCountries" [personService]="visualEffectsSupervisorService" viewTitle="app.visual_effects_supervisors" cookieName="visual-effects-supervisors-config"></app-persons>'
 })
 export class VisualEffectsSupervisorsComponent {
 

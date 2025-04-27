@@ -1,18 +1,18 @@
 <form class="form" [formGroup]="form">
   <div class="grid grid-cols-12 gap-2">
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
-      <mat-label>Titre</mat-label>
-      <input matInput placeholder="Titre français" formControlName="title">
+      <mat-label>{{'app.title' | translate}}</mat-label>
+      <input matInput [placeholder]="'app.french_title' | translate" formControlName="title">
       @if (titleFormCtrl.hasError('required') && titleFormCtrl.touched) {
       <mat-error>Le titre est requis</mat-error>
       }
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
-      <mat-label>Titre original</mat-label>
-      <input matInput placeholder="Titre original" formControlName="originalTitle">
+      <mat-label>{{'app.original_title' | translate}}</mat-label>
+      <input matInput [placeholder]="'app.original_title' | translate" formControlName="originalTitle">
     </mat-form-field>
     <mat-form-field class="col-span-12 lg:col-span-4">
-      <mat-label>Date de sortie</mat-label>
+      <mat-label>{{'app.release_date' | translate}}</mat-label>
       <input matInput [matDatepicker]="picker" placeholder="JJ/MM/YYYY" formControlName="releaseDate">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
@@ -21,20 +21,22 @@
       }
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-12">
-      <mat-label>Synopsis</mat-label>
-      <textarea matInput placeholder="Résumé du film" formControlName="synopsis"></textarea>
+      <mat-label>{{'app.synopsis' | translate}}</mat-label>
+      <textarea matInput [placeholder]="'app.movie_summary' | translate" formControlName="synopsis"></textarea>
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
-      <mat-label>Durée</mat-label>
-      <input matInput type="number" min="0" placeholder="Durée en minutes" formControlName="runningTime">
+      <mat-label>{{'app.duration' | translate}}</mat-label>
+      <input matInput type="number" min="0" [placeholder]="'app.duration_in_minutes' | translate"
+        formControlName="runningTime">
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
-      <mat-label>Budget</mat-label>
-      <input matInput type="number" min="0" placeholder="Budget en millions d'euros" formControlName="budget">
+      <mat-label>{{'app.budget' | translate}}</mat-label>
+      <input matInput type="number" min="0" [placeholder]="'app.budget' | translate" formControlName="budget">
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-3">
-      <mat-label>Box Office</mat-label>
-      <input matInput type="number" min="0" placeholder="Box Office mondial" formControlName="boxOffice">
+      <mat-label>{{'app.box_office' | translate}}</mat-label>
+      <input matInput type="number" min="0" [placeholder]="'app.world_box_office' | translate"
+        formControlName="boxOffice">
     </mat-form-field>
 
     <app-file-chooser class="col-span-12 md:col-span-6 lg:col-span-3" accept=".jpg,.jpeg,.png"

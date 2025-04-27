@@ -1,5 +1,7 @@
 <div class="flex flex-col h-full gap-4">
-  <button mat-button class="w-fit" routerLink="../">Retour à la liste</button>
+  @if (!editMode) {
+  <button mat-button class="w-fit" routerLink="../">{{'app.back_to_list' | translate}}</button>
+  }
 
   @if (!editMode) {
   @if (person()) {
@@ -13,7 +15,8 @@
     <div class="mt-4">
       <div class="flex flex-row justify-between items-center">
         <h2></h2>
-        <app-input class="md:w-1/3" label="Films" [total]="total" (change)="onSearch($event)">
+        <app-input class="md:w-1/3" [label]="'app.movies' | translate" [placeholder]="'app.search' | translate"
+          [total]="total" (change)="onSearch($event)">
         </app-input>
         <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
           [sorts]="sorts$ | async" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
@@ -48,12 +51,12 @@
       <app-person-form class="md:w-2/3" [form]="form" (changeImage)="onChangeImage($event)"></app-person-form>
     </div>
     <div class="fixed bottom-5 right-5">
-      <button mat-fab class="float-right m-1" matTooltip="Valider" aria-label="Example icon button with a delete icon"
-        color="accent" [disabled]="form.invalid" (click)="save()">
+      <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
+        aria-label="Example icon button with a delete icon" color="accent" [disabled]="form.invalid" (click)="save()">
         <mat-icon>check</mat-icon>
       </button>
-      <button mat-fab class="float-right m-1" matTooltip="Annuler" aria-label="Example icon button with a delete icon"
-        color="accent" (click)="cancel()">
+      <button mat-fab class="float-right m-1" [matTooltip]="'app.cancel' | translate"
+        aria-label="Example icon button with a delete icon" color="accent" (click)="cancel()">
         <mat-icon>close</mat-icon>
       </button>
     </div>

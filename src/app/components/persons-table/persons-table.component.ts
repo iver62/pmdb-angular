@@ -29,12 +29,12 @@ export class PersonsTableComponent {
 
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 
-  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'numberOfMovies', 'creationDate', 'lastUpdate'];
+  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'moviesCount', 'creationDate', 'lastUpdate'];
 
   constructor() {
     // Transformer les films en ajoutant les URLs
     effect(() => {
-      const persons = this.dataSource().map(p => (
+      const persons = this.dataSource()?.map(p => (
         {
           ...p,
           photoUrl$: this.service.getPhotoUrl(p.photoFileName) // Observable pour la photo

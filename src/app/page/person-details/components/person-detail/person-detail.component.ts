@@ -3,6 +3,7 @@ import { Component, effect, EventEmitter, Input, input, Output } from '@angular/
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { Observable } from 'rxjs';
 import { Person } from '../../../../models';
@@ -17,7 +18,8 @@ import { PersonUtils } from '../../../../utils';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    NgPipesModule
+    NgPipesModule,
+    TranslatePipe
   ],
   templateUrl: './person-detail.component.html',
   styleUrl: './person-detail.component.css'

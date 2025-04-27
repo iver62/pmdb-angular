@@ -4,7 +4,7 @@
     <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
       <!-- Champ cérémonie -->
       <mat-form-field class="col-span-3">
-        <mat-label>Cérémonie</mat-label>
+        <mat-label>{{'app.ceremony' | translate}}</mat-label>
         <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="State" [matAutocomplete]="auto"
           formControlName="ceremony">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectAward($event)">
@@ -16,7 +16,7 @@
 
       <!-- Champ nom -->
       <mat-form-field class="col-span-6">
-        <mat-label>Nom</mat-label>
+        <mat-label>{{'app.name' | translate}}</mat-label>
         <input matInput formControlName="name" />
         @if (award.value.name) {
         <button matSuffix mat-icon-button matTooltip="Effacer" aria-label="Effacer le nom" (click)="clearName(i)">
@@ -27,7 +27,7 @@
 
       <!-- Champ année -->
       <mat-form-field class="col-span-2">
-        <mat-label>Année</mat-label>
+        <mat-label>{{'app.year' | translate}}</mat-label>
         <input matInput type="number" min="0" formControlName="year" />
         @if (award.value.year) {
         <button matSuffix mat-icon-button matTooltip="Effacer" aria-label="Effacer l'année" (click)="clearYear(i)">
@@ -36,7 +36,7 @@
         }
       </mat-form-field>
 
-      <button mat-icon-button class="col-span-1" matTooltip="Supprimer"
+      <button mat-icon-button class="col-span-1" [matTooltip]="'app.delete' | translate"
         aria-label="Example icon button with a delete icon" (click)="removeAward(i)">
         <mat-icon>delete</mat-icon>
       </button>

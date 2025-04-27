@@ -1,56 +1,56 @@
 <div class="grid grid-cols-12 gap-2">
-  <div class="col-span-9 grid gap-2">
+  <div class="col-span-9 grid gap-3 h-fit text-xl">
     @if (movie()?.title) {
     <p>
-      <span class="font-bold">TITRE :</span>
+      <span class="font-bold">{{'app.title' | translate | uppercase}} :</span>
       <span>&nbsp;{{movie()?.title}}</span>
     </p>
     }
     @if (movie()?.originalTitle) {
     <p>
-      <span class="font-bold">TITRE ORIGINAL :</span>
+      <span class="font-bold">{{'app.original_title' | translate | uppercase}} :</span>
       <span>&nbsp;{{movie()?.originalTitle}}</span>
     </p>
     }
     @if (movie()?.synopsis) {
     <p>
-      <span class="font-bold">SYNOPSIS :</span>
+      <span class="font-bold">{{'app.synopsis' | translate | uppercase}} :</span>
       <span>&nbsp;{{movie()?.synopsis}}</span>
     </p>
     }
     @if (movie()?.releaseDate) {
     <p>
-      <span class="font-bold">DATE DE SORTIE :</span>
+      <span class="font-bold">{{'app.release_date' | translate | uppercase}} :</span>
       <span>&nbsp;{{movie()?.releaseDate | date: 'dd/MM/yyyy'}}</span>
     </p>
     }
     @if (movie()?.runningTime) {
     <p>
-      <span class="font-bold">DURÉE :</span>
+      <span class="font-bold">{{'app.duration' | translate | uppercase}} :</span>
       <span>&nbsp;{{movie()?.runningTime}} @if (movie()?.runningTime) {minutes}</span>
     </p>
     }
     @if (movie()?.budget) {
     <p>
-      <span class="font-bold">BUDGET :</span>
+      <span class="font-bold">{{'app.budget' | translate | uppercase}} :</span>
       <span>&nbsp;{{movie()?.budget | number}} @if (movie()?.budget) {$}</span>
     </p>
     }
     @if (movie()?.boxOffice) {
     <p>
-      <span class="font-bold">BOX-OFFICE :</span>
+      <span class="font-bold">{{'app.box_office' | translate | uppercase}} :</span>
       <span>&nbsp;{{movie()?.boxOffice | number}} @if (movie()?.boxOffice) {$}</span>
     </p>
     }
     @if (movie()?.genres?.length) {
     <p>
-      <span class="font-bold">GENRES :</span>
+      <span class="font-bold">{{'app.categories' | translate | uppercase}} :</span>
       <span>&nbsp;{{(movie()?.genres | pluck: 'name' | orderBy)?.join(', ')}}</span>
     </p>
     }
     @if (movie()?.countries?.length) {
     <p>
-      <span class="font-bold">PAYS :</span>
+      <span class="font-bold">{{'app.countries' | translate | uppercase}} :</span>
       <span>&nbsp;{{(movie()?.countries | pluck: 'nomFrFr' | orderBy)?.join(', ')}}</span>
     </p>
     }

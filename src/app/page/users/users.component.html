@@ -3,8 +3,8 @@
 <div class="flex flex-col h-full">
   <div class="flex flex-row justify-between items-center">
     <h2></h2>
-    <app-input class="md:w-1/3" label="Utilisateurs" placeholder="Rechercher un pseudo..." [total]="total"
-      (change)="onSearch($event)">
+    <app-input class="md:w-1/3" [label]="'app.users' | translate" [placeholder]="'app.search_username' | translate"
+      [total]="total" (change)="onSearch($event)">
     </app-input>
   </div>
 
@@ -21,7 +21,7 @@
 
       <!-- Username Column -->
       <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pseudo</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.username' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           {{row.username}}
         </td>
@@ -29,7 +29,7 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.name' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           {{row.name}}
         </td>
@@ -37,7 +37,7 @@
 
       <!-- Email Column -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.mail' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           {{row.email}}
         </td>
@@ -45,15 +45,15 @@
 
       <!-- Email Verified Column -->
       <ng-container matColumnDef="emailVerified">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email vérifié</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.mail_verified' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           {{row.emailVerified}}
         </td>
       </ng-container>
 
       <!-- Number of Movies Column -->
-      <ng-container matColumnDef="numberOfMovies">
-        <th mat-header-cell *matHeaderCellDef>Nombre de films ajoutés</th>
+      <ng-container matColumnDef="moviesCount">
+        <th mat-header-cell *matHeaderCellDef>{{'app.count_added_movies' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           {{row.numberOfMovies}}
         </td>
@@ -64,7 +64,7 @@
       </tr>
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">
-          Aucun utilisateur
+          {{'app.no_users' | translate}}
         </td>
       </tr>
     </table>

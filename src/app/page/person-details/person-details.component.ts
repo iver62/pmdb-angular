@@ -9,6 +9,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
@@ -36,7 +37,8 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
     PersonDetailComponent,
     PersonFormComponent,
     RouterLink,
-    ToolbarComponent
+    ToolbarComponent,
+    TranslatePipe
   ],
   templateUrl: './person-details.component.html',
   styleUrl: './person-details.component.scss'
@@ -58,13 +60,13 @@ export class PersonDetailsComponent {
   );
 
   sortOptions: SortOption[] = [
-    { active: 'title', label: 'Titre', direction: 'asc' },
-    { active: 'releaseDate', label: 'Date de sortie', direction: EMPTY_STRING },
-    { active: 'runningTime', label: 'Durée', direction: EMPTY_STRING },
-    { active: 'budget', label: 'Budget', direction: EMPTY_STRING },
-    { active: 'boxOffice', label: 'Box-office', direction: EMPTY_STRING },
-    { active: 'creationDate', label: 'Date de création', direction: EMPTY_STRING },
-    { active: 'lastUpdate', label: 'Dernière modification', direction: EMPTY_STRING }
+    { active: 'title', label: 'app.title', direction: 'asc' },
+    { active: 'releaseDate', label: 'app.release_date', direction: EMPTY_STRING },
+    { active: 'runningTime', label: 'app.duration', direction: EMPTY_STRING },
+    { active: 'budget', label: 'app.budget', direction: EMPTY_STRING },
+    { active: 'boxOffice', label: 'app.box_office', direction: EMPTY_STRING },
+    { active: 'creationDate', label: 'app.add_date', direction: EMPTY_STRING },
+    { active: 'lastUpdate', label: 'app.last_update', direction: EMPTY_STRING }
   ];
 
   total: number;

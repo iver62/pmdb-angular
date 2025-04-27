@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { TranslatePipe } from '@ngx-translate/core';
 import { catchError, of, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { Award, Movie, MovieActor } from '../../models';
@@ -21,6 +22,7 @@ import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, T
     ReactiveFormsModule,
     MatSnackBarModule,
     TechnicalTeamFormComponent,
+    TranslatePipe
   ],
   templateUrl: './add-movie.component.html',
   styleUrl: './add-movie.component.scss'

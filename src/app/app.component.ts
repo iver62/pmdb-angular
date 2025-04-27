@@ -3,15 +3,20 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
-import { Observable } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
+import packageJson from '../../package.json';
 import { UserDialogComponent } from './components';
 import { AuthService, LoaderService } from './services';
 
@@ -22,15 +27,19 @@ export const EMPTY_STRING = '';
   imports: [
     AsyncPipe,
     MatButtonModule,
+    MatFormFieldModule,
     MatIconModule,
     MatListModule,
+    MatMenuModule,
+    MatSelectModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatTooltipModule,
     NgPipesModule,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    TranslatePipe
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -39,156 +48,162 @@ export class AppComponent {
   title = 'PMDB';
 
   loading$: Observable<boolean>;
+  currentLang$ = this.translate.onLangChange.pipe(
+    map(result => result.lang),
+    startWith(localStorage.getItem('lang'))
+  );
 
   mobileQuery: MediaQueryList;
 
   navs = [
     {
-      label: 'Accueil',
+      label: 'app.home',
       routerLink: 'dashboard',
       icon: 'dashboard',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Films',
+      label: 'app.movies',
       routerLink: 'movies',
       icon: 'movie',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Acteurs',
+      label: 'app.actors',
       routerLink: 'actors',
       icon: 'comedy_mask',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Producteurs',
+      label: 'app.producers',
       routerLink: 'producers',
       icon: 'attach_money',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Réalisateurs',
+      label: 'app.directors',
       routerLink: 'directors',
       icon: 'video_camera_front',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Scénaristes',
+      label: 'app.screenwriters',
       routerLink: 'screenwriters',
       icon: 'edit_square',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Musique',
+      label: 'app.music',
       routerLink: 'musicians',
       icon: 'music_note',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Décors',
+      label: 'app.sets',
       routerLink: 'decorators',
       icon: 'curtains',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Costumes',
+      label: 'app.costumes',
       routerLink: 'costumiers',
       icon: 'styler',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Photographie',
+      label: 'app.photography',
       routerLink: 'photographers',
       icon: 'photo_camera',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Montage',
+      label: 'app.editing',
       routerLink: 'editors',
       icon: 'cut',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Casteurs',
+      label: 'app.casters',
       routerLink: 'casters',
       icon: 'theater_comedy',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Directeurs artistiques',
+      label: 'app.art_directors',
       routerLink: 'art-directors',
       icon: 'palette',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Ingénieurs du son',
+      label: 'app.sound_editors',
       routerLink: 'sound-editors',
       icon: 'volume_up',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Spécialiste effets spéciaux',
+      label: 'app.visual_effects_supervisors',
       routerLink: 'visual-effects-supervisors',
       icon: 'explosion',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Maquilleurs',
+      label: 'app.makeup_artists',
       routerLink: 'makeup-artists',
       icon: 'ink_marker',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Coiffeurs',
+      label: 'app.hair_dressers',
       routerLink: 'hair-dressers',
       icon: 'health_and_beauty',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Cascadeurs',
+      label: 'app.stuntmen',
       routerLink: 'stuntmen',
       icon: 'sprint',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: true
     },
     {
-      label: 'Genres',
+      label: 'app.categories',
       routerLink: 'genres',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: false
     },
     {
-      label: 'Pays',
+      label: 'app.countries',
       routerLink: 'countries',
       display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
       active: false
     },
     {
-      label: 'Utilisateurs',
+      label: 'app.users',
       routerLink: 'users',
       icon: 'account_circle',
       display: this.authService.hasRole('admin') || this.authService.hasRole('admin'),
       active: true
     }
   ];
+
+  appVersion = packageJson.version;
 
   private _mobileQueryListener: () => void;
 
@@ -200,11 +215,16 @@ export class AppComponent {
     changeDetectorRef: ChangeDetectorRef,
     private loaderService: LoaderService,
     media: MediaMatcher,
+    private translate: TranslateService
   ) {
     this.loading$ = this.loaderService.loading$;
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.translate.addLangs(['en', 'fr']);
+    // this.translate.setDefaultLang('fr');
+    this.translate.use(localStorage.getItem('lang') || 'fr');
   }
 
   openProfileDialog() {
@@ -213,6 +233,11 @@ export class AppComponent {
       minHeight: '30vh', // Définit la hauteur à 90% de l'écran
       data: this.user$
     })
+  }
+
+  changeLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem('lang', lang);
   }
 
   logout() {

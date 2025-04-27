@@ -1,61 +1,62 @@
 <form class="form grid grid-cols-12" [formGroup]="form">
-  <app-person-selector class="col-span-12" [service]="directorService" formGroupName="directors" title="Réalisation"
-    label="Directors selection">
+  <app-person-selector class="col-span-12" [service]="directorService" formGroupName="directors"
+    [title]="'app.directing'" label="Directors selection">
   </app-person-selector>
 
   <app-person-selector class="col-span-12" [service]="screenwriterService" formGroupName="screenwriters"
-    title="Scénario" label="Screenwriters selection">
+    [title]="'app.screenwriting'" label="Screenwriters selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="musicianService" formGroupName="musicians" title="Musique"
+  <app-person-selector class="col-span-12" [service]="musicianService" formGroupName="musicians" [title]="'app.music'"
     label="Musicians selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="decoratorService" formGroupName="decorators" title="Décors"
+  <app-person-selector class="col-span-12" [service]="decoratorService" formGroupName="decorators" [title]="'app.sets'"
     label="Decorators selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="costumierService" formGroupName="costumiers" title="Costumes"
-    label="Costumiers selection">
+  <app-person-selector class="col-span-12" [service]="costumierService" formGroupName="costumiers"
+    [title]="'app.costumes'" label="Costumiers selection">
   </app-person-selector>
 
   <app-person-selector class="col-span-12" [service]="photographerService" formGroupName="photographers"
-    title="Photographie" label="Photographers selection">
+    [title]="'app.photography'" label="Photographers selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="editorService" formGroupName="editors" title="Montage"
+  <app-person-selector class="col-span-12" [service]="editorService" formGroupName="editors" [title]="'app.editing'"
     label="Editors selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="casterService" formGroupName="casters" title="Casting"
+  <app-person-selector class="col-span-12" [service]="casterService" formGroupName="casters" [title]="'app.casting'"
     label="Casters selection">
   </app-person-selector>
 
   <app-person-selector class="col-span-12" [service]="artDirectorService" formGroupName="artDirectors"
-    title="Direction artistique" label="Art Directors selection">
+    [title]="'app.art_direction'" label="Art Directors selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="soundEditorService" formGroupName="soundEditors" title="Son"
-    label="Sound Editors selection">
+  <app-person-selector class="col-span-12" [service]="soundEditorService" formGroupName="soundEditors"
+    [title]="'app.sound'" label="Sound Editors selection">
   </app-person-selector>
 
   <app-person-selector class="col-span-12" [service]="visualEffectsSupervisorService"
-    formGroupName="visualEffectsSupervisors" title="Effets spéciaux" label="Visual Effects Supervisor selection">
+    formGroupName="visualEffectsSupervisors" [title]="'app.special_effects'"
+    label="Visual Effects Supervisor selection">
   </app-person-selector>
 
   <app-person-selector class="col-span-12" [service]="makeupArtistService" formGroupName="makeupArtists"
-    title="Maquillage" label="Make-up Artists selection">
+    [title]="'app.makeup'" label="Make-up Artists selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="hairDresserService" formGroupName="hairDressers" title="Coiffure"
-    label="Hair Dressers selection">
+  <app-person-selector class="col-span-12" [service]="hairDresserService" formGroupName="hairDressers"
+    [title]="'app.hair_dressing'" label="Hair Dressers selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="stuntmanService" formGroupName="stuntmen" title="Cascades"
+  <app-person-selector class="col-span-12" [service]="stuntmanService" formGroupName="stuntmen" [title]="'app.stunts'"
     label="Stuntmen selection">
   </app-person-selector>
 
-  <app-person-selector class="col-span-12" [service]="producerService" formGroupName="producers" title="Producteurs"
-    label="Producers selection">
+  <app-person-selector class="col-span-12" [service]="producerService" formGroupName="producers"
+    [title]="'app.production'" label="Producers selection">
   </app-person-selector>
 </form>

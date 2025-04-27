@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
@@ -18,7 +19,8 @@ import { HttpUtils } from '../../utils';
     InputComponent,
     MatPaginatorModule,
     MatSortModule,
-    MatTableModule
+    MatTableModule,
+    TranslatePipe
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
@@ -51,7 +53,7 @@ export class UsersComponent {
     )
   );
 
-  displayedColumns = ['id', 'username', 'name', 'email', 'emailVerified', 'numberOfMovies'];
+  displayedColumns = ['id', 'username', 'name', 'email', 'emailVerified', 'moviesCount'];
   total: number;
   pageSizeOptions = [25, 50, 100];
 

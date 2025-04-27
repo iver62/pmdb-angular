@@ -1,7 +1,8 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { BarChartComponent, LineChartComponent } from '../../components';
 import { Repartition } from '../../models';
@@ -12,9 +13,11 @@ import { ActorService, MovieService } from '../../services';
   imports: [
     AsyncPipe,
     BarChartComponent,
+    DecimalPipe,
     LineChartComponent,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    TranslatePipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

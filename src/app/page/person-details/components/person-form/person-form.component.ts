@@ -3,6 +3,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CountrySelectorComponent, FileChooserComponent } from '../../../../components';
 
 @Component({
@@ -13,7 +14,8 @@ import { CountrySelectorComponent, FileChooserComponent } from '../../../../comp
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './person-form.component.html',
   styleUrl: './person-form.component.scss'

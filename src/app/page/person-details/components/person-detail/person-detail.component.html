@@ -3,26 +3,28 @@
   <div class="ml-4 w-1/2">
     <div class="flex items-center">
       <h1 class="text-2xl">{{person()?.name}}</h1>
-      <button mat-icon-button class="mx-2" matTooltip="Modifier" aria-label="Example icon button with a delete icon"
-        color="warn" (click)="onEdit()">
+      <button mat-icon-button class="mx-2" [matTooltip]="'app.edit' | translate"
+        aria-label="Example icon button with a delete icon" color="warn" (click)="onEdit()">
         <mat-icon>edit</mat-icon>
       </button>
       @if (authService.hasRole('admin')) {
-      <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a delete icon" color="accent"
-        [disabled]="canDelete" (click)="onDelete()">
+      <button mat-icon-button [matTooltip]="'app.delete' | translate"
+        aria-label="Example icon button with a delete icon" color="accent" [disabled]="canDelete" (click)="onDelete()">
         <mat-icon>delete</mat-icon>
       </button>
       }
     </div>
     @if (person()?.dateOfBirth) {
-    <p>Né le : {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age}} ans)}</p>
+    <p>{{'app.born' | translate}} : {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age}}
+      {{'app.years' | translate}})}</p>
     }
     @if (person()?.dateOfDeath) {
-    <p>Décédé le : {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath}} ans)</p>
+    <p>{{'app.died' | translate}} : {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath}} {{'app.years' |
+      translate}})</p>
     }
     @if (person()?.countries?.length) {
     <p>
-      <span>Nationalité(s) :</span>
+      <span>{{'app.nationality' | translate}} :</span>
       <span>&nbsp;{{(person()?.countries | pluck: 'nomFrFr' | orderBy)?.join(', ')}}</span>
     </p>
     }

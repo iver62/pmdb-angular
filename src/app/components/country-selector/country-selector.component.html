@@ -1,5 +1,5 @@
 <mat-form-field class="w-full" [style.height.px]="92">
-  <mat-label>Pays</mat-label>
+  <mat-label>{{'app.countries' | translate}}</mat-label>
   <mat-chip-grid #countriesChipGrid aria-label="Country selection" [formControl]="control">
     @for (country of selectedCountries(); track country.id) {
     <mat-chip-row (removed)="remove(country)" [value]="country">
@@ -9,12 +9,18 @@
       </button>
     </mat-chip-row>
     }
-    <input #input appDelayedInput (delayedInput)="onSearch($event)" placeholder="Ajouter..."
+    <input #input appDelayedInput (delayedInput)="onSearch($event)" [placeholder]="'app.add' | translate"
       [matChipInputFor]="countriesChipGrid" [matAutocomplete]="auto" />
   </mat-chip-grid>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" (opened)="onOpenedAutocomplete()">
     @for (country of countries$ | async; track country.id) {
-    <mat-option [value]="country">{{country?.nomFrFr}}</mat-option>
+    <mat-option [value]="country">
+      @if((currentLang$ | async) == 'fr') {
+      {{country?.nomFrFr}}
+      } @else {
+      {{country?.nomEnGb}}
+      }
+    </mat-option>
     }
   </mat-autocomplete>
 </mat-form-field>

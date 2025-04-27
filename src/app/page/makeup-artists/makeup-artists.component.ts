@@ -5,7 +5,7 @@ import { MakeupArtistService } from '../../services';
 @Component({
   selector: 'app-makeup-artists',
   imports: [PersonsComponent],
-  template: '<app-persons [countries$]="makeupArtistService.getCountries" [personService]="makeupArtistService" viewTitle="Maquilleurs" cookieName="makeup-artists-config"></app-persons>'
+  template: '<app-persons [countries$]="makeupArtistService.getCountries" [personService]="makeupArtistService" viewTitle="app.makeup_artists" cookieName="makeup-artists-config"></app-persons>'
 })
 export class MakeupArtistsComponent {
 

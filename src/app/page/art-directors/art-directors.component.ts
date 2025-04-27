@@ -5,7 +5,7 @@ import { ArtDirectorService } from '../../services';
 @Component({
   selector: 'app-art-directors',
   imports: [PersonsComponent],
-  template: '<app-persons [countries$]="artDirectorService.getCountries" [personService]="artDirectorService" viewTitle="Directeurs artistiques" cookieName="art-directors-config"></app-persons>'
+  template: '<app-persons [countries$]="artDirectorService.getCountries" [personService]="artDirectorService" viewTitle="app.art_directors" cookieName="art-directors-config"></app-persons>'
 })
 export class ArtDirectorsComponent {
 

@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, effect, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MovieActor, PersonWithPhoto } from '../../../../models';
 import { ActorService } from '../../../../services';
 
@@ -8,7 +9,8 @@ import { ActorService } from '../../../../services';
   selector: 'app-casting',
   imports: [
     AsyncPipe,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './casting.component.html',
   styleUrl: './casting.component.css'

@@ -1,5 +1,5 @@
 <mat-form-field class="w-full">
-  <mat-label>{{title()}}</mat-label>
+  <mat-label>{{title() | translate}}</mat-label>
   <mat-chip-grid #personsChipGrid [attr.aria-label]="label" [formControl]="control">
     @for (person of selectedPersons(); track person) {
     <mat-chip-row (removed)="remove(person)" [value]="person">

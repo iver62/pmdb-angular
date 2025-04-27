@@ -1,7 +1,8 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { User } from '../../models';
 
@@ -10,7 +11,9 @@ import { User } from '../../models';
   imports: [
     AsyncPipe,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    TranslatePipe,
+    UpperCasePipe
   ],
   templateUrl: './user-dialog.component.html',
   styleUrl: './user-dialog.component.scss'

@@ -4,6 +4,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { NgPipesModule } from 'ngx-pipes';
 import { filter, Observable, take } from 'rxjs';
@@ -19,7 +20,8 @@ import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.c
     MatIconModule,
     MatMenuModule,
     MatTooltipModule,
-    NgPipesModule
+    NgPipesModule,
+    TranslatePipe
   ],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.css'

@@ -6,18 +6,16 @@
       </button>
       <h1 class="example-app-name cursor-pointer" routerLink="/">{{title}}</h1>
     </div>
-    <h1>
-      <button mat-button routerLink="/add-movie">
-        <mat-icon>add</mat-icon>
-        <span>Ajouter un film</span>
-      </button>
-    </h1>
+    <button mat-button routerLink="/add-movie">
+      <mat-icon>add</mat-icon>
+      <span>{{'app.add_movie' | translate}}</span>
+    </button>
     <div class="flex items-center gap-1">
       <span>{{(user$ | async)?.username}}</span>
-      <button mat-icon-button matTooltip="Mon Profil" (click)="openProfileDialog()">
+      <button mat-icon-button matTooltip="{{'app.my_profile' | translate}}" (click)="openProfileDialog()">
         <mat-icon>account_circle</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Se déconnecter" (click)="logout()">
+      <button mat-icon-button matTooltip="{{'app.logout' | translate}}" (click)="logout()">
         <mat-icon>logout</mat-icon>
       </button>
     </div>
@@ -30,12 +28,11 @@
         @for (nav of navs | filterBy: ['active']: true | filterBy: ['display']: true; track nav) {
         <a mat-list-item [routerLink]="nav.routerLink">
           <mat-icon class="align-sub material-symbols-outlined mr-2">{{nav.icon}}</mat-icon>
-          {{nav.label}}
+          {{nav.label | translate}}
         </a>
         }
       </mat-nav-list>
     </mat-sidenav>
-
     <mat-sidenav-content class="p-3 bg-gray-200">
       @if (loading$ | async) {
       <mat-spinner></mat-spinner>
@@ -43,4 +40,16 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
+
+  <footer class="flex flex-row justify-between px-4 pt-2">
+    <div class="flex items-center text-xl">v{{ appVersion }}</div>
+
+    <mat-form-field>
+      <mat-label>{{'app.choose_lang' | translate}}</mat-label>
+      <mat-select [value]="currentLang$ | async" (selectionChange)="changeLanguage($event.value)">
+        <mat-option [value]="'en'">🇬🇧 {{'app.english' | translate}}</mat-option>
+        <mat-option [value]="'fr'">🇫🇷 {{'app.french' | translate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </footer>
 </div>

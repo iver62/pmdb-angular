@@ -5,7 +5,7 @@ import { EditorService } from '../../services';
 @Component({
   selector: 'app-editors',
   imports: [PersonsComponent],
-  template: '<app-persons [countries$]="editorService.getCountries" [personService]="editorService" viewTitle="Monteurs" cookieName="editors-config"></app-persons>'
+  template: '<app-persons [countries$]="editorService.getCountries" [personService]="editorService" viewTitle="app.editors" cookieName="editors-config"></app-persons>'
 })
 export class EditorsComponent {
 

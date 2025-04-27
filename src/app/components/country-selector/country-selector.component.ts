@@ -5,7 +5,8 @@ import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } 
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, catchError, map, of, scan, startWith, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Country, SearchConfig } from '../../models';
@@ -21,7 +22,8 @@ import { HttpUtils } from '../../utils';
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './country-selector.component.html',
   styleUrl: './country-selector.component.css'
@@ -38,7 +40,7 @@ export class CountrySelectorComponent {
     {
       page: 0,
       size: 20,
-      sort: 'nomFrFr',
+      sort: this.translate.currentLang == 'fr' ? 'nomFrFr' : 'nomEnGb',
       direction: 'asc',
       term: EMPTY_STRING
     }
@@ -47,7 +49,7 @@ export class CountrySelectorComponent {
   // Liste des pays filtrés
   readonly countries$ = this.searchConfig$.pipe(
     tap(() => this.isLoadingMore = true),
-    switchMap(config => this.countryService.getCountries(config.page, config.size, config.term).pipe(
+    switchMap(config => this.countryService.getCountries(config.page, config.size, config.term, config.sort).pipe(
       tap(response => {
         this.isLoadingMore = false;
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
@@ -74,15 +76,28 @@ export class CountrySelectorComponent {
   private total: number;
   private loaded = 0;
   private isLoadingMore = false;
+  currentLang$ = this.translate.onLangChange.pipe(
+    map(result => result.lang),
+    startWith(localStorage.getItem('lang'))
+  );
 
   constructor(
     private countryService: CountryService,
-    private rootFormGroup: FormGroupDirective
+    private rootFormGroup: FormGroupDirective,
+    private translate: TranslateService
   ) {
     effect(() => {
       this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
       this.selectedCountries.set(this.control.value || []);
     });
+
+    translate.onLangChange.subscribe(result => this.searchConfig$.next(
+      {
+        ...this.searchConfig$.value,
+        page: 0,
+        sort: result.lang == 'fr' ? 'nomFrFr' : 'nomEnGb'
+      }
+    ))
   }
 
   ngAfterViewInit() {

@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, scan, switchMap, tap } from 'rxjs';
@@ -22,7 +23,8 @@ import { HttpUtils } from '../../utils';
     MatPaginatorModule,
     MoviesListComponent,
     MoviesTableComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    TranslatePipe
   ],
   templateUrl: './movies.component.html',
   styleUrl: './movies.component.scss'
@@ -35,13 +37,13 @@ export class MoviesComponent {
   total: number;
   pageSizeOptions = [25, 50, 100];
   sortOptions: SortOption[] = [
-    { active: 'title', label: 'Titre', direction: 'asc' },
-    { active: 'releaseDate', label: 'Date de sortie', direction: EMPTY_STRING },
-    { active: 'runningTime', label: 'Durée', direction: EMPTY_STRING },
-    { active: 'budget', label: 'Budget', direction: EMPTY_STRING },
-    { active: 'boxOffice', label: 'Box-office', direction: EMPTY_STRING },
-    { active: 'creationDate', label: 'Date d\'ajout', direction: EMPTY_STRING },
-    { active: 'lastUpdate', label: 'Dernière modification', direction: EMPTY_STRING }
+    { active: 'title', label: 'app.title', direction: 'asc' },
+    { active: 'releaseDate', label: 'app.release_date', direction: EMPTY_STRING },
+    { active: 'runningTime', label: 'app.duration', direction: EMPTY_STRING },
+    { active: 'budget', label: 'app.budget', direction: EMPTY_STRING },
+    { active: 'boxOffice', label: 'app.box_office', direction: EMPTY_STRING },
+    { active: 'creationDate', label: 'app.add_date', direction: EMPTY_STRING },
+    { active: 'lastUpdate', label: 'app.last_update', direction: EMPTY_STRING }
   ];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(

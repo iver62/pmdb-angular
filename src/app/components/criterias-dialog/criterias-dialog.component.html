@@ -1,62 +1,67 @@
 <mat-dialog-content class="mat-typography bg-gray-200">
   <form [formGroup]="form" class="flex flex-col gap-4">
     @if (data?.criterias?.includes('releaseDate')) {
-    <app-date-range-picker label="Date de sortie" fromDatePlaceholder="Début date de sortie"
-      toDatePlaceholder="Fin date de sortie" [fromDateControl]="form.controls.fromReleaseDate"
+    <app-date-range-picker [label]="'app.release_date' | translate"
+      [fromDatePlaceholder]="'app.from_release_date' | translate"
+      [toDatePlaceholder]="'app.to_release_date' | translate" [fromDateControl]="form.controls.fromReleaseDate"
       [toDateControl]="form.controls.toReleaseDate">
     </app-date-range-picker>
     }
 
     @if (data?.criterias?.includes('birthDate')) {
-    <app-date-range-picker label="Date de naissance" fromDatePlaceholder="Début date de naissance"
-      toDatePlaceholder="Fin date de naissance" [fromDateControl]="form.controls.fromBirthDate"
-      [toDateControl]="form.controls.toBirthDate">
+    <app-date-range-picker [label]="'app.birth_date' | translate"
+      [fromDatePlaceholder]="'app.from_birth_date' | translate" [toDatePlaceholder]="'app.to_birth_date' | translate"
+      [fromDateControl]="form.controls.fromBirthDate" [toDateControl]="form.controls.toBirthDate">
     </app-date-range-picker>
     }
 
     @if (data?.criterias?.includes('deathDate')) {
-    <app-date-range-picker label="Date de décès" fromDatePlaceholder="Début date de décès"
-      toDatePlaceholder="Fin date de décès" [fromDateControl]="form.controls.fromDeathDate"
-      [toDateControl]="form.controls.toDeathDate">
+    <app-date-range-picker [label]="'app.death_date' | translate"
+      [fromDatePlaceholder]="'app.from_death_date' | translate" [toDatePlaceholder]="'app.to_death_date' | translate"
+      [fromDateControl]="form.controls.fromDeathDate" [toDateControl]="form.controls.toDeathDate">
     </app-date-range-picker>
     }
 
     @if (data?.criterias?.includes('genres')) {
-    <app-multiselect [control]="form.controls.genres" label="Genres" placeholder="Ajouter des genres"
-      placeholderLabel="Rechercher un genre..." noEntriesFoundLabel="Aucun genre trouvé" [items]="genres$ | async"
+    <app-multiselect [control]="form.controls.genres" [label]="'app.categories' | translate"
+      [placeholder]="'app.add_categories' | translate" [placeholderLabel]="'app.search_category' | translate"
+      [noEntriesFoundLabel]="'app.no_categories_found' | translate" [items]="genres$ | async"
       (update)="updateGenreSearch($event)">
     </app-multiselect>
     }
 
-    <app-multiselect [control]="form.controls.countries" label="Pays" placeholder="Ajouter des pays"
-      placeholderLabel="Rechercher un pays..." noEntriesFoundLabel="Aucun pays trouvé" [items]="countries$ | async"
+    <app-multiselect [control]="form.controls.countries" [label]="'app.countries' | translate"
+      [placeholder]="'app.add_countries' | translate" [placeholderLabel]="'app.search_country' | translate"
+      [noEntriesFoundLabel]="'app.no_countries_found' | translate" [items]="countries$ | async"
       (update)="updateCountrySearch($event)">
     </app-multiselect>
 
     @if (data?.criterias?.includes('users')) {
-    <app-multiselect [control]="form.controls.users" label="Utilisateurs" placeholder="Ajouter des utilisateurs"
-      placeholderLabel="Rechercher un utilisateur..." noEntriesFoundLabel="Aucun utilisateur trouvé"
-      [items]="users$ | async" (update)="updateUserSearch($event)">
+    <app-multiselect [control]="form.controls.users" [label]="'app.users' | translate"
+      [placeholder]="'app.add_users' | translate" [placeholderLabel]="'app.search_user' | translate"
+      [noEntriesFoundLabel]="'app.no_users_found' | translate" [items]="users$ | async"
+      (update)="updateUserSearch($event)">
     </app-multiselect>
     }
 
-    <app-date-range-picker label="Date de création" fromDatePlaceholder="Début date de création"
-      toDatePlaceholder="Fin date de création" [fromDateControl]="form.controls.fromCreationDate"
+    <app-date-range-picker [label]="'app.creation_date' | translate"
+      [fromDatePlaceholder]="'app.from_creation_date' | translate"
+      [toDatePlaceholder]="'app.to_creation_date' | translate" [fromDateControl]="form.controls.fromCreationDate"
       [toDateControl]="form.controls.toCreationDate">
     </app-date-range-picker>
 
-    <app-date-range-picker label="Date de dernière modification"
-      fromDatePlaceholder="Début date de dernière modification" toDatePlaceholder="Fin date de dernière modification"
+    <app-date-range-picker [label]="'app.last_update_date' | translate"
+      [fromDatePlaceholder]="'app.from_last_update' | translate" [toDatePlaceholder]="'app.to_last_update' | translate"
       [fromDateControl]="form.controls.fromLastUpdate" [toDateControl]="form.controls.toLastUpdate">
     </app-date-range-picker>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="eraseCriterias()">Effacer tout</button>
+  <button mat-button (click)="eraseCriterias()">{{'app.erase_all' | translate}}</button>
   <div>
-    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button mat-dialog-close>{{'app.cancel' | translate}}</button>
     <button mat-button [mat-dialog-close]="form" [disabled]="form.invalid || form.pristine">
-      Valider
+      {{'app.validate' | translate}}
     </button>
   </div>
 </mat-dialog-actions>

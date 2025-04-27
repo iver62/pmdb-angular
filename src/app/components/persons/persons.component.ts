@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, effect, input, Input, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
@@ -21,7 +22,8 @@ import { HttpUtils } from '../../utils';
     MatPaginatorModule,
     PersonsListComponent,
     PersonsTableComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    TranslatePipe
   ],
   templateUrl: './persons.component.html',
   styleUrl: './persons.component.css'
@@ -39,11 +41,11 @@ export class PersonsComponent {
   total: number;
   pageSizeOptions = [25, 50, 100];
   sortOptions: SortOption[] = [
-    { active: 'name', label: 'Nom', direction: 'asc' },
-    { active: 'dateOfBirth', label: 'Date de naissance', direction: EMPTY_STRING },
-    { active: 'dateOfDeath', label: 'Date de décès', direction: EMPTY_STRING },
-    { active: 'creationDate', label: 'Date de création', direction: EMPTY_STRING },
-    { active: 'lastUpdate', label: 'Dernière modification', direction: EMPTY_STRING }
+    { active: 'name', label: 'app.name', direction: 'asc' },
+    { active: 'dateOfBirth', label: 'app.birth_date', direction: EMPTY_STRING },
+    { active: 'dateOfDeath', label: 'app.death_date', direction: EMPTY_STRING },
+    { active: 'creationDate', label: 'app.creation_date', direction: EMPTY_STRING },
+    { active: 'lastUpdate', label: 'app.last_update', direction: EMPTY_STRING }
   ];
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(

@@ -6,6 +6,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
@@ -29,7 +30,8 @@ import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamC
     ReactiveFormsModule,
     RouterLink,
     TechnicalTeamFormComponent,
-    TechnicalTeamComponent
+    TechnicalTeamComponent,
+    TranslatePipe
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.scss'

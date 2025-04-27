@@ -4,17 +4,18 @@
     <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
 
       <!-- Autocomplete acteur -->
-      <app-autocomplete class="col-span-4" [control]="actor.get('name')" label="Nom de l'acteur"
+      <app-autocomplete class="col-span-4" [control]="actor.get('name')" [label]="'app.actor_name' | translate"
         [personsToExclude]="formArray?.value | pluck: 'id'" [toSave]="actor?.value?.name && !actor?.value?.id"
         (select)="selectActor($event, i)" (save)="saveActor($event, i)">
       </app-autocomplete>
 
       <!-- Champ rôle -->
       <mat-form-field class="col-span-6">
-        <mat-label>Rôle</mat-label>
+        <mat-label>{{'app.role' | translate}}</mat-label>
         <input matInput formControlName="role" />
         @if (actor.value.role) {
-        <button matSuffix mat-icon-button matTooltip="Effacer" aria-label="Effacer le rôle" (click)="clearRole(i)">
+        <button matSuffix mat-icon-button [matTooltip]="'app.erase' | translate" aria-label="Effacer le rôle"
+          (click)="clearRole(i)">
           <mat-icon>close</mat-icon>
         </button>
         }
@@ -22,18 +23,18 @@
 
       <!-- Actions -->
       <div class="flex col-span-2">
-        <button mat-icon-button matTooltip="Supprimer" aria-label="Example icon button with a delete icon"
-          (click)="removeActor(i)">
+        <button mat-icon-button [matTooltip]="'app.delete' | translate"
+          aria-label="Example icon button with a delete icon" (click)="removeActor(i)">
           <mat-icon>delete</mat-icon>
         </button>
         <div class="flex flex-col">
           @if (i > 0) {
-          <button mat-icon-button matTooltip="Monter" aria-label="Example icon button with a delete icon"
-            [disabled]="i == 0" (click)="moveUp(i)">
+          <button mat-icon-button [matTooltip]="'app.up' | translate"
+            aria-label="Example icon button with a delete icon" [disabled]="i == 0" (click)="moveUp(i)">
             <mat-icon>keyboard_arrow_up</mat-icon>
           </button>
           }
-          @if (i < formArray.length - 1) { <button mat-icon-button matTooltip="Descendre"
+          @if (i < formArray.length - 1) { <button mat-icon-button [matTooltip]="'app.down' | translate"
             aria-label="Example icon button with a delete icon" [disabled]="i == formArray?.value?.length - 1"
             (click)="moveDown(i)">
             <mat-icon>keyboard_arrow_down</mat-icon>
@@ -46,6 +47,6 @@
   </div>
   <button mat-button class="mb-2" matTooltip="Ajouter" aria-label="Example icon button with a delete icon"
     (click)="addActor()">
-    Ajouter un acteur
+    {{'app.add_actor' | translate}}
   </button>
 </form>

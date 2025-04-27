@@ -1,5 +1,5 @@
+import { TranslateService } from "@ngx-translate/core";
 import { EMPTY_STRING } from "../app.component";
-import { Movie, Person } from "./";
 
 export class Country {
   id?: number;
@@ -8,30 +8,12 @@ export class Country {
   alpha3?: string;
   nomEnGb?: string;
   nomFrFr?: string;
-  flag?: string;
-  movies?: Movie[];
-  actors?: Person[];
-  producers?: Person[];
-  directors?: Person[];
-  screenwriters?: Person[];
-  musicians?: Person[];
-  photographers?: Person[];
-  costumiers?: Person[];
-  decorators?: Person[];
-  editors?: Person[];
-  casters?: Person[];
-  artDirectors?: Person[];
-  soundEditors?: Person[];
-  visualEffectsSupervisors?: Person[];
-  makeupArtists?: Person[];
-  hairDressers?: Person[];
-  stuntMen?: Person[];
 
-  constructor(data?: Partial<Country>) {
+  constructor(private translate: TranslateService, data?: Partial<Country>) {
     Object.assign(this, data);
   }
 
   display?() {
-    return this.nomFrFr ?? EMPTY_STRING;
+    return this.translate.currentLang == 'fr' ? this.nomFrFr : this.nomEnGb ?? EMPTY_STRING;
   }
 }

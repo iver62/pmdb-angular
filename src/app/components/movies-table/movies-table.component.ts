@@ -1,8 +1,9 @@
-import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, effect, EventEmitter, input, Input, Output, signal } from '@angular/core';
 import { MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { Movie, MovieWithPoster } from '../../models';
 import { MovieService } from '../../services';
@@ -11,11 +12,12 @@ import { MovieService } from '../../services';
   selector: 'app-movies-table',
   imports: [
     AsyncPipe,
+    CurrencyPipe,
     DatePipe,
-    DecimalPipe,
     MatSortModule,
     MatTableModule,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './movies-table.component.html',
   styleUrl: './movies-table.component.css'
@@ -31,7 +33,7 @@ export class MoviesTableComponent {
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 
   env = environment;
-  displayedColumns = ['title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice', 'user.username', 'numberOfAwards', 'creationDate', 'lastUpdate'];
+  displayedColumns = ['title', 'originalTitle', 'releaseDate', 'runningTime', 'budget', 'boxOffice', 'user.username', 'awardsCount', 'creationDate', 'lastUpdate'];
 
   constructor(private movieService: MovieService) {
     // Transformer les films en ajoutant les URLs
