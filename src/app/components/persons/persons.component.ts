@@ -11,6 +11,7 @@ import { View } from '../../enums';
 import { Country, Criterias, Person, SearchConfig, SortOption } from '../../models';
 import { BaseService } from '../../services';
 import { HttpUtils } from '../../utils';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-persons',
@@ -34,7 +35,7 @@ export class PersonsComponent {
 
   @Input() personService!: BaseService; // Service injecté dynamiquement
   @Input() viewTitle = EMPTY_STRING; // Permet de personnaliser le titre
-  countries$ = input.required<(term: string) => Observable<Country[]>>();
+  countries$ = input.required<(term: string) => Observable<HttpResponse<Country[]>>>();
   cookieName = input<string>();
 
   view = View;

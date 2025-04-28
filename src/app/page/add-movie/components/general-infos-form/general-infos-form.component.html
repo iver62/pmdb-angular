@@ -4,7 +4,7 @@
       <mat-label>{{'app.title' | translate}}</mat-label>
       <input matInput [placeholder]="'app.french_title' | translate" formControlName="title">
       @if (titleFormCtrl.hasError('required') && titleFormCtrl.touched) {
-      <mat-error>Le titre est requis</mat-error>
+      <mat-error>{{'app.required_title' | translate}}</mat-error>
       }
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
@@ -17,7 +17,7 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       @if (releaseDateFormCtrl.hasError('required') && releaseDateFormCtrl.touched) {
-      <mat-error>La date de sortie est requise</mat-error>
+      <mat-error>{{'app.required_release_date' | translate}}</mat-error>
       }
     </mat-form-field>
     <mat-form-field class="col-span-12 md:col-span-12">

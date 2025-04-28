@@ -69,8 +69,10 @@ export class MovieService {
     );
   }
 
-  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', direction = 'asc') =>
-    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`);
+  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = 'fr', direction = 'asc') =>
+    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`,
+      { observe: 'response' }
+    );
 
 
   getActors(id: number) {

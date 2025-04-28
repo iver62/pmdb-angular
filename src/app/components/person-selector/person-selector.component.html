@@ -14,9 +14,9 @@
     }
     <input #input appDelayedInput (delayedInput)="onSearch($event)" placeholder="Ajouter..."
       [matChipInputFor]="personsChipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      (matChipInputTokenEnd)="add($event)" />
+      (matChipInputTokenEnd)="add($event)" (focus)="onOpenedAutocomplete()" />
   </mat-chip-grid>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" (opened)="onOpenedAutocomplete()">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
     @for (person of persons$ | async; track person.id) {
     <mat-option [value]="person">{{person?.name}}</mat-option>
     }

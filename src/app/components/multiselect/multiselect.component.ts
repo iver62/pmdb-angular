@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
@@ -20,7 +21,8 @@ import { Country, Genre, User } from '../../models';
     MatSelectModule,
     MatTooltipModule,
     NgxMatSelectSearchModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './multiselect.component.html',
   styleUrl: './multiselect.component.scss'
@@ -32,6 +34,7 @@ export class MultiselectComponent {
   placeholderLabel = input.required<string>();
   noEntriesFoundLabel = input.required<string>();
   items = input.required<Country[] | Genre[] | User[]>();
+  total = input.required<number>();
   control = input.required<FormControl>();
 
   @Output() update = new EventEmitter<string>();
@@ -42,7 +45,7 @@ export class MultiselectComponent {
   checkboxChecked = computed(() => this.selectedValues()?.length > 0 && this.selectedValues()?.length === this.items()?.length);
   checkboxIndeterminate = computed(() => !this.checkboxChecked() && this.selectedValues()?.length > 0);
 
-  constructor() {
+  constructor(public translate: TranslateService) {
     effect(() => this.selectedValues.set(this.control().value || []));
   }
 

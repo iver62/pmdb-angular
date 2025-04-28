@@ -1,5 +1,5 @@
 <mat-form-field class="w-full">
-  <mat-label>{{label()}}</mat-label>
+  <mat-label>{{label()}} ({{total()}})</mat-label>
   <mat-select [placeholder]="placeholder()" [formControl]="control()" [compareWith]="compareObjects"
     (openedChange)="openedChange($event)" (selectionChange)="selectionChange($event)" multiple>
     @if (selectedValues()?.length) {
@@ -7,7 +7,7 @@
       <div>
         {{selectedValues()?.at(0).display() || ''}}
         @if ((selectedValues()?.length || 0) > 1) {
-        (+{{(selectedValues()?.length || 0) - 1}} {{' autres'}})
+        (+{{(selectedValues()?.length || 0) - 1}} {{'app.others' | translate}})
         }
       </div>
     </mat-select-trigger>

@@ -7,11 +7,12 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BehaviorSubject, catchError, filter, map, of, switchMap, take } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, of, switchMap, take, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Genre } from '../../models';
 import { GenreService } from '../../services';
+import { HttpUtils } from '../../utils';
 
 @Component({
   selector: 'app-genre-selector',
@@ -39,6 +40,8 @@ export class GenreSelectorComponent {
   readonly filteredGenres$ = this.searchTerm.pipe(
     switchMap(term => this.genreService.getAll(term)
       .pipe(
+        tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
+        map(response => response.body ?? []),
         map(genres =>
           genres
             .filter(genre => !this.selectedGenres().some(g => g.id === genre.id))
@@ -52,6 +55,7 @@ export class GenreSelectorComponent {
   readonly separatorKeysCodes: number[] = [ENTER];
 
   control: FormControl<Genre[]>;
+  total: number;
 
   constructor(
     private genreService: GenreService,

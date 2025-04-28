@@ -14,7 +14,9 @@ export class GenreService {
   constructor(private http: HttpClient) { }
 
   getAll(term = EMPTY_STRING, sort = 'name', direction = 'asc') {
-    return this.http.get<Genre[]>(`${this.basePath}?sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`);
+    return this.http.get<Genre[]>(`${this.basePath}?sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`,
+      { observe: 'response' }
+    );
   }
 
   getAllMovies(id: number, term: string, sort = 'title', direction = 'asc') {

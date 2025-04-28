@@ -25,21 +25,21 @@
     @if (data?.criterias?.includes('genres')) {
     <app-multiselect [control]="form.controls.genres" [label]="'app.categories' | translate"
       [placeholder]="'app.add_categories' | translate" [placeholderLabel]="'app.search_category' | translate"
-      [noEntriesFoundLabel]="'app.no_categories_found' | translate" [items]="genres$ | async"
+      [noEntriesFoundLabel]="'app.no_categories_found' | translate" [items]="genres$ | async" [total]="totalGenres"
       (update)="updateGenreSearch($event)">
     </app-multiselect>
     }
 
     <app-multiselect [control]="form.controls.countries" [label]="'app.countries' | translate"
       [placeholder]="'app.add_countries' | translate" [placeholderLabel]="'app.search_country' | translate"
-      [noEntriesFoundLabel]="'app.no_countries_found' | translate" [items]="countries$ | async"
+      [noEntriesFoundLabel]="'app.no_countries_found' | translate" [items]="countries$ | async" [total]="totalCountries"
       (update)="updateCountrySearch($event)">
     </app-multiselect>
 
     @if (data?.criterias?.includes('users')) {
     <app-multiselect [control]="form.controls.users" [label]="'app.users' | translate"
       [placeholder]="'app.add_users' | translate" [placeholderLabel]="'app.search_user' | translate"
-      [noEntriesFoundLabel]="'app.no_users_found' | translate" [items]="users$ | async"
+      [noEntriesFoundLabel]="'app.no_users_found' | translate" [items]="users$ | async" [total]="totalUsers"
       (update)="updateUserSearch($event)">
     </app-multiselect>
     }

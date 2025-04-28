@@ -1,5 +1,7 @@
+@let currentLang = currentLang$ | async;
+
 <mat-form-field class="w-full" [style.height.px]="92">
-  <mat-label>{{'app.countries' | translate}}</mat-label>
+  <mat-label>{{'app.countries' | translate}} ({{total}})</mat-label>
   <mat-chip-grid #countriesChipGrid aria-label="Country selection" [formControl]="control">
     @for (country of selectedCountries(); track country.id) {
     <mat-chip-row (removed)="remove(country)" [value]="country">
@@ -15,11 +17,7 @@
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" (opened)="onOpenedAutocomplete()">
     @for (country of countries$ | async; track country.id) {
     <mat-option [value]="country">
-      @if((currentLang$ | async) == 'fr') {
-      {{country?.nomFrFr}}
-      } @else {
-      {{country?.nomEnGb}}
-      }
+      {{currentLang == 'fr' ? country?.nomFrFr : country?.nomEnGb}}
     </mat-option>
     }
   </mat-autocomplete>

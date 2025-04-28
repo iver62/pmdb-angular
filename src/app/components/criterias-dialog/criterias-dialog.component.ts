@@ -1,15 +1,17 @@
 import { AsyncPipe } from '@angular/common';
+import { HttpResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Moment } from 'moment';
-import { BehaviorSubject, catchError, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { DateRangePickerComponent, MultiselectComponent } from "..";
 import { EMPTY_STRING } from '../../app.component';
 import { Country, Criterias, Genre, User } from '../../models';
 import { GenreService, UserService } from '../../services';
+import { HttpUtils } from '../../utils';
 
 @Component({
   selector: 'app-criterias-dialog',
@@ -38,6 +40,8 @@ export class CriteriasDialogComponent {
   genres$ = this.searchTerms$.genre.pipe(
     switchMap(term => this.genreService.getAll(term)
       .pipe(
+        tap(response => this.totalGenres = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
+        map(response => response.body ?? []),
         map(genres => genres.map(g => new Genre(g))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
       )
@@ -46,18 +50,24 @@ export class CriteriasDialogComponent {
 
   // Liste des pays filtrés
   countries$ = this.searchTerms$.country.pipe(
-    switchMap(term => this.data.countriesObs$(term)
-      .pipe(
-        map(countries => countries.map(c => new Country(this.translate, c))),
-        catchError(() => of([])) // En cas d'erreur, retourner une liste vide
-      )
-    )
+    switchMap(term => {
+      const lang = localStorage.getItem('lang') || this.translate.defaultLang;
+      return this.data.countriesObs$(term, 0, 20, lang == 'en' ? 'nomEnGb' : 'nomFrFr', lang)
+        .pipe(
+          tap(response => this.totalCountries = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
+          map(response => response.body ?? []),
+          map(countries => countries.map(c => new Country(this.translate, c))),
+          catchError(() => of([])) // En cas d'erreur, retourner une liste vide
+        )
+    })
   );
 
   // Liste des utilisateurs filtrés
   users$ = this.searchTerms$.user.pipe(
-    switchMap(term => this.userService.getAll(term)
+    switchMap(term => this.userService.get(0, 20, term)
       .pipe(
+        tap(response => this.totalUsers = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
+        map(response => response.body ?? []),
         map(users => users.map(u => new User(u))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
       )
@@ -82,6 +92,10 @@ export class CriteriasDialogComponent {
     }
   );
 
+  totalGenres: number;
+  totalCountries: number;
+  totalUsers: number;
+
   constructor(
     private genreService: GenreService,
     private translate: TranslateService,
@@ -89,7 +103,7 @@ export class CriteriasDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: {
       criterias: string[],
       selectedCriterias: Criterias,
-      countriesObs$: (term: string) => Observable<Country[]>
+      countriesObs$: (term: string, page: number, size: number, sort: string, lang: string) => Observable<HttpResponse<Country[]>>
     }
   ) { }
 

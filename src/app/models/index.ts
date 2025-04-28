@@ -1,6 +1,7 @@
 export * from './award.model';
 export * from './column.model';
 export * from './country.model';
+export * from './country-repartition.model';
 export * from './criterias.model';
 export * from './genre.model';
 export * from './movie.model';

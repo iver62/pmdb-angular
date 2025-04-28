@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .example-container {
   display: flex;
   flex-direction: column;
@@ -54,4 +56,11 @@ h1.example-app-name {
 
 .mat-sidenav {
   width: fit-content;
+}
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+footer {
+  @include mat.form-field-overrides((filled-label-text-size: 14px));
+
+  @include mat.select-overrides((trigger-text-size: 14px));
 }

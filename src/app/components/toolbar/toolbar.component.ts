@@ -11,6 +11,7 @@ import { filter, Observable, take } from 'rxjs';
 import { View } from '../../enums';
 import { Country, Criterias, SearchConfig, SortOption } from '../../models';
 import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.component';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-toolbar',
@@ -28,7 +29,7 @@ import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.c
 })
 export class ToolbarComponent {
 
-  countries$ = input<(term: string) => Observable<Country[]>>();
+  countries$ = input<(term: string, page: number, size: number, sort: string, lang: string) => Observable<HttpResponse<Country[]>>>();
   sorts = input.required<SortOption[]>();
   criterias = input<string[]>([]);
   selectedCriterias = input<Criterias>({} as Criterias);

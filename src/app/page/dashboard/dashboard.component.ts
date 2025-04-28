@@ -2,11 +2,11 @@ import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslatePipe } from '@ngx-translate/core';
-import { map } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { combineLatest, map, startWith } from 'rxjs';
 import { BarChartComponent, LineChartComponent } from '../../components';
-import { Repartition } from '../../models';
 import { ActorService, MovieService } from '../../services';
+import { BarChartService } from '../../services/bar-chart.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,19 +27,25 @@ export class DashboardComponent {
   moviesNumber$ = this.movieService.countMovies();
   actorsNumber$ = this.actorService.count();
   decadeRepartition$ = this.movieService.getRepartitionByDecade().pipe(
-    map(dataset => this.formatBarChartDataset(dataset))
+    map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
   genreRepartition$ = this.movieService.getRepartitionByGenre().pipe(
-    map(dataset => this.formatBarChartDataset(dataset))
+    map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
-  countryRepartition$ = this.movieService.getRepartitionByCountry().pipe(
-    map(dataset => this.formatBarChartDataset(dataset))
+  countryRepartition$ = combineLatest([
+    this.movieService.getRepartitionByCountry(),
+    this.translate.onLangChange.pipe(
+      map(event => event.lang),
+      startWith(localStorage.getItem('lang') || this.translate.defaultLang)
+    )
+  ]).pipe(
+    map(([dataset, lang]) => this.barChartService.formatBarChartCountryDataset(dataset, lang))
   );
   userRepartition$ = this.movieService.getRepartitionByUser().pipe(
-    map(dataset => this.formatBarChartDataset(dataset))
+    map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
   creationDateRepartition$ = this.movieService.getRepartitionByCreationDate().pipe(
-    map(dataset => this.formatBarChartDataset(dataset))
+    map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
   creationDateEvolution$ = this.movieService.getEvolutionCreationDate().pipe(
     map(dataset => (
@@ -56,22 +62,10 @@ export class DashboardComponent {
     ))
   );
 
-  colors = ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384', '#9966FF', '#FF9F40', '#8E5EA2'];
-
   constructor(
     private actorService: ActorService,
-    private movieService: MovieService
+    private barChartService: BarChartService,
+    private movieService: MovieService,
+    private translate: TranslateService
   ) { }
-
-  private formatBarChartDataset(repartition: Repartition[]) {
-    return {
-      labels: repartition.map(d => d.label),
-      datasets: [
-        {
-          data: repartition.map(d => d.total),
-          backgroundColor: this.colors
-        }
-      ]
-    }
-  }
 }

@@ -36,20 +36,27 @@ export class CountrySelectorComponent {
   formGroupName = input.required<string>();
   selectedCountries = signal<Country[]>([]);
 
+  currentLang$ = this.translate.onLangChange.pipe(
+    tap(result => console.log(result)),
+    map(result => result.lang),
+    startWith(localStorage.getItem('lang') || this.translate.defaultLang)
+  );
+
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
       size: 20,
       sort: this.translate.currentLang == 'fr' ? 'nomFrFr' : 'nomEnGb',
       direction: 'asc',
-      term: EMPTY_STRING
+      term: EMPTY_STRING,
+      lang: this.translate.currentLang
     }
   );
 
   // Liste des pays filtrés
   readonly countries$ = this.searchConfig$.pipe(
     tap(() => this.isLoadingMore = true),
-    switchMap(config => this.countryService.getCountries(config.page, config.size, config.term, config.sort).pipe(
+    switchMap(config => this.countryService.getCountries(config.page, config.size, config.term, config.sort, config.lang).pipe(
       tap(response => {
         this.isLoadingMore = false;
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
@@ -73,13 +80,9 @@ export class CountrySelectorComponent {
   );
 
   control: FormControl;
-  private total: number;
+  total: number;
   private loaded = 0;
   private isLoadingMore = false;
-  currentLang$ = this.translate.onLangChange.pipe(
-    map(result => result.lang),
-    startWith(localStorage.getItem('lang'))
-  );
 
   constructor(
     private countryService: CountryService,
@@ -95,7 +98,8 @@ export class CountrySelectorComponent {
       {
         ...this.searchConfig$.value,
         page: 0,
-        sort: result.lang == 'fr' ? 'nomFrFr' : 'nomEnGb'
+        sort: result.lang == 'fr' ? 'nomFrFr' : 'nomEnGb',
+        lang: result.lang
       }
     ))
   }
@@ -112,7 +116,7 @@ export class CountrySelectorComponent {
   }
 
   onOpenedAutocomplete() {
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
+    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0 });
   }
 
   onSearch(event: string) {

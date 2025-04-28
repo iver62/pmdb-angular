@@ -8,6 +8,7 @@ export interface SearchConfig {
   sort?: string,
   direction?: SortDirection
   term?: string,
+  lang?: string,
   criterias?: Criterias,
   view?: View
 }

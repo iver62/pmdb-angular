@@ -24,8 +24,8 @@ export class CountryService {
     return this.http.get<Country[]>(`${this.basePath}/all?sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`);
   }
 
-  getCountries(page = 0, size = 50, term: string, sort = 'nomFrFr', direction = 'asc') {
-    return this.http.get<Country[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`, {
+  getCountries(page = 0, size = 50, term: string, sort = 'nomFrFr', lang = 'fr', direction = 'asc') {
+    return this.http.get<Country[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`, {
       observe: 'response'
     });
   }
