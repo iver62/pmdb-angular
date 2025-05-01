@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
-import { from, map, tap } from 'rxjs';
+import { from, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { RoleRepresentation, User } from '../models';
 
@@ -35,7 +35,6 @@ export class AuthService {
 
   loadUserProfile() {
     return from(this.keycloak.loadUserProfile()).pipe(
-      tap(result => console.log(result)),
       map(profile => (
         {
           id: profile?.id,
@@ -63,6 +62,10 @@ export class AuthService {
 
   resetPassword(id: string) {
     return this.http.post(`${this.basePath}/users/${id}/reset-password`, null);
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${this.basePath}/users/${id}`);
   }
 
   logout() {

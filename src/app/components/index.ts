@@ -1,5 +1,6 @@
 export * from './autocomplete/autocomplete.component';
 export * from './bar-chart/bar-chart.component';
+export * from './confirmation-dialog/confirmation-dialog.component';
 export * from './countries-list/countries-list.component';
 export * from './country-card/country-card.component';
 export * from './country-selector/country-selector.component';
@@ -17,5 +18,6 @@ export * from './person-selector/person-selector.component';
 export * from './persons-list/person-card/person-card.component';
 export * from './persons-list/persons-list.component';
 export * from './persons-table/persons-table.component';
+export * from './roles-dialog/roles-dialog.component';
 export * from './user-dialog/user-dialog.component';
 export * from './toolbar/toolbar.component';

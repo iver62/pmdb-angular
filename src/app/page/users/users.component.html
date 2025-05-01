@@ -60,11 +60,14 @@
       </ng-container>
 
       <!-- Edit roles column -->
-      <ng-container matColumnDef="edit_roles">
+      <ng-container matColumnDef="tools">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           <button mat-icon-button [matTooltip]="'app.edit_roles' | translate" (click)="openRolesDialog(row)">
             <mat-icon>manage_accounts</mat-icon>
+          </button>
+          <button mat-icon-button [matTooltip]="'app.delete' | translate" (click)="deleteUser(row)">
+            <mat-icon>delete</mat-icon>
           </button>
         </td>
       </ng-container>

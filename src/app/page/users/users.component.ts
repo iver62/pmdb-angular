@@ -10,9 +10,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
-import { BehaviorSubject, catchError, distinctUntilChanged, filter, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, filter, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { InputComponent, RolesDialogComponent } from '../../components';
+import { ConfirmationDialogComponent, InputComponent, RolesDialogComponent } from '../../components';
 import { SearchConfig, SortOption, User } from '../../models';
 import { AuthService, UserService } from '../../services';
 import { HttpUtils } from '../../utils';
@@ -48,7 +48,7 @@ export class UsersComponent {
   );
 
   users$ = this.searchConfig$.pipe(
-    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term),
+    // distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term),
     switchMap(config =>
       this.userService.get(config.page, config.size, config.term, config.sort, config.direction).pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
@@ -62,7 +62,7 @@ export class UsersComponent {
   );
 
   duration = 5000;
-  displayedColumns = ['id', 'username', 'lastname', 'email', 'emailVerified', 'moviesCount', 'edit_roles'];
+  displayedColumns = ['id', 'username', 'lastname', 'email', 'emailVerified', 'moviesCount', 'tools'];
   total: number;
   pageSizeOptions = [25, 50, 100];
 
@@ -98,7 +98,7 @@ export class UsersComponent {
     ]).subscribe(([allRoles, userRoles]) =>
       this.dialog.open(RolesDialogComponent, {
         minWidth: '50vw',  // Définit la largeur à 30% de l'écran
-        minHeight: '50vh', // Définit la hauteur à 30% de l'écran
+        minHeight: '30vh', // Définit la hauteur à 30% de l'écran
         data: {
           username: row.username,
           roles: allRoles,
@@ -116,8 +116,8 @@ export class UsersComponent {
         })
       ).subscribe(
         {
-          next: () => this._snackBar.open(this.translate.currentLang == 'fr' ? 'Rôles modifiés avec succés' : 'Roles modified with success', 'Done', { duration: this.duration }),
-          error: () => this._snackBar.open(this.translate.currentLang == 'fr' ? 'Erreur lors de la modification des rôles' : 'Error while updating user roles', 'Error', { duration: this.duration })
+          next: () => this._snackBar.open(this.translate.instant('app.roles_updated_success'), '✔', { duration: this.duration }),
+          error: () => this._snackBar.open(this.translate.instant('app.roles_updated_error'), '✔', { duration: this.duration })
         }
       )
     );
@@ -130,6 +130,32 @@ export class UsersComponent {
         ...newConfig
       }
     );
+  }
+
+  deleteUser(user: User) {
+    this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: '30vw',  // Définit la largeur à 30% de l'écran
+      data: {
+        title: this.translate.instant('app.confirm_delete_title'),
+        message: this.translate.instant('app.confirm_delete_message', { username: user.username })
+      }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.authService.deleteUser(user.id).subscribe(
+          {
+            next: () => {
+              // Rafraîchit la recherche des utilisateurs après suppression
+              this.searchConfig$.next({
+                ...this.searchConfig$.value,
+                page: 0 // Reset à la première page après suppression
+              });
+              this._snackBar.open(this.translate.instant('app.user_deleted_success', { username: user.username }), '✔', { duration: this.duration });
+            },
+            error: () => this._snackBar.open(this.translate.instant('app.user_deleted_error', { username: user.username }), '✔', { duration: this.duration })
+          }
+        )
+      }
+    });
   }
 
 }
