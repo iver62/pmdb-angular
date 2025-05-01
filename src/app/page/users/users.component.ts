@@ -1,15 +1,20 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { TranslatePipe } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
-import { BehaviorSubject, catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, filter, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { InputComponent } from '../../components';
-import { SearchConfig, SortOption } from '../../models';
-import { UserService } from '../../services';
+import { InputComponent, RolesDialogComponent } from '../../components';
+import { SearchConfig, SortOption, User } from '../../models';
+import { AuthService, UserService } from '../../services';
 import { HttpUtils } from '../../utils';
 
 @Component({
@@ -17,9 +22,12 @@ import { HttpUtils } from '../../utils';
   imports: [
     AsyncPipe,
     InputComponent,
+    MatButtonModule,
+    MatIconModule,
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
+    MatTooltipModule,
     TranslatePipe
   ],
   templateUrl: './users.component.html',
@@ -53,12 +61,17 @@ export class UsersComponent {
     )
   );
 
-  displayedColumns = ['id', 'username', 'name', 'email', 'emailVerified', 'moviesCount'];
+  duration = 5000;
+  displayedColumns = ['id', 'username', 'lastname', 'email', 'emailVerified', 'moviesCount', 'edit_roles'];
   total: number;
   pageSizeOptions = [25, 50, 100];
 
   constructor(
+    private _snackBar: MatSnackBar,
+    private authService: AuthService,
     private cookieService: CookieService,
+    private dialog: MatDialog,
+    private translate: TranslateService,
     private userService: UserService
   ) { }
 
@@ -76,6 +89,38 @@ export class UsersComponent {
 
   onPageChange(event: PageEvent) {
     this.updateSearchConfig({ page: event.pageIndex, size: event.pageSize });
+  }
+
+  openRolesDialog(row: User) {
+    forkJoin([
+      this.authService.getRoles(),
+      this.authService.getUserRoles(row.id)
+    ]).subscribe(([allRoles, userRoles]) =>
+      this.dialog.open(RolesDialogComponent, {
+        minWidth: '50vw',  // Définit la largeur à 30% de l'écran
+        minHeight: '50vh', // Définit la hauteur à 30% de l'écran
+        data: {
+          username: row.username,
+          roles: allRoles,
+          userRoles: userRoles
+        }
+      }).afterClosed().pipe(
+        filter(roles => !!roles), // ignore si null (annulation)
+        switchMap(roles => {
+          const selectedRoles = Object.entries(roles)
+            .filter(([_, checked]) => checked)
+            .map(([roleName]) => allRoles.find(r => r.name === roleName))
+            .filter(Boolean); // supprime les rôles non trouvés
+
+          return this.authService.updateUserRoles(row.id, selectedRoles);
+        })
+      ).subscribe(
+        {
+          next: () => this._snackBar.open(this.translate.currentLang == 'fr' ? 'Rôles modifiés avec succés' : 'Roles modified with success', 'Done', { duration: this.duration }),
+          error: () => this._snackBar.open(this.translate.currentLang == 'fr' ? 'Erreur lors de la modification des rôles' : 'Error while updating user roles', 'Error', { duration: this.duration })
+        }
+      )
+    );
   }
 
   private updateSearchConfig(newConfig: Partial<SearchConfig>) {

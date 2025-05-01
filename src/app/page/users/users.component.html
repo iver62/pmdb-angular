@@ -28,10 +28,10 @@
       </ng-container>
 
       <!-- Name Column -->
-      <ng-container matColumnDef="name">
+      <ng-container matColumnDef="lastname">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.name' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
-          {{row.name}}
+          {{row?.firstname}} {{row?.lastname}}
         </td>
       </ng-container>
 
@@ -56,6 +56,16 @@
         <th mat-header-cell *matHeaderCellDef>{{'app.count_added_movies' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           {{row.numberOfMovies}}
+        </td>
+      </ng-container>
+
+      <!-- Edit roles column -->
+      <ng-container matColumnDef="edit_roles">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+          <button mat-icon-button [matTooltip]="'app.edit_roles' | translate" (click)="openRolesDialog(row)">
+            <mat-icon>manage_accounts</mat-icon>
+          </button>
         </td>
       </ng-container>
 
