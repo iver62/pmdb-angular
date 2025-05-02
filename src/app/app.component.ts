@@ -223,16 +223,17 @@ export class AppComponent {
     this.mobileQuery.addListener(this._mobileQueryListener);
 
     this.translate.addLangs(['en', 'fr']);
-    // this.translate.setDefaultLang('fr');
     this.translate.use(localStorage.getItem('lang') || 'fr');
   }
 
   openProfileDialog() {
-    this.dialog.open(UserDialogComponent, {
-      minWidth: '30vw',  // Définit la largeur à 75% de l'écran
-      minHeight: '30vh', // Définit la hauteur à 90% de l'écran
-      data: this.user$
-    })
+    this.user$.subscribe(result => {
+      this.dialog.open(UserDialogComponent, {
+        minWidth: '30vw',  // Définit la largeur à 30% de l'écran
+        minHeight: '30vh', // Définit la hauteur à 30% de l'écran
+        data: result
+      })
+    });
   }
 
   changeLanguage(lang: string) {

@@ -1,3 +1,5 @@
+@let currentLang = currentLang$ | async;
+
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="justify-between">
     <div class="flex items-center">
@@ -6,18 +8,66 @@
       </button>
       <h1 class="example-app-name cursor-pointer" routerLink="/">{{title}}</h1>
     </div>
-    <button mat-button routerLink="/add-movie">
-      <mat-icon>add</mat-icon>
-      <span>{{'app.add_movie' | translate}}</span>
-    </button>
     <div class="flex items-center gap-1">
-      <span>{{(user$ | async)?.username}}</span>
-      <button mat-icon-button matTooltip="{{'app.my_profile' | translate}}" (click)="openProfileDialog()">
+      <button mat-button routerLink="/add-movie">
+        <mat-icon>add</mat-icon>
+        <span>{{'app.add_movie' | translate}}</span>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
         <mat-icon>account_circle</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="{{'app.logout' | translate}}" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-      </button>
+      <mat-menu #menu="matMenu">
+        <div class="p-3 text-xl">{{(user$ | async)?.username}}</div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="openProfileDialog()">
+          <mat-icon>account_circle</mat-icon>
+          <span>{{'app.my_profile' | translate}}</span>
+        </button>
+        <button mat-menu-item [matMenuTriggerFor]="languages">
+          <mat-icon>translate</mat-icon>
+          <span>{{'app.languages' | translate}}</span>
+        </button>
+        <button mat-menu-item [matMenuTriggerFor]="appearances">
+          <mat-icon>contrast</mat-icon>
+          <span>{{'app.appearances' | translate}}</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>{{'app.logout' | translate}}</span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #languages="matMenu">
+        <button mat-menu-item (click)="changeLanguage('en')">
+          <span>🇬🇧 {{'app.english' | translate}}</span>
+          @if (currentLang == 'en') {
+          <mat-icon>check</mat-icon>
+          }
+        </button>
+        <button mat-menu-item (click)="changeLanguage('fr')">
+          <span>🇫🇷 {{'app.french' | translate}}</span>
+          @if (currentLang == 'fr') {
+          <mat-icon>check</mat-icon>
+          }
+        </button>
+      </mat-menu>
+
+      <mat-menu #appearances="matMenu">
+        <button mat-menu-item>
+          <mat-icon>check</mat-icon>
+          <div class="flex text-right items-center">
+            <mat-icon>light_mode</mat-icon>
+            <span>{{'app.light' | translate}}</span>
+          </div>
+        </button>
+        <button mat-menu-item>
+          <div class="flex text-right items-center">
+            <mat-icon>dark_mode</mat-icon>
+            <span>{{'app.dark' | translate}}</span>
+          </div>
+        </button>
+      </mat-menu>
     </div>
   </mat-toolbar>
 
@@ -40,16 +90,4 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
-
-  <footer class="flex flex-row justify-between px-4 pt-2">
-    <div class="flex items-center text-xl">v{{ appVersion }}</div>
-
-    <mat-form-field>
-      <mat-label>{{'app.choose_lang' | translate}}</mat-label>
-      <mat-select [value]="currentLang$ | async" (selectionChange)="changeLanguage($event.value)">
-        <mat-option [value]="'en'">🇬🇧 {{'app.english' | translate}}</mat-option>
-        <mat-option [value]="'fr'">🇫🇷 {{'app.french' | translate}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </footer>
 </div>

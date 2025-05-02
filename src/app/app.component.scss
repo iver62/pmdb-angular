@@ -10,13 +10,22 @@
   right: 0;
 }
 
-.mat-mdc-button {
-  background-color: #555555;
-  color: white !important;
+::ng-deep.mat-mdc-menu-content {
+  min-width: 200px !important;
 }
 
-.mat-mdc-button:hover {
-  background-color: #444444;
+.mat-mdc-button {
+  color: #606060;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+
+  &:hover {
+    background-color: #e5e5e5;
+  }
+
+  &:active {
+    background-color: #dcdcdc;
+  }
 }
 
 .example-is-mobile .example-toolbar {
@@ -56,11 +65,4 @@ h1.example-app-name {
 
 .mat-sidenav {
   width: fit-content;
-}
-
-// Customize the entire app. Change :root to your selector if you want to scope the styles.
-footer {
-  @include mat.form-field-overrides((filled-label-text-size: 14px));
-
-  @include mat.select-overrides((trigger-text-size: 14px));
 }
