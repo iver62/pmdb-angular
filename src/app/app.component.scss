@@ -14,17 +14,22 @@
   min-width: 200px !important;
 }
 
+.menu-button {
+  background-color: lightgray;
+  color: white;
+}
+
 .mat-mdc-button {
   color: #606060;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
 
   &:hover {
-    background-color: #e5e5e5;
+    background-color: lightgray !important;
   }
 
   &:active {
-    background-color: #dcdcdc;
+    background-color: lightgray !important;
   }
 }
 

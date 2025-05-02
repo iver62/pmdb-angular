@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { map, Observable, startWith } from 'rxjs';
 import packageJson from '../../package.json';
 import { UserDialogComponent } from './components';
+import { FirstLetterPipe } from './pipes';
 import { AuthService, LoaderService } from './services';
 
 export const EMPTY_STRING = '';
@@ -26,6 +27,7 @@ export const EMPTY_STRING = '';
   selector: 'app-root',
   imports: [
     AsyncPipe,
+    FirstLetterPipe,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
@@ -39,7 +41,8 @@ export const EMPTY_STRING = '';
     NgPipesModule,
     RouterLink,
     RouterOutlet,
-    TranslatePipe
+    TranslatePipe,
+    UpperCasePipe
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
