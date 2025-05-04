@@ -7,7 +7,7 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BehaviorSubject, catchError, filter, map, of, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, filter, map, of, switchMap, take, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Genre } from '../../models';
@@ -34,10 +34,11 @@ export class GenreSelectorComponent {
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
 
   formGroupName = input.required<string>();
-  searchTerm = new BehaviorSubject(EMPTY_STRING);
+  searchTerm$ = new BehaviorSubject(EMPTY_STRING);
   selectedGenres = signal<Genre[]>([]);
 
-  readonly filteredGenres$ = this.searchTerm.pipe(
+  readonly filteredGenres$ = this.searchTerm$.pipe(
+    distinctUntilChanged((t1, t2) => t1 == t2),
     switchMap(term => this.genreService.getAll(term)
       .pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
@@ -67,19 +68,6 @@ export class GenreSelectorComponent {
     });
   }
 
-  panelOpen = false; // État pour savoir si le panel est ouvert
-
-
-  onPanelClosed(event: any) {
-    if (this.panelOpen) {
-      setTimeout(() => {
-        this.panelOpen = false;
-        this.input.nativeElement.focus();
-      }, 0);
-    }
-
-  }
-
   add(event: MatChipInputEvent) {
     const value = (event.value || EMPTY_STRING).trim();
 
@@ -101,7 +89,7 @@ export class GenreSelectorComponent {
       }
 
       // Clear the input value
-      this.searchTerm.next(EMPTY_STRING);
+      this.searchTerm$.next(EMPTY_STRING);
       this.input.nativeElement.value = EMPTY_STRING;
     });
   }
@@ -112,7 +100,7 @@ export class GenreSelectorComponent {
     if (index >= 0) {
       this.selectedGenres.update(genres => genres.filter(g => g.id !== genre.id));
       this.control.setValue([...this.selectedGenres()]);
-      this.searchTerm.next(EMPTY_STRING);
+      this.searchTerm$.next(EMPTY_STRING);
     }
   }
 
@@ -122,8 +110,6 @@ export class GenreSelectorComponent {
     if (!this.selectedGenres().some(g => g.id === genre.id)) {
       this.selectedGenres().push(genre);
       this.control.setValue(this.selectedGenres());
-
-      this.panelOpen = true;
 
       if (this.input) {
         this.input.nativeElement.value = EMPTY_STRING; // Clear the input value

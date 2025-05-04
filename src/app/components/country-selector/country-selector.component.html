@@ -14,10 +14,10 @@
     <input #input appDelayedInput (delayedInput)="onSearch($event)" [placeholder]="'app.add' | translate"
       [matChipInputFor]="countriesChipGrid" [matAutocomplete]="auto" />
   </mat-chip-grid>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" (opened)="onOpenedAutocomplete()">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
     @for (country of countries$ | async; track country.id) {
     <mat-option [value]="country">
-      {{currentLang == 'fr' ? country?.nomFrFr : country?.nomEnGb}}
+      {{currentLang == language.FR ? country?.nomFrFr : country?.nomEnGb}}
     </mat-option>
     }
   </mat-autocomplete>

@@ -6,9 +6,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, catchError, map, of, scan, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, startWith, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
+import { Language } from '../../enums';
 import { Country, SearchConfig } from '../../models';
 import { CountryService } from '../../services';
 import { HttpUtils } from '../../utils';
@@ -45,15 +46,16 @@ export class CountrySelectorComponent {
     {
       page: 0,
       size: 20,
-      sort: this.translate.currentLang == 'fr' ? 'nomFrFr' : 'nomEnGb',
+      sort: this.translate.currentLang == Language.FR ? 'nomFrFr' : 'nomEnGb',
       direction: 'asc',
       term: EMPTY_STRING,
-      lang: this.translate.currentLang
+      lang: this.translate.currentLang as Language
     }
   );
 
   // Liste des pays filtrés
   readonly countries$ = this.searchConfig$.pipe(
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.lang === c2.lang),
     tap(() => this.isLoadingMore = true),
     switchMap(config => this.countryService.getCountries(config.page, config.size, config.term, config.sort, config.lang).pipe(
       tap(response => {
@@ -80,6 +82,7 @@ export class CountrySelectorComponent {
 
   control: FormControl;
   total: number;
+  language = Language;
   private loaded = 0;
   private isLoadingMore = false;
 
@@ -97,8 +100,8 @@ export class CountrySelectorComponent {
       {
         ...this.searchConfig$.value,
         page: 0,
-        sort: result.lang == 'fr' ? 'nomFrFr' : 'nomEnGb',
-        lang: result.lang
+        sort: result.lang == Language.FR ? 'nomFrFr' : 'nomEnGb',
+        lang: result.lang as Language
       }
     ))
   }
@@ -112,10 +115,6 @@ export class CountrySelectorComponent {
         }
       }, 100);
     });
-  }
-
-  onOpenedAutocomplete() {
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0 });
   }
 
   onSearch(event: string) {
@@ -153,5 +152,4 @@ export class CountrySelectorComponent {
       }
     }
   }
-
 }

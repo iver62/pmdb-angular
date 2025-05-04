@@ -9,12 +9,11 @@
       </button>
     </mat-chip-row>
     }
-    <input #input appDelayedInput (delayedInput)="searchTerm.next($event)" [placeholder]="'app.add' | translate"
+    <input #input appDelayedInput (delayedInput)="searchTerm$.next($event)" [placeholder]="'app.add' | translate"
       [matChipInputFor]="genresChipGrid" [matAutocomplete]="autoGenres"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
   </mat-chip-grid>
-  <mat-autocomplete #autoGenres="matAutocomplete" (closed)="onPanelClosed($event)" (optionSelected)="selected($event)"
-    (opened)="searchTerm.next('')">
+  <mat-autocomplete #autoGenres="matAutocomplete" (optionSelected)="selected($event)">
     @for (genre of filteredGenres$ | async; track genre.id) {
     <mat-option [value]="genre">{{genre?.name}}</mat-option>
     }
