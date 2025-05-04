@@ -1,5 +1,6 @@
 import { TranslateService } from "@ngx-translate/core";
 import { EMPTY_STRING } from "../app.component";
+import { Language } from "../enums";
 
 export class Country {
   id?: number;
@@ -14,6 +15,6 @@ export class Country {
   }
 
   display?() {
-    return this.translate.currentLang == 'fr' ? this.nomFrFr : this.nomEnGb ?? EMPTY_STRING;
+    return this.translate.currentLang == Language.FR ? this.nomFrFr : this.nomEnGb ?? EMPTY_STRING;
   }
 }

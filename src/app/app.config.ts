@@ -1,17 +1,18 @@
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { provideTranslateService, TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { provideTranslateService, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import 'moment/locale/fr'; // Importation explicite de la locale française pour Moment.js
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideKeycloakAngular } from '../keycloak-init';
 import { routes } from './app.routes';
 import { getFrenchPaginatorIntl } from './custom-paginator';
+import { Language } from './enums';
 import { authInterceptor, loaderInterceptor } from './interceptors';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
@@ -36,7 +37,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([authInterceptor, loaderInterceptor])
     ),
     provideTranslateService({
-      defaultLanguage: 'fr',
+      defaultLanguage: Language.FR,
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,

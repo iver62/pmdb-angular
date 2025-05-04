@@ -9,6 +9,7 @@ import { Moment } from 'moment';
 import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { DateRangePickerComponent, MultiselectComponent } from "..";
 import { EMPTY_STRING } from '../../app.component';
+import { Language } from '../../enums';
 import { Country, Criterias, Genre, User } from '../../models';
 import { GenreService, UserService } from '../../services';
 import { HttpUtils } from '../../utils';
@@ -52,7 +53,7 @@ export class CriteriasDialogComponent {
   countries$ = this.searchTerms$.country.pipe(
     switchMap(term => {
       const lang = localStorage.getItem('lang') || this.translate.defaultLang;
-      return this.data.countriesObs$(term, 0, 20, lang == 'en' ? 'nomEnGb' : 'nomFrFr', lang)
+      return this.data.countriesObs$(term, 0, 20, lang == Language.EN ? 'nomEnGb' : 'nomFrFr', lang)
         .pipe(
           tap(response => this.totalCountries = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
           map(response => response.body ?? []),

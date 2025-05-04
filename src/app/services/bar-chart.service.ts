@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Language } from '../enums';
 import { CountryRepartition, Repartition } from '../models';
 
 @Injectable({
@@ -22,7 +23,7 @@ export class BarChartService {
 
   formatBarChartCountryDataset(countryRepartitions: CountryRepartition[], lang: string) {
     return {
-      labels: countryRepartitions.map(r => lang == 'en' ? r.country.nomEnGb : r.country.nomFrFr),
+      labels: countryRepartitions.map(r => lang == Language.EN ? r.country.nomEnGb : r.country.nomFrFr),
       datasets: [
         {
           data: countryRepartitions.map(r => r.total),

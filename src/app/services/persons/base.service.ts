@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { map } from 'rxjs';
+import { Language } from '../../enums';
 import { Country, Criterias, Movie, Person } from '../../models';
 import { DateUtils } from '../../utils';
 import { DateService } from '../date.service';
@@ -69,7 +70,7 @@ export class BaseService {
     return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' })
   }
 
-  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = 'fr', direction = 'asc') =>
+  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = Language.FR, direction = 'asc') =>
     this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`,
       { observe: 'response' }
     );

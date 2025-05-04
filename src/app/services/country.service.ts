@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { Language } from '../enums';
 import { Country, Movie, Person } from '../models';
 
 @Injectable({
@@ -20,11 +21,7 @@ export class CountryService {
     return this.http.get<Country>(`${this.basePath}/${id}/full`);
   }
 
-  getAll(term?: string, sort = 'nomFrFr', direction = 'asc') {
-    return this.http.get<Country[]>(`${this.basePath}/all?sort=${sort}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`);
-  }
-
-  getCountries(page = 0, size = 50, term: string, sort = 'nomFrFr', lang = 'fr', direction = 'asc') {
+  getCountries(page = 0, size = 50, term: string, sort = 'nomFrFr', lang = Language.FR, direction = 'asc') {
     return this.http.get<Country[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`, {
       observe: 'response'
     });

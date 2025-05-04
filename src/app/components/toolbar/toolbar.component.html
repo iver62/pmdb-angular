@@ -8,7 +8,7 @@
   @if (currentView == view.CARDS) {
   <button mat-button [matMenuTriggerFor]="sort">
     <span>{{selectedSort()?.label | translate}}</span>
-    @if (selectedSort().direction == 'asc') {
+    @if (selectedSort()?.direction == 'asc') {
     <mat-icon>arrow_upward_alt</mat-icon>
     } @else if (selectedSort()?.direction == 'desc') {
     <mat-icon>arrow_downward_alt</mat-icon>

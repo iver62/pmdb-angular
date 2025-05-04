@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, computed, effect, EventEmitter, input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -8,10 +9,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { NgPipesModule } from 'ngx-pipes';
 import { filter, Observable, take } from 'rxjs';
-import { View } from '../../enums';
+import { Language, View } from '../../enums';
 import { Country, Criterias, SearchConfig, SortOption } from '../../models';
 import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.component';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-toolbar',
@@ -29,7 +29,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class ToolbarComponent {
 
-  countries$ = input<(term: string, page: number, size: number, sort: string, lang: string) => Observable<HttpResponse<Country[]>>>();
+  countries$ = input<(term: string, page: number, size: number, sort: string, lang: Language) => Observable<HttpResponse<Country[]>>>();
   sorts = input.required<SortOption[]>();
   criterias = input<string[]>([]);
   selectedCriterias = input<Criterias>({} as Criterias);

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
+import { Language } from '../enums';
 import { Award, Country, Criterias, Genre, Movie, MovieActor, Person, Repartition, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
@@ -69,7 +70,7 @@ export class MovieService {
     );
   }
 
-  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = 'fr', direction = 'asc') =>
+  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = Language.FR, direction = 'asc') =>
     this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`,
       { observe: 'response' }
     );

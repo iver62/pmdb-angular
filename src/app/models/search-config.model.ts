@@ -1,5 +1,5 @@
 import { SortDirection } from "@angular/material/sort"
-import { View } from "../enums"
+import { Language, View } from "../enums"
 import { Criterias } from "./"
 
 export interface SearchConfig {
@@ -8,7 +8,7 @@ export interface SearchConfig {
   sort?: string,
   direction?: SortDirection
   term?: string,
-  lang?: string,
+  lang?: Language,
   criterias?: Criterias,
   view?: View
 }

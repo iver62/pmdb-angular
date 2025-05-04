@@ -2,7 +2,6 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -16,8 +15,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { map, Observable, startWith } from 'rxjs';
-import packageJson from '../../package.json';
-import { UserDialogComponent } from './components';
+import { Language } from './enums';
 import { FirstLetterPipe } from './pipes';
 import { AuthService, LoaderService } from './services';
 
@@ -206,15 +204,12 @@ export class AppComponent {
     }
   ];
 
-  appVersion = packageJson.version;
-
   private _mobileQueryListener: () => void;
 
   user$ = this.authService.loadUserProfile();
 
   constructor(
     private authService: AuthService,
-    private dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef,
     private loaderService: LoaderService,
     media: MediaMatcher,
@@ -225,18 +220,8 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    this.translate.addLangs(['en', 'fr']);
-    this.translate.use(localStorage.getItem('lang') || 'fr');
-  }
-
-  openProfileDialog() {
-    this.user$.subscribe(result => {
-      this.dialog.open(UserDialogComponent, {
-        minWidth: '30vw',  // Définit la largeur à 30% de l'écran
-        minHeight: '30vh', // Définit la hauteur à 30% de l'écran
-        data: result
-      })
-    });
+    this.translate.addLangs([Language.EN, Language.FR]);
+    this.translate.use(localStorage.getItem('lang') || translate.getDefaultLang() || Language.FR);
   }
 
   changeLanguage(lang: string) {
