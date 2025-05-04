@@ -1,12 +1,10 @@
-h2 {
-  display: flex !important;
-}
-
+.mat-mdc-fab,
 .mat-mdc-button {
   background-color: #555555;
   color: white;
 }
 
+.mat-mdc-fab:hover,
 .mat-mdc-button:hover {
   background-color: #444444;
 }

@@ -1,0 +1,65 @@
+<form [formGroup]="form()" class="flex flex-col gap-4">
+  <mat-form-field class="w-full md:w-1/2 lg:w-1/3">
+    <mat-label>{{'app.username' | translate}}</mat-label>
+    <input matInput [placeholder]="'app.username' | translate" formControlName="username" #username>
+    @if (username.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" [matTooltip]="'app.erase' | translate"
+      (click)="clearUsername()">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+    @if (usernameFormCtrl.hasError('required') && usernameFormCtrl.touched) {
+    <mat-error>{{'app.required_username' | translate}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:w-1/2 lg:w-1/3">
+    <mat-label>{{'app.firstname' | translate}}</mat-label>
+    <input matInput [placeholder]="'app.firstname' | translate" formControlName="firstName" #firstname>
+    @if (firstname.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" [matTooltip]="'app.erase' | translate"
+      (click)="clearFirstname()">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+    @if (firstnameFormCtrl.hasError('required') && firstnameFormCtrl.touched) {
+    <mat-error>{{'app.required_firstname' | translate}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:w-1/2 lg:w-1/3">
+    <mat-label>{{'app.lastname' | translate}}</mat-label>
+    <input matInput [placeholder]="'app.lastname' | translate" formControlName="lastName" #lastname>
+    @if (lastname.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" [matTooltip]="'app.erase' | translate"
+      (click)="clearLastname()">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+    @if (lastnameFormCtrl.hasError('required') && lastnameFormCtrl.touched) {
+    <mat-error>{{'app.required_lastname' | translate}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:w-1/2 lg:w-1/3">
+    <mat-label>{{'app.mail' | translate}}</mat-label>
+    <input matInput [placeholder]="'app.mail' | translate" formControlName="email" #email>
+    @if (email.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" [matTooltip]="'app.erase' | translate" (click)="clearEmail()">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+    @if (emailFormCtrl.hasError('required') && emailFormCtrl.touched) {
+    <mat-error>{{'app.required_email' | translate}}</mat-error>
+    }
+    @if (emailFormCtrl.hasError('email') && emailFormCtrl.touched) {
+    <mat-error>{{'app.malformed_email' | translate}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:w-1/2 lg:w-1/3">
+    <mat-label>{{'app.mail_verified' | translate}}</mat-label>
+    <input matInput [placeholder]="'app.mail_verified' | translate" formControlName="emailVerified" readonly>
+    <mat-icon matSuffix>lock</mat-icon>
+  </mat-form-field>
+</form>

@@ -294,6 +294,12 @@ export const routes: Routes = [
   //   loadComponent: () => import('./page/country-details/country-details.component').then(c => c.CountryDetailsComponent)
   // },
   {
+    path: 'user',
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'user'] },
+    loadComponent: () => import('./page/user/user.component').then(c => c.UserComponent)
+  },
+  {
     path: 'users',
     canActivate: [authGuard],
     data: { roles: ['admin'] },

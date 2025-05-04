@@ -1,11 +1,12 @@
 import { EMPTY_STRING } from "../app.component";
 
 export class User {
-  id: string;
-  username: string;
+  id?: string;
+  username?: string;
   email?: string;
   emailVerified?: boolean;
-  name?: string;
+  lastName?: string;
+  firstName?: string;
   numberOfMovies?: number;
 
   constructor(data?: Partial<User>) {
