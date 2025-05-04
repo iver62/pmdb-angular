@@ -1,20 +1,29 @@
-<mat-stepper class="rounded-lg mb-2" [linear]="isLinear" #stepper>
+<mat-stepper class="rounded-lg mb-2" [linear]="isLinear" (selectionChange)="onStepChange($event)" #stepper>
+
   <mat-step [stepControl]="generalInfosForm" [label]="'app.general_infos' | translate">
+    @if (currentStep == 0) {
     <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
     </app-general-infos-form>
     <button mat-button class="mt-4" (click)="saveMovie()">{{'app.next' | translate}}</button>
+    }
   </mat-step>
   <mat-step [stepControl]="technicalTeamForm" [label]="'app.technical_team' | translate">
+    @if (currentStep == 1) {
     <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
     <button mat-button (click)="saveTechnicalTeam()">{{'app.next' | translate}}</button>
+    }
   </mat-step>
   <mat-step [stepControl]="castingForm" [label]="'app.casting' | translate">
+    @if (currentStep == 2) {
     <app-casting-form [form]="castingForm"></app-casting-form>
     <button mat-button (click)="saveCasting()">{{'app.next' | translate}}</button>
+    }
   </mat-step>
   <mat-step [stepControl]="awardsForm" [label]="'app.awards' | translate">
+    @if (currentStep == 3) {
     <app-awards-form [form]="awardsForm"></app-awards-form>
     <button mat-button (click)="saveAwards()">{{'app.next' | translate}}</button>
+    }
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>

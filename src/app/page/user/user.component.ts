@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -33,6 +33,7 @@ export class UserComponent {
 
   constructor(
     private authService: AuthService,
+    private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private translate: TranslateService
   ) { }
@@ -46,20 +47,20 @@ export class UserComponent {
 
   cancelForm() {
     this.editMode = false;
-    this.buildForm();
+    this.form.patchValue(this.user);
   }
 
   saveUser() {
     this.authService.updateUser({ ...this.form.value }).subscribe(
       {
         next: result => {
+          this.snackBar.open(this.translate.instant('app.profile_updated_successfully'), 'Fermer', { duration: this.duration });
           this.user = result;
           this.editMode = false;
-          this.snackBar.open(this.translate.currentLang == 'en' ? 'Profile updated successfully' : 'Profil modifié avec succés', 'Close', { duration: this.duration });
         },
         error: e => {
           console.error(e);
-          this.snackBar.open(this.translate.currentLang == 'en' ? 'Error updating profile' : 'Erreur lors de la modification du profil', 'Error', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.error_updating_profile'), 'Fermer', { duration: this.duration });
         }
       }
     )
@@ -67,23 +68,23 @@ export class UserComponent {
 
   resetPassword(id: string) {
     return this.authService.resetPassword(id).subscribe({
-      next: () => this.snackBar.open(this.translate.currentLang == 'en' ? 'Reset email sent!' : 'Email de réinitialisation envoyé avec succés', 'Close', { duration: this.duration }),
+      next: () => this.snackBar.open(this.translate.instant('app.reset_email_sent'), 'Fermer', { duration: this.duration }),
       error: e => {
         console.error(e);
-        this.snackBar.open(e.error, 'Fermer', { duration: this.duration });
+        this.snackBar.open(this.translate.instant('app.error_reset_email'), 'Fermer', { duration: this.duration });
       }
     });
   }
 
   private buildForm() {
-    this.form = new FormGroup(
+    this.form = this.fb.group(
       {
-        id: new FormControl<string>(this.user?.id, Validators.required),
-        username: new FormControl<string>(this.user?.username, Validators.required),
-        firstName: new FormControl<string>(this.user?.firstName, Validators.required),
-        lastName: new FormControl<string>(this.user?.lastName, Validators.required),
-        email: new FormControl<string>(this.user?.email, [Validators.required, Validators.email]),
-        emailVerified: new FormControl<boolean>(this.user?.emailVerified, Validators.required)
+        id: [this.user?.id, Validators.required],
+        username: [this.user?.username, Validators.required],
+        firstName: [this.user?.firstName, Validators.required],
+        lastName: [this.user?.lastName, Validators.required],
+        email: [this.user?.email, [Validators.required, Validators.email]],
+        emailVerified: [this.user?.emailVerified, Validators.required]
       }
     );
   }

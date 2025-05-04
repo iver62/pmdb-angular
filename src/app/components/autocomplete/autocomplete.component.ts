@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BehaviorSubject, catchError, map, of, scan, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Person, PersonWithPhotoUrl, SearchConfig } from '../../models';
@@ -56,6 +56,7 @@ export class AutocompleteComponent {
 
   // Liste des personnes filtrées
   readonly persons$ = this.searchConfig$.pipe(
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term),
     switchMap(config => this.actorService.get(config.page, config.size, config.term).pipe(
       tap(response => {
         this.isLoadingMore = false;
@@ -111,10 +112,6 @@ export class AutocompleteComponent {
         panel.removeEventListener('scroll', this.onScroll.bind(this));
       }
     });
-  }
-
-  onOpenedAutocomplete() {
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
   }
 
   onSearch(event: string) {

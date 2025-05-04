@@ -1,11 +1,12 @@
 
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { TranslatePipe } from '@ngx-translate/core';
-import { catchError, of, switchMap, tap } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { Award, Movie, MovieActor } from '../../models';
 import { AuthService, MovieService } from '../../services';
@@ -80,6 +81,7 @@ export class AddMovieComponent {
   );
 
   isLinear = true;
+  currentStep = 0;
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -87,6 +89,10 @@ export class AddMovieComponent {
     private fb: FormBuilder,
     private movieService: MovieService
   ) { }
+
+  onStepChange(event: StepperSelectionEvent) {
+    this.currentStep = event.selectedIndex;
+  }
 
   selectImage(event: any) {
     this.imageFile = event;

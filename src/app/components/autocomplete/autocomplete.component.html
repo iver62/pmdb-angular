@@ -12,7 +12,7 @@
     }
   </button>
   }
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectActor($event)" (opened)="onOpenedAutocomplete()">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectActor($event)">
     @for (person of persons$ | async; track person.id) {
     <mat-option [value]="person">
       <div class="flex items-center gap-2">
