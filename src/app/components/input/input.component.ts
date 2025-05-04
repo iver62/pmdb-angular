@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 
@@ -17,7 +18,8 @@ import { DelayedInputDirective } from '../../directives';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatTooltipModule
+    MatTooltipModule,
+    TranslatePipe
   ],
   templateUrl: './input.component.html',
   styleUrl: './input.component.scss'

@@ -37,7 +37,6 @@ export class CountrySelectorComponent {
   selectedCountries = signal<Country[]>([]);
 
   currentLang$ = this.translate.onLangChange.pipe(
-    tap(result => console.log(result)),
     map(result => result.lang),
     startWith(localStorage.getItem('lang') || this.translate.defaultLang)
   );

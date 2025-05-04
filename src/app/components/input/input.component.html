@@ -3,7 +3,7 @@
   <input appDelayedInput matInput class="bg-white rounded" [(ngModel)]="pattern" [placeholder]="placeholder"
     (delayedInput)="onSearch()" #input />
   @if (input.value) {
-  <button matSuffix mat-icon-button aria-label="Clear" matTooltip="Effacer" (click)="clearSearch()">
+  <button matSuffix mat-icon-button aria-label="Clear" [matTooltip]="'app.erase' | translate" (click)="clearSearch()">
     <mat-icon>close</mat-icon>
   </button>
   }

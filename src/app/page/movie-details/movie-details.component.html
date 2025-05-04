@@ -12,7 +12,7 @@
       <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
       </app-general-infos-form>
 
-      <div class="fixed bottom-[6rem] right-5">
+      <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
           aria-label="Example icon button with a check icon" color="accent" [disabled]="generalInfosForm?.invalid"
           (click)="saveGeneralInfos()">
@@ -26,7 +26,7 @@
       } @else {
       <app-movie-detail [movie]="generalInfos"></app-movie-detail>
 
-      <div class="fixed bottom-[6rem] right-5">
+      <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
           aria-label="Example icon button with a delete icon" color="accent" (click)="editGeneralInfos=true">
           <mat-icon>edit</mat-icon>
@@ -46,7 +46,7 @@
       @if (editTechnicalTeam) {
       <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
 
-      <div class="fixed bottom-[6rem] right-5">
+      <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
           aria-label="Example icon button with a delete icon" color="accent" (click)="saveTechnicalTeam()">
           <mat-icon>check</mat-icon>
@@ -59,7 +59,7 @@
       } @else {
       <app-technical-team [technicalTeam]="technicalTeam"></app-technical-team>
 
-      <div class="fixed bottom-[6rem] right-5">
+      <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
           aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalTeam=true">
           <mat-icon>edit</mat-icon>
@@ -79,7 +79,7 @@
       @if (editCasting) {
       <app-casting-form [form]="castingForm"></app-casting-form>
 
-      <div class="fixed bottom-[6rem] right-5">
+      <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
           aria-label="Example icon button with a delete icon" color="accent" (click)="saveCasting()">
           <mat-icon>check</mat-icon>
@@ -93,7 +93,7 @@
       <div>
         <app-casting [actors]="casting"></app-casting>
 
-        <div class="fixed bottom-[6rem] right-5">
+        <div class="fixed bottom-5 right-5">
           <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
             aria-label="Example icon button with a delete icon" color="accent" (click)="editCasting=true">
             <mat-icon>edit</mat-icon>
@@ -114,7 +114,7 @@
       @if (editAwards) {
       <app-awards-form [form]="awardsForm"></app-awards-form>
 
-      <div class="fixed bottom-[6rem] right-5">
+      <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
           aria-label="Example icon button with a delete icon" color="accent" (click)="saveAwards()">
           <mat-icon>check</mat-icon>
@@ -128,7 +128,7 @@
       <div>
         <app-awards [awards]="awards"></app-awards>
 
-        <div class="fixed bottom-[6rem] right-5">
+        <div class="fixed bottom-5 right-5">
           <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
             aria-label="Example icon button with a delete icon" color="accent" (click)="editAwards=true">
             <mat-icon>edit</mat-icon>

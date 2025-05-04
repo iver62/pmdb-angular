@@ -95,7 +95,6 @@ export class AddMovieComponent {
   saveMovie() {
     if (this.generalInfosForm.valid) {
       this.authService.loadUserProfile().pipe(
-        tap(user => console.log({ ...this.generalInfosForm.value, user: user })),
         switchMap(user => this.movieService.saveMovie(this.imageFile, { ...this.generalInfosForm.value, user: user })
           .pipe(
             catchError(response => {

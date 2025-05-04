@@ -113,8 +113,6 @@ export class PersonSelectorComponent {
   }
 
   onOpenedAutocomplete() {
-    console.log('OPEN');
-
     this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
   }
 
