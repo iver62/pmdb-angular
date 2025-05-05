@@ -13,7 +13,7 @@ import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Person, PersonWithPhotoUrl, SearchConfig } from '../../models';
 import { ActorService } from '../../services';
-import { HttpUtils } from '../../utils';
+import { HttpUtils, Utils } from '../../utils';
 
 @Component({
   selector: 'app-autocomplete',
@@ -50,13 +50,14 @@ export class AutocompleteComponent {
       size: 20,
       sort: 'nomFrFr',
       direction: 'asc',
-      term: EMPTY_STRING
+      term: EMPTY_STRING,
+      excludedActorIds: this.personsToExclude()
     }
   );
 
   // Liste des personnes filtrées
   readonly persons$ = this.searchConfig$.pipe(
-    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term),
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && Utils.arraysEqual(c1.excludedActorIds, c2.excludedActorIds)),
     switchMap(config => this.actorService.get(config.page, config.size, config.term).pipe(
       tap(response => {
         this.isLoadingMore = false;
@@ -94,6 +95,14 @@ export class AutocompleteComponent {
 
   constructor(private actorService: ActorService,) {
     effect(() => this.formControl = this.control() as FormControl);
+    effect(() =>
+      this.searchConfig$.next(
+        {
+          ...this.searchConfig$.value,
+          excludedActorIds: this.personsToExclude().filter(id => id)
+        }
+      )
+    );
   }
 
   ngAfterViewInit() {

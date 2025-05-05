@@ -168,46 +168,24 @@ export class MovieDetailsComponent {
   private initCastingForm() {
     if (!this.casting) return;
 
+    const actorsFormArray = this.buildActorsFormArray();
+
     if (!this.castingForm) {
-      this.castingForm = this.fb.group(
-        {
-          actors: this.fb.array(
-            this.casting.map(actor =>
-              this.fb.group({
-                id: [actor.actor.id],
-                name: [actor.actor.name, Validators.required], // Nom de l'acteur
-                role: [actor.role, Validators.required], // Rôle joué dans le film
-              })
-            ))
-        }
-      );
+      this.castingForm = this.fb.group({ actors: actorsFormArray });
     } else {
-      this.castingForm.patchValue({ actors: this.casting });
+      this.castingForm.setValue({ actors: actorsFormArray });
     }
   }
 
   private initAwardsForm() {
     if (!this.awards) return;
 
+    const awardsFormArray = this.buildAwardsFormArray();
+
     if (!this.awardsForm) {
-      this.awardsForm = this.fb.group(
-        {
-          awards: this.fb.array(
-            this.awards
-              .sort(this.compare)
-              .map(award =>
-                this.fb.group({
-                  id: [award.id],
-                  ceremony: [award.ceremony, Validators.required], // Cérémonie de la récompense
-                  name: [award.name, Validators.required], // Nom de la récompense
-                  year: [award.year], // Année de la récompense
-                })
-              )
-          ),
-        }
-      );
+      this.awardsForm = this.fb.group({ awards: awardsFormArray });
     } else {
-      this.awardsForm.patchValue({ awards: this.awards });
+      this.awardsForm.setValue({ awards: awardsFormArray });
     }
   }
 
@@ -231,12 +209,43 @@ export class MovieDetailsComponent {
 
   cancelCasting() {
     this.editCasting = false;
-    this.castingForm.patchValue({ actors: this.casting });
+    this.castingForm.setControl('actors', this.buildActorsFormArray());
   }
 
   cancelAwards() {
     this.editAwards = false;
-    this.awardsForm.patchValue({ awards: this.awards });
+    this.awardsForm.setControl('awards', this.buildAwardsFormArray());
+  }
+
+  private buildActorsFormArray() {
+    return this.fb.array(
+      this.casting?.map(actor =>
+        this.fb.group(
+          {
+            id: [actor.actor.id],
+            name: [actor.actor.name, Validators.required],
+            role: [actor.role, Validators.required],
+          }
+        )
+      )
+    );
+  }
+
+  private buildAwardsFormArray() {
+    return this.fb.array(
+      this.awards
+        ?.sort(this.compare)
+        ?.map(award =>
+          this.fb.group(
+            {
+              id: [award.id],
+              ceremony: [award.ceremony, Validators.required], // Cérémonie de la récompense
+              name: [award.name, Validators.required], // Nom de la récompense
+              year: [award.year], // Année de la récompense
+            }
+          )
+        )
+    );
   }
 
   saveGeneralInfos() {
