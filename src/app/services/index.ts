@@ -17,6 +17,7 @@ export * from './persons/stuntman.service';
 export * from './persons/visual-effects-supervisor.service';
 export * from './auth.service';
 export * from './award.service';
+export * from './bar-chart.service';
 export * from './country.service';
 export * from './date.service';
 export * from './genre.service';

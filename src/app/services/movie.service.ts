@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SseClient } from 'ngx-sse-client';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
@@ -17,8 +18,13 @@ export class MovieService {
 
   constructor(
     private dateService: DateService,
-    private http: HttpClient
+    private http: HttpClient,
+    private sseClient: SseClient
   ) { }
+
+  getMovieCountStream() {
+    return this.sseClient.stream(`${this.basePath}/count-stream`, { keepAlive: true, reconnectionDelay: 1_000, responseType: 'event' }, {}, 'GET');
+  }
 
   countMovies() {
     return this.http.get<number>(`${this.basePath}/count`);

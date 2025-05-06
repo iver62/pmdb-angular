@@ -1,12 +1,12 @@
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { combineLatest, map, startWith } from 'rxjs';
+import { combineLatest, map, startWith, tap } from 'rxjs';
 import { BarChartComponent, LineChartComponent } from '../../components';
-import { ActorService, MovieService } from '../../services';
-import { BarChartService } from '../../services/bar-chart.service';
+import { ActorService, BarChartService, MovieService } from '../../services';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,8 +24,34 @@ import { BarChartService } from '../../services/bar-chart.service';
 })
 export class DashboardComponent {
 
-  moviesNumber$ = this.movieService.countMovies();
-  actorsNumber$ = this.actorService.count();
+  moviesNumber$ = this.movieService.getMovieCountStream().pipe(
+    takeUntilDestroyed(),
+    tap(event => {
+      if (event.type === 'error') {
+        const errorEvent = event as ErrorEvent;
+        console.error(errorEvent.error, errorEvent.message);
+      }
+    }),
+    map(event => {
+      const messageEvent = event as MessageEvent;
+      return messageEvent.data;
+    })
+  );
+
+  actorsNumber$ = this.actorService.getActorCountStream().pipe(
+    takeUntilDestroyed(),
+    tap(event => {
+      if (event.type === 'error') {
+        const errorEvent = event as ErrorEvent;
+        console.error(errorEvent.error, errorEvent.message);
+      }
+    }),
+    map(event => {
+      const messageEvent = event as MessageEvent;
+      return messageEvent.data;
+    })
+  );
+
   decadeRepartition$ = this.movieService.getRepartitionByDecade().pipe(
     map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
