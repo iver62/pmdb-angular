@@ -5,7 +5,7 @@ import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
 import { Language } from '../enums';
-import { Award, Country, Criterias, Genre, Movie, MovieActor, Person, Repartition, TechnicalTeam } from '../models';
+import { Award, Country, Criterias, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -160,30 +160,6 @@ export class MovieService {
 
   getCountriesByMovie(id: number) {
     return this.http.get<Country[]>(`${this.basePath}/${id}/countries`);
-  }
-
-  getEvolutionCreationDate() {
-    return this.http.get<Repartition[]>(`${this.basePath}/creation-date-evolution`);
-  }
-
-  getRepartitionByCreationDate() {
-    return this.http.get<Repartition[]>(`${this.basePath}/creation-date-repartition`);
-  }
-
-  getRepartitionByDecade() {
-    return this.http.get<Repartition[]>(`${this.basePath}/decade-repartition`);
-  }
-
-  getRepartitionByCountry() {
-    return this.http.get<Repartition[]>(`${this.basePath}/country-repartition`);
-  }
-
-  getRepartitionByGenre() {
-    return this.http.get<Repartition[]>(`${this.basePath}/genre-repartition`);
-  }
-
-  getRepartitionByUser() {
-    return this.http.get<Repartition[]>(`${this.basePath}/user-repartition`);
   }
 
   saveMovie(imageFile: File, movie: Movie) {

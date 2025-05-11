@@ -22,5 +22,7 @@ export * from './country.service';
 export * from './date.service';
 export * from './genre.service';
 export * from './loader.service';
+export * from './line-chart.service';
 export * from './movie.service';
+export * from './stats.service';
 export * from './user.service';

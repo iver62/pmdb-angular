@@ -1,10 +1,3 @@
-@let decadeRepartition = decadeRepartition$ | async;
-@let genreRepartition = genreRepartition$ | async;
-@let countryRepartition = countryRepartition$ | async;
-@let userRepartition = userRepartition$ | async;
-@let creationDateRepartition = creationDateRepartition$ | async;
-@let creationDateEvolution = creationDateEvolution$ | async;
-
 <div class="grid grid-cols-2 lg:grid-cols-6 gap-3">
   <mat-card appearance="outlined" class="col-span-1 lg:col-span-3">
     <mat-card-header>
@@ -33,7 +26,7 @@
         <span>{{'app.release_dates' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="decadeRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="moviesByReleaseDateRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
@@ -43,7 +36,7 @@
         <span>{{'app.countries' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="countryRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="moviesByCountryRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">
@@ -53,7 +46,7 @@
         <span>{{'app.categories' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="genreRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="moviesByCategoryRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
@@ -63,7 +56,7 @@
         <span>{{'app.contributors' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="userRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="moviesByUserRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
@@ -73,7 +66,7 @@
         <span>{{'app.add_date' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="creationDateRepartition"></app-bar-chart>
+    <app-bar-chart [barChartData]="creationDateRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
@@ -84,6 +77,6 @@
         <span>{{'app.number_of_movies_evolution' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-line-chart [lineChartData]="creationDateEvolution"></app-line-chart>
+    <app-line-chart [lineChartData]="moviesNumberEvolution$ | async"></app-line-chart>
   </mat-card>
 </div>

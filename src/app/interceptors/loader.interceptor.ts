@@ -1,12 +1,11 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { LoaderService } from '../services';
 import { environment } from '../../environments/environment';
+import { LoaderService } from '../services';
 
 const urlsToExclude = [
-  `${environment.apiBaseUrl}/movies/count-stream`,
-  `${environment.apiBaseUrl}/actors/count-stream`
+  `${environment.apiBaseUrl}/stats`,
 ];
 
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {

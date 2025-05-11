@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { combineLatest, map, startWith, tap } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
+import { distinctUntilChanged, map, tap } from 'rxjs';
 import { BarChartComponent, LineChartComponent } from '../../components';
-import { ActorService, BarChartService, MovieService } from '../../services';
+import { BarChartService, LineChartService, StatsService } from '../../services';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,74 +24,63 @@ import { ActorService, BarChartService, MovieService } from '../../services';
 })
 export class DashboardComponent {
 
-  moviesNumber$ = this.movieService.getMovieCountStream().pipe(
+  moviesNumber$ = this.statsService.listenTo('movie-count').pipe(
     takeUntilDestroyed(),
-    tap(event => {
-      if (event.type === 'error') {
-        const errorEvent = event as ErrorEvent;
-        console.error(errorEvent.error, errorEvent.message);
-      }
-    }),
-    map(event => {
-      const messageEvent = event as MessageEvent;
-      return messageEvent.data;
-    })
+    distinctUntilChanged((n1, n2) => n1 == n2),
+    tap(result => console.log('Nombre de films', result))
   );
 
-  actorsNumber$ = this.actorService.getActorCountStream().pipe(
+  actorsNumber$ = this.statsService.listenTo('actor-count').pipe(
     takeUntilDestroyed(),
-    tap(event => {
-      if (event.type === 'error') {
-        const errorEvent = event as ErrorEvent;
-        console.error(errorEvent.error, errorEvent.message);
-      }
-    }),
-    map(event => {
-      const messageEvent = event as MessageEvent;
-      return messageEvent.data;
-    })
+    distinctUntilChanged((n1, n2) => n1 == n2),
+    tap(result => console.log('Nombre d\'acteurs', result))
   );
 
-  decadeRepartition$ = this.movieService.getRepartitionByDecade().pipe(
+  moviesByReleaseDateRepartition$ = this.statsService.listenTo('movies-by-release-date').pipe(
+    takeUntilDestroyed(),
+    distinctUntilChanged((r1, r2) => JSON.stringify(r1) === JSON.stringify(r2)),
+    tap(result => console.log('Films par décennie', result)),
     map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
-  genreRepartition$ = this.movieService.getRepartitionByGenre().pipe(
+
+  moviesByCountryRepartition$ = this.statsService.listenTo('movies-by-country').pipe(
+    takeUntilDestroyed(),
+    distinctUntilChanged((r1, r2) => JSON.stringify(r1) === JSON.stringify(r2)),
+    tap(result => console.log('Films par pays', result)),
+    map(dataset => this.barChartService.formatBarChartCountryDataset(dataset, 'fr'))
+  );
+
+  moviesByCategoryRepartition$ = this.statsService.listenTo('movies-by-category').pipe(
+    takeUntilDestroyed(),
+    distinctUntilChanged((r1, r2) => JSON.stringify(r1) === JSON.stringify(r2)),
+    tap(result => console.log('Films par genre', result)),
     map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
-  countryRepartition$ = combineLatest([
-    this.movieService.getRepartitionByCountry(),
-    this.translate.onLangChange.pipe(
-      map(event => event.lang),
-      startWith(localStorage.getItem('lang') || this.translate.defaultLang)
-    )
-  ]).pipe(
-    map(([dataset, lang]) => this.barChartService.formatBarChartCountryDataset(dataset, lang))
-  );
-  userRepartition$ = this.movieService.getRepartitionByUser().pipe(
+
+  moviesByUserRepartition$ = this.statsService.listenTo('movies-by-user').pipe(
+    takeUntilDestroyed(),
+    distinctUntilChanged((r1, r2) => JSON.stringify(r1) === JSON.stringify(r2)),
+    tap(result => console.log('Films par utilisateur', result)),
     map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
-  creationDateRepartition$ = this.movieService.getRepartitionByCreationDate().pipe(
+
+  creationDateRepartition$ = this.statsService.listenTo('movies-number-by-creation-date').pipe(
+    takeUntilDestroyed(),
+    distinctUntilChanged((r1, r2) => JSON.stringify(r1) === JSON.stringify(r2)),
+    tap(result => console.log('Nombre de films par date de création', result)),
     map(dataset => this.barChartService.formatBarChartDataset(dataset))
   );
-  creationDateEvolution$ = this.movieService.getEvolutionCreationDate().pipe(
-    map(dataset => (
-      {
-        labels: dataset.map(d => d.label),
-        datasets: [
-          {
-            data: dataset.map(d => d.total),
-            borderColor: '#36A2EB',
-            pointBorderColor: '#36A2EB',
-          }
-        ]
-      }
-    ))
+
+  moviesNumberEvolution$ = this.statsService.listenTo('movies-number-evolution').pipe(
+    takeUntilDestroyed(),
+    distinctUntilChanged((r1, r2) => JSON.stringify(r1) === JSON.stringify(r2)),
+    tap(result => console.log('Evolution du nombre de films', result)),
+    map(dataset => this.lineChartService.buildLineChartDataset(dataset))
   );
 
   constructor(
-    private actorService: ActorService,
     private barChartService: BarChartService,
-    private movieService: MovieService,
-    private translate: TranslateService
+    private lineChartService: LineChartService,
+    private statsService: StatsService
   ) { }
 }
