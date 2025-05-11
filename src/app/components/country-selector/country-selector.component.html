@@ -15,7 +15,7 @@
       [matChipInputFor]="countriesChipGrid" [matAutocomplete]="auto" />
   </mat-chip-grid>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    @for (country of countries$ | async; track country.id) {
+    @for (country of filteredCountries$ | async; track country.id) {
     <mat-option [value]="country">
       {{currentLang == language.FR ? country?.nomFrFr : country?.nomEnGb}}
     </mat-option>

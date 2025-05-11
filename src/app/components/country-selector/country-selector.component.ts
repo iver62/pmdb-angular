@@ -1,12 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, effect, ElementRef, input, signal, ViewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, distinctUntilChanged, map, of, scan, startWith, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Language } from '../../enums';
@@ -60,9 +61,11 @@ export class CountrySelectorComponent {
     switchMap(config => this.countryService.getCountries(config.page, config.size, config.term, config.sort, config.lang).pipe(
       tap(response => {
         this.isLoadingMore = false;
+        console.log(this.selectedCountries());
+
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
       }),
-      map(response => response.body.filter(country => !this.selectedCountries().some(c => c.id === country.id))),
+      map(response => response.body),
       catchError(() => {
         this.isLoadingMore = false;
         return of([]);
@@ -78,6 +81,12 @@ export class CountrySelectorComponent {
         return newArray;
       }
     }, [])
+  );
+
+  readonly filteredCountries$ = combineLatest([this.countries$, toObservable(this.selectedCountries)]).pipe(
+    map(([allCountries, selected]) =>
+      allCountries.filter(country => !selected.some(sel => sel.id === country.id))
+    )
   );
 
   control: FormControl;
@@ -146,6 +155,7 @@ export class CountrySelectorComponent {
     if (!this.selectedCountries().some(c => c.id === country.id)) {
       this.selectedCountries.set([...this.selectedCountries(), country]);
       this.control.setValue([...this.selectedCountries()]);
+      this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
 
       if (input) {
         this.input.nativeElement.value = EMPTY_STRING; // Clear the input value
