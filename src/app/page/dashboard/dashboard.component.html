@@ -26,7 +26,7 @@
         <span>{{'app.release_dates' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="moviesByReleaseDateRepartition$ | async"></app-bar-chart>
+    <app-bar-chart [data]="moviesByReleaseDateRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
@@ -36,7 +36,7 @@
         <span>{{'app.countries' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="moviesByCountryRepartition$ | async"></app-bar-chart>
+    <app-bar-chart [data]="moviesByCountryRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">
@@ -46,7 +46,7 @@
         <span>{{'app.categories' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="moviesByCategoryRepartition$ | async"></app-bar-chart>
+    <app-bar-chart [data]="moviesByCategoryRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
@@ -56,7 +56,7 @@
         <span>{{'app.contributors' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="moviesByUserRepartition$ | async"></app-bar-chart>
+    <app-bar-chart [data]="moviesByUserRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
@@ -66,7 +66,7 @@
         <span>{{'app.add_date' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-bar-chart [barChartData]="creationDateRepartition$ | async"></app-bar-chart>
+    <app-bar-chart [data]="creationDateRepartition$ | async"></app-bar-chart>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
@@ -77,6 +77,6 @@
         <span>{{'app.number_of_movies_evolution' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <app-line-chart [lineChartData]="moviesNumberEvolution$ | async"></app-line-chart>
+    <app-line-chart [data]="moviesNumberEvolution$ | async"></app-line-chart>
   </mat-card>
 </div>

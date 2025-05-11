@@ -61,8 +61,6 @@ export class CountrySelectorComponent {
     switchMap(config => this.countryService.getCountries(config.page, config.size, config.term, config.sort, config.lang).pipe(
       tap(response => {
         this.isLoadingMore = false;
-        console.log(this.selectedCountries());
-
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
       }),
       map(response => response.body),
