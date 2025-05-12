@@ -116,7 +116,7 @@ export class MovieDetailsComponent {
       this.generalInfosForm = this.fb.group(
         {
           id: [this.generalInfos.id],
-          title: [this.generalInfos.title, Validators.required],
+          title: [this.generalInfos.title],
           originalTitle: [this.generalInfos.originalTitle],
           synopsis: [this.generalInfos.synopsis],
           releaseDate: [this.generalInfos.releaseDate],

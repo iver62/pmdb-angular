@@ -2,6 +2,8 @@
   <img mat-card-image [src]="posterUrl$ | async" alt="{{ movie().title }}" />
   <mat-card-content class="flex flex-col overflow-y-auto">
     <div>{{ movie().title }}</div>
+    @if (movie().releaseDate) {
     <div>({{ movie().releaseDate | date: 'yyyy' }})</div>
+    }
   </mat-card-content>
 </mat-card>

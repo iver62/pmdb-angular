@@ -42,7 +42,7 @@ export class AddMovieComponent {
       title: [EMPTY_STRING, Validators.required],
       originalTitle: [],
       synopsis: [],
-      releaseDate: [Validators.required],
+      releaseDate: [],
       runningTime: [],
       budget: [],
       budgetCurrency: [DEFAULT_CURRENCY],

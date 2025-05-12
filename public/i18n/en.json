@@ -123,7 +123,6 @@
     "required_email": "Mail is required",
     "required_firstname": "First name is required",
     "required_lastname": "Name is required",
-    "required_release_date": "Release date is required",
     "required_title": "Title is required",
     "required_username": "Username is required",
     "reset": "Reset",

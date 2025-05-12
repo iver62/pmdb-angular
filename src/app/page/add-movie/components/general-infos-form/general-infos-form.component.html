@@ -18,9 +18,6 @@
       <input matInput [matDatepicker]="picker" placeholder="JJ/MM/YYYY" formControlName="releaseDate">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      @if (releaseDateFormCtrl.hasError('required') && releaseDateFormCtrl.touched) {
-      <mat-error>{{'app.required_release_date' | translate}}</mat-error>
-      }
     </mat-form-field>
 
     <mat-form-field class="col-span-12 md:col-span-12">
