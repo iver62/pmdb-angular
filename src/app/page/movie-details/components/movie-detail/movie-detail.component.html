@@ -33,13 +33,13 @@
     @if (movie()?.budget) {
     <p>
       <span class="font-bold">{{'app.budget' | translate | uppercase}} :</span>
-      <span>&nbsp;{{movie()?.budget | number}} @if (movie()?.budget) {$}</span>
+      <span>&nbsp;{{movie()?.budget | number}} @if (movie()?.budget) { {{movie()?.budgetCurrency}} }</span>
     </p>
     }
     @if (movie()?.boxOffice) {
     <p>
       <span class="font-bold">{{'app.box_office' | translate | uppercase}} :</span>
-      <span>&nbsp;{{movie()?.boxOffice | number}} @if (movie()?.boxOffice) {$}</span>
+      <span>&nbsp;{{movie()?.boxOffice | number}} @if (movie()?.boxOffice) { {{movie()?.boxOfficeCurrency}} }</span>
     </p>
     }
     @if (movie()?.genres?.length) {

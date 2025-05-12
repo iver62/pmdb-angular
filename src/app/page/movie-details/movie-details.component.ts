@@ -12,6 +12,7 @@ import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
 import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
+import { DEFAULT_CURRENCY } from '../../utils';
 
 @Component({
   selector: 'app-movie-details',
@@ -121,7 +122,9 @@ export class MovieDetailsComponent {
           releaseDate: [this.generalInfos.releaseDate],
           runningTime: [this.generalInfos.runningTime],
           budget: [this.generalInfos.budget],
+          budgetCurrency: [this.generalInfos.budgetCurrency || DEFAULT_CURRENCY],
           boxOffice: [this.generalInfos.boxOffice],
+          boxOfficeCurrency: [this.generalInfos.boxOfficeCurrency || DEFAULT_CURRENCY],
           posterFileName: [this.generalInfos.posterFileName],
           countries: [this.generalInfos.countries],
           genres: [this.generalInfos.genres],

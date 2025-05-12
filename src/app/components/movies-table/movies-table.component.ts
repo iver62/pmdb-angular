@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, effect, EventEmitter, input, Input, Output, signal } from '@angular/core';
 import { MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -12,8 +12,8 @@ import { MovieService } from '../../services';
   selector: 'app-movies-table',
   imports: [
     AsyncPipe,
-    CurrencyPipe,
     DatePipe,
+    DecimalPipe,
     MatSortModule,
     MatTableModule,
     RouterLink,

@@ -1,0 +1,30 @@
+export const currencies = [
+  { value: 'USD', symbol: '$', label: 'Dollar américain' },
+  { value: 'EUR', symbol: '€', label: 'Euro' },
+  { value: 'GBP', symbol: '£', label: 'Livre sterling' },
+  { value: 'JPY', symbol: '¥', label: 'Yen japonais' },
+  { value: 'CHF', symbol: 'CHF', label: 'Franc suisse' },
+  { value: 'CAD', symbol: '$', label: 'Dollar canadien' },
+  { value: 'AUD', symbol: '$', label: 'Dollar australien' },
+  { value: 'CNY', symbol: '¥', label: 'Yuan renminbi' },
+  { value: 'INR', symbol: '₹', label: 'Roupie indienne' },
+  { value: 'BRL', symbol: 'R$', label: 'Réal brésilien' },
+  { value: 'RUB', symbol: '₽', label: 'Rouble russe' },
+  { value: 'SEK', symbol: 'kr', label: 'Couronne suédoise' },
+  { value: 'NOK', symbol: 'kr', label: 'Couronne norvégienne' },
+  { value: 'DKK', symbol: 'kr', label: 'Couronne danoise' },
+  { value: 'ZAR', symbol: 'R', label: 'Rand sud-africain' },
+  { value: 'MXN', symbol: '$', label: 'Peso mexicain' },
+  { value: 'KRW', symbol: '₩', label: 'Won sud-coréen' },
+  { value: 'TRY', symbol: '₺', label: 'Livre turque' },
+  { value: 'PLN', symbol: 'zł', label: 'Złoty polonais' },
+  { value: 'SGD', symbol: '$', label: 'Dollar de Singapour' },
+  { value: 'HKD', symbol: '$', label: 'Dollar de Hong Kong' },
+  { value: 'NZD', symbol: '$', label: 'Dollar néo-zélandais' },
+  { value: 'AED', symbol: 'د.إ', label: 'Dirham des Émirats' },
+  { value: 'SAR', symbol: '﷼', label: 'Riyal saoudien' },
+  { value: 'ILS', symbol: '₪', label: 'Shekel israélien' },
+  { value: 'EGP', symbol: '£', label: 'Livre égyptienne' }
+];
+
+export const DEFAULT_CURRENCY = '€';

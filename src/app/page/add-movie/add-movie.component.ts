@@ -11,6 +11,7 @@ import { EMPTY_STRING } from '../../app.component';
 import { Award, Movie, MovieActor } from '../../models';
 import { AuthService, MovieService } from '../../services';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
+import { DEFAULT_CURRENCY } from '../../utils';
 
 @Component({
   selector: 'app-add-movie',
@@ -44,7 +45,9 @@ export class AddMovieComponent {
       releaseDate: [Validators.required],
       runningTime: [],
       budget: [],
+      budgetCurrency: [DEFAULT_CURRENCY],
       boxOffice: [],
+      boxOfficeCurrency: [DEFAULT_CURRENCY],
       posterFileName: [],
       countries: [],
       genres: []

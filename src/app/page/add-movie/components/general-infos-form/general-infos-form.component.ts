@@ -5,10 +5,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { CountrySelectorComponent, FileChooserComponent, GenreSelectorComponent } from '../../../../components';
+import { currencies } from '../../../../utils';
 
 @Component({
   selector: 'app-general-infos-form',
@@ -21,6 +23,7 @@ import { CountrySelectorComponent, FileChooserComponent, GenreSelectorComponent 
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatSelectModule,
     MatTooltipModule,
     NgPipesModule,
     ReactiveFormsModule,
@@ -34,6 +37,8 @@ export class GeneralInfosFormComponent {
   @Input() form: FormGroup;
 
   @Output() selectImage = new EventEmitter<File>();
+
+  currencies = currencies;
 
   get titleFormCtrl() {
     return this.form.get('title');
