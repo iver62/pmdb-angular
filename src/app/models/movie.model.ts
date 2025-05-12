@@ -6,7 +6,7 @@ export interface Movie {
   title?: string,
   originalTitle?: string,
   synopsis?: string,
-  releaseDate?: Date,
+  releaseDate?: string,
   runningTime?: number,
   budget?: number,
   boxOffice?: number,

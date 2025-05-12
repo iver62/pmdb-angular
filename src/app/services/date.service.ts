@@ -8,7 +8,7 @@ export class DateService {
 
   constructor() { }
 
-  format(date: Moment | Date, format: string) {
+  format(date: Moment | Date | string, format: string) {
     return moment(date).format(format);
   }
 }

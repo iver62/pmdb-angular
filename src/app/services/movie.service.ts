@@ -167,7 +167,7 @@ export class MovieService {
     if (imageFile) {
       formData.append('file', imageFile);
     }
-    formData.append('movieDTO', new Blob([JSON.stringify(movie)], { type: 'application/json' }));
+    formData.append('movieDTO', new Blob([JSON.stringify({ ...movie, releaseDate: this.dateService.format(movie.releaseDate, 'YYYY-MM-DD') })], { type: 'application/json' }));
     return this.http.post<Movie>(this.basePath, formData);
   }
 
@@ -188,7 +188,7 @@ export class MovieService {
     if (imageFile) {
       formData.append('file', imageFile);
     }
-    formData.append('movieDTO', new Blob([JSON.stringify(movie)], { type: 'application/json' }));
+    formData.append('movieDTO', new Blob([JSON.stringify({ ...movie, releaseDate: this.dateService.format(movie.releaseDate, 'YYYY-MM-DD') })], { type: 'application/json' }));
     return this.http.put<Movie>(`${this.basePath}/${movie.id}`, formData);
   }
 
