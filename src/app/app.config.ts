@@ -11,7 +11,7 @@ import 'moment/locale/fr'; // Importation explicite de la locale française pour
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideKeycloakAngular } from '../keycloak-init';
 import { routes } from './app.routes';
-import { getFrenchPaginatorIntl } from './custom-paginator';
+import { CustomMatPaginatorIntl } from './custom-paginator';
 import { Language } from './enums';
 import { authInterceptor, loaderInterceptor } from './interceptors';
 
@@ -49,7 +49,7 @@ export const appConfig: ApplicationConfig = {
     provideKeycloakAngular(),
     provideCharts(withDefaultRegisterables()),
     provideRouter(routes),
-    { provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl() },
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'fr' }
