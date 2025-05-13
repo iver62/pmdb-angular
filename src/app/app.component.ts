@@ -2,6 +2,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { DateAdapter } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -211,6 +212,7 @@ export class AppComponent {
   constructor(
     private authService: AuthService,
     changeDetectorRef: ChangeDetectorRef,
+    private dateAdapter: DateAdapter<any>,
     private loaderService: LoaderService,
     media: MediaMatcher,
     private translate: TranslateService
@@ -219,6 +221,8 @@ export class AppComponent {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.translate.onLangChange.subscribe(event => this.dateAdapter.setLocale(event.lang)); // Applique la locale au datepicker
 
     this.translate.addLangs([Language.EN, Language.FR]);
     this.translate.use(localStorage.getItem('lang') || translate.getDefaultLang() || Language.FR);

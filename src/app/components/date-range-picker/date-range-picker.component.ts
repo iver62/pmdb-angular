@@ -32,6 +32,7 @@ export class DateRangePickerComponent {
   clearDates() {
     this.fromDateControl.reset();
     this.toDateControl.reset();
+    this.fromDateControl.markAsDirty();
   }
 
 }

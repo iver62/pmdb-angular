@@ -1,4 +1,7 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import localeEn from '@angular/common/locales/en';
+import localeFr from '@angular/common/locales/fr';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
@@ -14,6 +17,9 @@ import { routes } from './app.routes';
 import { CustomMatPaginatorIntl } from './custom-paginator';
 import { Language } from './enums';
 import { authInterceptor, loaderInterceptor } from './interceptors';
+
+registerLocaleData(localeFr);
+registerLocaleData(localeEn);
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './i18n/', '.json');
