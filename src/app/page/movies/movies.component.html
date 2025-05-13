@@ -21,7 +21,7 @@
   }
 
   @if (searchConfig$.value.view == view.CARDS) {
-  <div class="grow overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
+  <div #scrollContainer class="grow overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
     (scrolled)="onScroll()">
     <app-movies-list [movies]="movies"></app-movies-list>
   </div>

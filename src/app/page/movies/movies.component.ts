@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
@@ -31,6 +31,7 @@ import { HttpUtils } from '../../utils';
 })
 export class MoviesComponent {
 
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   view = View;
@@ -70,9 +71,9 @@ export class MoviesComponent {
         })
       )
     ),
-    scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE // Concatène les nouvelles données
+    scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE
       ? result
-      : acc.concat(result), []
+      : acc.concat(result) // Concatène les nouvelles données
     )
   );
 
@@ -152,6 +153,7 @@ export class MoviesComponent {
 
   onSearch(event: string) {
     if (typeof event == 'string') {
+      this.scrollContainer.nativeElement.scrollTo({ top: 0 });
       this.updateSearchConfig({ page: 0, term: event?.trim() })
     };
   }

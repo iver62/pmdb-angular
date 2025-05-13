@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, effect, input, Input, ViewChild } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Component, effect, ElementRef, input, Input, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
@@ -11,7 +12,6 @@ import { View } from '../../enums';
 import { Country, Criterias, Person, SearchConfig, SortOption } from '../../models';
 import { BaseService } from '../../services';
 import { HttpUtils } from '../../utils';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-persons',
@@ -31,6 +31,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class PersonsComponent {
 
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   @Input() personService!: BaseService; // Service injecté dynamiquement
@@ -40,6 +41,7 @@ export class PersonsComponent {
 
   view = View;
   total: number;
+  private loaded = 0;
   pageSizeOptions = [25, 50, 100];
   sortOptions: SortOption[] = [
     { active: 'name', label: 'app.name', direction: 'asc' },
@@ -72,10 +74,16 @@ export class PersonsComponent {
         })
       )
     ),
-    scan((acc: Person[], result: Person[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE // Concatène les nouvelles données
-      ? result
-      : acc.concat(result), []
-    )
+    scan((acc: Person[], result: Person[]) => {
+      if (this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE) {
+        this.loaded = result.length;
+        return result;
+      } else { // Concatène les nouvelles données
+        const newArray = acc.concat(result);
+        this.loaded = newArray.length;
+        return newArray;
+      }
+    })
   );
 
   sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(
@@ -139,12 +147,15 @@ export class PersonsComponent {
 
   onSearch(event: string) {
     if (typeof event == 'string') {
+      this.scrollContainer.nativeElement.scrollTo({ top: 0 });
       this.updateSearchConfig({ page: 0, term: event?.trim() });
     }
   }
 
   onScroll() {
-    this.updateSearchConfig({ page: this.searchConfig$.value.page + 1 });
+    if (this.loaded < this.total) {
+      this.updateSearchConfig({ page: this.searchConfig$.value.page + 1 });
+    }
   }
 
   onPageChange(event: PageEvent) {
