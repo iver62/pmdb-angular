@@ -14,7 +14,7 @@
       <!-- Id Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
-        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+        <td mat-cell class="font-bold text-lg whitespace-nowrap" *matCellDef="let row">
           {{row.id}}
         </td>
       </ng-container>
@@ -22,7 +22,7 @@
       <!-- Username Column -->
       <ng-container matColumnDef="username">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.username' | translate}}</th>
-        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+        <td mat-cell class="font-bold text-lg whitespace-nowrap" *matCellDef="let row">
           {{row.username}}
         </td>
       </ng-container>
@@ -30,7 +30,7 @@
       <!-- Name Column -->
       <ng-container matColumnDef="lastname">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.name' | translate}}</th>
-        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+        <td mat-cell class="font-bold text-lg whitespace-nowrap" *matCellDef="let row">
           {{row?.firstname}} {{row?.lastname}}
         </td>
       </ng-container>
@@ -38,7 +38,7 @@
       <!-- Email Column -->
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.mail' | translate}}</th>
-        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+        <td mat-cell class="font-bold text-lg whitespace-nowrap" *matCellDef="let row">
           {{row.email}}
         </td>
       </ng-container>
@@ -53,7 +53,7 @@
 
       <!-- Number of Movies Column -->
       <ng-container matColumnDef="moviesCount">
-        <th mat-header-cell *matHeaderCellDef>{{'app.count_added_movies' | translate}}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.count_added_movies' | translate}}</th>
         <td mat-cell class="font-bold text-lg" *matCellDef="let row">
           {{row.numberOfMovies}}
         </td>
@@ -62,7 +62,7 @@
       <!-- Edit roles column -->
       <ng-container matColumnDef="tools">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+        <td mat-cell class="font-bold text-lg whitespace-nowrap" *matCellDef="let row">
           <button mat-icon-button [matTooltip]="'app.edit_roles' | translate" (click)="openRolesDialog(row)">
             <mat-icon>manage_accounts</mat-icon>
           </button>

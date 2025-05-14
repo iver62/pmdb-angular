@@ -54,7 +54,7 @@ export class UserComponent {
     this.authService.updateUser({ ...this.form.value }).subscribe(
       {
         next: result => {
-          this.snackBar.open(this.translate.instant('app.profile_updated_successfully'), 'Fermer', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.profile_updated_success'), 'Fermer', { duration: this.duration });
           this.user = result;
           this.editMode = false;
         },
