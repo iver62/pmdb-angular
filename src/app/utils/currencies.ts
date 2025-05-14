@@ -27,4 +27,4 @@ export const currencies = [
   { value: 'EGP', symbol: '£', label: 'Livre égyptienne' }
 ];
 
-export const DEFAULT_CURRENCY = '€';
+export const DEFAULT_CURRENCY = 'EUR';

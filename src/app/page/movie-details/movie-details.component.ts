@@ -309,13 +309,13 @@ export class MovieDetailsComponent {
       this.movieService.saveCasting(this.id, body).subscribe(
         {
           next: result => {
-            this.snackBar.open(this.translate.instant('app.casting_update_success'), this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.cast_update_success'), this.translate.instant('app.close'), { duration: this.duration });
             this.casting = result;
             this.castingForm.patchValue({ actors: this.casting });
           },
           error: error => {
             console.error(error);
-            this.snackBar.open(this.translate.instant('app.casting_update_error'), this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.cast_update_error'), this.translate.instant('app.close'), { duration: this.duration });
           },
           complete: () => this.editCasting = false
         }

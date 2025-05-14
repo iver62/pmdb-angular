@@ -26,11 +26,11 @@
     }
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p class="mb-2">You are now done.</p>
+    <ng-template matStepLabel>{{'app.done' | translate}}</ng-template>
+    <p class="mb-2">{{'app.done' | translate}}</p>
     <div>
       <button mat-button class="mr-2" matStepperPrevious>{{'app.back' | translate}}</button>
-      <button mat-button color="warn" (click)="stepper.reset()">{{'app.reset' | translate}}</button>
+      <button mat-button color="warn" (click)="stepper.reset()">{{'app.create_another_movie' | translate}}</button>
     </div>
   </mat-step>
 </mat-stepper>

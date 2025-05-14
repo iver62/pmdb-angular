@@ -123,6 +123,10 @@ export class AutocompleteComponent {
     });
   }
 
+  onFocus() {
+    this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
+  }
+
   onSearch(event: string) {
     this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event.trim() });
   }
@@ -130,7 +134,7 @@ export class AutocompleteComponent {
   private onScroll(event: Event) {
     const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded + this.personsToExclude.length < this.total) {
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded + this.personsToExclude().filter(id => id).length < this.total) {
       this.isLoadingMore = true;
       setTimeout(() => {
         this.searchConfig$.next(
@@ -157,10 +161,7 @@ export class AutocompleteComponent {
       {
         next: result => this.save.emit(result),
         error: e => console.error(e),
-        complete: () => {
-          this.loading = false;
-          this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: EMPTY_STRING });
-        }
+        complete: () => this.loading = false
       }
     );
   }

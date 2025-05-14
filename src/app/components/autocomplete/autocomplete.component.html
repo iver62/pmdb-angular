@@ -1,10 +1,10 @@
 <mat-form-field class="w-full">
   <mat-label>{{label()}}</mat-label>
   <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="State" [matAutocomplete]="auto"
-    [formControl]="formControl">
+    [formControl]="formControl" (focus)="onFocus()">
   @if (toSave()) {
   <button matSuffix mat-icon-button matTooltip="Sauvegarder" aria-label="Sauvegarder l'acteur en base de données"
-    (click)="saveActor()">
+    (click)="saveActor(); $event.stopPropagation()">
     @if (loading) {
     <mat-spinner [diameter]="20"></mat-spinner>
     } @else {

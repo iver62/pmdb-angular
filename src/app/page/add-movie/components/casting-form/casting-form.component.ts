@@ -7,10 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
-import { BehaviorSubject } from 'rxjs';
 import { EMPTY_STRING } from '../../../../app.component';
 import { AutocompleteComponent } from '../../../../components';
-import { Person, SearchConfig } from '../../../../models';
+import { Person } from '../../../../models';
 
 @Component({
   selector: 'app-casting-form',
@@ -31,16 +30,6 @@ import { Person, SearchConfig } from '../../../../models';
 export class CastingFormComponent {
 
   @Input() form: FormGroup;
-
-  searchConfig$ = new BehaviorSubject<SearchConfig>(
-    {
-      page: 0,
-      size: 50,
-      sort: 'nomFrFr',
-      direction: 'asc',
-      term: EMPTY_STRING
-    }
-  );
 
   /**
    * Getter pour accéder au FormArray facilement

@@ -57,7 +57,7 @@ export class CriteriasDialogComponent {
         .pipe(
           tap(response => this.totalCountries = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
           map(response => response.body ?? []),
-          map(countries => countries.map(c => new Country(this.translate, c))),
+          map(countries => countries.map(c => new Country(c))),
           catchError(() => of([])) // En cas d'erreur, retourner une liste vide
         )
     })
@@ -84,7 +84,7 @@ export class CriteriasDialogComponent {
       fromDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromDeathDate),
       toDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toDeathDate),
       genres: new FormControl<Genre[]>(this.data?.selectedCriterias?.genres?.map(g => new Genre(g))),
-      countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => new Country(this.translate, c))),
+      countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => new Country(c))),
       users: new FormControl<User[]>(this.data?.selectedCriterias?.users?.map(u => new User(u))),
       fromCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromCreationDate),
       toCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toCreationDate),

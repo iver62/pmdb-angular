@@ -5,13 +5,13 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { catchError, of, switchMap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { Award, Movie, MovieActor } from '../../models';
 import { AuthService, MovieService } from '../../services';
-import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 import { DEFAULT_CURRENCY } from '../../utils';
+import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
 @Component({
   selector: 'app-add-movie',
@@ -87,10 +87,11 @@ export class AddMovieComponent {
   currentStep = 0;
 
   constructor(
-    private _snackBar: MatSnackBar,
     private authService: AuthService,
     private fb: FormBuilder,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) { }
 
   onStepChange(event: StepperSelectionEvent) {
@@ -108,20 +109,20 @@ export class AddMovieComponent {
           .pipe(
             catchError(response => {
               console.error('Erreur lors de la création du film.', response.error);
-              this._snackBar.open(`Erreur lors de la création du film. ${response.error}`, 'Error', { duration: this.duration });
+              this.snackBar.open(this.translate.instant('app.error_creating_movie'), 'Fermer', { duration: this.duration });
               return of(null);
             })
           )
         )
       ).subscribe(result => {
         if (result) {
-          this._snackBar.open('Film créé avec succès', 'Done', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.movie_created_success'), 'Fermer', { duration: this.duration });
           this.stepper.next();
           this.movie = result;
         }
       });
     } else {
-      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
     }
   }
 
@@ -130,18 +131,18 @@ export class AddMovieComponent {
       this.movieService.saveTechnicalTeam(this.movie.id, this.technicalTeamForm.value).pipe(
         catchError(error => {
           console.error(error);
-          this._snackBar.open('Erreur lors de l\'ajout de la fiche technique', 'Error', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.error_adding_technical_team'), 'Fermer', { duration: this.duration });
           return of(null);
         })
       ).subscribe(result => {
         if (result) {
-          this._snackBar.open('Fiche technique ajoutée avec succès', 'Done', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.Technical_team_added_success'), 'Fermer', { duration: this.duration });
           this.stepper.next();
           this.movie.technicalTeam = result;
         }
       });
     } else {
-      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
     }
   }
 
@@ -160,18 +161,18 @@ export class AddMovieComponent {
       this.movieService.saveCasting(this.movie.id, body).subscribe(
         {
           next: result => {
-            this._snackBar.open('Casting ajouté avec succès', 'Done', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.cast_added_success'), 'Fermer', { duration: this.duration });
             this.stepper.next();
             this.movie.movieActors = result;
           },
           error: error => {
             console.error(error);
-            this._snackBar.open('Erreur lors de l\'ajout du casting', 'Error', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.error_adding_cast'), 'Fermer', { duration: this.duration });
           }
         }
       )
     } else {
-      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
     }
   }
 
@@ -180,22 +181,18 @@ export class AddMovieComponent {
       this.movieService.saveAwards(this.movie.id, this.awardsForm.value['awards']).subscribe(
         {
           next: result => {
-            this._snackBar.open('Récompenses ajoutées avec succès', 'Done', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.awards_added_success'), 'Fermer', { duration: this.duration });
             this.stepper.next();
             this.movie.awards = result;
           },
           error: error => {
             console.error(error);
-            this._snackBar.open('Erreur lors de l\'ajout des récompenses', 'Error', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('error_adding_awards'), 'Fermer', { duration: this.duration });
           }
         }
       )
     } else {
-      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
-    }
-    if (this.awardsForm.valid) {
-    } else {
-      this._snackBar.open('Le formulaire est invalide', 'Error', { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
     }
   }
 }
