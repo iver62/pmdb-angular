@@ -3,6 +3,7 @@ import { Component, effect, EventEmitter, input, Input, Output, signal } from '@
 import { MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Person, PersonWithPhotoUrl } from '../../models';
 import { BaseService } from '../../services';
 
@@ -13,7 +14,8 @@ import { BaseService } from '../../services';
     DatePipe,
     MatSortModule,
     MatTableModule,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './persons-table.component.html',
   styleUrl: './persons-table.component.css'

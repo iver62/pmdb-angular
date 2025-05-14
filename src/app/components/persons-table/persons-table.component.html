@@ -2,7 +2,7 @@
   [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
   <!-- Photo Column -->
   <ng-container matColumnDef="photo">
-    <th mat-header-cell *matHeaderCellDef>Photo</th>
+    <th mat-header-cell *matHeaderCellDef>{{'app.photo' | translate}}</th>
     <td mat-cell *matCellDef="let row">
       <span class="image-container">
         <img mat-card-image [src]="row?.photoUrl$ | async" alt="{{ row.name }}" />
@@ -12,41 +12,39 @@
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-    <td mat-cell class="font-bold text-lg" *matCellDef="let row">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.name' | translate}}</th>
+    <td mat-cell class="font-bold text-lg whitespace-nowrap" *matCellDef="let row">
       <span class="cursor-pointer hover:underline" [routerLink]="[row.id]">{{row.name}}</span>
     </td>
   </ng-container>
 
   <!-- Date of Birth Column -->
   <ng-container matColumnDef="dateOfBirth">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de naissance</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.birth_date' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.dateOfBirth | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
   <!-- Date of Death Column -->
   <ng-container matColumnDef="dateOfDeath">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de décès</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.death_date' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.dateOfDeath | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
   <!-- Number of Movies Column -->
   <ng-container matColumnDef="moviesCount">
-    <th mat-header-cell *matHeaderCellDef>Nombre de films</th>
-    <td mat-cell *matCellDef="let row">
-      {{row.numberOfMovies}}
-    </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.number_of_movies' | translate}}</th>
+    <td mat-cell *matCellDef="let row">{{row.numberOfMovies}}</td>
   </ng-container>
 
   <!-- Creation date Column -->
   <ng-container matColumnDef="creationDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de création</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.creation_date' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.creationDate | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
   <!-- Last update Column -->
   <ng-container matColumnDef="lastUpdate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Dernière modification</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'app.last_update' | translate}}</th>
     <td mat-cell *matCellDef="let row">{{row.lastUpdate | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
