@@ -1,6 +1,6 @@
 <mat-stepper class="rounded-lg mb-2" [linear]="isLinear" (selectionChange)="onStepChange($event)" #stepper>
 
-  <mat-step [stepControl]="generalInfosForm" [label]="'app.general_infos' | translate">
+  <mat-step class="mb-2" [stepControl]="generalInfosForm" [label]="'app.general_infos' | translate">
     @if (currentStep == 0) {
     <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
     </app-general-infos-form>

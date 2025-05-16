@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
-
 @use "tailwindcss";
+@use '../src/scss/button.scss' as *;
 
 html,
 body {
@@ -13,32 +13,104 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+.mat-sidenav-content {
+  background-color: #F5F5F7;
 }
 
 .mat-mdc-paginator {
-  border-top: 1px solid;
+  // border: 1px solid darkgrey;
+  border-top: 1px solid darkgrey;
   background-color: white !important;
 }
 
-:root {
-  @include mat.menu-overrides((container-color: white));
-
-  @include mat.table-overrides((background-color: white));
-
-  @include mat.button-overrides((filled-container-color: #2c2c2c,
-      filled-label-text-color: black,
-    ));
-
-  @include mat.form-field-overrides((filled-container-color: white,
-      filled-container-shape: 10px));
-
-  @include mat.autocomplete-overrides((background-color: white));
+.tab-label {
+  flex-grow: initial !important;
+  padding: 0 !important;
 }
+
+.tab-label:hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  /* ⇠ marge entre texte et soulignement */
+  bottom: 0;
+  width: 100%;
+  /* ⇠ épaisseur de la ligne */
+  height: 2px;
+  background-color: darkgrey;
+}
+
+*,
+::after,
+::before,
+::backdrop,
+::file-selector-button {
+  border: 0;
+}
+
+.mdc-text-field {
+  background-color: white;
+}
+
+.mat-datepicker-content {
+  border: 1px solid darkgrey !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-top: none;
+}
+
+@include mat.autocomplete-overrides((background-color: white));
+
+@include mat.button-overrides((filled-container-color: #2c2c2c,
+    filled-label-text-color: black,
+  ));
+
+@include mat.card-overrides((outlined-container-color: white,
+    outlined-outline-color: darkgray));
+
+@include mat.checkbox-overrides((label-text-size: 20px,
+    selected-icon-color: grey,
+    selected-focus-icon-color: grey,
+    selected-hover-icon-color: black,
+    selected-hover-state-layer-color: grey));
+
+@include mat.datepicker-overrides((calendar-container-background-color: white,
+    calendar-date-today-outline-color: black,
+    calendar-date-selected-state-background-color: black,
+    range-input-separator-color: black,
+    calendar-date-in-range-state-background-color: whitesmoke));
+
+@include mat.dialog-overrides((container-color: white,
+    content-padding: 50px));
+
+@include mat.form-field-overrides((outlined-focus-outline-color: black,
+    outlined-focus-label-text-color: black,
+    outlined-caret-color: black));
+
+@include mat.menu-overrides((container-color: white));
+
+@include mat.select-overrides((panel-background-color: white,
+    focused-arrow-color: black));
+
+@include mat.progress-spinner-overrides((active-indicator-color: black));
+
+@include mat.sidenav-overrides((container-background-color: #F5F5F7));
+
+@include mat.stepper-overrides((container-color: #F5F5F7,
+    header-label-text-size: 18px,
+    header-selected-state-label-text-size: 18px,
+    header-label-text-color: darkgrey,
+    header-icon-background-color: darkgrey,
+    header-selected-state-label-text-color: black,
+    header-selected-state-icon-background-color: black,
+    header-edit-state-icon-background-color: darkslategrey));
+
+@include mat.table-overrides((background-color: white));
+
+@include mat.tabs-overrides((active-label-text-color: black,
+    active-indicator-color: black,
+    active-focus-indicator-color: black,
+    active-hover-indicator-color: black,
+    inactive-label-text-color: darkgrey,
+    inactive-hover-label-text-color: darkgrey,
+    label-text-size: 20px));

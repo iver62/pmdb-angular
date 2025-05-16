@@ -148,7 +148,9 @@ export class PersonsComponent {
 
   onSearch(event: string) {
     if (typeof event == 'string') {
-      this.scrollContainer.nativeElement.scrollTo({ top: 0 });
+      if (this.searchConfig$.value.view == View.CARDS) {
+        this.scrollContainer.nativeElement.scrollTo({ top: 0 });
+      }
       this.updateSearchConfig({ page: 0, term: event?.trim() });
     }
   }

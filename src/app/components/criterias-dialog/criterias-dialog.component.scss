@@ -1,3 +1,16 @@
+.mat-mdc-dialog-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  padding-bottom: 0px !important;
+}
+
+.mat-mdc-dialog-content {
+  padding: 1rem 5rem !important;
+}
+
 .mat-mdc-dialog-actions {
+  padding-left: 5rem;
+  padding-right: 5rem;
   justify-content: space-between !important;
 }

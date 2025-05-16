@@ -1,4 +1,9 @@
-<mat-dialog-content class="mat-typography bg-gray-200">
+<h2 mat-dialog-title>
+  <button mat-icon-button class="float-end" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<mat-dialog-content class="mat-typography">
   <form [formGroup]="form" class="flex flex-col gap-4">
     @if (data?.criterias?.includes('releaseDate')) {
     <app-date-range-picker [label]="'app.release_date' | translate"
@@ -57,10 +62,10 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="eraseCriterias()">{{'app.erase_all' | translate}}</button>
+  <button mat-button (click)="eraseCriterias()" class="btn-danger">{{'app.erase_all' | translate}}</button>
   <div>
-    <button mat-button mat-dialog-close>{{'app.cancel' | translate}}</button>
-    <button mat-button [mat-dialog-close]="form" [disabled]="form.invalid || form.pristine">
+    <button mat-button mat-dialog-close class="btn-secondary">{{'app.cancel' | translate}}</button>
+    <button mat-button [mat-dialog-close]="form" class="btn-primary" [disabled]="form.invalid || form.pristine">
       {{'app.validate' | translate}}
     </button>
   </div>

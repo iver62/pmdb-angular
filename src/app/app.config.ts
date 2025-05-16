@@ -5,6 +5,7 @@ import localeFr from '@angular/common/locales/fr';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -55,9 +56,26 @@ export const appConfig: ApplicationConfig = {
     provideKeycloakAngular(),
     provideCharts(withDefaultRegisterables()),
     provideRouter(routes),
-    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl },
-    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
-    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
-    { provide: MAT_DATE_LOCALE, useValue: 'fr' }
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' } // autres valeurs : 'fill', 'standard', 'legacy'
+    },
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomMatPaginatorIntl
+    },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: APP_DATE_FORMATS
+    },
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'fr'
+    }
   ]
 };

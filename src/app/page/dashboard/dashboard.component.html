@@ -6,7 +6,9 @@
         <span>{{'app.number_of_movies' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content class="text-3xl text-center">{{moviesNumber$ | async | number}}</mat-card-content>
+    <mat-card-content class="text-3xl text-center" [style.color]="'#0071e3'">
+      {{moviesNumber$ | async | number}}
+    </mat-card-content>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-1 lg:col-span-3">
@@ -16,7 +18,9 @@
         <span>{{'app.number_of_actors' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content class="text-3xl text-center">{{actorsNumber$ | async | number}}</mat-card-content>
+    <mat-card-content class="text-3xl text-center" [style.color]="'#0071e3'">
+      {{actorsNumber$ | async | number}}
+    </mat-card-content>
   </mat-card>
 
   <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">

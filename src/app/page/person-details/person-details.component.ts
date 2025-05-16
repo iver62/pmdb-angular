@@ -61,10 +61,13 @@ export class PersonDetailsComponent {
 
   sortOptions: SortOption[] = [
     { active: 'title', label: 'app.title', direction: 'asc' },
+    { active: 'originalTitle', label: 'app.original_title', direction: EMPTY_STRING },
     { active: 'releaseDate', label: 'app.release_date', direction: EMPTY_STRING },
     { active: 'runningTime', label: 'app.duration', direction: EMPTY_STRING },
     { active: 'budget', label: 'app.budget', direction: EMPTY_STRING },
     { active: 'boxOffice', label: 'app.box_office', direction: EMPTY_STRING },
+    { active: 'user.username', label: 'app.user', direction: EMPTY_STRING },
+    { active: 'awardsCount', label: 'app.number_of_awards', direction: EMPTY_STRING },
     { active: 'creationDate', label: 'app.add_date', direction: EMPTY_STRING },
     { active: 'lastUpdate', label: 'app.last_update', direction: EMPTY_STRING }
   ];

@@ -1,8 +1,6 @@
 <div class="flex gap-2">
   <!-- Filtrer -->
-  <button mat-button matTooltip="Filtrer" (click)="openCriteriasDialog()">
-    {{'app.filter' | translate}}
-  </button>
+  <button mat-button (click)="openCriteriasDialog()">{{'app.filter' | translate}}</button>
 
   <!-- Trier -->
   @if (currentView == view.CARDS) {

@@ -7,7 +7,11 @@ import { CountryRepartition, Repartition } from '../models';
 })
 export class BarChartService {
 
-  colors = ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384', '#9966FF', '#FF9F40', '#8E5EA2'];
+  // colors = ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384', '#9966FF', '#FF9F40', '#8E5EA2'];
+
+  colors = ['#0071e3'];
+
+  // colors = ['darkgrey'];
 
   formatBarChartDataset(repartitions: Repartition[]) {
     return {

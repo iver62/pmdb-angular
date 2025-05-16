@@ -1,0 +1,27 @@
+.btn-danger {
+  background-color: #e30000 !important;
+  color: white !important;
+}
+
+.btn-secondary {
+  background-color: darkgrey !important;
+  color: white !important;
+}
+
+.btn-primary {
+  background-color: #0071e3 !important;
+  color: white !important;
+
+  &:active {
+    background-color: #006edb !important;
+  }
+
+  &:hover {
+    background-color: #006edb !important;
+  }
+
+  &:disabled {
+    color: lightgray !important;
+    background-color: inherit !important;
+  }
+}

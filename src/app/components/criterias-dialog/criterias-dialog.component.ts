@@ -4,6 +4,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Moment } from 'moment';
 import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
@@ -21,6 +22,7 @@ import { HttpUtils } from '../../utils';
     DateRangePickerComponent,
     MatButtonModule,
     MatDialogModule,
+    MatIconModule,
     MultiselectComponent,
     ReactiveFormsModule,
     TranslatePipe

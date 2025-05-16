@@ -11,8 +11,8 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>{{'app.cancel' | translate}}</button>
-  <button mat-button [mat-dialog-close]="form.value" [disabled]="form.invalid || form.pristine">
+  <button mat-button mat-dialog-close class="btn-secondary">{{'app.cancel' | translate}}</button>
+  <button mat-button [mat-dialog-close]="form.value" class="btn-primary" [disabled]="form.invalid || form.pristine">
     {{'app.validate' | translate}}
   </button>
 </mat-dialog-actions>

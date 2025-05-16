@@ -1,9 +1,3 @@
-@use '@angular/material' as mat;
-
-.mat-mdc-chip-grid {
-  @include mat.progress-spinner-overrides((active-indicator-color: black));
-}
-
 .mat-mdc-progress-spinner {
   align-self: center;
 }

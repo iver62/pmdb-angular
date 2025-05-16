@@ -6,18 +6,18 @@
   </mat-date-range-input>
   <mat-hint>JJ/MM/YYYY – JJ/MM/YYYY</mat-hint>
   <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-  <mat-date-range-picker #datepicker></mat-date-range-picker>
+  <mat-date-range-picker xPosition="end" #datepicker></mat-date-range-picker>
 
   @if (fromDateControl.hasError('matStartDateInvalid')) {
-  <mat-error>Date de Début invalide</mat-error>
+  <mat-error>{{'app.invalid_start_date' | translate}}</mat-error>
   }
   @if (toDateControl.hasError('matEndDateInvalid')) {
-  <mat-error>Date de Fin invalide</mat-error>
+  <mat-error>{{'app.invalid_end_date' | translate}}</mat-error>
   }
 
   <!-- Bouton pour effacer les dates -->
   @if (fromDateControl.value || toDateControl.value) {
-  <button mat-icon-button matSuffix matTooltip="Effacer" (click)="clearDates()">
+  <button mat-icon-button class="mr-2" matSuffix [matTooltip]="'app.erase' | translate" (click)="clearDates()">
     <mat-icon>clear</mat-icon>
   </button>
   }

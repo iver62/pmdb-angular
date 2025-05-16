@@ -91,6 +91,15 @@ export class BaseService {
     if (imageFile) {
       formData.append('file', imageFile);
     }
+
+    if (person.dateOfBirth) {
+      person.dateOfBirth = this.dateService.format(person.dateOfBirth, DateUtils.API_DATE_FORMAT);
+    }
+
+    if (person.dateOfDeath) {
+      person.dateOfDeath = this.dateService.format(person.dateOfDeath, DateUtils.API_DATE_FORMAT);
+    }
+
     formData.append('personDTO', new Blob([JSON.stringify(person)], { type: 'application/json' }));
     return this.http.put<Person>(`${this.basePath}/${person.id}`, formData);
   }

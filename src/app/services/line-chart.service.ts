@@ -12,8 +12,8 @@ export class LineChartService {
       datasets: [
         {
           data: repartitions.map(d => d.total),
-          borderColor: '#36A2EB',
-          pointBorderColor: '#36A2EB',
+          borderColor: '#0071e3',
+          pointBorderColor: '#0071e3',
         }
       ]
     };

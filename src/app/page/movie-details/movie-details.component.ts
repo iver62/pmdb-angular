@@ -10,9 +10,9 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
+import { DEFAULT_CURRENCY } from '../../utils';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
 import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
-import { DEFAULT_CURRENCY } from '../../utils';
 
 @Component({
   selector: 'app-movie-details',

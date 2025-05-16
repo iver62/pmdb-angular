@@ -25,7 +25,7 @@ import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.c
     TranslatePipe
   ],
   templateUrl: './toolbar.component.html',
-  styleUrl: './toolbar.component.css'
+  styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent {
 
@@ -66,7 +66,7 @@ export class ToolbarComponent {
 
   openCriteriasDialog() {
     this.dialog.open(CriteriasDialogComponent, {
-      width: '75vw',  // Définit la largeur à 75% de l'écran
+      minWidth: '40vw',  // Définit la largeur à 75% de l'écran
       maxHeight: '90vh', // Définit la hauteur à 90% de l'écran
       data: {
         criterias: this.criterias(),
