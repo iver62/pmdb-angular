@@ -7,14 +7,15 @@
       (change)="onSearch($event)">
     </app-input>
     <app-toolbar [countries$]="countries$" [selectedCriterias]="searchConfig$?.value?.criterias"
-      [criterias]="['birthDate', 'deathDate', 'countries', 'creationDate', 'lastUpdate']" [sorts]="sorts$ | async"
-      [cookieName]="'persons-config'" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
-      (sort)="onSort($event)">
+      [criterias]="['birthDate', 'deathDate', 'types', 'countries', 'creationDate', 'lastUpdate']"
+      [sorts]="sorts$ | async" [cookieName]="'persons-config'" (filter)="onFilter($event)"
+      (switchView)="onSwitchView($event)" (sort)="onSort($event)">
     </app-toolbar>
   </div>
 
-  @if (searchConfig$?.value?.criterias?.countries?.length) {
-  <app-criterias-reminder [criterias]="searchConfig$.value.criterias" (deleteCountry)="onDeleteCountry($event)">
+  @if (searchConfig$?.value?.criterias?.types?.length || searchConfig$?.value?.criterias?.countries?.length) {
+  <app-criterias-reminder [criterias]="searchConfig$.value.criterias" (deleteType)="onDeleteType($event)"
+    (deleteCountry)="onDeleteCountry($event)">
   </app-criterias-reminder>
   }
 

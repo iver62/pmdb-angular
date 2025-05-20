@@ -9,7 +9,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
-import { Country, Genre, User } from '../../models';
+import { Country, Genre, Type, User } from '../../models';
 
 @Component({
   selector: 'app-multiselect',
@@ -33,14 +33,14 @@ export class MultiselectComponent {
   placeholder = input.required<string>();
   placeholderLabel = input.required<string>();
   noEntriesFoundLabel = input.required<string>();
-  items = input.required<Country[] | Genre[] | User[]>();
+  items = input.required<Country[] | Genre[] | Type[] | User[]>();
   total = input.required<number>();
   control = input.required<FormControl>();
 
   @Output() update = new EventEmitter<string>();
 
   // Signal pour stocker les valeurs du multiselect
-  selectedValues = signal<(Country | Genre | User)[]>([]);
+  selectedValues = signal<(Country | Genre | Type | User)[]>([]);
 
   checkboxChecked = computed(() => this.selectedValues()?.length > 0 && this.selectedValues()?.length === this.items()?.length);
   checkboxIndeterminate = computed(() => !this.checkboxChecked() && this.selectedValues()?.length > 0);

@@ -1,12 +1,11 @@
 import { Moment } from "moment";
-import { PersonType } from "../enums";
-import { Country, Genre, User } from "./";
+import { Country, Genre, Type, User } from "./";
 
 export interface Criterias {
   countries?: Country[],
   genres?: Genre[],
   users?: User[],
-  types?: PersonType[],
+  types?: Type[],
   fromReleaseDate?: Date | Moment,
   toReleaseDate?: Date | Moment,
   fromBirthDate?: Date | Moment,

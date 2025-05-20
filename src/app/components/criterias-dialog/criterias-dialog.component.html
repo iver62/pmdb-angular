@@ -35,11 +35,21 @@
     </app-multiselect>
     }
 
+    @if (data?.criterias?.includes('types')) {
+    <app-multiselect [control]="form.controls.types" [label]="'app.types' | translate"
+      [placeholder]="'app.add_types' | translate" [placeholderLabel]="'app.search_type' | translate"
+      [noEntriesFoundLabel]="'app.no_types_found' | translate" [items]="types$ | async" [total]="totalTypes"
+      (update)="updateTypeSearch($event)">
+    </app-multiselect>
+    }
+
+    @if (data?.criterias?.includes('countries')) {
     <app-multiselect [control]="form.controls.countries" [label]="'app.countries' | translate"
       [placeholder]="'app.add_countries' | translate" [placeholderLabel]="'app.search_country' | translate"
       [noEntriesFoundLabel]="'app.no_countries_found' | translate" [items]="countries$ | async" [total]="totalCountries"
       (update)="updateCountrySearch($event)">
     </app-multiselect>
+    }
 
     @if (data?.criterias?.includes('users')) {
     <app-multiselect [control]="form.controls.users" [label]="'app.users' | translate"

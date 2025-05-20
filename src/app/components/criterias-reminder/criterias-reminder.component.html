@@ -1,17 +1,23 @@
-<div class="py-2">
-  @for (genre of (criterias() | pluck: 'genres' | values); track genre) {
+<div class="pb-2">
+  @for (type of (criterias() | pluck: 'types' | values); track type.id) {
+  <span class="inline-flex items-center mr-3">
+    {{type.name}}
+    <mat-icon class="cursor-pointer ml-1" (click)="deleteType.emit(type)">close</mat-icon>
+  </span>
+  }
+  @for (genre of (criterias() | pluck: 'genres' | values); track genre.id) {
   <span class="inline-flex items-center mr-3">
     {{genre.name}}
     <mat-icon class="cursor-pointer ml-1" (click)="deleteGenre.emit(genre)">close</mat-icon>
   </span>
   }
-  @for (country of (criterias() | pluck: 'countries' | values); track country) {
+  @for (country of (criterias() | pluck: 'countries' | values); track country.id) {
   <span class="inline-flex items-center mr-3">
     {{country.nomFrFr}}
     <mat-icon class="cursor-pointer ml-1" (click)="deleteCountry.emit(country)">close</mat-icon>
   </span>
   }
-  @for (user of (criterias() | pluck: 'users' | values); track user) {
+  @for (user of (criterias() | pluck: 'users' | values); track user.id) {
   <span class="inline-flex items-center mr-3">
     {{user.username}}
     <mat-icon class="cursor-pointer ml-1" (click)="deleteUser.emit(user)">close</mat-icon>
