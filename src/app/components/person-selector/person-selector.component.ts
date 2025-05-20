@@ -12,7 +12,7 @@ import { BehaviorSubject, catchError, distinctUntilChanged, filter, iif, map, of
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 import { Person, SearchConfig } from '../../models';
-import { BaseService } from '../../services';
+import { PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
 
 @Component({
@@ -38,7 +38,6 @@ export class PersonSelectorComponent {
 
   @Input() label: string;
 
-  service = input.required<BaseService>();
   title = input.required<string>();
   formGroupName = input.required<string>();
   selectedPersons = signal<Person[]>([]);
@@ -57,7 +56,7 @@ export class PersonSelectorComponent {
   readonly persons$ = this.searchConfig$.pipe(
     distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.lang === c2.lang),
     tap(() => this.isLoadingMore = true),
-    switchMap(config => this.service().get(config.page, config.size, config.term).pipe(
+    switchMap(config => this.personService.getPersons(config.page, config.size, config.term).pipe(
       tap(response => {
         this.isLoadingMore = false;
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
@@ -88,7 +87,10 @@ export class PersonSelectorComponent {
   saving = false;
   private isLoadingMore = false;
 
-  constructor(private rootFormGroup: FormGroupDirective) {
+  constructor(
+    private personService: PersonService,
+    private rootFormGroup: FormGroupDirective
+  ) {
     effect(() => {
       this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
       this.selectedPersons.set(this.control.value || []);
@@ -136,7 +138,7 @@ export class PersonSelectorComponent {
       switchMap(persons =>
         iif(
           () => !persons.map(p => p.name.toLocaleLowerCase()).includes(value.toLocaleLowerCase()),
-          this.service().save({ name: value }).pipe(
+          this.personService.save({ name: value }).pipe(
             tap(() => this.saving = false),
             catchError(error => {
               console.error(error);
@@ -173,6 +175,8 @@ export class PersonSelectorComponent {
     if (!this.selectedPersons().some(p => p.id === person.id)) {
       this.selectedPersons.set([...this.selectedPersons(), person]);
       this.control?.setValue([...this.selectedPersons()]);
+
+      // this.updatePersonType.next(person);
 
       if (input) {
         this.input.nativeElement.value = EMPTY_STRING; // Clear the input value

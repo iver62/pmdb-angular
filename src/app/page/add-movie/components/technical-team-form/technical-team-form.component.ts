@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PersonSelectorComponent } from '../../../../components';
-import { ArtDirectorService, CasterService, CostumierService, DecoratorService, DirectorService, EditorService, HairDresserService, MakeupArtistService, MusicianService, PhotographerService, ProducerService, ScreenwriterService, SoundEditorService, StuntmanService, VisualEffectSupervisorsService } from '../../../../services';
+import { PersonType } from '../../../../enums';
+import { Person } from '../../../../models';
+import { PersonService } from '../../../../services';
 
 @Component({
   selector: 'app-technical-team-form',
@@ -16,21 +18,13 @@ export class TechnicalTeamFormComponent {
 
   @Input() form: FormGroup;
 
-  constructor(
-    public directorService: DirectorService,
-    public screenwriterService: ScreenwriterService,
-    public musicianService: MusicianService,
-    public photographerService: PhotographerService,
-    public costumierService: CostumierService,
-    public decoratorService: DecoratorService,
-    public editorService: EditorService,
-    public casterService: CasterService,
-    public artDirectorService: ArtDirectorService,
-    public soundEditorService: SoundEditorService,
-    public visualEffectsSupervisorService: VisualEffectSupervisorsService,
-    public makeupArtistService: MakeupArtistService,
-    public hairDresserService: HairDresserService,
-    public stuntmanService: StuntmanService,
-    public producerService: ProducerService,
-  ) { }
+  personType = PersonType;
+
+  constructor(private personService: PersonService) { }
+
+  addType(person: Person, type: PersonType) {
+    if (!person.types.includes(type)) {
+      this.personService.addPersonType(person.id, type).subscribe();
+    }
+  }
 }

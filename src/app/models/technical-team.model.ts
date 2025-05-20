@@ -4,6 +4,7 @@ export interface TechnicalTeam {
   producers?: Person[],
   directors?: Person[],
   screenwriters?: Person[],
+  dialogueWriters?: Person[],
   musicians?: Person[],
   photographers?: Person[],
   costumiers?: Person[],

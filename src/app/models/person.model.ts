@@ -1,4 +1,5 @@
 import { Observable } from "rxjs";
+import { PersonType } from "../enums";
 import { Country, Movie } from "./";
 
 export interface Person {
@@ -9,6 +10,7 @@ export interface Person {
   dateOfDeath?: string,
   creationDate?: Date,
   lastUpdate?: Date,
+  types?: PersonType[],
   movies?: Movie[],
   countries?: Country[],
   numberOfMovies?: number

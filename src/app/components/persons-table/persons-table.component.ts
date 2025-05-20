@@ -5,7 +5,7 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Person, PersonWithPhotoUrl } from '../../models';
-import { BaseService } from '../../services';
+import { PersonService } from '../../services';
 
 @Component({
   selector: 'app-persons-table',
@@ -25,21 +25,20 @@ export class PersonsTableComponent {
   dataSource = input.required<Person[]>();
   enrichedPersons = signal<PersonWithPhotoUrl[]>([]);
 
-  @Input() service: BaseService;
   @Input() sortActive: string;
   @Input() sortDirection: SortDirection;
 
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 
-  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'moviesCount', 'creationDate', 'lastUpdate'];
+  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'moviesCount', 'types', 'creationDate', 'lastUpdate'];
 
-  constructor() {
+  constructor(private personService: PersonService) {
     // Transformer les films en ajoutant les URLs
     effect(() => {
       const persons = this.dataSource()?.map(p => (
         {
           ...p,
-          photoUrl$: this.service.getPhotoUrl(p.photoFileName) // Observable pour la photo
+          photoUrl$: this.personService.getPhotoUrl(p.photoFileName) // Observable pour la photo
         }
       ));
       this.enrichedPersons.set(persons);

@@ -1,17 +1,16 @@
 import { AsyncPipe } from '@angular/common';
-import { HttpResponse } from '@angular/common/http';
-import { Component, effect, ElementRef, input, Input, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
-import { CriteriasReminderComponent, InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '..';
 import { EMPTY_STRING } from '../../app.component';
+import { CriteriasReminderComponent, InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
 import { Country, Criterias, Person, SearchConfig, SortOption } from '../../models';
-import { BaseService } from '../../services';
 import { HttpUtils } from '../../utils';
+import { PersonService } from '../../services/person.service';
 
 @Component({
   selector: 'app-persons',
@@ -32,12 +31,10 @@ import { HttpUtils } from '../../utils';
 export class PersonsComponent {
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('tableContainer') tableContainer!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  @Input() personService!: BaseService; // Service injecté dynamiquement
-  @Input() viewTitle = EMPTY_STRING; // Permet de personnaliser le titre
-  countries$ = input.required<(term: string) => Observable<HttpResponse<Country[]>>>();
-  cookieName = input<string>();
+  countries$ = this.personService.getCountries;
 
   view = View;
   total: number;
@@ -66,7 +63,7 @@ export class PersonsComponent {
 
   persons$ = this.searchConfig$.pipe(
     switchMap(config =>
-      this.personService.get(config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
+      this.personService.getPersonsWithMoviesNumber(config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => (response.body ?? [])),
         catchError(error => {
@@ -98,17 +95,20 @@ export class PersonsComponent {
     )
   );
 
-  constructor(private cookieService: CookieService) {
+  constructor(
+    private cookieService: CookieService,
+    private personService: PersonService
+  ) {
     effect(() => {
       this.searchConfig$.next(
         {
           page: 0,
           size: 50,
-          sort: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).sort : 'name',
-          direction: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).direction : 'asc',
+          sort: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).sort : 'name',
+          direction: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).direction : 'asc',
           term: EMPTY_STRING,
-          criterias: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).criterias : {},
-          view: this.cookieService.get(this.cookieName()) ? (JSON.parse(this.cookieService.get(this.cookieName())) as SearchConfig).view : View.CARDS
+          criterias: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).criterias : {},
+          view: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).view : View.CARDS
         }
       )
     });
@@ -124,17 +124,17 @@ export class PersonsComponent {
         }
       }
     );
-    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
+    this.cookieService.set('persons-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onFilter(event: Criterias) {
     this.updateSearchConfig({ page: 0, criterias: event });
-    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
+    this.cookieService.set('persons-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSwitchView(view: View) {
     this.updateSearchConfig({ page: 0, view: view });
-    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
+    this.cookieService.set('persons-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSort(event: SortOption) {
@@ -143,7 +143,7 @@ export class PersonsComponent {
     }
 
     this.updateSearchConfig({ page: 0, sort: event.active, direction: event.direction });
-    this.cookieService.set(this.cookieName(), JSON.stringify(this.searchConfig$.value), 7);
+    this.cookieService.set('persons-config', JSON.stringify(this.searchConfig$.value), 7);
   }
 
   onSearch(event: string) {
@@ -151,6 +151,7 @@ export class PersonsComponent {
       if (this.searchConfig$.value.view == View.CARDS) {
         this.scrollContainer.nativeElement.scrollTo({ top: 0 });
       }
+      this.paginator.firstPage();
       this.updateSearchConfig({ page: 0, term: event?.trim() });
     }
   }
@@ -162,6 +163,7 @@ export class PersonsComponent {
   }
 
   onPageChange(event: PageEvent) {
+    this.tableContainer.nativeElement.scrollTo({ top: 0 });
     this.updateSearchConfig({ page: event.pageIndex, size: event.pageSize });
   }
 
@@ -173,4 +175,5 @@ export class PersonsComponent {
       }
     );
   }
+
 }

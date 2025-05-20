@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Person } from '../../../models';
-import { BaseService } from '../../../services';
+import { PersonService } from '../../../services';
 
 @Component({
   selector: 'app-person-card',
@@ -19,12 +19,11 @@ import { BaseService } from '../../../services';
 export class PersonCardComponent {
 
   person = input.required<Person>();
-  service = input.required<BaseService>();
 
   photoUrl$: Observable<string>;
 
-  constructor() {
-    effect(() => this.photoUrl$ = (this.service().getPhotoUrl(this.person().photoFileName)));
+  constructor(private personService: PersonService) {
+    effect(() => this.photoUrl$ = this.personService.getPhotoUrl(this.person().photoFileName));
   }
 
 }

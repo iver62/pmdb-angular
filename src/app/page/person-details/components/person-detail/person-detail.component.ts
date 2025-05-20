@@ -7,7 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { Observable } from 'rxjs';
 import { Person } from '../../../../models';
-import { AuthService, BaseService } from '../../../../services';
+import { AuthService, PersonService } from '../../../../services';
 import { PersonUtils } from '../../../../utils';
 
 @Component({
@@ -27,7 +27,6 @@ import { PersonUtils } from '../../../../utils';
 export class PersonDetailComponent {
 
   person = input.required<Person>();
-  service = input.required<BaseService>();
 
   @Input() canDelete: boolean;
 
@@ -39,9 +38,12 @@ export class PersonDetailComponent {
   age: number;
   ageOfDeath: number;
 
-  constructor(public authService: AuthService) {
+  constructor(
+    public authService: AuthService,
+    private personService: PersonService
+  ) {
     effect(() => {
-      this.photoUrl$ = this.service().getPhotoUrl(this.person()?.photoFileName)
+      this.photoUrl$ = this.personService.getPhotoUrl(this.person()?.photoFileName)
       this.age = PersonUtils.calculateAge(this.person());
       this.ageOfDeath = new Date(this.person().dateOfDeath)?.getFullYear() - new Date(this.person().dateOfBirth)?.getFullYear();
     });

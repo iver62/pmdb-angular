@@ -149,6 +149,7 @@ export class MovieDetailsComponent {
           producers: [this.technicalTeam.producers],
           directors: [this.technicalTeam.directors],
           screenwriters: [this.technicalTeam.screenwriters],
+          dialogieWriters: [this.technicalTeam.dialogueWriters],
           musicians: [this.technicalTeam.musicians],
           decorators: [this.technicalTeam.decorators],
           costumiers: [this.technicalTeam.costumiers],
@@ -306,7 +307,7 @@ export class MovieDetailsComponent {
         )
       );
 
-      this.movieService.saveCasting(this.id, body).subscribe(
+      this.movieService.saveCast(this.id, body).subscribe(
         {
           next: result => {
             this.snackBar.open(this.translate.instant('app.cast_update_success'), this.translate.instant('app.close'), { duration: this.duration });

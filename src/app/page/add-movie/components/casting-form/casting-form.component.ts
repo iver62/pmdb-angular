@@ -46,8 +46,8 @@ export class CastingFormComponent {
     });
   }
 
-  selectActor(event: Person, index: number) {
-    this.formArray.at(index).patchValue({ id: event.id, name: event.name });
+  selectActor(person: Person, index: number) {
+    this.formArray.at(index).patchValue({ id: person.id, name: person.name });
   }
 
   /**

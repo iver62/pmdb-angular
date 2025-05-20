@@ -11,8 +11,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
+import { PersonType } from '../../enums';
 import { Person, PersonWithPhotoUrl, SearchConfig } from '../../models';
-import { ActorService } from '../../services';
+import { PersonService } from '../../services';
 import { HttpUtils, Utils } from '../../utils';
 
 @Component({
@@ -58,7 +59,7 @@ export class AutocompleteComponent {
   // Liste des personnes filtrées
   readonly persons$ = this.searchConfig$.pipe(
     distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && Utils.arraysEqual(c1.excludedActorIds, c2.excludedActorIds)),
-    switchMap(config => this.actorService.get(config.page, config.size, config.term).pipe(
+    switchMap(config => this.personService.getPersons(config.page, config.size, config.term).pipe(
       tap(response => {
         this.isLoadingMore = false;
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0);
@@ -67,7 +68,7 @@ export class AutocompleteComponent {
       map(persons => persons.map(p => (
         {
           ...p,
-          photoUrl$: this.actorService.getPhotoUrl(p.photoFileName) // Observable pour la photo
+          photoUrl$: this.personService.getPhotoUrl(p.photoFileName) // Observable pour la photo
         }
       ))),
       catchError(() => {
@@ -93,7 +94,7 @@ export class AutocompleteComponent {
   private loaded = 0;
   private isLoadingMore = false;
 
-  constructor(private actorService: ActorService,) {
+  constructor(private personService: PersonService) {
     effect(() => this.formControl = this.control() as FormControl);
     effect(() =>
       this.searchConfig$.next(
@@ -157,7 +158,7 @@ export class AutocompleteComponent {
     }
 
     this.loading = true;
-    this.actorService.save({ name: this.formControl.value?.trim() }).subscribe(
+    this.personService.save({ name: this.formControl.value?.trim(), types: [PersonType.ACTOR] }).subscribe(
       {
         next: result => this.save.emit(result),
         error: e => console.error(e),

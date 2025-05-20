@@ -3,13 +3,13 @@
 <div class="flex flex-col h-full">
   <div class="flex items-center justify-between">
     <h2></h2>
-    <app-input class="md:w-1/3" [label]="viewTitle | translate" [placeholder]="'app.search' | translate" [total]="total"
+    <app-input class="md:w-1/3" label="Personnes" [placeholder]="'app.search' | translate" [total]="total"
       (change)="onSearch($event)">
     </app-input>
-    <app-toolbar [countries$]="countries$()"
+    <app-toolbar [countries$]="countries$" [selectedCriterias]="searchConfig$?.value?.criterias"
       [criterias]="['birthDate', 'deathDate', 'countries', 'creationDate', 'lastUpdate']" [sorts]="sorts$ | async"
-      [selectedCriterias]="searchConfig$?.value?.criterias" [cookieName]="cookieName()" (filter)="onFilter($event)"
-      (switchView)="onSwitchView($event)" (sort)="onSort($event)">
+      [cookieName]="'persons-config'" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
+      (sort)="onSort($event)">
     </app-toolbar>
   </div>
 
@@ -21,12 +21,11 @@
   @if (searchConfig$.value.view == view.CARDS) {
   <div #scrollContainer class="grow overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
     [alwaysCallback]="true" (scrolled)="onScroll()">
-    <app-persons-list title="Acteurs" [persons]="persons" [service]="personService">
-    </app-persons-list>
+    <app-persons-list [persons]="persons"></app-persons-list>
   </div>
   } @else {
-  <div class="grow max-h-fit overflow-y-auto rounded-t-lg">
-    <app-persons-table [service]="personService" [dataSource]="persons" [sortActive]="searchConfig$.value.sort"
+  <div #tableContainer class="grow max-h-fit overflow-y-auto rounded-t-lg">
+    <app-persons-table [dataSource]="persons" [sortActive]="searchConfig$.value.sort"
       [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
     </app-persons-table>
   </div>

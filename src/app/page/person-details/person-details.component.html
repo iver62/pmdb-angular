@@ -8,8 +8,8 @@
   @let movies = movies$ | async;
 
   <div class="h-full">
-    <app-person-detail [person]="person()" [service]="service" [canDelete]="movies?.length > 0"
-      (edit)="editMode = !editMode" (delete)="deletePerson()">
+    <app-person-detail [person]="person()" [canDelete]="movies?.length > 0" (edit)="editMode = !editMode"
+      (delete)="deletePerson()">
     </app-person-detail>
 
     <div class="mt-4">

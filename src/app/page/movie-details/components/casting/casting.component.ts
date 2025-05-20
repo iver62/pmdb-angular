@@ -3,7 +3,7 @@ import { Component, effect, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MovieActor, PersonWithPhoto } from '../../../../models';
-import { ActorService } from '../../../../services';
+import { PersonService } from '../../../../services';
 
 @Component({
   selector: 'app-casting',
@@ -20,13 +20,13 @@ export class CastingComponent {
   actors = input.required<MovieActor[]>();
   enrichedActors = signal<PersonWithPhoto[]>([]);
 
-  constructor(private actorService: ActorService) {
+  constructor(private personService: PersonService) {
     // Transformer les acteurs en ajoutant les URLs
     effect(() => {
       const persons = this.actors()?.map(a => (
         {
           ...a,
-          photoUrl$: this.actorService.getPhotoUrl(a.actor.photoFileName) // Observable pour l'affiche
+          photoUrl$: this.personService.getPhotoUrl(a.actor.photoFileName) // Observable pour l'affiche
         }
       ));
       this.enrichedActors.set(persons);

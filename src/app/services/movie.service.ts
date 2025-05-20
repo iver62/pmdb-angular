@@ -180,8 +180,8 @@ export class MovieService {
     return this.http.put<TechnicalTeam>(`${this.basePath}/${id}/technical-team`, technicalTeam);
   }
 
-  saveCasting(id: number, movieActors: MovieActor[]) {
-    return this.http.put<MovieActor[]>(`${this.basePath}/${id}/casting`, movieActors);
+  saveCast(id: number, movieActors: MovieActor[]) {
+    return this.http.put<MovieActor[]>(`${this.basePath}/${id}/cast`, movieActors);
   }
 
   saveAwards(id: number, awards: Award[]) {

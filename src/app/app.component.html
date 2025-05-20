@@ -3,17 +3,24 @@
 
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="justify-between">
-    <div class="flex items-center">
-      <button mat-icon-button (click)="snav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
+    <div class="items-center">
       <h1 class="example-app-name cursor-pointer" routerLink="/">{{title}}</h1>
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-2">
+      <button mat-button routerLink="/movies">
+        <span>{{'app.movies' | translate}}</span>
+      </button>
+      <button mat-button routerLink="/persons">
+        <span>{{'app.persons' | translate}}</span>
+      </button>
+      <button mat-button routerLink="/users">
+        <span>{{'app.users' | translate}}</span>
+      </button>
       <button mat-button routerLink="/add-movie">
-        <mat-icon>add</mat-icon>
         <span>{{'app.add_movie' | translate}}</span>
       </button>
+    </div>
+    <div class="items-center">
       <button mat-icon-button class="menu-button" [matMenuTriggerFor]="menu"
         aria-label="Example icon button with a vertical three dot icon">
         {{user?.username | firstLetter | uppercase}}
@@ -74,17 +81,6 @@
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56">
-      <mat-nav-list>
-        @for (nav of navs | filterBy: ['active']: true | filterBy: ['display']: true; track nav) {
-        <a mat-list-item [routerLink]="nav.routerLink">
-          <mat-icon class="align-sub material-symbols-outlined mr-2">{{nav.icon}}</mat-icon>
-          {{nav.label | translate}}
-        </a>
-        }
-      </mat-nav-list>
-    </mat-sidenav>
     <mat-sidenav-content class="p-3">
       @if (loading$ | async) {
       <mat-spinner></mat-spinner>

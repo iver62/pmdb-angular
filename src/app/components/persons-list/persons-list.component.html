@@ -1,5 +1,7 @@
 <div class="persons-grid">
   @for (person of persons(); track person.id) {
-  <app-person-card [person]="person" [service]="service"></app-person-card>
+  <app-person-card [person]="person"></app-person-card>
+  } @empty {
+  <div>Aucune personne</div>
   }
 </div>

@@ -16,7 +16,7 @@ import { EMPTY_STRING } from '../../app.component';
 import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
 import { Criterias, Movie, Person, SearchConfig, SortOption } from '../../models';
-import { BaseService } from '../../services';
+import { PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
 import { PersonDetailComponent, PersonFormComponent } from './components';
 
@@ -76,7 +76,6 @@ export class PersonDetailsComponent {
   view = View;
   pageSizeOptions = [25, 50, 100];
   duration = 5000;
-  service: BaseService = this.route.snapshot.data['service'];
   person = signal<Person>(null);
   editMode = false;
   form: FormGroup;
@@ -96,7 +95,7 @@ export class PersonDetailsComponent {
   movies$ = this.searchConfig$.pipe(
     filter(() => !!this.person()),
     switchMap(config =>
-      this.service.getMovies(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
+      this.personService.getMovies(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
         map(response => response.body ?? []),
         catchError(error => {
@@ -113,6 +112,7 @@ export class PersonDetailsComponent {
 
   constructor(
     private fb: FormBuilder,
+    private personService: PersonService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
@@ -135,7 +135,7 @@ export class PersonDetailsComponent {
 
   ngOnInit() {
     this.route.paramMap.pipe(
-      switchMap(params => this.service.getById(+params.get('id'))),
+      switchMap(params => this.personService.getById(+params.get('id'))),
       catchError(error => {
         console.error('Erreur lors de la récupération de la personne:', error);
         return of(null); // Retourne un observable avec null en cas d'erreur
@@ -229,7 +229,7 @@ export class PersonDetailsComponent {
   }
 
   save() {
-    this.service.update(this.selectedFile, this.form.value).subscribe(
+    this.personService.update(this.selectedFile, this.form.value).subscribe(
       {
         next: (result: Person) => {
           this.person.set(result);
@@ -245,7 +245,7 @@ export class PersonDetailsComponent {
   }
 
   deletePerson() {
-    this.service.delete(this.person().id).subscribe(
+    this.personService.delete(this.person().id).subscribe(
       {
         next: (result: boolean) => {
           this.snackBar.open(`${this.person.name} supprimé avec succès`, 'Done', { duration: this.duration });

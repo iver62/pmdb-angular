@@ -28,5 +28,6 @@
       <span>&nbsp;{{(person()?.countries | pluck: 'nomFrFr' | orderBy)?.join(', ')}}</span>
     </p>
     }
+    <p>{{person().types.join(', ')}}</p>
   </div>
 </div>
