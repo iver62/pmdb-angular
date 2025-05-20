@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Language, PersonType } from '../enums';
+import { Direction, Language, PersonType } from '../enums';
 import { Country, Criterias, Movie, Person } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
@@ -29,7 +29,7 @@ export class PersonService {
     params.set('page', page.toString());
     params.set('size', size.toString());
     params.set('sort', sort);
-    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
     term && params.set('term', term);
     criterias?.fromBirthDate && params.set('from-birth-date', this.dateService.format(criterias.fromBirthDate, DateUtils.API_DATE_FORMAT));
     criterias?.toBirthDate && params.set('to-birth-date', this.dateService.format(criterias.toBirthDate, DateUtils.API_DATE_FORMAT));
@@ -51,7 +51,7 @@ export class PersonService {
     params.set('page', page.toString());
     params.set('size', size.toString());
     params.set('sort', sort);
-    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
     term && params.set('term', term);
     criterias?.fromBirthDate && params.set('from-birth-date', this.dateService.format(criterias.fromBirthDate, DateUtils.API_DATE_FORMAT));
     criterias?.toBirthDate && params.set('to-birth-date', this.dateService.format(criterias.toBirthDate, DateUtils.API_DATE_FORMAT));
@@ -73,7 +73,7 @@ export class PersonService {
     params.set('page', page.toString());
     params.set('size', size.toString());
     params.set('sort', sort);
-    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
     term && params.set('term', encodeURIComponent(term));
     criterias?.fromReleaseDate && params.set('start-release-date', this.dateService.format(criterias.fromReleaseDate, DateUtils.API_DATE_FORMAT));
     criterias?.toReleaseDate && params.set('end-release-date', this.dateService.format(criterias.toReleaseDate, DateUtils.API_DATE_FORMAT));
@@ -94,7 +94,7 @@ export class PersonService {
   }
 
   getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = Language.FR, direction = 'asc') =>
-    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`,
+    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
       { observe: 'response' }
     );
 

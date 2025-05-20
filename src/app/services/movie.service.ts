@@ -4,7 +4,7 @@ import { SseClient } from 'ngx-sse-client';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
-import { Language } from '../enums';
+import { Direction, Language } from '../enums';
 import { Award, Country, Criterias, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
@@ -42,7 +42,7 @@ export class MovieService {
    * @param size le nombre de films
    * @param term le filtre
    * @param sort la propriété à filtrer
-   * @param direction le sens du tri ('Ascending' ou 'Descending')
+   * @param direction le sens du tri (Ascending ou Descending)
    * @returns une liste de films
    */
   getMovies(page = 0, size = 50, term = EMPTY_STRING, sort = 'title', direction = 'asc', criterias?: Criterias) {
@@ -51,7 +51,7 @@ export class MovieService {
     params.set('page', page.toString());
     params.set('size', size.toString());
     params.set('sort', sort);
-    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
     term && params.set('term', encodeURIComponent(term));
     criterias?.fromReleaseDate && params.set('from-release-date', this.dateService.format(criterias.fromReleaseDate, DateUtils.API_DATE_FORMAT));
     criterias?.toReleaseDate && params.set('to-release-date', this.dateService.format(criterias.toReleaseDate, DateUtils.API_DATE_FORMAT));
@@ -77,7 +77,7 @@ export class MovieService {
   }
 
   getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = Language.FR, direction = 'asc') =>
-    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? 'Ascending' : 'Descending'}&term=${term}`,
+    this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
       { observe: 'response' }
     );
 

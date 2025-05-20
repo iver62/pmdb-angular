@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
+import { Direction } from '../enums';
 import { User } from '../models';
 
 @Injectable({
@@ -20,7 +21,7 @@ export class UserService {
     params.set('size', size.toString());
     term && params.set('term', encodeURIComponent(term));
     params.set('sort', sort);
-    params.set('direction', direction === 'asc' ? 'Ascending' : 'Descending');
+    params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
 
     return this.http.get<User[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }

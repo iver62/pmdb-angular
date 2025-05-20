@@ -4,6 +4,7 @@ import { MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { NgPipesModule } from 'ngx-pipes';
 import { Person, PersonWithPhotoUrl } from '../../models';
 import { PersonService } from '../../services';
 
@@ -14,6 +15,7 @@ import { PersonService } from '../../services';
     DatePipe,
     MatSortModule,
     MatTableModule,
+    NgPipesModule,
     RouterLink,
     TranslatePipe
   ],

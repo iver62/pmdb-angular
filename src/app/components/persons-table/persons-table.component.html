@@ -39,7 +39,7 @@
   <!-- Types Column -->
   <ng-container matColumnDef="types">
     <th mat-header-cell *matHeaderCellDef>{{'app.types' | translate}}</th>
-    <td mat-cell *matCellDef="let row">{{row.types?.join(', ')}}</td>
+    <td mat-cell *matCellDef="let row">{{(row.types | orderBy).join(', ')}}</td>
   </ng-container>
 
   <!-- Creation date Column -->
