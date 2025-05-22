@@ -3,7 +3,7 @@
 <div class="flex flex-col h-full">
   <div class="flex flex-row justify-between items-center mb-3">
     <div>
-      <h2 [hidden]="total < 1" class="self-end">{{total}} films</h2>
+      <h2 [hidden]="total < 1" class="self-end text-xl">{{total}} {{'app.movies' | translate}}</h2>
     </div>
     <app-toolbar [countries$]="movieService.getCountries"
       [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"

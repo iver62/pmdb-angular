@@ -145,6 +145,7 @@ export class PersonDetailsComponent {
   }
 
   onChangeImage(event: File) {
+    this.form.markAsDirty();
     this.selectedFile = event;
   }
 
@@ -230,7 +231,7 @@ export class PersonDetailsComponent {
   save() {
     this.personService.update(this.selectedFile, this.form.value).subscribe(
       {
-        next: (result: Person) => {
+        next: result => {
           this.person.set(result);
           this.editMode = false;
           this.snackBar.open(`${this.person().name} modifié avec succès`, 'Done', { duration: this.duration });
@@ -246,7 +247,7 @@ export class PersonDetailsComponent {
   deletePerson() {
     this.personService.delete(this.person().id).subscribe(
       {
-        next: (result: boolean) => {
+        next: () => {
           this.snackBar.open(`${this.person.name} supprimé avec succès`, 'Done', { duration: this.duration });
           this.router.navigateByUrl(this.route.snapshot.url.at(0)?.path);
         },

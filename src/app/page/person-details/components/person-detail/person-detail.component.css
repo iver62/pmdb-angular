@@ -1,5 +1,22 @@
-img {
-  height: 300px;
-  border-radius: 12px;
+.image-container {
+  width: 140px;
+  /* Taille du cercle */
+  height: 140px;
+  border-radius: 50%;
+  /* Rend l'image circulaire */
+  overflow: hidden;
+  /* Cache les bords dépassants */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #333;
+  /* Bordure optionnelle */
+}
+
+.image-container img {
+  width: 100%;
+  /* Ajuste l'image à la taille du conteneur */
+  height: 100%;
   object-fit: cover;
+  /* Coupe l'image pour remplir le cercle */
 }

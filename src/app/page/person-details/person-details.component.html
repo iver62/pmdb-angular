@@ -1,9 +1,7 @@
 <div class="flex flex-col h-full gap-4">
-  @if (!editMode) {
-  <button mat-button class="w-fit" routerLink="../">{{'app.back_to_list' | translate}}</button>
-  }
 
   @if (!editMode) {
+  <mat-icon class="cursor-pointer" routerLink="../">arrow_back_ios</mat-icon>
   @if (person()) {
   @let movies = movies$ | async;
 
@@ -15,7 +13,7 @@
     <div class="mt-4">
       <div class="flex flex-row justify-between items-center mb-3">
         <div>
-          <h2 [hidden]="total < 1" class="self-end">{{total}} films</h2>
+          <h2 [hidden]="total < 1" class="self-end text-xl">{{total}} {{'app.movies' | translate}}</h2>
         </div>
         <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
           [sorts]="sorts$ | async" (search)="onSearch($event)" (filter)="onFilter($event)"

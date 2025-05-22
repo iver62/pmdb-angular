@@ -1,5 +1,7 @@
 <div class="flex flex-row">
-  <img mat-card-image [src]="photoUrl$ | async" alt="{{ person()?.photoFileName }}" width="220">
+  <span class="image-container">
+    <img mat-card-image [src]="photoUrl$ | async" alt="{{ person().photoFileName }}">
+  </span>
   <div class="ml-4 w-1/2">
     <div class="flex items-center">
       <h1 class="text-2xl">{{person()?.name}}</h1>

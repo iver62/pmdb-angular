@@ -1,4 +1,4 @@
-import { UpperCasePipe } from '@angular/common';
+import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -11,6 +11,7 @@ import { TechnicalTeam } from '../../../../models';
   imports: [
     MatIconModule,
     NgPipesModule,
+    NgTemplateOutlet,
     RouterLink,
     TranslatePipe,
     UpperCasePipe

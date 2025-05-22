@@ -1,166 +1,78 @@
 <div class="flex flex-col gap-4 text-xl">
   @if (technicalTeam?.directors?.length) {
-  <div>
-    <span class="font-bold">{{'app.directors' | translate | uppercase}} :</span>
-    @for (director of technicalTeam?.directors | orderBy: 'name'; track director.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', director.id]">
-      {{director?.name}}@if (!last) {,}
-    </span>
-
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.directors', persons: technicalTeam?.directors}" />
   }
   @if (technicalTeam?.screenwriters?.length) {
-  <div>
-    <span class="font-bold">{{'app.screenwriters' | translate | uppercase}} :</span>
-    @for(screenwriter of technicalTeam?.screenwriters | orderBy: 'name'; track screenwriter.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', screenwriter.id]">
-      {{screenwriter?.name}}@if (!last) {,}
-    </span>
-
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.screenwriters', persons: technicalTeam?.screenwriters}" />
   }
   @if (technicalTeam?.dialogueWriters?.length) {
-  <div>
-    <span class="font-bold">{{'app.dialogue_writers' | translate | uppercase}} :</span>
-    @for(dialogueWriter of technicalTeam?.dialogueWriters | orderBy: 'name'; track dialogueWriter.id; let last = $last)
-    {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', dialogueWriter.id]">
-      {{dialogueWriter?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.dialogue_writers', persons: technicalTeam?.dialogueWriters}" />
   }
   @if (technicalTeam?.musicians?.length) {
-  <div>
-    <span class="font-bold">{{'app.music' | translate | uppercase}} :</span>
-    @for(musician of technicalTeam?.musicians | orderBy: 'name'; track musician.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', musician.id]">
-      {{musician?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.music', persons: technicalTeam?.musicians}" />
   }
   @if (technicalTeam?.photographers?.length) {
-  <div>
-    <span class="font-bold">{{'app.photography' | translate | uppercase}} :</span>
-    @for (photographer of technicalTeam?.photographers | orderBy: 'name'; track photographer.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', photographer.id]">
-      {{photographer?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.photography', persons: technicalTeam?.photographers}" />
   }
   @if (technicalTeam?.costumiers?.length) {
-  <div>
-    <span class="font-bold">{{'app.costumes' | translate | uppercase}} :</span>
-    @for (costumier of technicalTeam?.costumiers | orderBy: 'name'; track costumier.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', costumier.id]">
-      {{costumier?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.costumes', persons: technicalTeam?.costumiers}" />
   }
   @if (technicalTeam?.decorators?.length) {
-  <div>
-    <span class="font-bold">{{'app.sets' | translate | uppercase}} :</span>
-    @for (decorator of technicalTeam?.decorators | orderBy: 'name'; track decorator.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', decorator.id]">
-      {{decorator?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.sets', persons: technicalTeam?.decorators}" />
   }
   @if (technicalTeam?.editors?.length) {
-  <div>
-    <span class="font-bold">{{'app.editing' | translate | uppercase}} :</span>
-    @for (editor of technicalTeam?.editors | orderBy: 'name'; track editor.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', editor.id]">
-      {{editor?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.editing', persons: technicalTeam?.editors}" />
   }
   @if (technicalTeam?.casters?.length) {
-  <div>
-    <span class="font-bold">{{'app.casting' | translate | uppercase}} :</span>
-    @for (caster of technicalTeam?.casters | orderBy: 'name'; track caster.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', caster.id]">
-      {{caster?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.casting', persons: technicalTeam?.casters}" />
   }
   @if (technicalTeam?.artDirectors?.length) {
-  <div>
-    <span class="font-bold">{{'app.art_directors' | translate | uppercase}} :</span>
-    @for (artDirector of technicalTeam?.artDirectors | orderBy: 'name'; track artDirector.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', artDirector.id]">
-      {{artDirector?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.art_directors', persons: technicalTeam?.artDirectors}" />
   }
   @if (technicalTeam?.soundEditors?.length) {
-  <div>
-    <span class="font-bold">{{'app.sound_editors' | translate | uppercase}} :</span>
-    @for (soundEditor of technicalTeam?.soundEditors | orderBy: 'name'; track soundEditor.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', soundEditor.id]">
-      {{soundEditor?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.sound_editors', persons: technicalTeam?.soundEditors}" />
   }
   @if (technicalTeam?.visualEffectsSupervisors?.length) {
-  <div>
-    <span class="font-bold">{{'app.special_effects' | translate | uppercase}} :</span>
-    @for (visualEffectsSupervisor of technicalTeam?.visualEffectsSupervisors | orderBy: 'name'; track
-    visualEffectsSupervisor.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', visualEffectsSupervisor.id]">
-      {{visualEffectsSupervisor?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.special_effects', persons: technicalTeam?.visualEffectsSupervisors}" />
   }
   @if (technicalTeam?.makeupArtists?.length) {
-  <div>
-    <span class="font-bold">{{'app.makeup' | translate | uppercase}} :</span>
-    @for (makeupArtist of technicalTeam?.makeupArtists | orderBy: 'name'; track makeupArtist.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', makeupArtist.id]">
-      {{makeupArtist?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.makeup', persons: technicalTeam?.makeupArtists}" />
   }
   @if (technicalTeam?.hairDressers?.length) {
-  <div>
-    <span class="font-bold">{{'app.hair_dressers' | translate | uppercase}} :</span>
-    @for (hairDresser of technicalTeam?.hairDressers | orderBy: 'name'; track hairDresser.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', hairDresser.id]">
-      {{hairDresser?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.hair_dressers', persons: technicalTeam?.hairDressers}" />
   }
   @if (technicalTeam?.stuntmen?.length) {
-  <div>
-    <span class="font-bold">{{'app.stuntmen' | translate | uppercase}} :</span>
-    @for (stuntman of technicalTeam?.stuntmen | orderBy: 'name'; track stuntman.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', stuntman.id]">
-      {{stuntman?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.stuntmen', persons: technicalTeam?.stuntmen}" />
   }
   @if (technicalTeam?.producers?.length) {
-  <div>
-    <span class="font-bold">{{'app.producers' | translate | uppercase}} :</span>
-    @for (producer of technicalTeam?.producers | orderBy: 'name'; track producer.id; let last = $last) {
-    <span class="cursor-pointer hover:underline" [routerLink]="['/persons', producer.id]">
-      {{producer?.name}}@if (!last) {,}
-    </span>
-    }
-  </div>
+  <ng-container [ngTemplateOutlet]="personsList"
+    [ngTemplateOutletContext]="{label: 'app.producers', persons: technicalTeam?.producers}" />
   }
 </div>
+
+<ng-template #personsList let-label="label" let-persons="persons">
+  <div>
+    <span class="font-bold">{{label | translate | uppercase}} :</span>
+    @for (person of persons | orderBy: 'name'; track person.id; let last = $last) {
+    <a class="cursor-pointer hover:underline" [routerLink]="['/persons', person.id]">
+      {{person?.name}}
+    </a>
+    @if (!last) {, }
+    }
+  </div>
+</ng-template>

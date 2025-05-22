@@ -1,10 +1,8 @@
-<button mat-button routerLink="../">{{'app.back_to_movies' | translate}}</button>
+<mat-icon class="cursor-pointer" routerLink="../">arrow_back_ios</mat-icon>
 
-<mat-tab-group class="mt-4 px-4" [disableRipple]="true" fitInkBarToContent (selectedTabChange)="onTabChanged($event)">
+<mat-tab-group class="px-4" [disableRipple]="true" fitInkBarToContent (selectedTabChange)="onTabChanged($event)">
   <mat-tab labelClass="tab-label">
-    <ng-template mat-tab-label>
-      {{'app.general_infos' | translate}}
-    </ng-template>
+    <ng-template mat-tab-label>{{'app.general_infos' | translate}}</ng-template>
 
     <div class="h-full py-4">
       @if (editGeneralInfos) {
@@ -36,9 +34,7 @@
   </mat-tab>
 
   <mat-tab labelClass="tab-label">
-    <ng-template mat-tab-label>
-      {{'app.technical_team' | translate}}
-    </ng-template>
+    <ng-template mat-tab-label>{{'app.technical_team' | translate}}</ng-template>
 
     <div class="h-full py-4">
       @if (editTechnicalTeam) {
@@ -68,9 +64,7 @@
   </mat-tab>
 
   <mat-tab labelClass="tab-label">
-    <ng-template mat-tab-label>
-      {{'app.casting' | translate}}
-    </ng-template>
+    <ng-template mat-tab-label>{{'app.casting' | translate}}</ng-template>
 
     <div class="h-full py-4">
       @if (editCasting) {
@@ -103,9 +97,7 @@
   </mat-tab>
 
   <mat-tab labelClass="tab-label">
-    <ng-template mat-tab-label>
-      {{'app.awards' | translate}}
-    </ng-template>
+    <ng-template mat-tab-label>{{'app.awards' | translate}}</ng-template>
 
     <div class="h-full py-4">
       @if (editAwards) {

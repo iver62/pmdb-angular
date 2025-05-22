@@ -15,7 +15,7 @@
     @if (movie()?.synopsis) {
     <p>
       <span class="font-bold">{{'app.synopsis' | translate | uppercase}} :</span>
-      <span>&nbsp;{{movie()?.synopsis}}</span>
+      <span [style.white-space]="'pre-line'">&nbsp;{{movie()?.synopsis}}</span>
     </p>
     }
     @if (movie()?.releaseDate) {

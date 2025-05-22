@@ -149,7 +149,7 @@ export class MovieDetailsComponent {
           producers: [this.technicalTeam.producers],
           directors: [this.technicalTeam.directors],
           screenwriters: [this.technicalTeam.screenwriters],
-          dialogieWriters: [this.technicalTeam.dialogueWriters],
+          dialogueWriters: [this.technicalTeam.dialogueWriters],
           musicians: [this.technicalTeam.musicians],
           decorators: [this.technicalTeam.decorators],
           costumiers: [this.technicalTeam.costumiers],

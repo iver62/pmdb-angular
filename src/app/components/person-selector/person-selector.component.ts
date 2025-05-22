@@ -45,7 +45,7 @@ export class PersonSelectorComponent {
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
-      size: 50,
+      size: 20,
       sort: 'nomFrFr',
       direction: 'asc',
       term: EMPTY_STRING

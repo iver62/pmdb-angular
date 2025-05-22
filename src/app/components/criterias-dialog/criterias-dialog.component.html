@@ -7,23 +7,22 @@
   <form [formGroup]="form" class="flex flex-col gap-4">
     @if (data?.criterias?.includes('releaseDate')) {
     <app-date-range-picker [label]="'app.release_date' | translate"
-      [fromDatePlaceholder]="'app.from_release_date' | translate"
-      [toDatePlaceholder]="'app.to_release_date' | translate" [fromDateControl]="form.controls.fromReleaseDate"
-      [toDateControl]="form.controls.toReleaseDate">
+      [fromDatePlaceholder]="'app.date_format' | translate" [toDatePlaceholder]="'app.date_format' | translate"
+      [fromDateControl]="form.controls.fromReleaseDate" [toDateControl]="form.controls.toReleaseDate">
     </app-date-range-picker>
     }
 
     @if (data?.criterias?.includes('birthDate')) {
-    <app-date-range-picker [label]="'app.birth_date' | translate"
-      [fromDatePlaceholder]="'app.from_birth_date' | translate" [toDatePlaceholder]="'app.to_birth_date' | translate"
-      [fromDateControl]="form.controls.fromBirthDate" [toDateControl]="form.controls.toBirthDate">
+    <app-date-range-picker [label]="'app.birth_date' | translate" [fromDatePlaceholder]="'app.date_format' | translate"
+      [toDatePlaceholder]="'app.date_format' | translate" [fromDateControl]="form.controls.fromBirthDate"
+      [toDateControl]="form.controls.toBirthDate">
     </app-date-range-picker>
     }
 
     @if (data?.criterias?.includes('deathDate')) {
-    <app-date-range-picker [label]="'app.death_date' | translate"
-      [fromDatePlaceholder]="'app.from_death_date' | translate" [toDatePlaceholder]="'app.to_death_date' | translate"
-      [fromDateControl]="form.controls.fromDeathDate" [toDateControl]="form.controls.toDeathDate">
+    <app-date-range-picker [label]="'app.death_date' | translate" [fromDatePlaceholder]="'app.date_format' | translate"
+      [toDatePlaceholder]="'app.date_format' | translate" [fromDateControl]="form.controls.fromDeathDate"
+      [toDateControl]="form.controls.toDeathDate">
     </app-date-range-picker>
     }
 
@@ -60,13 +59,12 @@
     }
 
     <app-date-range-picker [label]="'app.creation_date' | translate"
-      [fromDatePlaceholder]="'app.from_creation_date' | translate"
-      [toDatePlaceholder]="'app.to_creation_date' | translate" [fromDateControl]="form.controls.fromCreationDate"
-      [toDateControl]="form.controls.toCreationDate">
+      [fromDatePlaceholder]="'app.date_format' | translate" [toDatePlaceholder]="'app.date_format' | translate"
+      [fromDateControl]="form.controls.fromCreationDate" [toDateControl]="form.controls.toCreationDate">
     </app-date-range-picker>
 
     <app-date-range-picker [label]="'app.last_update_date' | translate"
-      [fromDatePlaceholder]="'app.from_last_update' | translate" [toDatePlaceholder]="'app.to_last_update' | translate"
+      [fromDatePlaceholder]="'app.date_format' | translate" [toDatePlaceholder]="'app.date_format' | translate"
       [fromDateControl]="form.controls.fromLastUpdate" [toDateControl]="form.controls.toLastUpdate">
     </app-date-range-picker>
   </form>

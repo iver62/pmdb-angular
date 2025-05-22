@@ -37,7 +37,7 @@
 
     <div class="fixed bottom-5 right-5">
       <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
-        aria-label="Example icon button with a check icon" color="accent" [disabled]="form?.invalid"
+        aria-label="Example icon button with a check icon" color="accent" [disabled]="form?.invalid || form.pristine"
         (click)="saveUser()">
         <mat-icon>check</mat-icon>
       </button>

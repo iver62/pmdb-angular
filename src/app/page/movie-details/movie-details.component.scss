@@ -1,5 +1,5 @@
 .mat-mdc-tab-group {
-  height: calc(100% - 56px);
+  height: calc(100% - 32px);
 
   .mat-mdc-tab-body-wrapper {
     height: calc(100% - 49px);
@@ -9,17 +9,6 @@
 
 ::ng-deep .mat-mdc-tab-labels {
   gap: 1rem !important;
-}
-
-.mat-mdc-button {
-  color: black !important;
-  border: 1px solid black;
-  background-color: #f9f9f9;
-
-  &:hover {
-    color: white !important;
-    background-color: rgb(39, 39, 41);
-  }
 }
 
 .mat-mdc-fab {

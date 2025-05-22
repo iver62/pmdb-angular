@@ -3,7 +3,7 @@
 <div class="flex flex-col h-full">
   <div class="flex items-center justify-between mb-3">
     <div>
-      <h2 [hidden]="total < 1" class="self-end">{{total}} personnes</h2>
+      <h2 [hidden]="total < 1" class="self-end text-xl">{{total}} {{'app.persons' | translate}}</h2>
     </div>
     <app-toolbar [countries$]="countries$" [selectedCriterias]="searchConfig$?.value?.criterias"
       [criterias]="['birthDate', 'deathDate', 'types', 'countries', 'creationDate', 'lastUpdate']"
