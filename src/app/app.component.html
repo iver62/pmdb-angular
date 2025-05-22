@@ -6,19 +6,13 @@
     <div class="items-center">
       <h1 class="example-app-name cursor-pointer" routerLink="/">{{title}}</h1>
     </div>
-    <div class="flex items-center gap-2">
-      <button mat-button routerLink="/movies">
-        <span>{{'app.movies' | translate}}</span>
-      </button>
-      <button mat-button routerLink="/persons">
-        <span>{{'app.persons' | translate}}</span>
-      </button>
-      <button mat-button routerLink="/users">
-        <span>{{'app.users' | translate}}</span>
-      </button>
-      <button mat-button routerLink="/add-movie">
-        <span>{{'app.add_movie' | translate}}</span>
-      </button>
+    <div class="flex items-center text-base font-medium gap-4">
+      <a routerLink="/movies">{{'app.movies' | translate}}</a>
+      <a routerLink="/persons">{{'app.persons' | translate}}</a>
+      @if (authService.hasRole('admin')) {
+      <a routerLink="/users">{{'app.users' | translate}}</a>
+      }
+      <a routerLink="/add-movie">{{'app.add_movie' | translate}}</a>
     </div>
     <div class="items-center">
       <button mat-icon-button class="menu-button" [matMenuTriggerFor]="menu"

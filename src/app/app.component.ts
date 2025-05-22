@@ -3,15 +3,12 @@ import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { DateAdapter } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
@@ -28,15 +25,12 @@ export const EMPTY_STRING = '';
     AsyncPipe,
     FirstLetterPipe,
     MatButtonModule,
-    MatFormFieldModule,
     MatIconModule,
     MatListModule,
     MatMenuModule,
-    MatSelectModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
-    MatTooltipModule,
     NgPipesModule,
     RouterLink,
     RouterOutlet,
@@ -57,160 +51,12 @@ export class AppComponent {
 
   mobileQuery: MediaQueryList;
 
-  navs = [
-    {
-      label: 'app.home',
-      routerLink: 'dashboard',
-      icon: 'dashboard',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.movies',
-      routerLink: 'movies',
-      icon: 'movie',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.actors',
-      routerLink: 'actors',
-      icon: 'comedy_mask',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.producers',
-      routerLink: 'producers',
-      icon: 'attach_money',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.directors',
-      routerLink: 'directors',
-      icon: 'video_camera_front',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.screenwriters',
-      routerLink: 'screenwriters',
-      icon: 'edit_square',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.music',
-      routerLink: 'musicians',
-      icon: 'music_note',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.sets',
-      routerLink: 'decorators',
-      icon: 'curtains',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.costumes',
-      routerLink: 'costumiers',
-      icon: 'styler',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.photography',
-      routerLink: 'photographers',
-      icon: 'photo_camera',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.editing',
-      routerLink: 'editors',
-      icon: 'cut',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.casters',
-      routerLink: 'casters',
-      icon: 'theater_comedy',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.art_directors',
-      routerLink: 'art-directors',
-      icon: 'palette',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.sound_editors',
-      routerLink: 'sound-editors',
-      icon: 'volume_up',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.visual_effects_supervisors',
-      routerLink: 'visual-effects-supervisors',
-      icon: 'explosion',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.makeup_artists',
-      routerLink: 'makeup-artists',
-      icon: 'ink_marker',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.hair_dressers',
-      routerLink: 'hair-dressers',
-      icon: 'health_and_beauty',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.stuntmen',
-      routerLink: 'stuntmen',
-      icon: 'sprint',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: true
-    },
-    {
-      label: 'app.categories',
-      routerLink: 'genres',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: false
-    },
-    {
-      label: 'app.countries',
-      routerLink: 'countries',
-      display: this.authService.hasRole('user') || this.authService.hasRole('admin'),
-      active: false
-    },
-    {
-      label: 'app.users',
-      routerLink: 'users',
-      icon: 'account_circle',
-      display: this.authService.hasRole('admin') || this.authService.hasRole('admin'),
-      active: true
-    }
-  ];
-
   private _mobileQueryListener: () => void;
 
   user$ = this.authService.loadUserProfile();
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     changeDetectorRef: ChangeDetectorRef,
     private dateAdapter: DateAdapter<any>,
     private loaderService: LoaderService,

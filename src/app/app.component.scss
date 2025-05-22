@@ -22,20 +22,6 @@
   color: white;
 }
 
-.mat-mdc-button {
-  color: #606060;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-
-  &:hover {
-    background-color: whitesmoke;
-  }
-
-  &:active {
-    background-color: whitesmoke;
-  }
-}
-
 .example-is-mobile .example-toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
