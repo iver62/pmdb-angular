@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="form">
-  <div formArrayName="actors">
+  <div cdkDropList formArrayName="actors" (cdkDropListDropped)="drop($event)">
     @for (actor of formArray.controls; track actor; let i = $index) {
-    <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
+    <div class="grid grid-cols-12 gap-2" [formGroupName]="i" cdkDrag>
 
       <!-- Autocomplete acteur -->
       <app-autocomplete class="col-span-4" [control]="actor.get('name')" [label]="'app.actor_name' | translate"
@@ -14,39 +14,27 @@
         <mat-label>{{'app.role' | translate}}</mat-label>
         <input matInput formControlName="role" />
         @if (actor.value.role) {
-        <button matSuffix mat-icon-button [matTooltip]="'app.erase' | translate" aria-label="Effacer le rôle"
-          (click)="clearRole(i)">
+        <button matSuffix mat-icon-button class="mr-2" [matTooltip]="'app.erase' | translate"
+          aria-label="Effacer le rôle" (click)="clearRole(i)">
           <mat-icon>close</mat-icon>
         </button>
         }
       </mat-form-field>
 
       <!-- Actions -->
-      <div class="flex col-span-2">
-        <button mat-icon-button [matTooltip]="'app.delete' | translate"
-          aria-label="Example icon button with a delete icon" (click)="removeActor(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <div class="flex flex-col">
-          @if (i > 0) {
-          <button mat-icon-button [matTooltip]="'app.up' | translate"
-            aria-label="Example icon button with a delete icon" [disabled]="i == 0" (click)="moveUp(i)">
-            <mat-icon>keyboard_arrow_up</mat-icon>
-          </button>
-          }
-          @if (i < formArray.length - 1) { <button mat-icon-button [matTooltip]="'app.down' | translate"
-            aria-label="Example icon button with a delete icon" [disabled]="i == formArray?.value?.length - 1"
-            (click)="moveDown(i)">
-            <mat-icon>keyboard_arrow_down</mat-icon>
-            </button>
-            }
-        </div>
+      <div class="flex items-center justify-between pb-4 col-span-2">
+        <mat-icon class="cursor-pointer large-icon material-symbols-outlined mx-2"
+          [matTooltip]="'app.delete' | translate" (click)="removeActor(i)">
+          delete
+        </mat-icon>
+        <mat-icon class=" cursor-pointer large-icon mr-4" [matTooltip]="'app.move' | translate" cdkDragHandle>
+          drag_indicator
+        </mat-icon>
       </div>
     </div>
     }
   </div>
-  <button mat-button class="mb-2" matTooltip="Ajouter" aria-label="Example icon button with a delete icon"
-    (click)="addActor()">
+  <button mat-button class="mb-2" aria-label="Example icon button with a delete icon" (click)="addActor()">
     {{'app.add_actor' | translate}}
   </button>
 </form>

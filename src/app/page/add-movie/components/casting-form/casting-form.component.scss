@@ -21,6 +21,14 @@
   /* Coupe l'image pour remplir le cercle */
 }
 
+.large-icon {
+  font-size: 32px;
+  /* ou toute taille en px/rem/em */
+  width: 32px;
+  height: 32px;
+  line-height: 1;
+}
+
 .mat-mdc-button {
   color: black !important;
   border: 1px solid black;

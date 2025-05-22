@@ -1,3 +1,4 @@
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, effect, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,14 +10,17 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { EMPTY_STRING } from '../../../../app.component';
 import { AutocompleteComponent } from '../../../../components';
-import { Person } from '../../../../models';
 import { PersonType } from '../../../../enums';
+import { Person } from '../../../../models';
 import { PersonService } from '../../../../services';
 
 @Component({
   selector: 'app-casting-form',
   imports: [
     AutocompleteComponent,
+    CdkDrag,
+    CdkDragHandle,
+    CdkDropList,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
@@ -92,24 +96,13 @@ export class CastingFormComponent {
     this.formArray.at(index).patchValue({ id: actor.id })
   }
 
-  moveUp(index: number) {
-    if (index > 0) {
-      const items = this.formArray.controls;
-      [items[index], items[index - 1]] = [items[index - 1], items[index]];
-      this.form.setControl('actors', this.fb.array(items));
-    }
-  }
-
-  moveDown(index: number) {
-    if (index < this.formArray.value.length - 1) {
-      const items = this.formArray.controls;
-      [items[index], items[index + 1]] = [items[index + 1], items[index]];
-      this.form.setControl('actors', this.fb.array(items));
-    }
-  }
-
   clearRole(index: number) {
     this.formArray.at(index).patchValue({ role: null })
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.formArray.controls, event.previousIndex, event.currentIndex);
+    this.formArray.updateValueAndValidity();
   }
 
 }
