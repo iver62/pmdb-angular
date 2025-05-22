@@ -12,12 +12,12 @@
 }
 
 .mat-mdc-button {
-  color: black;
+  color: black !important;
   border: 1px solid black;
   background-color: #f9f9f9;
 
   &:hover {
-    color: white;
+    color: white !important;
     background-color: rgb(39, 39, 41);
   }
 }

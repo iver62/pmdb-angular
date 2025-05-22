@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, computed, effect, EventEmitter, input, Output } from '@angular/core';
+import { Component, computed, effect, ElementRef, EventEmitter, input, Output, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,10 +12,12 @@ import { filter, Observable, take } from 'rxjs';
 import { Language, View } from '../../enums';
 import { Country, Criterias, SearchConfig, SortOption } from '../../models';
 import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.component';
+import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'app-toolbar',
   imports: [
+    InputComponent,
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
@@ -29,6 +31,8 @@ import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.c
 })
 export class ToolbarComponent {
 
+  @ViewChild('inputRef') inputComponent!: InputComponent;
+
   countries$ = input<(term: string, page: number, size: number, sort: string, lang: Language) => Observable<HttpResponse<Country[]>>>();
   sorts = input.required<SortOption[]>();
   criterias = input<string[]>([]);
@@ -37,10 +41,12 @@ export class ToolbarComponent {
 
   selectedSort = computed(() => this.sorts().find(s => ['asc', 'desc'].includes(s.direction)));
 
+  @Output() search = new EventEmitter<string>();
   @Output() filter = new EventEmitter();
   @Output() switchView = new EventEmitter<View>();
   @Output() sort = new EventEmitter<SortOption>();
 
+  showInputField = false;
   currentView = View.CARDS;
   view = View;
 
@@ -62,6 +68,20 @@ export class ToolbarComponent {
         }
       }
     });
+  }
+
+  toggleInputField() {
+    this.showInputField = !this.showInputField;
+
+    if (this.showInputField) {
+      setTimeout(() => {
+        this.inputComponent?.focus();
+      }, 50);
+    }
+  }
+
+  onSearch(event: string) {
+    this.search.emit(event);
   }
 
   openCriteriasDialog() {

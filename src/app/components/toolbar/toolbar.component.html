@@ -1,4 +1,15 @@
-<div class="flex gap-2">
+<div class="flex justify-end gap-2">
+  <!-- Rechercher -->
+  @if (showInputField) {
+  <app-input [placeholder]="'app.search' | translate" (change)="onSearch($event)" (hide)="this.showInputField=false"
+    #inputRef>
+  </app-input>
+  } @else {
+  <button mat-icon-button [matTooltip]="'app.search' | translate" (click)="toggleInputField()">
+    <mat-icon>search</mat-icon>
+  </button>
+  }
+
   <!-- Filtrer -->
   <button mat-button (click)="openCriteriasDialog()">{{'app.filter' | translate}}</button>
 

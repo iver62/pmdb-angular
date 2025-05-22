@@ -1,10 +1,9 @@
-<mat-form-field class="w-full">
-  <mat-label>{{label}} ({{total}})</mat-label>
+<mat-form-field class="w-full custom-radius">
   <input appDelayedInput matInput class="bg-white rounded" [(ngModel)]="pattern" [placeholder]="placeholder"
-    (delayedInput)="onSearch()" #input />
-  @if (input.value) {
-  <button matSuffix mat-icon-button aria-label="Clear" [matTooltip]="'app.erase' | translate" (click)="clearSearch()">
-    <mat-icon>close</mat-icon>
-  </button>
+    (delayedInput)="onSearch()" #inputRef />
+  @if (inputRef.value) {
+  <mat-icon matSuffix class="cursor-pointer" (click)="clearSearch()">close</mat-icon>
+  } @else {
+  <mat-icon matSuffix class="cursor-pointer" [hidden]="!hideable" (click)="hideField()">hide_source</mat-icon>
   }
 </mat-form-field>

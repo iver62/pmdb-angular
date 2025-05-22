@@ -10,6 +10,8 @@ import { NgPipesModule } from 'ngx-pipes';
 import { EMPTY_STRING } from '../../../../app.component';
 import { AutocompleteComponent } from '../../../../components';
 import { Person } from '../../../../models';
+import { PersonType } from '../../../../enums';
+import { PersonService } from '../../../../services';
 
 @Component({
   selector: 'app-casting-form',
@@ -38,7 +40,10 @@ export class CastingFormComponent {
     return this.form.get('actors') as FormArray;
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private personService: PersonService
+  ) {
     effect(() => {
       if (this.formArray.length < 1) {
         this.addActor();
@@ -61,6 +66,12 @@ export class CastingFormComponent {
         role: [EMPTY_STRING, Validators.required]  // Rôle joué dans le film
       }
     );
+  }
+
+  addType(person: Person) {
+    if (!person.types.includes(PersonType.ACTOR)) {
+      this.personService.addPersonType(person.id, PersonType.ACTOR).subscribe();
+    }
   }
 
   /**

@@ -19,8 +19,10 @@
       {{'app.years' | translate}})}</p>
     }
     @if (person()?.dateOfDeath) {
-    <p>{{'app.died' | translate}} : {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath}} {{'app.years' |
-      translate}})</p>
+    <p>
+      {{'app.died' | translate}} : {{person()?.dateOfDeath | date: 'dd/MM/yyyy'}} ({{ageOfDeath}} {{'app.years' |
+      translate}})
+    </p>
     }
     @if (person()?.countries?.length) {
     <p>
@@ -28,6 +30,6 @@
       <span>&nbsp;{{(person()?.countries | pluck: 'nomFrFr' | orderBy)?.join(', ')}}</span>
     </p>
     }
-    <p>{{person().types.join(', ')}}</p>
+    <p>{{(person().types | orderBy).join(', ')}}</p>
   </div>
 </div>

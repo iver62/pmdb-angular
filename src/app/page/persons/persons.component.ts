@@ -1,12 +1,11 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { CriteriasReminderComponent, InputComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '../../components';
+import { CriteriasReminderComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '../../components';
 import { PersonType, View } from '../../enums';
 import { Country, Criterias, Person, SearchConfig, SortOption, Type } from '../../models';
 import { PersonService } from '../../services/person.service';
@@ -18,12 +17,10 @@ import { HttpUtils } from '../../utils';
     AsyncPipe,
     CriteriasReminderComponent,
     InfiniteScrollDirective,
-    InputComponent,
     MatPaginatorModule,
     PersonsListComponent,
     PersonsTableComponent,
-    ToolbarComponent,
-    TranslatePipe
+    ToolbarComponent
   ],
   templateUrl: './persons.component.html',
   styleUrl: './persons.component.css'

@@ -1,11 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslatePipe } from '@ngx-translate/core';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
 
@@ -14,25 +11,30 @@ import { DelayedInputDirective } from '../../directives';
   imports: [
     DelayedInputDirective,
     FormsModule,
-    MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
-    MatInputModule,
-    MatTooltipModule,
-    TranslatePipe
+    MatInputModule
   ],
   templateUrl: './input.component.html',
   styleUrl: './input.component.scss'
 })
 export class InputComponent {
 
+  @ViewChild('inputRef') inputRef!: ElementRef<HTMLInputElement>;
+
   @Input() label: string;
   @Input() placeholder: string;
   @Input() total: number;
+  @Input() hideable = true;
 
   @Output() change = new EventEmitter<string>();
+  @Output() hide = new EventEmitter();
 
   pattern: string;
+
+  focus() {
+    this.inputRef.nativeElement.focus();
+  }
 
   clearSearch() {
     this.pattern = EMPTY_STRING;
@@ -41,6 +43,10 @@ export class InputComponent {
 
   onSearch() {
     this.change.emit(this.pattern);
+  }
+
+  hideField() {
+    this.hide.emit();
   }
 
 }

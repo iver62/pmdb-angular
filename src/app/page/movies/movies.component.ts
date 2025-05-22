@@ -1,12 +1,11 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { TranslatePipe } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
+import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
 import { Country, Criterias, Genre, Movie, SearchConfig, SortOption, User } from '../../models';
@@ -19,12 +18,10 @@ import { HttpUtils } from '../../utils';
     AsyncPipe,
     CriteriasReminderComponent,
     InfiniteScrollDirective,
-    InputComponent,
     MatPaginatorModule,
     MoviesListComponent,
     MoviesTableComponent,
-    ToolbarComponent,
-    TranslatePipe
+    ToolbarComponent
   ],
   templateUrl: './movies.component.html',
   styleUrl: './movies.component.scss'

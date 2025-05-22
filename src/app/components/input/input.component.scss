@@ -1,0 +1,30 @@
+// @use '@angular/material' as mat;
+
+// @include mat.form-field-overrides((outlined-container-shape: var(12dp) // example value
+//   ));
+
+.mat-mdc-form-field {
+  ::ng-deep {
+    .mdc-text-field--outlined {
+      --mdc-outlined-text-field-container-shape: 28px !important;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      height: 40px;
+      border-radius: 28px;
+
+      .mat-mdc-form-field-flex {
+        height: 100%;
+
+        .mat-mdc-form-field-infix {
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
+      }
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      height: 0 !important;
+    }
+  }
+}

@@ -13,7 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { InputComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
+import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
 import { Criterias, Movie, Person, SearchConfig, SortOption } from '../../models';
 import { PersonService } from '../../services';
@@ -25,7 +25,6 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
   imports: [
     AsyncPipe,
     InfiniteScrollDirective,
-    InputComponent,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
