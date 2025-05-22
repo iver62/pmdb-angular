@@ -22,10 +22,9 @@
 }
 
 .large-icon {
-  font-size: 32px;
-  /* ou toute taille en px/rem/em */
-  width: 32px;
-  height: 32px;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
   line-height: 1;
 }
 
@@ -37,5 +36,13 @@
   &:hover {
     color: white !important;
     background-color: rgb(39, 39, 41);
+  }
+}
+
+.drag-item {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
   }
 }

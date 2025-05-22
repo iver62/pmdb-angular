@@ -26,7 +26,7 @@
   </mat-select>
   <!-- Bouton pour effacer la sélection -->
   @if (control().value?.length) {
-  <button mat-icon-button matSuffix matTooltip="Effacer la sélection"
+  <button mat-icon-button matSuffix class="mx-2" [matTooltip]="'app.delete_selection' | translate"
     (click)="clearSelection(); $event.stopPropagation()">
     <mat-icon>clear</mat-icon>
   </button>

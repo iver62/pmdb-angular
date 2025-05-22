@@ -52,7 +52,7 @@ export class MovieService {
     params.set('size', size.toString());
     params.set('sort', sort);
     params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
-    term && params.set('term', encodeURIComponent(term));
+    term && params.set('term', term);
     criterias?.fromReleaseDate && params.set('from-release-date', this.dateService.format(criterias.fromReleaseDate, DateUtils.API_DATE_FORMAT));
     criterias?.toReleaseDate && params.set('to-release-date', this.dateService.format(criterias.toReleaseDate, DateUtils.API_DATE_FORMAT));
     criterias?.fromCreationDate && params.set('from-creation-date', this.dateService.format(criterias?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));

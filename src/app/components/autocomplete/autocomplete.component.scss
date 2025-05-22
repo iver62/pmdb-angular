@@ -20,3 +20,15 @@
   object-fit: cover;
   /* Coupe l'image pour remplir le cercle */
 }
+
+.mat-mdc-form-field {
+  ::ng-deep {
+    .mdc-text-field--outlined {
+      --mdc-outlined-text-field-container-shape: 28px !important;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      border-radius: 28px;
+    }
+  }
+}

@@ -59,6 +59,16 @@ body {
   border-top: none;
 }
 
+.mat-mdc-form-field {
+  .mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 28px !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    border-radius: 28px;
+  }
+}
+
 @include mat.autocomplete-overrides((background-color: white));
 
 @include mat.button-overrides((filled-container-color: #2c2c2c,

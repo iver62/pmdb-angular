@@ -19,7 +19,7 @@ export class UserService {
 
     params.set('page', page.toString());
     params.set('size', size.toString());
-    term && params.set('term', encodeURIComponent(term));
+    term && params.set('term', term);
     params.set('sort', sort);
     params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
 

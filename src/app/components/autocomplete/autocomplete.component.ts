@@ -31,7 +31,7 @@ import { HttpUtils, Utils } from '../../utils';
     ReactiveFormsModule
   ],
   templateUrl: './autocomplete.component.html',
-  styleUrl: './autocomplete.component.css'
+  styleUrl: './autocomplete.component.scss'
 })
 export class AutocompleteComponent {
 
