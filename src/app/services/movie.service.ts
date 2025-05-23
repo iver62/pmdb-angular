@@ -66,6 +66,28 @@ export class MovieService {
     return this.http.get<Movie[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }
 
+  getPersonsByMovie(id: number, page = 0, size = 50, term: string, sort = 'name', direction = 'asc', criterias?: Criterias) {
+    const params = new URLSearchParams();
+
+    params.set('page', page.toString());
+    params.set('size', size.toString());
+    params.set('sort', sort);
+    params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
+    term && params.set('term', term);
+    criterias?.fromBirthDate && params.set('from-birth-date', this.dateService.format(criterias.fromBirthDate, DateUtils.API_DATE_FORMAT));
+    criterias?.toBirthDate && params.set('to-birth-date', this.dateService.format(criterias.toBirthDate, DateUtils.API_DATE_FORMAT));
+    criterias?.fromDeathDate && params.set('from-death-date', this.dateService.format(criterias.fromDeathDate, DateUtils.API_DATE_FORMAT));
+    criterias?.toDeathDate && params.set('to-death-date', this.dateService.format(criterias.toDeathDate, DateUtils.API_DATE_FORMAT));
+    criterias?.fromCreationDate && params.set('from-creation-date', this.dateService.format(criterias?.fromCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toCreationDate && params.set('to-creation-date', this.dateService.format(criterias?.toCreationDate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.fromLastUpdate && params.set('from-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.toLastUpdate && params.set('to-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
+    criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
+    criterias?.types?.forEach(type => params.append('type', type.name));
+
+    return this.http.get<Person[]>(`${this.basePath}/${id}/persons?${params.toString()}`, { observe: 'response' })
+  }
+
   getOne(id: number) {
     return this.http.get<Movie>(`${this.basePath}/${id}`);
   }

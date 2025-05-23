@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="form">
+<form [formGroup]="form()" class="form">
   <div formArrayName="awards" class="col-span-12">
     @for (award of formArray?.controls; track award; let i = $index) {
     <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
@@ -15,33 +15,42 @@
       </mat-form-field>
 
       <!-- Champ nom -->
-      <mat-form-field class="col-span-6">
+      <mat-form-field class="col-span-3">
         <mat-label>{{'app.name' | translate}}</mat-label>
         <input matInput formControlName="name" />
         @if (award.value.name) {
-        <button matSuffix mat-icon-button [matTooltip]="'app.erase' | translate" aria-label="Effacer le nom"
-          (click)="clearName(i)">
+        <button matSuffix mat-icon-button class="mx-2" [matTooltip]="'app.erase' | translate"
+          aria-label="Effacer le nom" (click)="clearName(i)">
           <mat-icon>close</mat-icon>
         </button>
         }
       </mat-form-field>
+
+      <!-- Champ personnes -->
+      <app-multiselect class="col-span-3" [control]="getPersonsFormControl(award)" [label]="'app.persons' | translate"
+        [placeholder]="'app.add_persons' | translate" [placeholderLabel]="'app.search_person' | translate"
+        [noEntriesFoundLabel]="'app.no_persons_found' | translate" [items]="persons$ | async" [total]="totalPersons"
+        (update)="updatePersonSearch($event)">
+      </app-multiselect>
 
       <!-- Champ année -->
       <mat-form-field class="col-span-2">
         <mat-label>{{'app.year' | translate}}</mat-label>
         <input matInput type="number" min="0" formControlName="year" />
         @if (award.value.year) {
-        <button matSuffix mat-icon-button [matTooltip]="'app.erase' | translate" aria-label="Effacer l'année"
-          (click)="clearYear(i)">
+        <button matSuffix mat-icon-button class="mx-2" [matTooltip]="'app.erase' | translate"
+          aria-label="Effacer l'année" (click)="clearYear(i)">
           <mat-icon>close</mat-icon>
         </button>
         }
       </mat-form-field>
 
-      <button mat-icon-button class="col-span-1" [matTooltip]="'app.delete' | translate"
-        aria-label="Example icon button with a delete icon" (click)="removeAward(i)">
-        <mat-icon>delete</mat-icon>
-      </button>
+      <div class="flex items-center pb-4">
+        <mat-icon class="cursor-pointer large-icon material-symbols-outlined col-span-1"
+          [matTooltip]="'app.delete' | translate" (click)="removeAward(i)">
+          delete
+        </mat-icon>
+      </div>
     </div>
     }
     <button mat-button class="w-max mb-2" aria-label="Example icon button with a delete icon" (click)="addAward()">

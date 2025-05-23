@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { Award } from '../../../../models';
@@ -9,6 +10,7 @@ import { Award } from '../../../../models';
   imports: [
     MatIconModule,
     NgPipesModule,
+    RouterLink,
     TranslatePipe
   ],
   templateUrl: './awards.component.html',

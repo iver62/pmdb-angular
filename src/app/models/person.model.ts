@@ -13,7 +13,8 @@ export interface Person {
   types?: PersonType[],
   movies?: Movie[],
   countries?: Country[],
-  numberOfMovies?: number
+  numberOfMovies?: number,
+  display?: () => string
 }
 
 export interface PersonWithPhotoUrl extends Person {

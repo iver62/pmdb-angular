@@ -67,11 +67,9 @@
 
 <ng-template #personsList let-label="label" let-persons="persons">
   <div>
-    <span class="font-bold">{{label | translate | uppercase}} :</span>
+    <span class="font-bold">{{label | translate | uppercase}} : </span>
     @for (person of persons | orderBy: 'name'; track person.id; let last = $last) {
-    <a class="cursor-pointer hover:underline" [routerLink]="['/persons', person.id]">
-      {{person?.name}}
-    </a>
+    <a class="cursor-pointer hover:underline" [routerLink]="['/persons', person.id]">{{person?.name}}</a>
     @if (!last) {, }
     }
   </div>

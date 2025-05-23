@@ -67,7 +67,7 @@ export class PersonService {
     return this.http.get<Person[]>(`${this.basePath}/movies-number?${params.toString()}`, { observe: 'response' });
   }
 
-  getMovies(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'asc', criterias?: Criterias) {
+  getMoviesByPerson(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'asc', criterias?: Criterias) {
     const params = new URLSearchParams();
 
     params.set('page', page.toString());

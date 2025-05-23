@@ -16,6 +16,7 @@
       </button>
       }
     </div>
+    <h2 class="text-xl">{{(person().types | orderBy).join(', ')}}</h2>
     @if (person()?.dateOfBirth) {
     <p>{{'app.born' | translate}} : {{person()?.dateOfBirth | date: 'dd/MM/yyyy'}} @if(!person()?.dateOfDeath) {({{age}}
       {{'app.years' | translate}})}</p>
@@ -32,6 +33,5 @@
       <span>&nbsp;{{(person()?.countries | pluck: 'nomFrFr' | orderBy)?.join(', ')}}</span>
     </p>
     }
-    <p>{{(person().types | orderBy).join(', ')}}</p>
   </div>
 </div>

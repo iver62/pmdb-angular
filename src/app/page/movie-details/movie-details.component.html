@@ -101,7 +101,7 @@
 
     <div class="h-full py-4">
       @if (editAwards) {
-      <app-awards-form [form]="awardsForm"></app-awards-form>
+      <app-awards-form [movieId]="id" [form]="awardsForm"></app-awards-form>
 
       <div class="fixed bottom-5 right-5">
         <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"

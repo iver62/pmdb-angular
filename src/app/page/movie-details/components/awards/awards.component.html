@@ -1,10 +1,21 @@
 @for (award of awards | orderBy: ['ceremony', 'name']; track award.id) {
-<div class="flex items-center p-1 text-xl">
-  <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
-  <div>
-    <span class="font-bold">{{award?.ceremony}}</span>&nbsp;-&nbsp;
-    <span>{{award?.name}} @if (award?.year) {({{award.year}})}</span>
+<div class="grid grid-cols-12 gap-4 text-xl my-1">
+  <div class="flex items-center col-span-2">
+    <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
+    <span class="font-bold">{{award?.ceremony}}</span>
   </div>
+  <span class="col-span-3">{{award?.name}}</span>
+  <div class="col-span-4">
+    @if (award?.persons?.length) {
+    @for (person of award?.persons | orderBy: 'name'; track person.id; let last = $last) {
+    <a class="cursor-pointer hover:underline" [routerLink]="['/persons', person.id]">{{person?.name}}</a>
+    @if (!last) {, }
+    }
+    }
+  </div>
+  @if (award?.year) {
+  <span class="col-span-1">{{award.year}}</span>
+  }
 </div>
 } @empty {
 <div class="text-xl">{{'app.no_awards' | translate}}</div>

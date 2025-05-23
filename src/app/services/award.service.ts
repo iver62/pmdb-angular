@@ -17,7 +17,7 @@ export class AwardService {
     return this.http.get<Award[]>(this.basePath);
   }
 
-  getCeremonies(page = 0, size = 50, direction = 'asc', term: string) {
+  getCeremonies(page = 0, size = 50, term: string, direction = 'asc') {
     return this.http.get<string[]>(`${this.basePath}/ceremonies?page=${page}&size=${size}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`, {
       observe: 'response'
     });

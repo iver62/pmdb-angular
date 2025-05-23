@@ -21,7 +21,7 @@
   </mat-step>
   <mat-step [stepControl]="awardsForm" [label]="'app.awards' | translate">
     @if (currentStep == 3) {
-    <app-awards-form [form]="awardsForm"></app-awards-form>
+    <app-awards-form [movieId]="movie.id" [form]="awardsForm"></app-awards-form>
     <button mat-button (click)="saveAwards()">{{'app.next' | translate}}</button>
     }
   </mat-step>

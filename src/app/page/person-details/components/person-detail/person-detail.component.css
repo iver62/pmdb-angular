@@ -1,7 +1,7 @@
 .image-container {
-  width: 140px;
+  width: 160px;
   /* Taille du cercle */
-  height: 140px;
+  height: 160px;
   border-radius: 50%;
   /* Rend l'image circulaire */
   overflow: hidden;

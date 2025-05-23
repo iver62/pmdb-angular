@@ -1,0 +1,17 @@
+.w-full {
+  ::ng-deep .mat-pseudo-checkbox {
+    &.mat-pseudo-checkbox-checked {
+      background-color: rgb(128, 128, 128) !important; // couleur de fond quand cochée
+      border-color: rgb(128, 128, 128) !important;
+
+      &:hover {
+        background-color: black !important;
+        border-color: black !important;
+      }
+    }
+
+    &.mat-pseudo-checkbox {
+      border-color: rgb(128, 128, 128) !important; // couleur de la bordure quand décochée
+    }
+  }
+}

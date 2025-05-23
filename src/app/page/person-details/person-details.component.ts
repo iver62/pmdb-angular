@@ -94,7 +94,7 @@ export class PersonDetailsComponent {
   movies$ = this.searchConfig$.pipe(
     filter(() => !!this.person()),
     switchMap(config =>
-      this.personService.getMovies(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
+      this.personService.getMoviesByPerson(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
         map(response => response.body ?? []),
         catchError(error => {

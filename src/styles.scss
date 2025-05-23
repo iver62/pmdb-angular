@@ -18,7 +18,6 @@ body {
 }
 
 .mat-mdc-paginator {
-  // border: 1px solid darkgrey;
   border-top: 1px solid darkgrey;
   background-color: white !important;
 }
@@ -59,7 +58,7 @@ body {
   border-top: none;
 }
 
-.mat-mdc-form-field {
+.mat-mdc-form-field:not(.mat-mdc-paginator-page-size-select) {
   .mdc-text-field--outlined {
     --mdc-outlined-text-field-container-shape: 28px !important;
   }

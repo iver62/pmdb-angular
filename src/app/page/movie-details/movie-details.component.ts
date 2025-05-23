@@ -245,7 +245,8 @@ export class MovieDetailsComponent {
               id: [award.id],
               ceremony: [award.ceremony, Validators.required], // Cérémonie de la récompense
               name: [award.name, Validators.required], // Nom de la récompense
-              year: [award.year], // Année de la récompense
+              persons: [award.persons.map(p => ({ ...p, display: () => p.name }))],
+              year: [award.year] // Année de la récompense
             }
           )
         )
@@ -333,6 +334,7 @@ export class MovieDetailsComponent {
           next: result => {
             this.snackBar.open(this.translate.instant('app.awards_update_success'), this.translate.instant('app.close'), { duration: this.duration });
             this.awards = result;
+            this.awards.forEach(a => a.persons = a.persons.map(p => ({ ...p, display: () => p.name })));
             this.awardsForm.patchValue({ awards: this.awards });
           },
           error: error => {
