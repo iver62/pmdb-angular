@@ -14,6 +14,7 @@ export interface Person {
   movies?: Movie[],
   countries?: Country[],
   numberOfMovies?: number,
+  numberOfAwards?: number,
   display?: () => string
 }
 

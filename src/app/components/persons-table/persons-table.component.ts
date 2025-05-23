@@ -32,7 +32,7 @@ export class PersonsTableComponent {
 
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
 
-  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'moviesCount', 'types', 'creationDate', 'lastUpdate'];
+  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'moviesCount', 'awardsCount', 'types', 'creationDate', 'lastUpdate'];
 
   constructor(private personService: PersonService) {
     // Transformer les films en ajoutant les URLs

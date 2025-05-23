@@ -12,14 +12,14 @@
       <mat-form-field class="col-span-6">
         <mat-label>{{'app.birth_date' | translate}}</mat-label>
         <input matInput [matDatepicker]="birthPicker" placeholder="JJ/MM/YYYY" formControlName="dateOfBirth">
-        <mat-datepicker-toggle matIconSuffix [for]="birthPicker"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix class="mx-2" [for]="birthPicker"></mat-datepicker-toggle>
         <mat-datepicker #birthPicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field class="col-span-6">
         <mat-label>{{'app.death_date' | translate}}</mat-label>
         <input matInput [matDatepicker]="deathPicker" placeholder="JJ/MM/YYYY" formControlName="dateOfDeath">
-        <mat-datepicker-toggle matIconSuffix [for]="deathPicker"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix class="mx-2" [for]="deathPicker"></mat-datepicker-toggle>
         <mat-datepicker #deathPicker></mat-datepicker>
       </mat-form-field>
     </div>

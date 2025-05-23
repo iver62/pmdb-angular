@@ -44,6 +44,7 @@ export class PersonsComponent {
     { active: 'dateOfBirth', label: 'app.birth_date', direction: EMPTY_STRING },
     { active: 'dateOfDeath', label: 'app.death_date', direction: EMPTY_STRING },
     { active: 'moviesCount', label: 'app.number_of_movies', direction: EMPTY_STRING },
+    { active: 'awardsCount', label: 'app.number_of_awards', direction: EMPTY_STRING },
     { active: 'creationDate', label: 'app.creation_date', direction: EMPTY_STRING },
     { active: 'lastUpdate', label: 'app.last_update', direction: EMPTY_STRING }
   ];
