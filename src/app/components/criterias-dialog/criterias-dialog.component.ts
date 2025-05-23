@@ -134,7 +134,7 @@ export class CriteriasDialogComponent {
       .pipe(
         tap(response => this.totalGenres = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => response.body ?? []),
-        map(genres => genres.map(g => new Genre(g))),
+        map(genres => genres.map(g => ({ ...g, display: () => g.name }))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
       )
     )
@@ -154,7 +154,7 @@ export class CriteriasDialogComponent {
         .pipe(
           tap(response => this.totalCountries = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
           map(response => response.body ?? []),
-          map(countries => countries.map(c => new Country(c))),
+          map(countries => countries.map(c => ({ ...c, display: () => c.nomFrFr }))),
           catchError(() => of([])) // En cas d'erreur, retourner une liste vide
         )
     })
@@ -166,7 +166,7 @@ export class CriteriasDialogComponent {
       .pipe(
         tap(response => this.totalUsers = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => response.body ?? []),
-        map(users => users.map(u => new User(u))),
+        map(users => users.map(u => ({ ...u, display: () => u.username }))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
       )
     )
@@ -180,10 +180,10 @@ export class CriteriasDialogComponent {
       toBirthDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toBirthDate),
       fromDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromDeathDate),
       toDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toDeathDate),
-      genres: new FormControl<Genre[]>(this.data?.selectedCriterias?.genres?.map(g => new Genre(g))),
-      types: new FormControl<Type[]>(this.data?.selectedCriterias?.types?.map(t => new Type(t))),
-      countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => new Country(c))),
-      users: new FormControl<User[]>(this.data?.selectedCriterias?.users?.map(u => new User(u))),
+      genres: new FormControl<Genre[]>(this.data?.selectedCriterias?.genres?.map(g => ({ ...g, display: () => g.name }))),
+      types: new FormControl<Type[]>(this.data?.selectedCriterias?.types?.map(t => ({ ...t, display: () => t.name }))),
+      countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => ({ ...c, display: () => c.nomFrFr }))),
+      users: new FormControl<User[]>(this.data?.selectedCriterias?.users?.map(u => ({ ...u, display: () => u.username }))),
       fromCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromCreationDate),
       toCreationDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toCreationDate),
       fromLastUpdate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromLastUpdate),

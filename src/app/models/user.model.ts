@@ -1,6 +1,4 @@
-import { EMPTY_STRING } from "../app.component";
-
-export class User {
+export interface User {
   id?: string;
   username?: string;
   email?: string;
@@ -8,12 +6,5 @@ export class User {
   lastName?: string;
   firstName?: string;
   numberOfMovies?: number;
-
-  constructor(data?: Partial<User>) {
-    Object.assign(this, data);
-  }
-
-  display?() {
-    return this.username ?? EMPTY_STRING;
-  }
+  display: () => string;
 }

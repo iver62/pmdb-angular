@@ -63,7 +63,7 @@ export class CountrySelectorComponent {
         this.isLoadingMore = false;
         this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
       }),
-      map(response => response.body),
+      map(response => response.body ?? []),
       catchError(() => {
         this.isLoadingMore = false;
         return of([]);

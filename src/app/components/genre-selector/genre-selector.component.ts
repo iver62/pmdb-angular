@@ -43,7 +43,7 @@ export class GenreSelectorComponent {
     switchMap(term => this.genreService.getAll(term)
       .pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
-        map(response => response.body.map(g => new Genre(g)) ?? []),
+        map(response => response.body ?? []),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
       )
     )
