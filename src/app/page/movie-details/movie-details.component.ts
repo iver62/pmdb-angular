@@ -10,7 +10,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
-import { DEFAULT_CURRENCY } from '../../utils';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
 import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
 
@@ -122,9 +121,9 @@ export class MovieDetailsComponent {
           releaseDate: [this.generalInfos.releaseDate],
           runningTime: [this.generalInfos.runningTime],
           budget: [this.generalInfos.budget],
-          budgetCurrency: [this.generalInfos.budgetCurrency || DEFAULT_CURRENCY],
+          budgetCurrency: [this.generalInfos.budgetCurrency],
           boxOffice: [this.generalInfos.boxOffice],
-          boxOfficeCurrency: [this.generalInfos.boxOfficeCurrency || DEFAULT_CURRENCY],
+          boxOfficeCurrency: [this.generalInfos.boxOfficeCurrency],
           posterFileName: [this.generalInfos.posterFileName],
           countries: [this.generalInfos.countries],
           genres: [this.generalInfos.genres],

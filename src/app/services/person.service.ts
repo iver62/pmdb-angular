@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Direction, Language, PersonType } from '../enums';
-import { Country, Criterias, Movie, Person } from '../models';
+import { Award, Country, Criterias, Movie, Person } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -85,6 +85,15 @@ export class PersonService {
     criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
 
     return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' })
+  }
+
+  getAwardsByPerson(id: number, page = 0, size = 50) {
+    const params = new URLSearchParams();
+
+    params.set('page', page.toString());
+    params.set('size', size.toString());
+
+    return this.http.get<Award[]>(`${this.basePath}/${id}/awards?${params.toString()}`)
   }
 
   getPhotoUrl(photoFileName: string) {

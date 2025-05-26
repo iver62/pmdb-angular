@@ -5,40 +5,67 @@
   @if (person()) {
   @let movies = movies$ | async;
 
-  <div class="h-full">
+  <div class="flex flex-col flex-1 overflow-auto">
     <app-person-detail [person]="person()" [canDelete]="movies?.length > 0" (edit)="editMode = !editMode"
       (delete)="deletePerson()">
     </app-person-detail>
 
-    <div class="mt-4">
-      <div class="flex flex-row justify-between items-center mb-3">
-        <div>
-          <h2 [hidden]="total < 1" class="self-end text-xl">{{total}} {{'app.movies' | translate}}</h2>
-        </div>
-        <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
-          [sorts]="sorts$ | async" (search)="onSearch($event)" (filter)="onFilter($event)"
-          (switchView)="onSwitchView($event)" (sort)="onSort($event)">
-        </app-toolbar>
-      </div>
-      <!-- Films associés -->
-      @if (searchConfig$.value.view == view.CARDS) {
-      <div class="h-[calc(100%-76px)] overflow-y-auto" infiniteScroll [scrollWindow]="false"
-        [infiniteScrollDistance]="1" (scrolled)="onScroll()">
-        <app-movies-list [movies]="movies"></app-movies-list>
-      </div>
-      } @else {
-      <div class="max-h-[calc(100%-132px)] overflow-y-auto">
-        <app-movies-table [dataSource]="movies" [sortActive]="searchConfig$.value.sort"
-          [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
-        </app-movies-table>
-      </div>
-      @if (movies?.length) {
-      <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="total"
-        [pageSize]="searchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
-        aria-label="Select page of Movie search results">
-      </mat-paginator>
-      }
-      }
+    <div class="flex flex-col flex-1 overflow-auto mt-4">
+      <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
+        [sorts]="sorts$ | async" (search)="onSearch($event)" (filter)="onFilter($event)"
+        (switchView)="onSwitchView($event)" (sort)="onSort($event)">
+      </app-toolbar>
+
+      <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent
+        (selectedTabChange)="onTabChanged($event)">
+        <mat-tab labelClass="tab-label">
+          <ng-template mat-tab-label>{{'app.movies' | translate}} ({{totalMovies}})</ng-template>
+          <!-- Films associés -->
+          @if (moviesSearchConfig$.value.view == view.CARDS) {
+          <div class="overflow-y-auto py-4" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
+            (scrolled)="onScroll()">
+            <app-movies-list [movies]="movies"></app-movies-list>
+          </div>
+          } @else {
+          <div class="flex flex-col h-full pt-4">
+            <app-movies-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]=" movies"
+              [sortActive]="moviesSearchConfig$.value.sort" [sortDirection]="moviesSearchConfig$.value.direction"
+              (sort)="onSort($event)">
+            </app-movies-table>
+            @if (movies?.length) {
+            <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="totalMovies"
+              [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
+              aria-label="Select page of Movie search results">
+            </mat-paginator>
+            }
+          </div>
+          }
+        </mat-tab>
+        <mat-tab labelClass="tab-label">
+          <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards}})</ng-template>
+
+          <div class="pt-4">
+            @for (award of awards$ | async | orderBy: ['ceremony', 'name']; track award.id) {
+            <div class="grid grid-cols-12 gap-4 text-xl my-1">
+              <div class="flex items-center col-span-2">
+                <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
+                <span class="font-bold">{{award?.ceremony}}</span>
+              </div>
+              <span class="col-span-3">{{award?.name}}</span>
+              <a class="cursor-pointer hover:underline col-span-3" [routerLink]="['/movies', award?.movie?.id]">
+                {{award?.movie?.title}}
+              </a>
+              <!-- <span class="col-span-3">{{award?.movie?.title}}</span> -->
+              @if (award?.year) {
+              <span class="col-span-1">{{award.year}}</span>
+              }
+            </div>
+            } @empty {
+            <div class="text-xl">{{'app.no_awards' | translate}}</div>
+            }
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
   }

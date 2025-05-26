@@ -10,7 +10,6 @@ import { catchError, of, switchMap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { Award, Movie, MovieActor } from '../../models';
 import { AuthService, MovieService } from '../../services';
-import { DEFAULT_CURRENCY } from '../../utils';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
 @Component({
@@ -45,9 +44,9 @@ export class AddMovieComponent {
       releaseDate: [],
       runningTime: [],
       budget: [],
-      budgetCurrency: [DEFAULT_CURRENCY],
+      budgetCurrency: [],
       boxOffice: [],
-      boxOfficeCurrency: [DEFAULT_CURRENCY],
+      boxOfficeCurrency: [],
       posterFileName: [],
       countries: [],
       genres: []

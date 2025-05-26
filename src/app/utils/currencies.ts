@@ -26,5 +26,3 @@ export const currencies = [
   { value: 'ILS', symbol: '₪', label: 'Shekel israélien' },
   { value: 'EGP', symbol: '£', label: 'Livre égyptienne' }
 ];
-
-export const DEFAULT_CURRENCY = 'EUR';

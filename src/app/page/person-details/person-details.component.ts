@@ -7,15 +7,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { NgPipesModule } from 'ngx-pipes';
 import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { View } from '../../enums';
-import { Criterias, Movie, Person, SearchConfig, SortOption } from '../../models';
+import { Award, Criterias, Movie, Person, SearchConfig, SortOption } from '../../models';
 import { PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
 import { PersonDetailComponent, PersonFormComponent } from './components';
@@ -30,9 +32,11 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
     MatIconModule,
     MatInputModule,
     MatPaginatorModule,
+    MatTabsModule,
     MatTooltipModule,
     MoviesListComponent,
     MoviesTableComponent,
+    NgPipesModule,
     PersonDetailComponent,
     PersonFormComponent,
     RouterLink,
@@ -46,7 +50,9 @@ export class PersonDetailsComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  searchConfig$ = new BehaviorSubject<SearchConfig>(
+  private selectedTab$ = new BehaviorSubject<number>(0);
+
+  moviesSearchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
       size: 20,
@@ -56,6 +62,51 @@ export class PersonDetailsComponent {
       criterias: {},
       view: View.CARDS
     }
+  );
+
+  awardsSearchConfig$ = new BehaviorSubject<SearchConfig>({ page: 0, size: 20 });
+
+  sorts$: Observable<SortOption[]> = this.moviesSearchConfig$.pipe(
+    map(config =>
+      this.sortOptions.map(option => (
+        {
+          ...option,
+          direction: option.active === config.sort ? config.direction : EMPTY_STRING // Met à jour la direction du tri
+        }
+      ))
+    )
+  );
+
+  movies$ = this.moviesSearchConfig$.pipe(
+    filter(() => !!this.person()),
+    switchMap(config =>
+      this.personService.getMoviesByPerson(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
+        tap(response => this.totalMovies = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
+        map(response => response.body ?? []),
+        catchError(error => {
+          console.error('Erreur lors de la récupération des films:', error);
+          return of(null); // Retourne un observable avec null en cas d'erreur
+        })
+      )
+    ),
+    scan((acc: Movie[], result: Movie[]) => this.moviesSearchConfig$.value.page == 0 || this.moviesSearchConfig$.value.view == View.TABLE // Concatène les nouvelles données
+      ? result
+      : acc.concat(result), []
+    )
+  );
+
+  awards$ = this.awardsSearchConfig$.pipe(
+    filter(() => !!this.person()),
+    switchMap(config =>
+      this.personService.getAwardsByPerson(this.person().id, config.page, config.size).pipe(
+        tap(result => this.totalAwards = result.length),
+        catchError(error => {
+          console.error('Erreur lors de la récupération des récompenses:', error);
+          return of(null); // Retourne un observable avec null en cas d'erreur
+        })
+      )
+    ),
+    scan((acc: Award[], result: Award[]) => this.awardsSearchConfig$.value.page == 0 ? result : acc.concat(result), []) // Concatène les nouvelles données
   );
 
   sortOptions: SortOption[] = [
@@ -71,7 +122,8 @@ export class PersonDetailsComponent {
     { active: 'lastUpdate', label: 'app.last_update', direction: EMPTY_STRING }
   ];
 
-  total: number;
+  totalMovies: number;
+  totalAwards: number;
   view = View;
   pageSizeOptions = [25, 50, 100];
   duration = 5000;
@@ -79,35 +131,6 @@ export class PersonDetailsComponent {
   editMode = false;
   form: FormGroup;
   selectedFile: File | null = null;
-
-  sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(
-    map(config =>
-      this.sortOptions.map(option => (
-        {
-          ...option,
-          direction: option.active === config.sort ? config.direction : EMPTY_STRING // Met à jour la direction du tri
-        }
-      ))
-    )
-  );
-
-  movies$ = this.searchConfig$.pipe(
-    filter(() => !!this.person()),
-    switchMap(config =>
-      this.personService.getMoviesByPerson(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
-        tap(response => this.total = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
-        map(response => response.body ?? []),
-        catchError(error => {
-          console.error('Erreur lors de la récupération des films:', error);
-          return of(null); // Retourne un observable avec null en cas d'erreur
-        })
-      )
-    ),
-    scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE // Concatène les nouvelles données
-      ? result
-      : acc.concat(result), []
-    )
-  );
 
   constructor(
     private fb: FormBuilder,
@@ -144,15 +167,19 @@ export class PersonDetailsComponent {
     ).subscribe(result => this.person.set(result));
   }
 
+  onTabChanged(event: MatTabChangeEvent) {
+    this.selectedTab$.next(event.index);
+  }
+
   onChangeImage(event: File) {
     this.form.markAsDirty();
     this.selectedFile = event;
   }
 
   onFilter(event: Criterias) {
-    this.searchConfig$.next(
+    this.moviesSearchConfig$.next(
       {
-        ...this.searchConfig$.value,
+        ...this.moviesSearchConfig$.value,
         page: 0,
         criterias: event
       }
@@ -160,9 +187,9 @@ export class PersonDetailsComponent {
   }
 
   onSwitchView(view: View) {
-    this.searchConfig$.next(
+    this.moviesSearchConfig$.next(
       {
-        ...this.searchConfig$.value,
+        ...this.moviesSearchConfig$.value,
         page: 0,
         view: view
       }
@@ -170,13 +197,13 @@ export class PersonDetailsComponent {
   }
 
   onSort(event: SortOption) {
-    if (this.searchConfig$.value.view == View.TABLE) {
+    if (this.moviesSearchConfig$.value.view == View.TABLE) {
       this.paginator.firstPage();
     }
 
-    this.searchConfig$.next(
+    this.moviesSearchConfig$.next(
       {
-        ...this.searchConfig$.value,
+        ...this.moviesSearchConfig$.value,
         page: 0,
         sort: event.active,
         direction: event.direction
@@ -186,9 +213,9 @@ export class PersonDetailsComponent {
 
   onSearch(event: string) {
     if (typeof event === 'string') {
-      this.searchConfig$.next(
+      this.moviesSearchConfig$.next(
         {
-          ...this.searchConfig$.value,
+          ...this.moviesSearchConfig$.value,
           page: 0,
           term: event
         }
@@ -197,18 +224,18 @@ export class PersonDetailsComponent {
   }
 
   onScroll() {
-    this.searchConfig$.next(
+    this.moviesSearchConfig$.next(
       {
-        ...this.searchConfig$.value,
-        page: this.searchConfig$.value.page + 1
+        ...this.moviesSearchConfig$.value,
+        page: this.moviesSearchConfig$.value.page + 1
       }
     );
   }
 
   onPageChange(event: PageEvent) {
-    this.searchConfig$.next(
+    this.moviesSearchConfig$.next(
       {
-        ...this.searchConfig$.value,
+        ...this.moviesSearchConfig$.value,
         page: event.pageIndex,
         size: event.pageSize
       }

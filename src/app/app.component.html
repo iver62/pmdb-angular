@@ -6,7 +6,7 @@
     <div class="items-center">
       <h1 class="example-app-name cursor-pointer" routerLink="/">{{title}}</h1>
     </div>
-    <div class="flex items-center text-base font-medium gap-4">
+    <div class="flex items-center text-base gap-4">
       <a routerLink="/movies">{{'app.movies' | translate}}</a>
       <a routerLink="/persons">{{'app.persons' | translate}}</a>
       @if (authService.hasRole('admin')) {

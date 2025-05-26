@@ -13,6 +13,7 @@ export interface Movie {
   boxOffice?: number;
   boxOfficeCurrency?: string;
   posterFileName?: string;
+  numberOfAwards?: number;
   creationDate?: Date;
   lastUpdate?: Date;
   user?: User;
