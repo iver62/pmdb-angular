@@ -1,63 +1,72 @@
-<div class="flex justify-end gap-2">
+<div class="flex items-center justify-end gap-4">
   <!-- Rechercher -->
   @if (showInputField) {
   <app-input [placeholder]="'app.search' | translate" (change)="onSearch($event)" (hide)="this.showInputField=false"
     #inputRef>
   </app-input>
   } @else {
-  <button mat-icon-button [matTooltip]="'app.search' | translate" (click)="toggleInputField()">
-    <mat-icon>search</mat-icon>
-  </button>
+  <mat-icon class="cursor-pointer" [matTooltip]="'app.search' | translate" (click)="toggleInputField()">
+    search
+  </mat-icon>
   }
 
   <!-- Filtrer -->
-  <button mat-button (click)="openCriteriasDialog()">{{'app.filter' | translate}}</button>
+  <mat-icon class="cursor-pointer" (click)="openCriteriasDialog()" [matTooltip]="'app.filter' | translate">
+    filter_list
+  </mat-icon>
 
   <!-- Trier -->
-  @if (currentView == view.CARDS) {
-  <button mat-button [matMenuTriggerFor]="sort">
-    <span>{{selectedSort()?.label | translate}}</span>
-    @if (selectedSort()?.direction == 'asc') {
-    <mat-icon>arrow_upward_alt</mat-icon>
-    } @else if (selectedSort()?.direction == 'desc') {
-    <mat-icon>arrow_downward_alt</mat-icon>
-    }
-  </button>
+  @if (currentView == view.GRID) {
+  <div class="flex cursor-pointer items-center" [matTooltip]="'app.sort' | translate" [matMenuTriggerFor]="sort">
+    <span class="mr-1">{{selectedSort()?.label | translate}}</span>
+    <span class="flex items-center">
+      @let direction = selectedSort()?.direction;
+      @if (direction == 'asc') {
+      <mat-icon class="small-icon">arrow_upward_alt</mat-icon>
+      } @else if (direction == 'desc') {
+      <mat-icon class="small-icon">arrow_downward_alt</mat-icon>
+      }
+    </span>
+  </div>
   }
-  <!-- Affichage -->
-  <button mat-button [matMenuTriggerFor]="display">
-    @if (currentView == view.CARDS) {
-    <span>{{'app.posters' | translate}}</span>
-    } @else if (currentView == view.TABLE) {
-    <span>{{'app.table' | translate}}</span>
+
+  <mat-menu #sort="matMenu">
+    @for (sort of sorts(); track $index) {
+    <button mat-menu-item class="flex" (click)="onSelectSort(sort)">
+      <span>{{sort.label | translate}}</span>
+      <span class="flex items-center float-right ml-2">
+        @let direction = sort.direction;
+        @if (direction == 'asc') {
+        <mat-icon class="small-icon">arrow_upward_alt</mat-icon>
+        } @else if (direction == 'desc') {
+        <mat-icon class="small-icon">arrow_downward_alt</mat-icon>
+        }
+      </span>
+    </button>
     }
-  </button>
+  </mat-menu>
+
+  <!-- Affichage -->
+  <mat-icon class="cursor-pointer" [matTooltip]="'app.dipslay' | translate" [matMenuTriggerFor]="display">
+    apps
+  </mat-icon>
 
   <mat-menu #display="matMenu">
-    <button mat-menu-item (click)="onSwitchView(view.CARDS)">
-      <span>{{'app.posters' | translate}}</span>
-      @if (currentView == view.CARDS) {
-      <mat-icon>check</mat-icon>
+    <button mat-menu-item (click)="onSwitchView(view.GRID)">
+      <span>{{'app.grid' | translate}}</span>
+      @if (currentView == view.GRID) {
+      <span>
+        <mat-icon class="small-icon">check</mat-icon>
+      </span>
       }
     </button>
     <button mat-menu-item (click)="onSwitchView(view.TABLE)">
       <span>{{'app.table' | translate}}</span>
       @if (currentView == view.TABLE) {
-      <mat-icon>check</mat-icon>
+      <span>
+        <mat-icon class="small-icon">check</mat-icon>
+      </span>
       }
     </button>
-  </mat-menu>
-
-  <mat-menu #sort="matMenu">
-    @for (sort of sorts(); track $index) {
-    <button mat-menu-item (click)="onSelectSort(sort)">
-      <span>{{sort.label | translate}}</span>
-      @if (sort.direction == 'asc') {
-      <mat-icon>arrow_upward_alt</mat-icon>
-      } @else if (sort.direction == 'desc') {
-      <mat-icon>arrow_downward_alt</mat-icon>
-      }
-    </button>
-    }
   </mat-menu>
 </div>

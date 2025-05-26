@@ -1,4 +1,4 @@
 export enum View {
-  CARDS,
+  GRID,
   TABLE
 }

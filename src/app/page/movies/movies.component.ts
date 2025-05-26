@@ -57,7 +57,7 @@ export class MoviesComponent {
       direction: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).direction : 'asc',
       term: EMPTY_STRING,
       criterias: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).criterias : {},
-      view: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).view : View.CARDS
+      view: this.cookieService.get('movies-config') ? (JSON.parse(this.cookieService.get('movies-config')) as SearchConfig).view : View.GRID
     }
   );
 
@@ -155,7 +155,7 @@ export class MoviesComponent {
 
   onSearch(event: string) {
     if (typeof event == 'string') {
-      if (this.searchConfig$.value.view == View.CARDS) {
+      if (this.searchConfig$.value.view == View.GRID) {
         this.scrollContainer.nativeElement.scrollTo({ top: 0 });
       }
       this.updateSearchConfig({ page: 0, term: event?.trim() })

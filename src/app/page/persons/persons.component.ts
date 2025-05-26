@@ -57,7 +57,7 @@ export class PersonsComponent {
       direction: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).direction : 'asc',
       term: EMPTY_STRING,
       criterias: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).criterias : { types: [{ id: 0, name: PersonType.ACTOR, display: () => PersonType.ACTOR }] },
-      view: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).view : View.CARDS
+      view: this.cookieService.get('persons-config') ? (JSON.parse(this.cookieService.get('persons-config')) as SearchConfig).view : View.GRID
     }
   );
 
@@ -147,7 +147,7 @@ export class PersonsComponent {
 
   onSearch(event: string) {
     if (typeof event == 'string') {
-      if (this.searchConfig$.value.view == View.CARDS) {
+      if (this.searchConfig$.value.view == View.GRID) {
         this.scrollContainer.nativeElement.scrollTo({ top: 0 });
       }
 

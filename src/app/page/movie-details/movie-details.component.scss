@@ -1,17 +1,12 @@
 .mat-mdc-tab-group {
-  height: calc(100% - 32px);
+  height: 100%;
 
-  .mat-mdc-tab-body-wrapper {
-    height: calc(100% - 49px);
-    overflow-y: auto;
+  ::ng-deep .mat-mdc-tab-labels {
+    gap: 1rem !important;
   }
-}
 
-::ng-deep .mat-mdc-tab-labels {
-  gap: 1rem !important;
-}
-
-.mat-mdc-fab {
-  background-color: #555555;
-  color: white;
+  .mat-mdc-fab {
+    background-color: #555555;
+    color: white;
+  }
 }

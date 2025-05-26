@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
@@ -28,7 +28,6 @@ import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamC
     MatTooltipModule,
     MovieDetailComponent,
     ReactiveFormsModule,
-    RouterLink,
     TechnicalTeamFormComponent,
     TechnicalTeamComponent,
     TranslatePipe

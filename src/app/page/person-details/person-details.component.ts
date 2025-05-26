@@ -60,7 +60,7 @@ export class PersonDetailsComponent {
       direction: 'asc',
       term: EMPTY_STRING,
       criterias: {},
-      view: View.CARDS
+      view: View.GRID
     }
   );
 

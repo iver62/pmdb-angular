@@ -57,7 +57,7 @@
   </div>
   <div class="col-span-3 mx-3">
     @if (movie()?.posterFileName) {
-    <img mat-card-image [src]="posterUrl$ | async" alt="{{ movie()?.title }}" />
+    <img mat-card-image class="rounded-lg" [src]="posterUrl$ | async" alt="{{ movie()?.title }}" />
     }
   </div>
 </div>

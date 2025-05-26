@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, computed, effect, ElementRef, EventEmitter, input, Output, ViewChild } from '@angular/core';
+import { Component, computed, effect, EventEmitter, input, Output, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,7 +47,7 @@ export class ToolbarComponent {
   @Output() sort = new EventEmitter<SortOption>();
 
   showInputField = false;
-  currentView = View.CARDS;
+  currentView = View.GRID;
   view = View;
 
   constructor(
@@ -64,7 +64,7 @@ export class ToolbarComponent {
           }
         } catch (error) {
           console.error("Erreur de parsing du cookie:", error);
-          this.currentView = View.CARDS; // Fallback en cas d'erreur
+          this.currentView = View.GRID; // Fallback en cas d'erreur
         }
       }
     });

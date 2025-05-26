@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
 @use "tailwindcss";
+@use '@angular/material' as mat;
 @use '../src/scss/button.scss' as *;
 @use '../src/scss/theming.scss' as *;
 

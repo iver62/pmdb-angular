@@ -1,7 +1,6 @@
 <div class="flex flex-col h-full gap-4">
 
   @if (!editMode) {
-  <mat-icon class="cursor-pointer" routerLink="../">arrow_back_ios</mat-icon>
   @if (person()) {
   @let movies = movies$ | async;
 
@@ -21,7 +20,7 @@
         <mat-tab labelClass="tab-label">
           <ng-template mat-tab-label>{{'app.movies' | translate}} ({{totalMovies}})</ng-template>
           <!-- Films associés -->
-          @if (moviesSearchConfig$.value.view == view.CARDS) {
+          @if (moviesSearchConfig$.value.view == view.GRID) {
           <div class="overflow-y-auto py-4" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
             (scrolled)="onScroll()">
             <app-movies-list [movies]="movies"></app-movies-list>
@@ -42,7 +41,7 @@
           }
         </mat-tab>
         <mat-tab labelClass="tab-label">
-          <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards}})</ng-template>
+          <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards || 0}})</ng-template>
 
           <div class="pt-4">
             @for (award of awards$ | async | orderBy: ['ceremony', 'name']; track award.id) {
