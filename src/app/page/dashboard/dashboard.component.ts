@@ -78,6 +78,13 @@ export class DashboardComponent {
     map(dataset => this.lineChartService.buildLineChartDataset(dataset))
   );
 
+  actorsNumberEvolution$ = this.statsService.listenTo('actors-number-evolution').pipe(
+    takeUntilDestroyed(),
+    distinctUntilChanged((r1, r2) => JSON.stringify(r1) === JSON.stringify(r2)),
+    tap(result => console.log('Evolution du nombre d\'acteurs', result)),
+    map(dataset => this.lineChartService.buildLineChartDataset(dataset))
+  );
+
   constructor(
     private barChartService: BarChartService,
     private lineChartService: LineChartService,

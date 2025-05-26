@@ -83,4 +83,15 @@
     </mat-card-header>
     <app-line-chart [data]="moviesNumberEvolution$ | async"></app-line-chart>
   </mat-card>
+
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
+    <mat-card-header class="items-center justify-between mb-2">
+      <mat-card-title></mat-card-title>
+      <mat-card-title>
+        <mat-icon class="align-text-top material-symbols-outlined mr-2">show_chart</mat-icon>
+        <span>{{'app.number_of_actors_evolution' | translate}}</span>
+      </mat-card-title>
+    </mat-card-header>
+    <app-line-chart [data]="actorsNumberEvolution$ | async"></app-line-chart>
+  </mat-card>
 </div>
