@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((typography: (plain-family: Oswald,
+        brand-family: Open Sans,
+        bold-weight: 900,
+        medium-weight: 500,
+        regular-weight: 300,
+      ),
+      density: 0,
+    ));
+}

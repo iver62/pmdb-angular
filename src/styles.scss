@@ -2,15 +2,11 @@
 @use '@angular/material' as mat;
 @use "tailwindcss";
 @use '../src/scss/button.scss' as *;
-
-html,
-body {
-  height: 100%;
-}
+@use '../src/scss/theming.scss' as *;
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Oswald', serif;
 }
 
 .mat-sidenav-content {
@@ -114,7 +110,9 @@ body {
     header-selected-state-icon-background-color: black,
     header-edit-state-icon-background-color: darkslategrey));
 
-@include mat.table-overrides((background-color: white));
+@include mat.table-overrides((background-color: white,
+    header-headline-font: Oswald,
+    row-item-label-text-font: Oswald));
 
 @include mat.tabs-overrides((active-label-text-color: black,
     active-indicator-color: black,
@@ -123,3 +121,5 @@ body {
     inactive-label-text-color: darkgrey,
     inactive-hover-label-text-color: darkgrey,
     label-text-size: 20px));
+
+@include mat.toolbar-overrides((title-text-font: Oswald));
