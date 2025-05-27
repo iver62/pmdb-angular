@@ -5,6 +5,12 @@
     <div>
       <h2 [hidden]="total < 1" class="self-end text-xl">{{total}} {{'app.movies' | translate}}</h2>
     </div>
+    @if (searchConfig$?.value?.criterias?.genres?.length || searchConfig$?.value?.criterias?.countries?.length ||
+    searchConfig$?.value?.criterias?.users?.length) {
+    <app-criterias-reminder [criterias]="searchConfig$.value.criterias" (deleteGenre)="onDeleteGenre($event)"
+      (deleteCountry)="onDeleteCountry($event)" (deleteUser)="onDeleteUser($event)">
+    </app-criterias-reminder>
+    }
     <app-toolbar [countries$]="movieService.getCountries"
       [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
       [sorts]="sorts$ | async" [selectedCriterias]="searchConfig$?.value?.criterias" cookieName="movies-config"
@@ -12,13 +18,6 @@
       (sort)="onSort($event)">
     </app-toolbar>
   </div>
-
-  @if (searchConfig$?.value?.criterias?.genres?.length || searchConfig$?.value?.criterias?.countries?.length ||
-  searchConfig$?.value?.criterias?.users?.length) {
-  <app-criterias-reminder [criterias]="searchConfig$.value.criterias" (deleteGenre)="onDeleteGenre($event)"
-    (deleteCountry)="onDeleteCountry($event)" (deleteUser)="onDeleteUser($event)">
-  </app-criterias-reminder>
-  }
 
   @if (searchConfig$.value.view == view.GRID) {
   <div #scrollContainer class="grow overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"

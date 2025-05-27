@@ -10,36 +10,50 @@
     </app-person-detail>
 
     <div class="flex flex-col flex-1 overflow-auto mt-4">
-      <app-toolbar [criterias]="['releaseDate', 'genres', 'countries', 'creationDate', 'lastUpdate']"
-        [sorts]="sorts$ | async" (search)="onSearch($event)" (filter)="onFilter($event)"
-        (switchView)="onSwitchView($event)" (sort)="onSort($event)">
-      </app-toolbar>
-
       <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent
         (selectedTabChange)="onTabChanged($event)">
+        <!-- Films associés -->
         <mat-tab labelClass="tab-label">
           <ng-template mat-tab-label>{{'app.movies' | translate}} ({{totalMovies}})</ng-template>
-          <!-- Films associés -->
-          @if (moviesSearchConfig$.value.view == view.GRID) {
-          <div class="overflow-y-auto py-4" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
-            (scrolled)="onScroll()">
-            <app-movies-list [movies]="movies"></app-movies-list>
-          </div>
-          } @else {
-          <div class="flex flex-col h-full pt-4">
-            <app-movies-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]=" movies"
-              [sortActive]="moviesSearchConfig$.value.sort" [sortDirection]="moviesSearchConfig$.value.direction"
-              (sort)="onSort($event)">
-            </app-movies-table>
-            @if (movies?.length) {
-            <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="totalMovies"
-              [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
-              aria-label="Select page of Movie search results">
-            </mat-paginator>
+
+          <div class="flex flex-col h-full">
+            <div class="flex justify-between m-3">
+              <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
+                (deleteGenre)="onDeleteGenre($event)" (deleteCountry)="onDeleteCountry($event)"
+                (deleteUser)="onDeleteUser($event)">
+              </app-criterias-reminder>
+              <app-toolbar [countries$]="movieService.getCountries"
+                [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
+                [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
+                (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
+                (sort)="onSort($event)">
+              </app-toolbar>
+            </div>
+
+            <!-- AFFICHES -->
+            @if (moviesSearchConfig$.value.view == view.GRID) {
+            <div class="flex-1 overflow-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
+              (scrolled)="onScroll()">
+              <app-movies-list [movies]="movies"></app-movies-list>
+            </div>
+            } @else {
+            <!-- TABLEAU -->
+            <div class="flex-1 overflow-auto flex flex-col h-full">
+              <app-movies-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]=" movies"
+                [sortActive]="moviesSearchConfig$.value.sort" [sortDirection]="moviesSearchConfig$.value.direction"
+                (sort)="onSort($event)">
+              </app-movies-table>
+              @if (movies?.length) {
+              <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="totalMovies"
+                [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
+                aria-label="Select page of Movie search results">
+              </mat-paginator>
+              }
+            </div>
             }
           </div>
-          }
         </mat-tab>
+        <!-- Récompenses associées -->
         <mat-tab labelClass="tab-label">
           <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards || 0}})</ng-template>
 
@@ -54,7 +68,6 @@
               <a class="cursor-pointer hover:underline col-span-3" [routerLink]="['/movies', award?.movie?.id]">
                 {{award?.movie?.title}}
               </a>
-              <!-- <span class="col-span-3">{{award?.movie?.title}}</span> -->
               @if (award?.year) {
               <span class="col-span-1">{{award.year}}</span>
               }

@@ -5,18 +5,17 @@
     <div>
       <h2 [hidden]="total < 1" class="self-end text-xl">{{total}} {{'app.persons' | translate}}</h2>
     </div>
+    @if (searchConfig$?.value?.criterias?.types?.length || searchConfig$?.value?.criterias?.countries?.length) {
+    <app-criterias-reminder class="flex-1 w-3/4" [criterias]="searchConfig$.value.criterias"
+      (deleteType)="onDeleteType($event)" (deleteCountry)="onDeleteCountry($event)">
+    </app-criterias-reminder>
+    }
     <app-toolbar [countries$]="countries$" [selectedCriterias]="searchConfig$?.value?.criterias"
       [criterias]="['birthDate', 'deathDate', 'types', 'countries', 'creationDate', 'lastUpdate']"
       [sorts]="sorts$ | async" [cookieName]="'persons-config'" (search)="onSearch($event)" (filter)="onFilter($event)"
       (switchView)="onSwitchView($event)" (sort)="onSort($event)">
     </app-toolbar>
   </div>
-
-  @if (searchConfig$?.value?.criterias?.types?.length || searchConfig$?.value?.criterias?.countries?.length) {
-  <app-criterias-reminder [criterias]="searchConfig$.value.criterias" (deleteType)="onDeleteType($event)"
-    (deleteCountry)="onDeleteCountry($event)">
-  </app-criterias-reminder>
-  }
 
   @if (searchConfig$.value.view == view.GRID) {
   <div #scrollContainer class="grow overflow-y-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"

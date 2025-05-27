@@ -2,6 +2,6 @@
   @for (movie of movies(); track movie.id) {
   <app-movie-card [movie]="movie"></app-movie-card>
   } @empty {
-  <div>Aucun film</div>
+  <div class="text-xl">{{'app.no_movie' | translate}}</div>
   }
 </div>

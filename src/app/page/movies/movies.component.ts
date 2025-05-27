@@ -158,7 +158,7 @@ export class MoviesComponent {
       if (this.searchConfig$.value.view == View.GRID) {
         this.scrollContainer.nativeElement.scrollTo({ top: 0 });
       }
-      this.updateSearchConfig({ page: 0, term: event?.trim() })
+      this.updateSearchConfig({ page: 0, term: event?.trim() });
     };
   }
 

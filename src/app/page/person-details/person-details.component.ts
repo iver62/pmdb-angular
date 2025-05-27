@@ -16,9 +16,10 @@ import { NgPipesModule } from 'ngx-pipes';
 import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
+import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
-import { Award, Criterias, Movie, Person, SearchConfig, SortOption } from '../../models';
-import { PersonService } from '../../services';
+import { Award, Country, Criterias, Genre, Movie, Person, SearchConfig, SortOption, User } from '../../models';
+import { MovieService, PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
 import { PersonDetailComponent, PersonFormComponent } from './components';
 
@@ -26,6 +27,7 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
   selector: 'app-person-details',
   imports: [
     AsyncPipe,
+    CriteriasReminderComponent,
     InfiniteScrollDirective,
     MatButtonModule,
     MatCardModule,
@@ -41,7 +43,8 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
     PersonFormComponent,
     RouterLink,
     ToolbarComponent,
-    TranslatePipe
+    TranslatePipe,
+    CriteriasReminderComponent
   ],
   templateUrl: './person-details.component.html',
   styleUrl: './person-details.component.scss'
@@ -134,6 +137,7 @@ export class PersonDetailsComponent {
 
   constructor(
     private fb: FormBuilder,
+    public movieService: MovieService,
     private personService: PersonService,
     private route: ActivatedRoute,
     private router: Router,
@@ -201,43 +205,64 @@ export class PersonDetailsComponent {
       this.paginator.firstPage();
     }
 
-    this.moviesSearchConfig$.next(
-      {
-        ...this.moviesSearchConfig$.value,
-        page: 0,
-        sort: event.active,
-        direction: event.direction
-      }
-    );
+    this.updateSearchConfig({ page: 0, sort: event.active, direction: event.direction });
   }
 
   onSearch(event: string) {
     if (typeof event === 'string') {
-      this.moviesSearchConfig$.next(
-        {
-          ...this.moviesSearchConfig$.value,
-          page: 0,
-          term: event
-        }
-      );
+      this.updateSearchConfig({ page: 0, term: event?.trim() });
     }
   }
 
   onScroll() {
-    this.moviesSearchConfig$.next(
+    this.updateSearchConfig({ page: this.moviesSearchConfig$.value.page + 1 });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.updateSearchConfig({ page: event.pageIndex, size: event.pageSize });
+  }
+
+  onDeleteGenre(genre: Genre) {
+    this.updateSearchConfig(
       {
-        ...this.moviesSearchConfig$.value,
-        page: this.moviesSearchConfig$.value.page + 1
+        page: 0,
+        criterias: {
+          ...this.moviesSearchConfig$.value.criterias,
+          genres: this.moviesSearchConfig$.value.criterias.genres.filter(g => g.id != genre.id)
+        }
       }
     );
   }
 
-  onPageChange(event: PageEvent) {
+  onDeleteCountry(country: Country) {
+    this.updateSearchConfig(
+      {
+        page: 0,
+        criterias: {
+          ...this.moviesSearchConfig$.value.criterias,
+          countries: this.moviesSearchConfig$.value.criterias.countries.filter(c => c.id != country.id)
+        }
+      }
+    );
+  }
+
+  onDeleteUser(user: User) {
+    this.updateSearchConfig(
+      {
+        page: 0,
+        criterias: {
+          ...this.moviesSearchConfig$.value.criterias,
+          users: this.moviesSearchConfig$.value.criterias.users.filter(u => u.id != user.id)
+        }
+      }
+    );
+  }
+
+  private updateSearchConfig(newConfig: Partial<SearchConfig>) {
     this.moviesSearchConfig$.next(
       {
         ...this.moviesSearchConfig$.value,
-        page: event.pageIndex,
-        size: event.pageSize
+        ...newConfig
       }
     );
   }

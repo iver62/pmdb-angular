@@ -16,7 +16,7 @@
   <mat-step [stepControl]="castingForm" [label]="'app.casting' | translate">
     @if (currentStep == 2) {
     <app-casting-form [form]="castingForm"></app-casting-form>
-    <button mat-button (click)="saveCasting()">{{'app.next' | translate}}</button>
+    <button mat-button class="mt-2" (click)="saveCasting()">{{'app.next' | translate}}</button>
     }
   </mat-step>
   <mat-step [stepControl]="awardsForm" [label]="'app.awards' | translate">

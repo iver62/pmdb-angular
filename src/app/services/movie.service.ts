@@ -103,7 +103,6 @@ export class MovieService {
       { observe: 'response' }
     );
 
-
   getActors(id: number) {
     return this.http.get<MovieActor[]>(`${this.basePath}/${id}/actors`);
   }
