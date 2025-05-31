@@ -1,9 +1,9 @@
 @let movies = movies$ | async;
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full bg-inherit">
   <div class="flex flex-row justify-between items-center mb-3">
     <div>
-      <h2 [hidden]="total < 1" class="self-end text-xl">{{total}} {{'app.movies' | translate}}</h2>
+      <h2 [hidden]="total < 1" class="self-end dark:text-white text-xl">{{total}} {{'app.movies' | translate}}</h2>
     </div>
     @if (searchConfig$?.value?.criterias?.genres?.length || searchConfig$?.value?.criterias?.countries?.length ||
     searchConfig$?.value?.criterias?.users?.length) {
@@ -25,13 +25,13 @@
     <app-movies-list [movies]="movies"></app-movies-list>
   </div>
   } @else {
-  <div class="grow max-h-fit overflow-y-auto rounded-t-lg">
+  <div class="grow max-h-fit overflow-y-auto rounded-t-lg bg-inherit">
     <app-movies-table [dataSource]="movies" [sortActive]="searchConfig$.value.sort"
       [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
     </app-movies-table>
   </div>
   @if (movies?.length) {
-  <mat-paginator #paginator class="rounded-b-lg" [pageSizeOptions]="pageSizeOptions" [length]="total"
+  <mat-paginator #paginator class="rounded-b-lg dark:text-white!" [pageSizeOptions]="pageSizeOptions" [length]="total"
     [pageSize]="searchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
     aria-label="Select page of Movie search results">
   </mat-paginator>

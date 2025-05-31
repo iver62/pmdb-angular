@@ -20,7 +20,7 @@ import { PersonService } from '../../services';
     TranslatePipe
   ],
   templateUrl: './persons-table.component.html',
-  styleUrl: './persons-table.component.css'
+  styleUrl: './persons-table.component.scss'
 })
 export class PersonsTableComponent {
 

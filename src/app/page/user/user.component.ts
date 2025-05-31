@@ -21,7 +21,7 @@ import { UserFormComponent } from "./components";
     UserFormComponent
   ],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.css'
+  styleUrl: './user.component.scss'
 })
 export class UserComponent {
 

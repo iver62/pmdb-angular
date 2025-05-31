@@ -1,6 +1,15 @@
 @use '@angular/material' as mat;
 
+@theme {
+  --color-pmdb-white: #F5F5F7;
+  --color-pmdb-black: #OOOOOO;
+  --color-pmdb-dark: #212121;
+  --color-pmdb-gold: #e5a00d;
+  --color-pmdb-grey: #555555;
+}
+
 html {
+  color-scheme: light dark;
   @include mat.theme((typography: (plain-family: Oswald,
         brand-family: Open Sans,
         bold-weight: 900,

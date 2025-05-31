@@ -6,7 +6,12 @@
   }
 
   .mat-mdc-fab {
-    background-color: #555555;
+    background-color: var(--color-pmdb-grey);
     color: white;
   }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 40% !important;
 }

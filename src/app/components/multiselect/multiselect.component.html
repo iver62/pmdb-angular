@@ -4,7 +4,7 @@
     (openedChange)="openedChange($event)" (selectionChange)="selectionChange($event)" multiple>
     @if (selectedValues()?.length) {
     <mat-select-trigger>
-      <div>
+      <div class="dark:!text-pmdb-white">
         {{selectedValues()?.at(0).display() || ''}}
         @if ((selectedValues()?.length || 0) > 1) {
         (+{{(selectedValues()?.length || 0) - 1}} {{'app.others' | translate}})
@@ -26,9 +26,9 @@
   </mat-select>
   <!-- Bouton pour effacer la sélection -->
   @if (control().value?.length) {
-  <button mat-icon-button matSuffix class="mx-2" [matTooltip]="'app.delete_selection' | translate"
-    (click)="clearSelection(); $event.stopPropagation()">
-    <mat-icon>clear</mat-icon>
+  <button mat-icon-button matSuffix class="mx-2 dark:hover:!bg-pmdb-dark"
+    [matTooltip]="'app.delete_selection' | translate" (click)="clearSelection(); $event.stopPropagation()">
+    <mat-icon class="dark:!text-pmdb-white">clear</mat-icon>
   </button>
   }
 </mat-form-field>

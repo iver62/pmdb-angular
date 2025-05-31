@@ -12,13 +12,39 @@ export class BarChartComponent {
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective<'bar'> | undefined;
 
+  darkMode = localStorage.getItem('theme') == 'dark';
+
   chartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,  // Rend le graphique réactif
     maintainAspectRatio: false, // Permet au graphique de s'adapter
     scales: {
       x: {
+        ticks: {
+          color: this.darkMode ? 'white' : 'grey', // Couleur des labels de l'axe X
+          font: {
+            family: 'Oswald', // Police des labels de l’axe X
+          },
+        },
         grid: {
           display: false // Désactive le quadrillage vertical
+        },
+        border: {
+          color: this.darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0, 0, 0, 0.1)'
+        }
+      },
+      y: {
+        ticks: {
+          color: this.darkMode ? 'white' : 'grey', // Couleur des labels de l'axe X
+          padding: 10, // Marge en pixels entre les labels et l'axe
+          font: {
+            family: 'Oswald', // Police des labels de l’axe X
+          },
+        },
+        grid: {
+          color: this.darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0, 0, 0, 0.1)'
+        },
+        border: {
+          color: this.darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0, 0, 0, 0.1)'
         }
       }
     },
@@ -29,6 +55,9 @@ export class BarChartComponent {
     plugins: {
       legend: {
         display: false
+      },
+      tooltip: {
+        backgroundColor: this.darkMode ? '#212121' : 'black',   // ✅ Couleur de fond du tooltip
       }
     }
   };

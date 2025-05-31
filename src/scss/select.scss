@@ -1,0 +1,31 @@
+.dark {
+  .mat-mdc-select-value-text {
+    color: var(--color-pmdb-white) !important;
+  }
+
+  .mat-mdc-select-panel {
+    background-color: var(--color-pmdb-grey) !important;
+  }
+
+  .mat-mdc-select-arrow {
+    color: var(--color-pmdb-white) !important;
+  }
+
+  .mat-mdc-option {
+    color: var(--color-pmdb-white) !important;
+
+    &:hover {
+      background-color: var(--color-pmdb-dark) !important;
+    }
+  }
+
+  .mat-pseudo-checkbox {
+    background-color: var(--color-pmdb-grey) !important;
+    border-color: var(--color-pmdb-white) !important;
+
+    &.mat-pseudo-checkbox-checked::after,
+    &.mat-pseudo-checkbox-indeterminate::after {
+      color: var(--color-pmdb-white) !important; // "✔" blanc dans la checkbox
+    }
+  }
+}

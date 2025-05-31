@@ -6,7 +6,6 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #F5F5F7;
 }
 
 .mat-toolbar {
@@ -28,10 +27,6 @@
   z-index: 2;
 }
 
-h1.example-app-name {
-  margin-left: 8px;
-}
-
 .example-sidenav-container {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
@@ -46,7 +41,6 @@ h1.example-app-name {
 
 .sidenav-content {
   padding: 1rem;
-  background-color: inherit;
 }
 
 .mat-mdc-progress-spinner {
@@ -56,8 +50,4 @@ h1.example-app-name {
   transform: translate(-50%, -50%);
   z-index: 9999;
   /* S'assure que le loader est au-dessus de tout */
-}
-
-.mat-sidenav {
-  width: fit-content;
 }

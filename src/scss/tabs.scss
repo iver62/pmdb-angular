@@ -1,0 +1,30 @@
+.dark {
+
+  /* Couleur du texte de l'onglet actif */
+  .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
+  .mat-mdc-tab:active .mdc-tab__text-label {
+    color: var(--color-pmdb-gold) !important;
+  }
+
+  /* Couleur de l'indicateur de l'onglet actif */
+  .mat-mdc-tab.mdc-tab--active .mdc-tab__content .mdc-tab-indicator__content {
+    border-color: var(--color-pmdb-gold);
+  }
+}
+
+.tab-label {
+  flex-grow: initial !important;
+  padding: 0 !important;
+}
+
+.tab-label:hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  /* ⇠ marge entre texte et soulignement */
+  bottom: 0;
+  width: 100%;
+  /* ⇠ épaisseur de la ligne */
+  height: 2px;
+  background-color: darkgrey;
+}

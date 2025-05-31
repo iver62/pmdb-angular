@@ -1,6 +1,6 @@
-<mat-card class="movie-card cursor-pointer w-full" [routerLink]="['/movies', movie().id]">
+<mat-card class="movie-card cursor-pointer bg-white dark:bg-zinc-950! w-full" [routerLink]="['/movies', movie().id]">
   <img mat-card-image [src]="posterUrl$ | async" alt="{{ movie().title }}" />
-  <mat-card-content class="flex flex-col overflow-y-auto">
+  <mat-card-content class="flex flex-col overflow-y-auto dark:text-pmdb-white">
     <div>{{ movie().title }}</div>
     @if (movie().releaseDate) {
     <div>({{ movie().releaseDate | date: 'yyyy' }})</div>

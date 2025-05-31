@@ -4,10 +4,10 @@
   <mat-label>{{'app.countries' | translate}} ({{total}})</mat-label>
   <mat-chip-grid #countriesChipGrid aria-label="Country selection" [formControl]="control">
     @for (country of selectedCountries(); track country.id) {
-    <mat-chip-row (removed)="remove(country)" [value]="country">
-      {{country?.nomFrFr}}
+    <mat-chip-row class="dark:!bg-pmdb-dark" [value]="country" (removed)="remove(country)">
+      <span class="dark:!text-pmdb-white">{{country?.nomFrFr}}</span>
       <button matChipRemove [attr.aria-label]="'remove ' + country?.nomFrFr">
-        <mat-icon>cancel</mat-icon>
+        <mat-icon class="dark:!text-pmdb-white">cancel</mat-icon>
       </button>
     </mat-chip-row>
     }
@@ -16,7 +16,7 @@
   </mat-chip-grid>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
     @for (country of filteredCountries$ | async; track country.id) {
-    <mat-option [value]="country">
+    <mat-option [value]="country" class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark">
       {{currentLang == language.FR ? country?.nomFrFr : country?.nomEnGb}}
     </mat-option>
     }

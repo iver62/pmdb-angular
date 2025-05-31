@@ -1,5 +1,5 @@
 @for (award of awards | orderBy: ['ceremony', 'name']; track award.id) {
-<div class="grid grid-cols-12 gap-4 text-xl my-1">
+<div class="grid grid-cols-12 gap-4 text-xl my-1 dark:!text-pmdb-white">
   <div class="flex items-center col-span-2">
     <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
     <span class="font-bold">{{award?.ceremony}}</span>
@@ -18,5 +18,5 @@
   }
 </div>
 } @empty {
-<div class="text-xl">{{'app.no_awards' | translate}}</div>
+<div class="text-xl dark:text-white">{{'app.no_awards' | translate}}</div>
 }

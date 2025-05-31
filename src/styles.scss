@@ -1,38 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Angular Material and custom SCSS */
 @use "tailwindcss";
 @use '@angular/material' as mat;
-@use '../src/scss/button.scss' as *;
-@use '../src/scss/theming.scss' as *;
+@use 'scss/autocomplete.scss' as *;
+@use 'scss/button.scss' as *;
+@use 'scss/checkbox.scss' as *;
+@use 'scss/date-picker.scss' as *;
+@use 'scss/form-field.scss' as *;
+@use 'scss/paginator.scss' as *;
+@use 'scss/select.scss' as *;
+@use 'scss/stepper.scss' as *;
+@use 'scss/table.scss' as *;
+@use 'scss/tabs.scss' as *;
+@use 'scss/theme.scss' as *;
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 body {
-  margin: 0;
   font-family: 'Oswald', serif;
 }
 
-.mat-sidenav-content {
-  background-color: #F5F5F7;
+.mat-sidenav-container {
+  background-color: inherit !important;
 }
 
-.mat-mdc-paginator {
-  border-top: 1px solid darkgrey;
-  background-color: white !important;
+.dark .mat-mdc-menu-item {
+  svg {
+    color: var(--color-pmdb-white) !important;
+  }
 }
 
-.tab-label {
-  flex-grow: initial !important;
-  padding: 0 !important;
+.mat-mdc-card-title {
+  font-family: 'Oswald', serif !important;
 }
 
-.tab-label:hover::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  /* ⇠ marge entre texte et soulignement */
-  bottom: 0;
-  width: 100%;
-  /* ⇠ épaisseur de la ligne */
-  height: 2px;
-  background-color: darkgrey;
+.mat-mdc-dialog-title {
+  font-family: 'Oswald', serif !important;
 }
 
 *,
@@ -47,22 +56,12 @@ body {
   background-color: white;
 }
 
-.mat-datepicker-content {
-  border: 1px solid darkgrey !important;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
-  border-top: none;
-}
-
-.mat-mdc-form-field:not(.mat-mdc-paginator-page-size-select) {
-  .mdc-text-field--outlined {
-    --mdc-outlined-text-field-container-shape: 28px !important;
-  }
-
-  .mat-mdc-text-field-wrapper {
-    border-radius: 28px;
-  }
-}
+// .mat-datepicker-content {
+//   border: 1px solid darkgrey !important;
+//   border-top-left-radius: 0 !important;
+//   border-top-right-radius: 0 !important;
+//   border-top: none;
+// }
 
 @include mat.autocomplete-overrides((background-color: white));
 
@@ -94,14 +93,16 @@ body {
 
 @include mat.menu-overrides((container-color: white));
 
-@include mat.select-overrides((panel-background-color: white,
-    focused-arrow-color: black));
+@include mat.paginator-overrides((container-background-color: --color-pmdb-white));
 
 @include mat.progress-spinner-overrides((active-indicator-color: black));
 
-@include mat.sidenav-overrides((container-background-color: #F5F5F7));
+@include mat.select-overrides((panel-background-color: white,
+    focused-arrow-color: black));
 
-@include mat.stepper-overrides((container-color: #F5F5F7,
+@include mat.sidenav-overrides((container-background-color: --color-pmdb-white));
+
+@include mat.stepper-overrides((container-color: --color-pmdb-white,
     header-label-text-size: 18px,
     header-selected-state-label-text-size: 18px,
     header-label-text-color: darkgrey,
@@ -110,9 +111,7 @@ body {
     header-selected-state-icon-background-color: black,
     header-edit-state-icon-background-color: darkslategrey));
 
-@include mat.table-overrides((background-color: white,
-    header-headline-font: Oswald,
-    row-item-label-text-font: Oswald));
+@include mat.table-overrides((background-color: --color-pmdb-white));
 
 @include mat.tabs-overrides((active-label-text-color: black,
     active-indicator-color: black,

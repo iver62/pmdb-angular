@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>
-  <button mat-icon-button class="float-end" mat-dialog-close>
-    <mat-icon>close</mat-icon>
+<h2 mat-dialog-title class="dark:bg-black">
+  <button mat-icon-button class="float-end mb-2 dark:hover:!bg-pmdb-dark" mat-dialog-close>
+    <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
   </button>
 </h2>
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography dark:bg-black">
   <form [formGroup]="form" class="flex flex-col gap-4">
     @if (data?.criterias?.includes('releaseDate')) {
     <app-date-range-picker [label]="'app.release_date' | translate"
@@ -69,11 +69,18 @@
     </app-date-range-picker>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="eraseCriterias()" class="btn-danger">{{'app.erase_all' | translate}}</button>
+<mat-dialog-actions class="dark:bg-black">
+  <button mat-button (click)="eraseCriterias()" class="btn-danger dark:!bg-pmdb-grey">
+    {{'app.erase_all' | translate}}
+  </button>
   <div>
-    <button mat-button mat-dialog-close class="btn-secondary">{{'app.cancel' | translate}}</button>
-    <button mat-button [mat-dialog-close]="form" class="btn-primary" [disabled]="form.invalid || form.pristine">
+    <button mat-button mat-dialog-close
+      class="btn-secondary dark:!bg-black dark:!text-pmdb-gold dark:hover:!text-pmdb-white">
+      {{'app.cancel' | translate}}
+    </button>
+    <button mat-button [mat-dialog-close]="form"
+      class="btn-primary dark:!bg-black dark:disabled:!opacity-40 dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+      [disabled]="form.invalid || form.pristine">
       {{'app.validate' | translate}}
     </button>
   </div>

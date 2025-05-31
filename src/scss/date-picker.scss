@@ -1,0 +1,92 @@
+.dark {
+  .mat-datepicker-toggle .mat-mdc-icon-button {
+    svg {
+      color: var(--color-pmdb-white) !important;
+    }
+
+    &:hover {
+      background-color: var(--color-pmdb-dark) !important;
+    }
+  }
+
+  .mat-datepicker-content {
+    background-color: black !important;
+    color: var(--color-pmdb-white) !important;
+
+    // Modifier la couleur des jours sélectionnés ou survolés si besoin
+    .mat-calendar-body-cell-content {
+      color: var(--color-pmdb-white) !important;
+
+      &:hover {
+        background-color: var(--color-pmdb-grey) !important;
+      }
+    }
+
+    .mat-calendar-body-selected {
+      background-color: var(--color-pmdb-gold) !important;
+      color: var(--color-pmdb-dark) !important;
+    }
+
+    .mat-calendar-body-disabled {
+      color: var(--color-pmdb-grey) !important;
+    }
+
+    .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+      border-color: var(--color-pmdb-gold) !important;
+    }
+  }
+
+  .mat-calendar-header {
+    color: grey !important;
+
+    .mat-calendar-period-button,
+    .mat-calendar-previous-button,
+    .mat-calendar-next-button {
+      color: grey !important;
+
+      &:hover {
+        background-color: var(--color-pmdb-grey) !important;
+      }
+    }
+  }
+
+  .mat-calendar-content {
+
+    .mat-calendar-table-header th,
+    .mat-calendar-body-label {
+      color: grey !important;
+    }
+
+    // Jours du mois
+    .mat-calendar-body-cell-content {
+      color: var(--color-pmdb-white) !important;
+    }
+
+    // Jour sélectionné
+    .mat-calendar-body-selected {
+      color: var(--color-pmdb-dark) !important;
+    }
+
+    .mat-calendar-body-cell:hover .mat-calendar-body-cell-content {
+      background-color: var(--color-pmdb-grey) !important;
+    }
+  }
+
+  .mat-calendar-body-in-range {
+    &::before {
+      background-color: var(--color-pmdb-grey) !important;
+      opacity: 1; // facultatif, au cas où
+    }
+
+    .mat-calendar-body-cell:hover .mat-calendar-body-cell-content {
+      background-color: var(--color-pmdb-dark) !important;
+    }
+  }
+}
+
+.mat-datepicker-content {
+  border: 1px solid var(--color-pmdb-grey) !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-top: none;
+}

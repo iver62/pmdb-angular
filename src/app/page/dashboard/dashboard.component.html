@@ -1,31 +1,31 @@
 <div class="grid grid-cols-2 lg:grid-cols-6 gap-3">
-  <mat-card appearance="outlined" class="col-span-1 lg:col-span-3">
-    <mat-card-header>
+  <mat-card appearance="outlined" class="col-span-1 lg:col-span-3 dark:bg-zinc-950!">
+    <mat-card-header class="dark:!text-pmdb-white">
       <mat-card-title>
         <mat-icon class="align-text-top material-symbols-outlined mr-2" fontSize="large">movie</mat-icon>
         <span>{{'app.number_of_movies' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content class="text-3xl text-center" [style.color]="'#0071e3'">
+    <mat-card-content class="text-3xl text-center dark:text-pmdb-white!" [style.color]="'#0071e3'">
       {{moviesNumber$ | async | number}}
     </mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-1 lg:col-span-3">
+  <mat-card appearance="outlined" class="col-span-1 lg:col-span-3 dark:bg-zinc-950!">
     <mat-card-header>
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">comedy_mask©</mat-icon>
         <span>{{'app.number_of_actors' | translate}}</span>
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content class="text-3xl text-center" [style.color]="'#0071e3'">
+    <mat-card-content class="text-3xl text-center dark:text-pmdb-white!" [style.color]="'#0071e3'">
       {{actorsNumber$ | async | number}}
     </mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2 dark:bg-zinc-950!">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">event</mat-icon>
         <span>{{'app.release_dates' | translate}}</span>
       </mat-card-title>
@@ -33,9 +33,9 @@
     <app-bar-chart [data]="moviesByReleaseDateRepartition$ | async"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2 dark:bg-zinc-950!">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">flag</mat-icon>
         <span>{{'app.countries' | translate}}</span>
       </mat-card-title>
@@ -43,9 +43,9 @@
     <app-bar-chart [data]="moviesByCountryRepartition$ | async"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-2 pb-2 dark:bg-zinc-950!">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">category</mat-icon>
         <span>{{'app.categories' | translate}}</span>
       </mat-card-title>
@@ -53,9 +53,9 @@
     <app-bar-chart [data]="moviesByCategoryRepartition$ | async"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-4 pb-2 dark:bg-zinc-950!">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">account_circle</mat-icon>
         <span>{{'app.contributors' | translate}}</span>
       </mat-card-title>
@@ -63,9 +63,9 @@
     <app-bar-chart [data]="moviesByUserRepartition$ | async"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2 dark:bg-zinc-950!">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">bar_chart</mat-icon>
         <span>{{'app.add_date' | translate}}</span>
       </mat-card-title>
@@ -73,10 +73,9 @@
     <app-bar-chart [data]="creationDateRepartition$ | async"></app-bar-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2 dark:bg-zinc-950!">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title></mat-card-title>
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">show_chart</mat-icon>
         <span>{{'app.number_of_movies_evolution' | translate}}</span>
       </mat-card-title>
@@ -84,10 +83,9 @@
     <app-line-chart [data]="moviesNumberEvolution$ | async"></app-line-chart>
   </mat-card>
 
-  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2">
+  <mat-card appearance="outlined" class="col-span-2 lg:col-span-6 pb-2 dark:bg-zinc-950!">
     <mat-card-header class="items-center justify-between mb-2">
-      <mat-card-title></mat-card-title>
-      <mat-card-title>
+      <mat-card-title class="dark:!text-pmdb-white">
         <mat-icon class="align-text-top material-symbols-outlined mr-2">show_chart</mat-icon>
         <span>{{'app.number_of_actors_evolution' | translate}}</span>
       </mat-card-title>

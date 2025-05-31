@@ -1,101 +1,96 @@
-<div class="flex flex-col h-full gap-4">
+@if (!editMode) {
+@if (person()) {
+@let movies = movies$ | async;
 
-  @if (!editMode) {
-  @if (person()) {
-  @let movies = movies$ | async;
+<div class="flex flex-col flex-1 overflow-auto">
+  <app-person-detail [person]="person()" [canDelete]="movies?.length > 0" (edit)="editMode = !editMode"
+    (delete)="deletePerson()">
+  </app-person-detail>
 
-  <div class="flex flex-col flex-1 overflow-auto">
-    <app-person-detail [person]="person()" [canDelete]="movies?.length > 0" (edit)="editMode = !editMode"
-      (delete)="deletePerson()">
-    </app-person-detail>
+  <div class="flex flex-col flex-1 overflow-auto mt-4">
+    <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent
+      (selectedTabChange)="onTabChanged($event)">
+      <!-- Films associés -->
+      <mat-tab labelClass="tab-label">
+        <ng-template mat-tab-label>{{'app.movies' | translate}} ({{totalMovies}})</ng-template>
 
-    <div class="flex flex-col flex-1 overflow-auto mt-4">
-      <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent
-        (selectedTabChange)="onTabChanged($event)">
-        <!-- Films associés -->
-        <mat-tab labelClass="tab-label">
-          <ng-template mat-tab-label>{{'app.movies' | translate}} ({{totalMovies}})</ng-template>
+        <div class="flex flex-col h-full">
+          <div class="flex justify-between m-3">
+            <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
+              (deleteGenre)="onDeleteGenre($event)" (deleteCountry)="onDeleteCountry($event)"
+              (deleteUser)="onDeleteUser($event)">
+            </app-criterias-reminder>
+            <app-toolbar [countries$]="movieService.getCountries"
+              [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
+              [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
+              (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
+              (sort)="onSort($event)">
+            </app-toolbar>
+          </div>
 
-          <div class="flex flex-col h-full">
-            <div class="flex justify-between m-3">
-              <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
-                (deleteGenre)="onDeleteGenre($event)" (deleteCountry)="onDeleteCountry($event)"
-                (deleteUser)="onDeleteUser($event)">
-              </app-criterias-reminder>
-              <app-toolbar [countries$]="movieService.getCountries"
-                [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
-                [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
-                (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
-                (sort)="onSort($event)">
-              </app-toolbar>
-            </div>
-
-            <!-- AFFICHES -->
-            @if (moviesSearchConfig$.value.view == view.GRID) {
-            <div class="flex-1 overflow-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
-              (scrolled)="onScroll()">
-              <app-movies-list [movies]="movies"></app-movies-list>
-            </div>
-            } @else {
-            <!-- TABLEAU -->
-            <div class="flex-1 overflow-auto flex flex-col h-full">
-              <app-movies-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]=" movies"
-                [sortActive]="moviesSearchConfig$.value.sort" [sortDirection]="moviesSearchConfig$.value.direction"
-                (sort)="onSort($event)">
-              </app-movies-table>
-              @if (movies?.length) {
-              <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="totalMovies"
-                [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
-                aria-label="Select page of Movie search results">
-              </mat-paginator>
-              }
-            </div>
+          <!-- AFFICHES -->
+          @if (moviesSearchConfig$.value.view == view.GRID) {
+          <div class="flex-1 overflow-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
+            (scrolled)="onScroll()">
+            <app-movies-list [movies]="movies"></app-movies-list>
+          </div>
+          } @else {
+          <!-- TABLEAU -->
+          <div class="flex-1 overflow-auto flex flex-col h-full">
+            <app-movies-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]=" movies"
+              [sortActive]="moviesSearchConfig$.value.sort" [sortDirection]="moviesSearchConfig$.value.direction"
+              (sort)="onSort($event)">
+            </app-movies-table>
+            @if (movies?.length) {
+            <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="totalMovies"
+              [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
+              aria-label="Select page of Movie search results">
+            </mat-paginator>
             }
           </div>
-        </mat-tab>
-        <!-- Récompenses associées -->
-        <mat-tab labelClass="tab-label">
-          <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards || 0}})</ng-template>
+          }
+        </div>
+      </mat-tab>
+      <!-- Récompenses associées -->
+      <mat-tab labelClass="tab-label">
+        <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards || 0}})</ng-template>
 
-          <div class="pt-4">
-            @for (award of awards$ | async | orderBy: ['ceremony', 'name']; track award.id) {
-            <div class="grid grid-cols-12 gap-4 text-xl my-1">
-              <div class="flex items-center col-span-2">
-                <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
-                <span class="font-bold">{{award?.ceremony}}</span>
-              </div>
-              <span class="col-span-3">{{award?.name}}</span>
-              <a class="cursor-pointer hover:underline col-span-3" [routerLink]="['/movies', award?.movie?.id]">
-                {{award?.movie?.title}}
-              </a>
-              @if (award?.year) {
-              <span class="col-span-1">{{award.year}}</span>
-              }
+        <div class="pt-4 dark:!text-pmdb-white">
+          @for (award of awards$ | async | orderBy: ['ceremony', 'name']; track award.id) {
+          <div class="grid grid-cols-12 gap-4 text-xl my-1">
+            <div class="flex items-center col-span-2">
+              <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
+              <span class="font-bold">{{award?.ceremony}}</span>
             </div>
-            } @empty {
-            <div class="text-xl">{{'app.no_awards' | translate}}</div>
+            <span class="col-span-3">{{award?.name}}</span>
+            <a class="cursor-pointer hover:underline col-span-3" [routerLink]="['/movies', award?.movie?.id]">
+              {{award?.movie?.title}}
+            </a>
+            @if (award?.year) {
+            <span class="col-span-1">{{award.year}}</span>
             }
           </div>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
+          } @empty {
+          <div class="text-xl dark:!text-pmdb-white">{{'app.no_awards' | translate}}</div>
+          }
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
-  }
-  } @else {
-  <div class="w-full">
-    <div class="flex justify-center p-2">
-      <app-person-form class="md:w-2/3" [form]="form" (changeImage)="onChangeImage($event)"></app-person-form>
-    </div>
-    <div class="fixed bottom-5 right-5">
-      <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
-        aria-label="Example icon button with a delete icon" color="accent" [disabled]="form.invalid" (click)="save()">
-        <mat-icon>check</mat-icon>
-      </button>
-      <button mat-fab class="float-right m-1" [matTooltip]="'app.cancel' | translate"
-        aria-label="Example icon button with a delete icon" color="accent" (click)="cancel()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </div>
-  }
 </div>
+}
+} @else {
+<div class="max-h-full flex flex-col">
+  <div class="flex-1 overflow-auto pt-1">
+    <app-person-form [form]="form" (changeImage)="onChangeImage($event)"></app-person-form>
+  </div>
+  <div class="flex items-center justify-end gap-4 p-2">
+    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancel()">
+      {{'app.cancel' | translate}}
+    </a>
+    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="save()">
+      {{'app.validate' | translate}}
+    </a>
+  </div>
+</div>
+}

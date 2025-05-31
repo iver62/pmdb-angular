@@ -52,6 +52,11 @@ export class GeneralInfosFormComponent {
     return this.form.get('posterFileName');
   }
 
+  clearDates() {
+    this.releaseDateFormCtrl.reset();
+    this.releaseDateFormCtrl.markAsDirty();
+  }
+
   onSelectImage(event: File) {
     this.posterFormCtrl.setValue(event.name);
     this.selectImage.emit(event);
@@ -59,6 +64,7 @@ export class GeneralInfosFormComponent {
 
   onDeleteImage() {
     this.posterFormCtrl.reset();
+    this.posterFormCtrl.markAsDirty();
     this.selectImage.emit(null);
   }
 }

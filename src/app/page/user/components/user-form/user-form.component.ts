@@ -43,18 +43,22 @@ export class UserFormComponent {
 
   clearUsername() {
     this.usernameFormCtrl.reset();
+    this.lastnameFormCtrl.markAsDirty();
   }
 
   clearFirstname() {
     this.firstnameFormCtrl.reset();
+    this.lastnameFormCtrl.markAsDirty();
   }
 
   clearLastname() {
     this.lastnameFormCtrl.reset();
+    this.lastnameFormCtrl.markAsDirty();
   }
 
   clearEmail() {
     this.emailFormCtrl.reset();
+    this.lastnameFormCtrl.markAsDirty();
   }
 
 }

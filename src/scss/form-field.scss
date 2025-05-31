@@ -1,0 +1,52 @@
+.dark {
+
+  // Pour forcer la couleur du label (flottant ou pas)
+  .mat-mdc-form-field .mdc-floating-label,
+  .mat-mdc-form-field .mdc-floating-label--float-above {
+    color: var(--color-pmdb-white) !important; // Couleur du label (blanc)
+  }
+
+  // Surcharge : en cas d'erreur, ne pas colorer le label en blanc
+  .mat-mdc-form-field.mdc-text-field--invalid .mdc-floating-label {
+    color: red; // ou la couleur d'erreur de ton thème
+  }
+
+  // Pour le placeholder à l'intérieur de l'input
+  .mat-mdc-form-field .mdc-text-field__input::placeholder {
+    color: var(--color-pmdb-white) !important; // Couleur du placeholder (blanc)
+    opacity: 0.8; // Ajuste l'opacité si nécessaire
+  }
+
+  .mat-mdc-form-field:not(.mdc-text-field--focused) .mdc-text-field__input::placeholder {
+    opacity: 0 !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    background-color: var(--color-pmdb-grey) !important;
+
+    .mat-mdc-input-element {
+      color: var(--color-pmdb-white) !important;
+      caret-color: var(--color-pmdb-white) !important; // <== le curseur blanc
+
+      &::placeholder {
+        color: var(--color-pmdb-white) !important;
+        opacity: 1;
+        /* Important pour certains navigateurs */
+      }
+
+      .mat-date-range-input-separator {
+        color: var(--color-pmdb-white) !important;
+      }
+    }
+  }
+}
+
+.mat-mdc-form-field:not(.mat-mdc-paginator-page-size-select) {
+  .mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 28px !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    border-radius: 28px;
+  }
+}

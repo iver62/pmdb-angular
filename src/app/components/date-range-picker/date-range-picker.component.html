@@ -16,7 +16,8 @@
 
   <!-- Bouton pour effacer les dates -->
   @if (fromDateControl.value || toDateControl.value) {
-  <button mat-icon-button class="mr-2" matSuffix [matTooltip]="'app.erase' | translate" (click)="clearDates()">
+  <button mat-icon-button class="mr-2 dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" matSuffix
+    [matTooltip]="'app.erase' | translate" (click)="clearDates()">
     <mat-icon>clear</mat-icon>
   </button>
   }

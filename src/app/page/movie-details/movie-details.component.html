@@ -4,26 +4,29 @@
 
     <div class="h-full py-4">
       @if (editGeneralInfos) {
-      <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
-      </app-general-infos-form>
+      <div class="h-full flex flex-col">
+        <div class="flex-1 overflow-auto pt-1">
+          <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
+          </app-general-infos-form>
+        </div>
 
-      <div class="fixed bottom-5 right-5">
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
-          aria-label="Example icon button with a check icon" color="accent" [disabled]="generalInfosForm?.invalid"
-          (click)="saveGeneralInfos()">
-          <mat-icon>check</mat-icon>
-        </button>
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.cancel' | translate"
-          aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelGeneralInfos()">
-          <mat-icon>close</mat-icon>
-        </button>
+        <div class="flex items-center justify-end gap-4">
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelGeneralInfos()">
+            {{'app.cancel' | translate}}
+          </a>
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+            [class.disabled]="generalInfosForm.invalid || generalInfosForm.pristine" (click)="saveGeneralInfos()">
+            {{'app.validate' | translate}}
+          </a>
+        </div>
       </div>
       } @else {
       <app-movie-detail [movie]="generalInfos"></app-movie-detail>
 
       <div class="fixed bottom-5 right-5">
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
-          aria-label="Example icon button with a delete icon" color="accent" (click)="editGeneralInfos=true">
+        <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+          [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
+          (click)="editGeneralInfos=true">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
@@ -36,24 +39,28 @@
 
     <div class="h-full py-4">
       @if (editTechnicalTeam) {
-      <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
+      <div class="flex flex-col h-full">
+        <div class="flex-1 pt-1 overflow-auto">
+          <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
+        </div>
 
-      <div class="fixed bottom-5 right-5">
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
-          aria-label="Example icon button with a delete icon" color="accent" (click)="saveTechnicalTeam()">
-          <mat-icon>check</mat-icon>
-        </button>
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.cancel' | translate"
-          aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelTechnicalTeam()">
-          <mat-icon>close</mat-icon>
-        </button>
+        <div class="flex items-center justify-end gap-4">
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelTechnicalTeam()">
+            {{'app.cancel' | translate}}
+          </a>
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+            [class.disabled]="technicalTeamForm.invalid || technicalTeamForm.pristine" (click)="saveTechnicalTeam()">
+            {{'app.validate' | translate}}
+          </a>
+        </div>
       </div>
       } @else {
       <app-technical-team [technicalTeam]="technicalTeam"></app-technical-team>
 
       <div class="fixed bottom-5 right-5">
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
-          aria-label="Example icon button with a delete icon" color="accent" (click)="editTechnicalTeam=true">
+        <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+          [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
+          (click)="editTechnicalTeam=true">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
@@ -66,26 +73,29 @@
 
     <div class="h-full py-4">
       @if (editCasting) {
-      <app-casting-form [form]="castingForm"></app-casting-form>
+      <div class="h-full flex flex-col">
+        <div class="flex-1 overflow-auto pt-1">
+          <app-casting-form [form]="castingForm"></app-casting-form>
+        </div>
 
-      <div class="fixed bottom-5 right-5">
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
-          aria-label="Example icon button with a delete icon" color="accent" (click)="saveCasting()"
-          [disabled]="castingForm?.invalid">
-          <mat-icon>check</mat-icon>
-        </button>
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.cancel' | translate"
-          aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelCasting()">
-          <mat-icon>close</mat-icon>
-        </button>
+        <div class="flex items-center justify-end gap-4">
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelCasting()">
+            {{'app.cancel' | translate}}
+          </a>
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+            [class.disabled]="castingForm.invalid || castingForm.pristine" (click)="saveCasting()">
+            {{'app.validate' | translate}}
+          </a>
+        </div>
       </div>
       } @else {
       <div>
         <app-casting [actors]="casting"></app-casting>
 
         <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
-            aria-label="Example icon button with a delete icon" color="accent" (click)="editCasting=true">
+          <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+            [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
+            (click)="editCasting=true">
             <mat-icon>edit</mat-icon>
           </button>
         </div>
@@ -99,25 +109,29 @@
 
     <div class="h-full py-4">
       @if (editAwards) {
-      <app-awards-form [movieId]="id" [form]="awardsForm"></app-awards-form>
+      <div class="h-full flex flex-col">
+        <div class="flex-1 overflow-auto pt-1">
+          <app-awards-form [movieId]="id" [form]="awardsForm"></app-awards-form>
+        </div>
 
-      <div class="fixed bottom-5 right-5">
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.confirm' | translate"
-          aria-label="Example icon button with a delete icon" color="accent" (click)="saveAwards()">
-          <mat-icon>check</mat-icon>
-        </button>
-        <button mat-fab class="float-right m-1" [matTooltip]="'app.cancel' | translate"
-          aria-label="Example icon button with a cancel icon" color="accent" (click)="cancelAwards()">
-          <mat-icon>close</mat-icon>
-        </button>
+        <div class="flex items-center justify-end gap-4">
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelAwards()">
+            {{'app.cancel' | translate}}
+          </a>
+          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+            [class.disabled]="awardsForm.invalid || awardsForm.pristine" (click)="saveAwards()">
+            {{'app.validate' | translate}}
+          </a>
+        </div>
       </div>
       } @else {
       <div>
         <app-awards [awards]="awards"></app-awards>
 
         <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1" [matTooltip]="'app.edit' | translate"
-            aria-label="Example icon button with a delete icon" color="accent" (click)="editAwards=true">
+          <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+            [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
+            (click)="editAwards=true">
             <mat-icon>edit</mat-icon>
           </button>
         </div>

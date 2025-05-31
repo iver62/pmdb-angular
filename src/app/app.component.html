@@ -1,12 +1,12 @@
 @let currentLang = currentLang$ | async;
 @let user = user$ | async;
 
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-  <mat-toolbar class="justify-between">
-    <div class="items-center">
+<div class="example-container bg-pmdb-white dark:bg-pmdb-dark" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar class="justify-between bg-inherit">
+    <div class="items-center dark:text-pmdb-gold">
       <mat-icon class="cursor-pointer material-symbols-outlined" routerLink="/">dashboard</mat-icon>
     </div>
-    <div class="flex items-center text-base gap-4">
+    <div class="flex items-center dark:text-pmdb-gold text-lg gap-4">
       <a routerLink="/movies">{{'app.movies' | translate}}</a>
       <a routerLink="/persons">{{'app.persons' | translate}}</a>
       @if (authService.hasRole('admin')) {
@@ -15,59 +15,72 @@
       <a routerLink="/add-movie">{{'app.add_movie' | translate}}</a>
     </div>
     <div class="items-center">
-      <button mat-icon-button class="menu-button" [matMenuTriggerFor]="menu"
+      <button mat-icon-button class="menu-button dark:!text-pmdb-dark dark:!bg-pmdb-gold" [matMenuTriggerFor]="menu"
         aria-label="Example icon button with a vertical three dot icon">
         {{user?.username | firstLetter | uppercase}}
       </button>
-      <mat-menu #menu="matMenu">
+      <mat-menu #menu="matMenu" class="dark:text-pmdb-white dark:!bg-black">
         <div class="p-2 text-xl">{{user?.username}}</div>
         <mat-divider></mat-divider>
-        <button mat-menu-item routerLink="user">
-          <mat-icon>account_circle</mat-icon>
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" routerLink="user">
+          <mat-icon class="dark:!text-pmdb-white">account_circle</mat-icon>
           <span>{{'app.my_profile' | translate}}</span>
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="languages">
-          <mat-icon>translate</mat-icon>
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" [matMenuTriggerFor]="languages">
+          <mat-icon class="dark:!text-pmdb-white">translate</mat-icon>
           <span>{{'app.languages' | translate}}</span>
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="appearances">
-          <mat-icon>contrast</mat-icon>
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" [matMenuTriggerFor]="appearances">
+          <mat-icon class="dark:!text-pmdb-white">contrast</mat-icon>
           <span>{{'app.appearance' | translate}}</span>
         </button>
         <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" (click)="logout()">
+          <mat-icon class="dark:!text-pmdb-white">logout</mat-icon>
           <span>{{'app.logout' | translate}}</span>
         </button>
       </mat-menu>
 
-      <mat-menu #languages="matMenu">
-        <button mat-menu-item (click)="changeLanguage('en')">
-          <span>🇬🇧 {{'app.english' | translate}}</span>
-          @if (currentLang == 'en') {
-          <mat-icon>check</mat-icon>
-          }
+      <mat-menu #languages="matMenu" class="dark:text-pmdb-white dark:!bg-black">
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" (click)="changeLanguage('en')">
+          <div class="flex w-full items-center justify-between">
+            <span>🇬🇧 &nbsp;&nbsp;{{'app.english' | translate}}</span>
+            @if (currentLang == 'en') {
+            <mat-icon class="dark:!text-pmdb-white">check</mat-icon>
+            }
+          </div>
         </button>
-        <button mat-menu-item (click)="changeLanguage('fr')">
-          <span>🇫🇷 {{'app.french' | translate}}</span>
-          @if (currentLang == 'fr') {
-          <mat-icon>check</mat-icon>
-          }
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" (click)="changeLanguage('fr')">
+          <div class="flex w-full items-center justify-between">
+            <span>🇫🇷 &nbsp;&nbsp;{{'app.french' | translate}}</span>
+            @if (currentLang == 'fr') {
+            <mat-icon class="dark:!text-pmdb-white">check</mat-icon>
+            }
+          </div>
         </button>
       </mat-menu>
 
-      <mat-menu #appearances="matMenu">
-        <button mat-menu-item>
-          <mat-icon>check</mat-icon>
-          <div class="flex text-right items-center">
-            <mat-icon>light_mode</mat-icon>
-            <span>{{'app.light' | translate}}</span>
+      <mat-menu #appearances="matMenu" class="dark:text-pmdb-white dark:!bg-black">
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" (click)="toggleTheme('light')">
+          <div class="flex w-full justify-between">
+            <span class="flex items-center">
+              <mat-icon class="dark:!text-pmdb-white">light_mode</mat-icon>
+              {{'app.light' | translate}}
+            </span>
+            @if (!isDarkMode) {
+            <mat-icon class="dark:!text-pmdb-white">check</mat-icon>
+            }
           </div>
         </button>
-        <button mat-menu-item>
-          <div class="flex text-right items-center">
-            <mat-icon>dark_mode</mat-icon>
-            <span>{{'app.dark' | translate}}</span>
+        <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" (click)="toggleTheme('dark')">
+          <div class="flex w-full justify-between">
+            <span class="flex items-center">
+              <mat-icon class="dark:!text-pmdb-white">dark_mode</mat-icon>
+              {{'app.dark' | translate}}
+            </span>
+            @if (isDarkMode) {
+            <mat-icon class="dark:!text-pmdb-white">check</mat-icon>
+            }
           </div>
         </button>
       </mat-menu>

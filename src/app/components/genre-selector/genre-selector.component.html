@@ -2,10 +2,10 @@
   <mat-label>{{'app.categories' | translate}} ({{total}})</mat-label>
   <mat-chip-grid #genresChipGrid aria-label="Genre selection" [formControl]="control">
     @for (genre of selectedGenres(); track genre.id) {
-    <mat-chip-row (removed)="remove(genre)" [value]="genre">
-      {{genre?.name}}
+    <mat-chip-row class="dark:!bg-pmdb-dark" [value]="genre" (removed)="remove(genre)">
+      <span class="dark:!text-pmdb-white">{{genre?.name}}</span>
       <button matChipRemove [attr.aria-label]="'remove ' + genre?.name">
-        <mat-icon>cancel</mat-icon>
+        <mat-icon class="dark:!text-pmdb-white">cancel</mat-icon>
       </button>
     </mat-chip-row>
     }
@@ -15,7 +15,9 @@
   </mat-chip-grid>
   <mat-autocomplete #autoGenres="matAutocomplete" (optionSelected)="selected($event)">
     @for (genre of filteredGenres$ | async; track genre.id) {
-    <mat-option [value]="genre">{{genre?.name}}</mat-option>
+    <mat-option [value]="genre" class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark">
+      {{genre?.name}}
+    </mat-option>
     }
   </mat-autocomplete>
 </mat-form-field>

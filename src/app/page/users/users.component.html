@@ -2,7 +2,9 @@
 
 <div class="flex flex-col h-full">
   <div class="flex flex-row justify-between items-center">
-    <h2></h2>
+    <div>
+      <h2 [hidden]="total < 1" class="self-end dark:text-white text-xl">{{total}} {{'app.users' | translate}}</h2>
+    </div>
     <app-input class="md:w-1/4" [label]="'app.users' | translate" [placeholder]="'app.search_username' | translate"
       [total]="total" [hideable]="false" (change)="onSearch($event)">
     </app-input>
@@ -63,18 +65,22 @@
       <ng-container matColumnDef="tools">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell class="font-bold text-lg whitespace-nowrap" *matCellDef="let row">
-          <button mat-icon-button [matTooltip]="'app.edit_roles' | translate" (click)="openRolesDialog(row)">
-            <mat-icon>manage_accounts</mat-icon>
-          </button>
-          <button mat-icon-button [matTooltip]="'app.delete' | translate" (click)="deleteUser(row)">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <mat-icon class="cursor-pointer dark:!text-pmdb-white mr-4" [matTooltip]="'app.edit_roles' | translate"
+            (click)="openRolesDialog(row)">
+            manage_accounts
+          </mat-icon>
+          <mat-icon class="cursor-pointer dark:!text-pmdb-white" [matTooltip]="'app.delete' | translate"
+            (click)="deleteUser(row)">
+            delete
+          </mat-icon>
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row class="hover:bg-gray-200" *matRowDef="let row; columns: displayedColumns;">
+      <tr mat-header-row class="bg-pmdb-white! dark:bg-pmdb-dark! dark:text-white!"
+        *matHeaderRowDef="displayedColumns; sticky: true">
       </tr>
+      <tr mat-row class="dark:text-white!" *matRowDef="let row; columns: displayedColumns;"></tr>
+
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">
           {{'app.no_users' | translate}}
@@ -83,7 +89,7 @@
     </table>
   </div>
   @if (users?.length) {
-  <mat-paginator #paginator class="rounded-b-lg" [pageSizeOptions]="pageSizeOptions" [length]="total"
+  <mat-paginator #paginator class="rounded-b-lg dark:text-white!" [pageSizeOptions]="pageSizeOptions" [length]="total"
     [pageSize]="searchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
     aria-label="Select page of Movie search results">
   </mat-paginator>

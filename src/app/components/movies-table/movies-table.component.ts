@@ -20,7 +20,7 @@ import { MovieService } from '../../services';
     TranslatePipe
   ],
   templateUrl: './movies-table.component.html',
-  styleUrl: './movies-table.component.css'
+  styleUrl: './movies-table.component.scss'
 })
 export class MoviesTableComponent {
 

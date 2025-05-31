@@ -2,8 +2,13 @@
   <input appDelayedInput matInput class="bg-white rounded" [(ngModel)]="pattern" [placeholder]="placeholder"
     (delayedInput)="onSearch()" #inputRef />
   @if (inputRef.value) {
-  <mat-icon matSuffix class="cursor-pointer" (click)="clearSearch()">close</mat-icon>
+  <button mat-icon-button class="btn-sm mr-2 dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" matSuffix
+    (click)="clearSearch()">
+    <mat-icon matSuffix class="small-icon">close</mat-icon>
+  </button>
   } @else {
-  <mat-icon matSuffix class="cursor-pointer" [hidden]="!hideable" (click)="hideField()">hide_source</mat-icon>
+  <mat-icon matSuffix class="cursor-pointer dark:!text-pmdb-white" [hidden]="!hideable" (click)="hideField()">
+    hide_source
+  </mat-icon>
   }
 </mat-form-field>

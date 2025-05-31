@@ -2,16 +2,17 @@
   <span class="image-container">
     <img mat-card-image [src]="photoUrl$ | async" alt="{{ person().photoFileName }}">
   </span>
-  <div class="ml-4 w-1/2">
+  <div class="ml-4 w-1/2 dark:text-white">
     <div class="flex items-center">
       <h1 class="text-2xl">{{person()?.name}}</h1>
-      <button mat-icon-button class="mx-2" [matTooltip]="'app.edit' | translate"
-        aria-label="Example icon button with a delete icon" color="warn" (click)="onEdit()">
+      <button mat-icon-button class="mx-2 dark:text-pmdb-gold! dark:hover:text-pmdb-white!"
+        [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon" (click)="onEdit()">
         <mat-icon>edit</mat-icon>
       </button>
       @if (authService.hasRole('admin')) {
-      <button mat-icon-button [matTooltip]="'app.delete' | translate"
-        aria-label="Example icon button with a delete icon" color="accent" [disabled]="canDelete" (click)="onDelete()">
+      <button mat-icon-button class="dark:text-pmdb-gold! dark:hover:text-pmdb-white! dark:disabled:opacity-25"
+        [matTooltip]="'app.delete' | translate" aria-label="Example icon button with a delete icon" color="accent"
+        [disabled]="canDelete" (click)="onDelete()">
         <mat-icon>delete</mat-icon>
       </button>
       }

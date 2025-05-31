@@ -1,0 +1,21 @@
+.dark {
+  .mat-mdc-checkbox {
+    .mdc-checkbox {
+      background-color: black !important; // Fond noir
+      border-color: white !important; // Bordure blanche
+    }
+
+    .mdc-checkbox__background {
+      background-color: black !important; // Fond noir
+      border: 2px solid white !important; // Bordure blanche
+    }
+
+    .mdc-checkbox__checkmark {
+      color: white !important; // Check (✔) blanc
+    }
+
+    .mdc-checkbox__mixedmark {
+      color: white !important; // Check partiel (si applicable)
+    }
+  }
+}

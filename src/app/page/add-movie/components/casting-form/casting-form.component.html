@@ -14,25 +14,28 @@
         <mat-label>{{'app.role' | translate}}</mat-label>
         <input matInput formControlName="role" />
         @if (actor.value.role) {
-        <button matSuffix mat-icon-button class="mr-2" [matTooltip]="'app.erase' | translate"
+        <button matSuffix mat-icon-button class="mr-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
           aria-label="Effacer le rôle" (click)="clearRole(i)">
-          <mat-icon>close</mat-icon>
+          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
         </button>
         }
       </mat-form-field>
 
       <!-- Actions -->
       <div class="flex items-center justify-between pb-4 col-span-2">
-        <mat-icon class="cursor-pointer large-icon material-symbols-outlined mx-2"
+        <mat-icon class="cursor-pointer large-icon material-symbols-outlined mx-2 dark:!text-pmdb-white"
           [matTooltip]="'app.delete' | translate" (click)="removeActor(i)">
           delete
         </mat-icon>
-        <mat-icon class="drag-item large-icon mr-4" [matTooltip]="'app.move' | translate" cdkDragHandle>
+        <mat-icon class="drag-item large-icon mr-4 dark:!text-pmdb-white" [matTooltip]="'app.move' | translate"
+          cdkDragHandle>
           drag_indicator
         </mat-icon>
       </div>
     </div>
     }
   </div>
-  <a class="cursor-pointer mb-2 hover:underline" (click)="addActor()">{{'app.add_actor' | translate}}</a>
+  <a class="cursor-pointer hover:underline dark:text-white" (click)="addActor()">
+    {{'app.add_actor' | translate}}
+  </a>
 </form>

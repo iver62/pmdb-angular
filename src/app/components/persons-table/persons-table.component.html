@@ -1,5 +1,5 @@
-<table mat-table [dataSource]="enrichedPersons()" matSort [matSortActive]="sortActive" matSortDisableClear
-  [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
+<table mat-table class="!text-white" [dataSource]="enrichedPersons()" matSort [matSortActive]="sortActive"
+  matSortDisableClear [matSortDirection]="sortDirection" (matSortChange)="onSort($event)">
   <!-- Photo Column -->
   <ng-container matColumnDef="photo">
     <th mat-header-cell *matHeaderCellDef>{{'app.photo' | translate}}</th>
@@ -60,12 +60,14 @@
     <td mat-cell *matCellDef="let row">{{row.lastUpdate | date: 'dd/MM/yyyy'}}</td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-  <tr mat-row class="hover:bg-gray-200" *matRowDef="let row; columns: displayedColumns;">
+  <tr mat-header-row class="!bg-pmdb-white dark:!bg-pmdb-dark dark:!text-white"
+    *matHeaderRowDef="displayedColumns; sticky: true">
   </tr>
+  <tr mat-row class="dark:!text-white" *matRowDef="let row; columns: displayedColumns;"></tr>
+
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell text-center p-4" [attr.colspan]="displayedColumns.length">
-      Aucun résultat
+    <td class="mat-cell text-center dark:text-white p-4" [attr.colspan]="displayedColumns.length">
+      {{'app.no_persons' | translate}}
     </td>
   </tr>
 </table>

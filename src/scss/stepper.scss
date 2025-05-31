@@ -1,0 +1,20 @@
+.dark {
+
+  .mat-step-icon-selected {
+    color: var(--color-pmdb-dark);
+    background-color: var(--color-pmdb-gold);
+  }
+
+  .mat-step-label.mat-step-label-active .mat-step-text-label {
+    color: var(--color-pmdb-white) !important;
+  }
+
+  .mat-step-label.mat-step-label-selected .mat-step-text-label {
+    color: var(--color-pmdb-gold) !important;
+  }
+
+  .mat-step-icon-state-edit {
+    color: var(--color-pmdb-dark) !important;
+    background-color: var(--color-pmdb-white) !important;
+  }
+}

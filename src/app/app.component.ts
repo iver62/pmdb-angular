@@ -43,6 +43,8 @@ export const EMPTY_STRING = '';
 export class AppComponent {
   title = 'PMDB';
 
+  isDarkMode = false;
+
   loading$: Observable<boolean>;
   currentLang$ = this.translate.onLangChange.pipe(
     map(result => result.lang),
@@ -74,9 +76,29 @@ export class AppComponent {
     this.translate.use(localStorage.getItem('lang') || translate.getDefaultLang() || Language.FR);
   }
 
+  ngOnInit() {
+    // Initialisation : vérifier le stockage ou les préférences système
+    if (localStorage.getItem('theme') == 'dark') {
+      this.isDarkMode = true;
+      document.documentElement.classList.add('dark');
+    }
+  }
+
   changeLanguage(lang: string) {
     this.translate.use(lang);
     localStorage.setItem('lang', lang);
+  }
+
+  toggleTheme(theme: 'light' | 'dark') {
+    if (theme == 'dark') {
+      this.isDarkMode = true;
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      this.isDarkMode = false;
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   }
 
   logout() {

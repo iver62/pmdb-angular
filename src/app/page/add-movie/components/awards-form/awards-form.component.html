@@ -19,9 +19,9 @@
         <mat-label>{{'app.name' | translate}}</mat-label>
         <input matInput formControlName="name" />
         @if (award.value.name) {
-        <button matSuffix mat-icon-button class="mx-2" [matTooltip]="'app.erase' | translate"
+        <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
           aria-label="Effacer le nom" (click)="clearName(i)">
-          <mat-icon>close</mat-icon>
+          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
         </button>
         }
       </mat-form-field>
@@ -38,21 +38,23 @@
         <mat-label>{{'app.year' | translate}}</mat-label>
         <input matInput type="number" min="0" formControlName="year" />
         @if (award.value.year) {
-        <button matSuffix mat-icon-button class="mx-2" [matTooltip]="'app.erase' | translate"
+        <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
           aria-label="Effacer l'année" (click)="clearYear(i)">
-          <mat-icon>close</mat-icon>
+          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
         </button>
         }
       </mat-form-field>
 
       <div class="flex items-center pb-4">
-        <mat-icon class="cursor-pointer large-icon material-symbols-outlined col-span-1"
+        <mat-icon class="cursor-pointer large-icon material-symbols-outlined col-span-1 dark:!text-pmdb-white"
           [matTooltip]="'app.delete' | translate" (click)="removeAward(i)">
           delete
         </mat-icon>
       </div>
     </div>
     }
-    <a class="cursor-pointer mb-2 hover:underline" (click)="addAward()">{{'app.add_award' | translate}}</a>
+    <a class="cursor-pointer hover:underline dark:text-white" (click)="addAward()">
+      {{'app.add_award' | translate}}
+    </a>
   </div>
 </form>

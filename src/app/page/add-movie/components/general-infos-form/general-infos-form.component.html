@@ -18,6 +18,13 @@
       <input matInput [matDatepicker]="picker" placeholder="JJ/MM/YYYY" formControlName="releaseDate">
       <mat-datepicker-toggle matIconSuffix class="mr-2" [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker xPosition="end" #picker></mat-datepicker>
+      <!-- Bouton pour effacer les dates -->
+      @if (releaseDateFormCtrl?.value) {
+      <button mat-icon-button class="mr-2 dark:hover:!bg-pmdb-dark" matSuffix [matTooltip]="'app.erase' | translate"
+        (click)="clearDates()">
+        <mat-icon class="dark:!text-pmdb-white">clear</mat-icon>
+      </button>
+      }
     </mat-form-field>
 
     <mat-form-field class="col-span-12 md:col-span-12">
@@ -31,9 +38,11 @@
         <input matInput type="number" min="0" [placeholder]="'app.budget' | translate" formControlName="budget"
           class="w-2/3" />
 
-        <mat-select formControlName="budgetCurrency" class="w-1/3" placeholder="Monnaie">
+        <mat-select formControlName="budgetCurrency" class="w-1/3" [placeholder]="'app.currency' | translate">
           @for (currency of currencies | orderBy: 'label'; track $index) {
-          <mat-option [value]="currency.value">{{ currency.label }}</mat-option>
+          <mat-option class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" [value]="currency.value">
+            {{ currency.label}}
+          </mat-option>
           }
         </mat-select>
       </div>
@@ -45,7 +54,7 @@
         <input matInput type="number" min="0" [placeholder]="'app.world_box_office' | translate"
           formControlName="boxOffice" class="w-2/3" />
 
-        <mat-select formControlName="boxOfficeCurrency" class="w-1/3" placeholder="Monnaie">
+        <mat-select formControlName="boxOfficeCurrency" class="w-1/3" [placeholder]="'app.currency' | translate">
           @for (currency of currencies | orderBy: 'label'; track $index) {
           <mat-option [value]="currency.value">{{ currency.label }}</mat-option>
           }

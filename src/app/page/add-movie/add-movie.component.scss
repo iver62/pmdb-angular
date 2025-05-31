@@ -1,5 +1,13 @@
-::ng-deep .mat-horizontal-content-container {
-  padding-top: 16px !important;
+::ng-deep {
+  .mat-horizontal-stepper-wrapper {
+    height: 100% !important;
+
+    .mat-horizontal-content-container {
+      flex: 1;
+      overflow: auto;
+      padding-top: .5rem !important;
+    }
+  }
 }
 
 .mat-mdc-button {

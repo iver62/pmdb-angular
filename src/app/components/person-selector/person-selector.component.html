@@ -2,10 +2,10 @@
   <mat-label>{{title() | translate}}</mat-label>
   <mat-chip-grid #personsChipGrid [attr.aria-label]="label" [formControl]="control">
     @for (person of selectedPersons(); track person) {
-    <mat-chip-row (removed)="remove(person)" [value]="person">
-      {{person?.name}}
+    <mat-chip-row class="dark:!bg-pmdb-dark" [value]="person" (removed)="remove(person)">
+      <span class="dark:!text-pmdb-white">{{person?.name}}</span>
       <button matChipRemove [attr.aria-label]="'remove ' + person?.name">
-        <mat-icon>cancel</mat-icon>
+        <mat-icon class="dark:!text-pmdb-white">cancel</mat-icon>
       </button>
     </mat-chip-row>
     }

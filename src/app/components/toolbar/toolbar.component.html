@@ -1,4 +1,4 @@
-<div class="flex items-center justify-end gap-4">
+<div class="flex items-center justify-end dark:text-white gap-4">
   <!-- Rechercher -->
   @if (showInputField) {
   <app-input [placeholder]="'app.search' | translate" (change)="onSearch($event)" (hide)="this.showInputField=false"
@@ -30,16 +30,16 @@
   </div>
   }
 
-  <mat-menu #sort="matMenu">
+  <mat-menu #sort="matMenu" class="dark:!bg-black">
     @for (sort of sorts(); track $index) {
-    <button mat-menu-item class="flex" (click)="onSelectSort(sort)">
+    <button mat-menu-item class="flex dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" (click)="onSelectSort(sort)">
       <span>{{sort.label | translate}}</span>
       <span class="flex items-center float-right ml-2">
         @let direction = sort.direction;
         @if (direction == 'asc') {
-        <mat-icon class="small-icon">arrow_upward_alt</mat-icon>
+        <mat-icon class="small-icon dark:!text-pmdb-white">arrow_upward_alt</mat-icon>
         } @else if (direction == 'desc') {
-        <mat-icon class="small-icon">arrow_downward_alt</mat-icon>
+        <mat-icon class="small-icon dark:!text-pmdb-white">arrow_downward_alt</mat-icon>
         }
       </span>
     </button>
@@ -51,20 +51,20 @@
     apps
   </mat-icon>
 
-  <mat-menu #display="matMenu">
-    <button mat-menu-item (click)="onSwitchView(view.GRID)">
+  <mat-menu #display="matMenu" class="dark:!bg-black">
+    <button mat-menu-item class="dark:text-pmdb-white! dark:hover:!bg-pmdb-dark" (click)="onSwitchView(view.GRID)">
       <span>{{'app.grid' | translate}}</span>
       @if (currentView == view.GRID) {
       <span>
-        <mat-icon class="small-icon">check</mat-icon>
+        <mat-icon class="small-icon dark:!text-pmdb-white">check</mat-icon>
       </span>
       }
     </button>
-    <button mat-menu-item (click)="onSwitchView(view.TABLE)">
+    <button mat-menu-item class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark" (click)="onSwitchView(view.TABLE)">
       <span>{{'app.table' | translate}}</span>
       @if (currentView == view.TABLE) {
       <span>
-        <mat-icon class="small-icon">check</mat-icon>
+        <mat-icon class="small-icon dark:!text-pmdb-white">check</mat-icon>
       </span>
       }
     </button>
