@@ -1,7 +1,7 @@
 @let movies = movies$ | async;
 
-<div class="flex flex-col h-full bg-inherit">
-  <div class="flex flex-row justify-between items-center mb-3">
+<div class="flex flex-col h-full">
+  <div class="flex items-center justify-between mb-3">
     <div>
       <h2 [hidden]="total < 1" class="self-end dark:text-white text-xl">{{total}} {{'app.movies' | translate}}</h2>
     </div>

@@ -1,20 +1,20 @@
-import { Person } from "./";
+import { MovieTechnician } from "./";
 
 export interface TechnicalTeam {
-  producers?: Person[];
-  directors?: Person[];
-  screenwriters?: Person[];
-  dialogueWriters?: Person[];
-  musicians?: Person[];
-  photographers?: Person[];
-  costumiers?: Person[];
-  decorators?: Person[];
-  editors?: Person[];
-  casters?: Person[];
-  artDirectors?: Person[];
-  soundEditors?: Person[];
-  visualEffectsSupervisors?: Person[];
-  makeupArtists?: Person[];
-  hairDressers?: Person[];
-  stuntmen?: Person[];
+  producers?: MovieTechnician[];
+  directors?: MovieTechnician[];
+  screenwriters?: MovieTechnician[];
+  musicians?: MovieTechnician[];
+  photographers?: MovieTechnician[];
+  costumiers?: MovieTechnician[];
+  decorators?: MovieTechnician[];
+  editors?: MovieTechnician[];
+  casters?: MovieTechnician[];
+  artists?: MovieTechnician[];
+  soundEditors?: MovieTechnician[];
+  vfxSupervisors?: MovieTechnician[];
+  sfxSupervisors?: MovieTechnician[];
+  makeupArtists?: MovieTechnician[];
+  hairDressers?: MovieTechnician[];
+  stuntmen?: MovieTechnician[];
 }

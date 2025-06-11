@@ -10,7 +10,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
-import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from '../add-movie/components';
+import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent } from '../add-movie/components';
 import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
 
 @Component({
@@ -28,7 +28,6 @@ import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamC
     MatTooltipModule,
     MovieDetailComponent,
     ReactiveFormsModule,
-    TechnicalTeamFormComponent,
     TechnicalTeamComponent,
     TranslatePipe
   ],
@@ -42,17 +41,15 @@ export class MovieDetailsComponent {
 
   generalInfos: Movie;
   technicalTeam: TechnicalTeam;
-  casting: MovieActor[];
+  cast: MovieActor[];
   awards: Award[];
 
   id: number;
   generalInfosForm: FormGroup;
-  technicalTeamForm: FormGroup;
-  castingForm: FormGroup;
+  castForm: FormGroup;
   awardsForm: FormGroup;
 
   editGeneralInfos = false;
-  editTechnicalTeam = false;
   editCasting = false;
   editAwards = false;
 
@@ -93,10 +90,9 @@ export class MovieDetailsComponent {
           break;
         case 'team':
           this.technicalTeam = result.data as TechnicalTeam;
-          this.initTechnicalTeamForm();
           break;
         case 'actors':
-          this.casting = result.data as MovieActor[];
+          this.cast = result.data as MovieActor[];
           this.initCastingForm();
           break;
         case 'awards':
@@ -134,55 +130,22 @@ export class MovieDetailsComponent {
     }
   }
 
-  private compare(a: Award, b: Award) {
-    return a.ceremony.localeCompare(b.ceremony) || a.name.localeCompare(b.name);
-  }
-
-  private initTechnicalTeamForm() {
-    if (!this.technicalTeam) return;
-
-    if (!this.technicalTeamForm) {
-      this.technicalTeamForm = this.fb.group(
-        {
-          producers: [this.technicalTeam.producers],
-          directors: [this.technicalTeam.directors],
-          screenwriters: [this.technicalTeam.screenwriters],
-          dialogueWriters: [this.technicalTeam.dialogueWriters],
-          musicians: [this.technicalTeam.musicians],
-          decorators: [this.technicalTeam.decorators],
-          costumiers: [this.technicalTeam.costumiers],
-          photographers: [this.technicalTeam.photographers],
-          editors: [this.technicalTeam.editors],
-          casters: [this.technicalTeam.casters],
-          artDirectors: [this.technicalTeam.artDirectors],
-          soundEditors: [this.technicalTeam.soundEditors],
-          visualEffectsSupervisors: [this.technicalTeam.visualEffectsSupervisors],
-          makeupArtists: [this.technicalTeam.makeupArtists],
-          hairDressers: [this.technicalTeam.hairDressers],
-          stuntmen: [this.technicalTeam.stuntmen]
-        }
-      );
-    } else {
-      this.technicalTeamForm.patchValue(this.technicalTeam);
-    }
-  }
-
   private initCastingForm() {
-    if (!this.casting) return;
+    if (!this.cast) return;
 
-    const actorsFormArray = this.buildActorsFormArray();
+    const actorsFormArray = this.movieService.buildActorsFormArray(this.cast);
 
-    if (!this.castingForm) {
-      this.castingForm = this.fb.group({ actors: actorsFormArray });
+    if (!this.castForm) {
+      this.castForm = this.fb.group({ actors: actorsFormArray });
     } else {
-      this.castingForm.setValue({ actors: actorsFormArray });
+      this.castForm.setValue({ actors: actorsFormArray });
     }
   }
 
   private initAwardsForm() {
     if (!this.awards) return;
 
-    const awardsFormArray = this.buildAwardsFormArray();
+    const awardsFormArray = this.movieService.buildAwardsFormArray(this.awards);
 
     if (!this.awardsForm) {
       this.awardsForm = this.fb.group({ awards: awardsFormArray });
@@ -199,56 +162,19 @@ export class MovieDetailsComponent {
     this.imageFile = event;
   }
 
-  cancelGeneralInfos() {
+  cancelGeneralInfosForm() {
     this.editGeneralInfos = false;
     this.generalInfosForm.patchValue(this.generalInfos);
   }
 
-  cancelTechnicalTeam() {
-    this.editTechnicalTeam = false;
-    this.technicalTeamForm.patchValue(this.technicalTeam);
-  }
-
-  cancelCasting() {
+  cancelCastForm() {
     this.editCasting = false;
-    this.castingForm.setControl('actors', this.buildActorsFormArray());
+    this.castForm.setControl('actors', this.movieService.buildActorsFormArray(this.cast));
   }
 
-  cancelAwards() {
+  cancelAwardsForm() {
     this.editAwards = false;
-    this.awardsForm.setControl('awards', this.buildAwardsFormArray());
-  }
-
-  private buildActorsFormArray() {
-    return this.fb.array(
-      this.casting?.map(actor =>
-        this.fb.group(
-          {
-            id: [actor.actor.id],
-            name: [actor.actor.name, Validators.required],
-            role: [actor.role, Validators.required],
-          }
-        )
-      )
-    );
-  }
-
-  private buildAwardsFormArray() {
-    return this.fb.array(
-      this.awards
-        ?.sort(this.compare)
-        ?.map(award =>
-          this.fb.group(
-            {
-              id: [award.id],
-              ceremony: [award.ceremony, Validators.required], // Cérémonie de la récompense
-              name: [award.name, Validators.required], // Nom de la récompense
-              persons: [award.persons.map(p => ({ ...p, display: () => p.name }))],
-              year: [award.year] // Année de la récompense
-            }
-          )
-        )
-    );
+    this.awardsForm.setControl('awards', this.movieService.buildAwardsFormArray(this.awards));
   }
 
   saveGeneralInfos() {
@@ -272,34 +198,13 @@ export class MovieDetailsComponent {
     }
   }
 
-  saveTechnicalTeam() {
-    if (this.technicalTeamForm.valid) {
-      this.movieService.saveTechnicalTeam(this.id, this.technicalTeamForm.value).subscribe(
-        {
-          next: result => {
-            this.snackBar.open(this.translate.instant('app.technical_team_updated_success'), this.translate.instant('app.close'), { duration: this.duration });
-            this.technicalTeam = result;
-            this.technicalTeamForm.patchValue(this.technicalTeam);
-          },
-          error: error => {
-            console.error(error);
-            this.snackBar.open(this.translate.instant('app.technical_team_update_error'), this.translate.instant('app.close'), { duration: this.duration });
-          },
-          complete: () => this.editTechnicalTeam = false
-        }
-      );
-    } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
-    }
-  }
-
-  saveCasting() {
-    if (this.castingForm.valid) {
-      const body: MovieActor[] = this.castingForm.value['actors'].map(
+  saveCast() {
+    if (this.castForm.valid) {
+      const body: MovieActor[] = this.castForm.get('actors').value.map(
         (ma: any, index: number) => (
           {
-            id: this.casting.find(a => a.actor.id == ma.id)?.id ?? null,
-            actor: { id: ma.id, name: ma.name },
+            id: this.cast.find(a => a.person.id == ma.id)?.id ?? null,
+            person: { id: ma.id, name: ma.name },
             role: ma.role,
             rank: index
           }
@@ -310,8 +215,8 @@ export class MovieDetailsComponent {
         {
           next: result => {
             this.snackBar.open(this.translate.instant('app.cast_update_success'), this.translate.instant('app.close'), { duration: this.duration });
-            this.casting = result;
-            this.castingForm.patchValue({ actors: this.casting });
+            this.cast = result;
+            this.castForm.markAsPristine();
           },
           error: error => {
             console.error(error);
@@ -327,7 +232,7 @@ export class MovieDetailsComponent {
 
   saveAwards() {
     if (this.awardsForm.valid) {
-      this.movieService.saveAwards(this.id, this.awardsForm.value['awards']).subscribe(
+      this.movieService.saveAwards(this.id, this.awardsForm.value.get('awards')).subscribe(
         {
           next: result => {
             this.snackBar.open(this.translate.instant('app.awards_update_success'), this.translate.instant('app.close'), { duration: this.duration });

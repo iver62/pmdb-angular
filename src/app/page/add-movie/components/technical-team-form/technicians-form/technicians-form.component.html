@@ -1,0 +1,60 @@
+<mat-accordion class="lg:col-span-2">
+  <mat-expansion-panel class="dark:!bg-black" [expanded]="expanded()" #expansionPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="dark:!text-pmdb-white !flex items-center">
+        <mat-icon>play_arrow</mat-icon>
+        <span class="pl-2">{{title() | translate}}</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="form">
+      <div formArrayName="technicians">
+        @for (technician of formArray?.controls; track technician; let i = $index) {
+        <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
+
+          <!-- Autocomplete acteur -->
+          <app-autocomplete class="col-span-5" [control]="technician.get('name')" [label]="label() | translate"
+            [personsToExclude]="formArray?.value | pluck: 'id'"
+            [toSave]="technician?.value?.name && !technician?.value?.id" (select)="selectTechnician($event, i)"
+            (save)="saveTechnician($event, i)">
+          </app-autocomplete>
+
+          <!-- Champ rôle -->
+          <mat-form-field class="col-span-6">
+            <mat-label>{{'app.role' | translate}}</mat-label>
+            <input matInput formControlName="role" />
+            @if (technician.value.role) {
+            <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark"
+              [matTooltip]="'app.erase' | translate" aria-label="Effacer le rôle" (click)="clearRole(i)">
+              <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
+            </button>
+            }
+          </mat-form-field>
+
+          <!-- Actions -->
+          <div class="flex items-center justify-between pb-4 col-span-1">
+            <mat-icon class="cursor-pointer large-icon material-symbols-outlined mx-2 dark:!text-pmdb-white"
+              [matTooltip]="'app.delete' | translate" (click)="removeTechnician(i)">
+              delete
+            </mat-icon>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="flex justify-between">
+        <a class="cursor-pointer hover:underline dark:text-pmdb-white" (click)="addTechnician()">
+          {{'app.add' | translate}}
+        </a>
+        <div class="flex gap-4">
+          <a [hidden]="!cancellable()" class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+            (click)="cancelForm()">
+            {{'app.cancel' | translate}}
+          </a>
+          <a class="cursor-pointer dark:text-pmdb-gold dark:hover:!text-pmdb-white"
+            [class.disabled]="form.invalid || form.pristine" (click)="saveTechnicians()">
+            {{'app.validate' | translate}}
+          </a>
+        </div>
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>

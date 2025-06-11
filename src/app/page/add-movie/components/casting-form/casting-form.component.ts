@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, effect, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,10 +12,9 @@ import { EMPTY_STRING } from '../../../../app.component';
 import { AutocompleteComponent } from '../../../../components';
 import { PersonType } from '../../../../enums';
 import { Person } from '../../../../models';
-import { PersonService } from '../../../../services';
 
 @Component({
-  selector: 'app-casting-form',
+  selector: 'app-cast-form',
   imports: [
     AutocompleteComponent,
     CdkDrag,
@@ -37,6 +36,8 @@ export class CastingFormComponent {
 
   @Input() form: FormGroup;
 
+  personType = PersonType;
+
   /**
    * Getter pour accéder au FormArray facilement
    */
@@ -44,16 +45,7 @@ export class CastingFormComponent {
     return this.form.get('actors') as FormArray;
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private personService: PersonService
-  ) {
-    effect(() => {
-      if (this.formArray.length < 1) {
-        this.addActor();
-      }
-    });
-  }
+  constructor(private fb: FormBuilder) { }
 
   selectActor(person: Person, index: number) {
     this.formArray.at(index).patchValue({ id: person.id, name: person.name });
@@ -72,12 +64,6 @@ export class CastingFormComponent {
     );
   }
 
-  addType(person: Person) {
-    if (!person.types.includes(PersonType.ACTOR)) {
-      this.personService.addPersonType(person.id, PersonType.ACTOR).subscribe();
-    }
-  }
-
   /**
    * Ajouter un acteur au FormArray
    */
@@ -90,19 +76,21 @@ export class CastingFormComponent {
    */
   removeActor(index: number) {
     this.formArray.removeAt(index);
+    this.form.markAsDirty();
   }
 
   saveActor(actor: Person, index: number) {
-    this.formArray.at(index).patchValue({ id: actor.id })
+    this.formArray.at(index).patchValue({ id: actor.id });
   }
 
   clearRole(index: number) {
-    this.formArray.at(index).patchValue({ role: null })
+    this.formArray.at(index).patchValue({ role: null });
   }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.formArray.controls, event.previousIndex, event.currentIndex);
     this.formArray.updateValueAndValidity();
+    this.form.markAsDirty();
   }
 
 }

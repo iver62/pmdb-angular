@@ -36,6 +36,12 @@ body {
   }
 }
 
+.dark .specific-class>.mat-expansion-indicator {
+  svg {
+    color: var(--color-pmdb-white) !important;
+  }
+}
+
 .mat-mdc-card-title {
   font-family: 'Oswald', serif !important;
 }

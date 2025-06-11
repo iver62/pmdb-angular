@@ -3,10 +3,10 @@
   <div class="grid grid-cols-12 text-xl">
     <div class="col-span-4 flex">
       <span class="image-container">
-        <img mat-card-image [src]="movieActor.photoUrl$ | async" alt="{{ movieActor.actor.photoFileName }}">
+        <img mat-card-image [src]="movieActor.photoUrl$ | async" alt="{{ movieActor.person.photoFileName }}">
       </span>
-      <span class="font-bold cursor-pointer hover:underline" [routerLink]="['/persons', movieActor?.actor?.id]">
-        {{movieActor?.actor?.name}}
+      <span class="font-bold cursor-pointer hover:underline" [routerLink]="['/persons', movieActor?.person?.id]">
+        {{movieActor?.person?.name}}
       </span>
     </div>
     <span class="col-span-8">{{movieActor?.role}}</span>

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, effect, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -103,13 +103,7 @@ export class AwardsFormComponent {
     private awardService: AwardService,
     private fb: FormBuilder,
     private movieService: MovieService
-  ) {
-    effect(() => {
-      if (this.formArray?.length < 1) {
-        this.addAward();
-      }
-    });
-  }
+  ) { }
 
   onSearch(event: string) {
     this.awardsSearchConfig$.next({ ...this.awardsSearchConfig$.value, page: 0, term: event.trim() });

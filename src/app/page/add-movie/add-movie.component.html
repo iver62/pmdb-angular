@@ -9,17 +9,18 @@
     </button>
     }
   </mat-step>
-  <mat-step [stepControl]="technicalTeamForm" [label]="'app.technical_team' | translate">
+  <mat-step [label]="'app.technical_team.label' | translate">
     @if (currentStep == 1) {
-    <app-technical-team-form [form]="technicalTeamForm"></app-technical-team-form>
-    <button mat-button class="dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveTechnicalTeam()">
+    <app-technical-team-form [movieId]="movie.id" [technicalTeam]="technicalTeam" [expanded]="false">
+    </app-technical-team-form>
+    <button mat-button class="mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
       {{'app.next' | translate}}
     </button>
     }
   </mat-step>
-  <mat-step [stepControl]="castingForm" [label]="'app.casting' | translate">
+  <mat-step [stepControl]="castingForm" [label]="'app.cast' | translate">
     @if (currentStep == 2) {
-    <app-casting-form [form]="castingForm"></app-casting-form>
+    <app-cast-form [form]="castingForm"></app-cast-form>
     <button mat-button class="mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveCasting()">
       {{'app.next' | translate}}
     </button>

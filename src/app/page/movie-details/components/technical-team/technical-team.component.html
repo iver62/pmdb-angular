@@ -1,76 +1,216 @@
-<div class="flex flex-col gap-4 text-xl dark:text-white">
-  @if (technicalTeam?.directors?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.directors', persons: technicalTeam?.directors}" />
+<div class="grid grid-cols-4 gap-4 text-xl dark:text-pmdb-white">
+  @if (edit.producers) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
+    label="app.technical_team.producer_name" [movieId]="movieId()" [technicians]="technicalTeam().producers"
+    [personType]="personType.PRODUCER" [expanded]="true" [serviceCall]="movieService.saveProducers.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_producers"
+    (update)="updateTechnicians($event, 'producers')" (cancel)="edit.producers=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
+    [technicians]="technicalTeam()?.producers" (edit)="edit.producers=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.screenwriters?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.screenwriters', persons: technicalTeam?.screenwriters}" />
+
+  @if (edit.directors) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.directing"
+    label="app.technical_team.director_name" [movieId]="movieId()" [technicians]="technicalTeam().directors"
+    [personType]="personType.DIRECTOR" [expanded]="true" [serviceCall]="movieService.saveDirectors.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_directors"
+    (update)="updateTechnicians($event, 'directors')" (cancel)="edit.directors=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.directing"
+    [technicians]="technicalTeam()?.directors" (edit)="edit.directors=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.dialogueWriters?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.dialogue_writers', persons: technicalTeam?.dialogueWriters}" />
+
+  @if (edit.screenwriters) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.screenwriting"
+    label="app.technical_team.screenwriter_name" [movieId]="movieId()" [technicians]="technicalTeam().screenwriters"
+    [personType]="personType.SCREENWRITER" [expanded]="true"
+    [serviceCall]="movieService.saveScreenwriters.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_screenwriters"
+    (update)="updateTechnicians($event, 'screenwriters')" (cancel)="edit.screenwriters=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.screenwriting"
+    [technicians]="technicalTeam()?.screenwriters" (edit)="edit.screenwriters=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.musicians?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.music', persons: technicalTeam?.musicians}" />
+
+  @if (edit.musicians) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.music"
+    label="app.technical_team.musician_name" [movieId]="movieId()" [technicians]="technicalTeam().musicians"
+    [personType]="personType.MUSICIAN" [expanded]="true" [serviceCall]="movieService.saveMusicians.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_musicians"
+    (update)="updateTechnicians($event, 'musicians')" (cancel)="edit.musicians=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.music"
+    [technicians]="technicalTeam()?.musicians" (edit)="edit.musicians=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.photographers?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.photography', persons: technicalTeam?.photographers}" />
+
+  @if (edit.photographers) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.photography"
+    label="app.technical_team.photographer_name" [movieId]="movieId()" [technicians]="technicalTeam().photographers"
+    [personType]="personType.PHOTOGRAPHER" [expanded]="true"
+    [serviceCall]="movieService.savePhotographers.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_photographers"
+    (update)="updateTechnicians($event, 'photographers')" (cancel)="edit.photographers=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.photography"
+    [technicians]="technicalTeam()?.photographers" (edit)="edit.photographers=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.costumiers?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.costumes', persons: technicalTeam?.costumiers}" />
+
+  @if (edit.costumiers) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.costumes"
+    label="app.technical_team.costumier_name" [movieId]="movieId()" [technicians]="technicalTeam().costumiers"
+    [personType]="personType.COSTUMIER" [expanded]="true" [serviceCall]="movieService.saveCostumiers.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_costumiers"
+    (update)="updateTechnicians($event, 'costumiers')" (cancel)="edit.costumiers=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.costumes"
+    [technicians]="technicalTeam()?.costumiers" (edit)="edit.costumiers=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.decorators?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.sets', persons: technicalTeam?.decorators}" />
+
+  @if (edit.decorators) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sets"
+    label="app.technical_team.decorator_name" [movieId]="movieId()" [technicians]="technicalTeam().decorators"
+    [personType]="personType.DECORATOR" [expanded]="true" [serviceCall]="movieService.saveDecorators.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_decorators"
+    (update)="updateTechnicians($event, 'decorators')" (cancel)="edit.decorators=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sets"
+    [technicians]="technicalTeam()?.decorators" (edit)="edit.decorators=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.editors?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.editing', persons: technicalTeam?.editors}" />
+
+  @if (edit.editors) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.editing"
+    label="app.technical_team.editor_name" [movieId]="movieId()" [technicians]="technicalTeam().editors"
+    [personType]="personType.EDITOR" [expanded]="true" [serviceCall]="movieService.saveEditors.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_editors"
+    (update)="updateTechnicians($event, 'editors')" (cancel)="edit.editors=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.editing"
+    [technicians]="technicalTeam()?.editors" (edit)="edit.editors=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.casters?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.casting', persons: technicalTeam?.casters}" />
+
+  @if (edit.casters) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.casting"
+    label="app.technical_team.caster_name" [movieId]="movieId()" [technicians]="technicalTeam().casters"
+    [personType]="personType.CASTER" [expanded]="true" [serviceCall]="movieService.saveCasters.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_casters"
+    (update)="updateTechnicians($event, 'casters')" (cancel)="edit.casters=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.casting"
+    [technicians]="technicalTeam()?.casters" (edit)="edit.casters=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.artDirectors?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.art_directors', persons: technicalTeam?.artDirectors}" />
+
+  @if (edit.artists) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.artistic_team"
+    label="app.technical_team.artist_name" [movieId]="movieId()" [technicians]="technicalTeam().artists"
+    [personType]="personType.ARTIST" [expanded]="true" [serviceCall]="movieService.saveArtists.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_artists"
+    (update)="updateTechnicians($event, 'artists')" (cancel)="edit.artists=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.artistic_team"
+    [technicians]="technicalTeam()?.artists" (edit)="edit.artists=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.soundEditors?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.sound_editors', persons: technicalTeam?.soundEditors}" />
+
+  @if (edit.soundEditors) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sound"
+    label="app.technical_team.sound_editor_name" [movieId]="movieId()" [technicians]="technicalTeam().soundEditors"
+    [personType]="personType.SOUND_EDITOR" [expanded]="true"
+    [serviceCall]="movieService.saveSoundEditors.bind(movieService)"
+    (update)="updateTechnicians($event, 'soundEditors')"
+    successMessage="app.technical_team_form.messages.success.updating_sound_editors" (cancel)="edit.soundEditors=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sound"
+    [technicians]="technicalTeam()?.soundEditors" (edit)="edit.soundEditors=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.visualEffectsSupervisors?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.special_effects', persons: technicalTeam?.visualEffectsSupervisors}" />
+
+  @if (edit.vfxSupervisors) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.vfx"
+    label="app.technical_team.vfx_supervisor_name" [movieId]="movieId()" [technicians]="technicalTeam().vfxSupervisors"
+    [personType]="personType.VFX_SUPERVISOR" [expanded]="true"
+    [serviceCall]="movieService.saveVfxSupervisors.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_vfx_supervisors"
+    (update)="updateTechnicians($event, 'vfxSupervisors')" (cancel)="edit.vfxSupervisors=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.vfx"
+    [technicians]="technicalTeam()?.vfxSupervisors" (edit)="edit.vfxSupervisors=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.makeupArtists?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.makeup', persons: technicalTeam?.makeupArtists}" />
+
+  @if (edit.sfxSupervisors) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sfx"
+    label="app.technical_team.sfx_supervisor_name" [movieId]="movieId()" [technicians]="technicalTeam().sfxSupervisors"
+    [personType]="personType.SFX_SUPERVISOR" [expanded]="true"
+    [serviceCall]="movieService.saveSfxSupervisors.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_sfx_supervisors"
+    (update)="updateTechnicians($event, 'sfxSupervisors')" (cancel)="edit.sfxSupervisors=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sfx"
+    [technicians]="technicalTeam()?.sfxSupervisors" (edit)="edit.sfxSupervisors=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.hairDressers?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.hair_dressers', persons: technicalTeam?.hairDressers}" />
+
+  @if (edit.makeupArtists) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.makeup"
+    label="app.technical_team.makeup_artist_name" [movieId]="movieId()" [technicians]="technicalTeam().makeupArtists"
+    [personType]="personType.MAKEUP_ARTIST" [expanded]="true"
+    [serviceCall]="movieService.saveMakeupArtists.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_makeup_artists"
+    (update)="updateTechnicians($event, 'makeupArtists')" (cancel)="edit.makeupArtists=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.makeup"
+    [technicians]="technicalTeam()?.makeupArtists" (edit)="edit.makeupArtists=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.stuntmen?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.stuntmen', persons: technicalTeam?.stuntmen}" />
+
+  @if (edit.hairDressers) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.hair_dressing"
+    label="app.technical_team.hair_dresser_name" [movieId]="movieId()" [technicians]="technicalTeam().hairDressers"
+    [personType]="personType.HAIR_DRESSER" [expanded]="true"
+    [serviceCall]="movieService.saveHairDressers.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_hair_dressers"
+    (update)="updateTechnicians($event, 'hairDressers')" (cancel)="edit.hairDressers=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.hair_dressing"
+    [technicians]="technicalTeam()?.hairDressers" (edit)="edit.hairDressers=true">
+  </app-technicians>
   }
-  @if (technicalTeam?.producers?.length) {
-  <ng-container [ngTemplateOutlet]="personsList"
-    [ngTemplateOutletContext]="{label: 'app.producers', persons: technicalTeam?.producers}" />
+
+  @if (edit.stuntmen) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.stunts"
+    label="app.technical_team.stuntman_name" [movieId]="movieId()" [technicians]="technicalTeam().stuntmen"
+    [personType]="personType.STUNT_MAN" [expanded]="true" [serviceCall]="movieService.saveStuntmen.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_stuntmen"
+    (update)="updateTechnicians($event, 'stuntmen')" (cancel)="edit.stuntmen=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.stunts"
+    [technicians]="technicalTeam()?.stuntmen" (edit)="edit.stuntmen=true">
+  </app-technicians>
   }
 </div>
-
-<ng-template #personsList let-label="label" let-persons="persons">
-  <div>
-    <span class="font-bold">{{label | translate | uppercase}} : </span>
-    @for (person of persons | orderBy: 'name'; track person.id; let last = $last) {
-    <a class="cursor-pointer hover:underline" [routerLink]="['/persons', person.id]">{{person?.name}}</a>
-    @if (!last) {, }
-    }
-  </div>
-</ng-template>

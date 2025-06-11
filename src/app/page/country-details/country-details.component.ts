@@ -452,7 +452,7 @@ export class CountryDetailsComponent {
       config$: this.searchArtDirectorsConfig$,
       data$: this.artDirectors$,
       service: this.artDirectorService,
-      route: '/art-directors'
+      route: '/artists'
     },
     {
       label: 'Ingénieurs du son',
@@ -463,12 +463,20 @@ export class CountryDetailsComponent {
       route: '/sound-editors'
     },
     {
+      label: 'Spécialistes effets visuels',
+      total$: this.totalVisualEffectsSupervisors$,
+      config$: this.searchVisualEffectsSupervisorsConfig$,
+      data$: this.visualEffectsSupervisors$,
+      service: this.visualEffectsSupervisorService,
+      route: '/vfx-supervisors'
+    },
+    {
       label: 'Spécialistes effets spéciaux',
       total$: this.totalVisualEffectsSupervisors$,
       config$: this.searchVisualEffectsSupervisorsConfig$,
       data$: this.visualEffectsSupervisors$,
       service: this.visualEffectsSupervisorService,
-      route: '/visual-effects-supervisors'
+      route: '/sfx-supervisors'
     },
     {
       label: 'Maquilleurs',

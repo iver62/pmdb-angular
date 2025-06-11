@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { SseClient } from 'ngx-sse-client';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
 import { Direction, Language } from '../enums';
-import { Award, Country, Criterias, Genre, Movie, MovieActor, Person, TechnicalTeam } from '../models';
+import { Award, Country, Criterias, Genre, Movie, MovieActor, MovieTechnician, Person, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -18,6 +19,7 @@ export class MovieService {
 
   constructor(
     private dateService: DateService,
+    private fb: FormBuilder,
     private http: HttpClient,
     private sseClient: SseClient
   ) { }
@@ -152,15 +154,19 @@ export class MovieService {
   }
 
   getArtDirectors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/art-directors`);
+    return this.http.get<Person[]>(`${this.basePath}/${id}/artists`);
   }
 
   getSoundEditors(id: number) {
     return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors`);
   }
 
-  getVisualEffectsSupervisors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/visual-effects-supervisors`);
+  getVfxSupervisors(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/vfx-supervisors`);
+  }
+
+  getSfxSupervisors(id: number) {
+    return this.http.get<Person[]>(`${this.basePath}/${id}/vfx-supervisors`);
   }
 
   getMakeupArtists(id: number) {
@@ -197,8 +203,68 @@ export class MovieService {
     return this.http.post<Movie>(this.basePath, formData);
   }
 
-  saveTechnicalTeam(id: number, technicalTeam: TechnicalTeam) {
-    return this.http.put<TechnicalTeam>(`${this.basePath}/${id}/technical-team`, technicalTeam);
+  saveProducers(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/producers`, movieTechnicians);
+  }
+
+  saveDirectors(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/directors`, movieTechnicians);
+  }
+
+  saveScreenwriters(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/screenwriters`, movieTechnicians);
+  }
+
+  saveMusicians(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/musicians`, movieTechnicians);
+  }
+
+  saveDecorators(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/decorators`, movieTechnicians);
+  }
+
+  saveCostumiers(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/costumiers`, movieTechnicians);
+  }
+
+  savePhotographers(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/photographers`, movieTechnicians);
+  }
+
+  saveEditors(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/editors`, movieTechnicians);
+  }
+
+  saveCasters(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/casters`, movieTechnicians);
+  }
+
+  saveArtists(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/artists`, movieTechnicians);
+  }
+
+  saveSoundEditors(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/sound-editors`, movieTechnicians);
+  }
+
+  saveVfxSupervisors(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/vfx-supervisors`, movieTechnicians);
+  }
+
+  saveSfxSupervisors(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/sfx-supervisors`, movieTechnicians);
+  }
+
+  saveMakeupArtists(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/makeup-artists`, movieTechnicians);
+  }
+
+  saveHairDressers(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/hair-dressers`, movieTechnicians);
+  }
+
+  saveStuntmen(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/stuntmen`, movieTechnicians);
   }
 
   saveCast(id: number, movieActors: MovieActor[]) {
@@ -225,5 +291,55 @@ export class MovieService {
 
   deleteMovie(id: number) {
     return this.http.delete(`${this.basePath}/${id}`);
+  }
+
+  buildActorsFormArray(cast: MovieActor[]) {
+    return this.fb.array(
+      cast?.map(movieActor =>
+        this.fb.group(
+          {
+            id: [movieActor.person.id],
+            name: [movieActor.person.name, Validators.required],
+            role: [movieActor.role, Validators.required],
+          }
+        )
+      )
+    );
+  }
+
+  buildTechniciansFormArray(technicians: MovieTechnician[]) {
+    return this.fb.array(
+      technicians?.map(t =>
+        this.fb.group(
+          {
+            id: [t.person.id],
+            name: [t.person.name, Validators.required],
+            role: [t.role],
+          }
+        )
+      )
+    );
+  }
+
+  buildAwardsFormArray(awards: Award[]) {
+    return this.fb.array(
+      awards
+        ?.sort(this.compare)
+        ?.map(award =>
+          this.fb.group(
+            {
+              id: [award.id],
+              ceremony: [award.ceremony, Validators.required], // Cérémonie de la récompense
+              name: [award.name, Validators.required], // Nom de la récompense
+              persons: [award.persons.map(p => ({ ...p, display: () => p.name }))],
+              year: [award.year] // Année de la récompense
+            }
+          )
+        )
+    );
+  }
+
+  private compare(a: Award, b: Award) {
+    return a.ceremony.localeCompare(b.ceremony) || a.name.localeCompare(b.name);
   }
 }

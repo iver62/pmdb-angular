@@ -2,6 +2,6 @@
   @for (person of persons(); track person.id) {
   <app-person-card [person]="person"></app-person-card>
   } @empty {
-  <div>Aucune personne</div>
+  <div class="text-xl dark:text-pmdb-white">{{'app.no_persons' | translate}}</div>
   }
 </div>

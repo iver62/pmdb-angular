@@ -8,7 +8,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { catchError, of, switchMap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { Award, Movie, MovieActor } from '../../models';
+import { Award, Movie, MovieActor, MovieTechnician, TechnicalTeam } from '../../models';
 import { AuthService, MovieService } from '../../services';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
@@ -52,31 +52,32 @@ export class AddMovieComponent {
       genres: []
     }
   );
-  technicalTeamForm = this.fb.group(
-    {
-      producers: [],
-      directors: [],
-      screenwriters: [],
-      dialogueWriters: [],
-      musicians: [],
-      decorators: [],
-      costumiers: [],
-      photographers: [],
-      editors: [],
-      casters: [],
-      artDirectors: [],
-      soundEditors: [],
-      visualEffectsSupervisors: [],
-      makeupArtists: [],
-      hairDressers: [],
-      stuntmen: []
-    }
-  );
+
+  technicalTeam: TechnicalTeam = {
+    producers: [],
+    directors: [],
+    screenwriters: [],
+    musicians: [],
+    photographers: [],
+    costumiers: [],
+    decorators: [],
+    editors: [],
+    casters: [],
+    artists: [],
+    soundEditors: [],
+    vfxSupervisors: [],
+    sfxSupervisors: [],
+    makeupArtists: [],
+    hairDressers: [],
+    stuntmen: []
+  }
+
   castingForm = this.fb.group(
     {
       actors: this.fb.array<MovieActor>([])
     }
   );
+
   awardsForm = this.fb.group(
     {
       awards: this.fb.array<Award>([])
@@ -126,24 +127,8 @@ export class AddMovieComponent {
     }
   }
 
-  saveTechnicalTeam() {
-    if (this.technicalTeamForm.valid) {
-      this.movieService.saveTechnicalTeam(this.movie.id, this.technicalTeamForm.value).pipe(
-        catchError(error => {
-          console.error(error);
-          this.snackBar.open(this.translate.instant('app.error_adding_technical_team'), 'Fermer', { duration: this.duration });
-          return of(null);
-        })
-      ).subscribe(result => {
-        if (result) {
-          this.snackBar.open(this.translate.instant('app.Technical_team_added_success'), 'Fermer', { duration: this.duration });
-          this.stepper.next();
-          this.movie.technicalTeam = result;
-        }
-      });
-    } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
-    }
+  updateTechnicians(event: { type: keyof TechnicalTeam, list: MovieTechnician[] }) {
+    this.movie.technicalTeam[event.type] = event.list;
   }
 
   saveCasting() {
@@ -151,7 +136,7 @@ export class AddMovieComponent {
       const body: MovieActor[] = this.castingForm.get('actors').value.map(
         (ma: any, index: number) => (
           {
-            actor: { id: ma.id, name: ma.name },
+            person: { id: ma.id, name: ma.name },
             role: ma.role,
             rank: index
           }

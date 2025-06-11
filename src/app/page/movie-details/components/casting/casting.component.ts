@@ -6,7 +6,7 @@ import { MovieActor, PersonWithPhoto } from '../../../../models';
 import { PersonService } from '../../../../services';
 
 @Component({
-  selector: 'app-casting',
+  selector: 'app-cast',
   imports: [
     AsyncPipe,
     RouterLink,
@@ -26,7 +26,7 @@ export class CastingComponent {
       const persons = this.actors()?.map(a => (
         {
           ...a,
-          photoUrl$: this.personService.getPhotoUrl(a.actor.photoFileName) // Observable pour l'affiche
+          photoUrl$: this.personService.getPhotoUrl(a.person.photoFileName) // Observable pour l'affiche
         }
       ));
       this.enrichedActors.set(persons);

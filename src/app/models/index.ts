@@ -6,6 +6,7 @@ export * from './criterias.model';
 export * from './genre.model';
 export * from './movie.model';
 export * from './movie-actor.model';
+export * from './movie-technician.model';
 export * from './person.model';
 export * from './repartition.model';
 export * from './role-representation.model';

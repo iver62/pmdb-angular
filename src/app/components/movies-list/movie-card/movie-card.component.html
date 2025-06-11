@@ -1,9 +1,9 @@
 <mat-card class="movie-card cursor-pointer bg-white dark:bg-zinc-950! w-full" [routerLink]="['/movies', movie().id]">
   <img mat-card-image [src]="posterUrl$ | async" alt="{{ movie().title }}" />
   <mat-card-content class="flex flex-col overflow-y-auto dark:text-pmdb-white">
-    <div>{{ movie().title }}</div>
-    @if (movie().releaseDate) {
-    <div>({{ movie().releaseDate | date: 'yyyy' }})</div>
-    }
+    <div class="flex flex-col pt-1">
+      <span>{{ movie().title }}</span>
+      <span [hidden]="!movie().releaseDate">({{ movie().releaseDate | date: 'yyyy' }})</span>
+    </div>
   </mat-card-content>
 </mat-card>

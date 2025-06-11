@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
@@ -28,7 +29,8 @@ import { HttpUtils, Utils } from '../../utils';
     MatInputModule,
     MatProgressSpinner,
     MatTooltipModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './autocomplete.component.html',
   styleUrl: './autocomplete.component.scss'
@@ -158,7 +160,7 @@ export class AutocompleteComponent {
     }
 
     this.loading = true;
-    this.personService.save({ name: this.formControl.value?.trim(), types: [PersonType.ACTOR] }).subscribe(
+    this.personService.save({ name: this.formControl.value?.trim() }).subscribe(
       {
         next: result => this.save.emit(result),
         error: e => console.error(e),

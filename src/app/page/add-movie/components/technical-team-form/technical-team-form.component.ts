@@ -1,30 +1,23 @@
-import { Component, Input } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { PersonSelectorComponent } from '../../../../components';
+import { Component, input } from '@angular/core';
 import { PersonType } from '../../../../enums';
-import { Person } from '../../../../models';
-import { PersonService } from '../../../../services';
+import { TechnicalTeam } from '../../../../models';
+import { MovieService } from '../../../../services';
+import { TechniciansFormComponent } from "./technicians-form/technicians-form.component";
 
 @Component({
   selector: 'app-technical-team-form',
-  imports: [
-    PersonSelectorComponent,
-    ReactiveFormsModule
-  ],
+  imports: [TechniciansFormComponent],
   templateUrl: './technical-team-form.component.html',
   styleUrl: './technical-team-form.component.scss'
 })
 export class TechnicalTeamFormComponent {
 
-  @Input() form: FormGroup;
+  movieId = input.required<number>();
+  expanded = input.required<boolean>();
+  technicalTeam = input.required<TechnicalTeam>();
 
   personType = PersonType;
 
-  constructor(private personService: PersonService) { }
+  constructor(public movieService: MovieService) { }
 
-  addType(person: Person, type: PersonType) {
-    if (!person.types.includes(type)) {
-      this.personService.addPersonType(person.id, type).subscribe();
-    }
-  }
 }

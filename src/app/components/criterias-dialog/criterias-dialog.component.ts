@@ -23,8 +23,8 @@ const types = [
   },
   {
     id: 1,
-    name: PersonType.ART_DIRECTOR,
-    display: () => PersonType.ART_DIRECTOR
+    name: PersonType.ARTIST,
+    display: () => PersonType.ARTIST
   },
   {
     id: 2,
@@ -43,53 +43,53 @@ const types = [
   },
   {
     id: 5,
-    name: PersonType.DIALOGUE_WRITER,
-    display: () => PersonType.DIALOGUE_WRITER
-  },
-  {
-    id: 6,
     name: PersonType.DIRECTOR,
     display: () => PersonType.DIRECTOR
   },
   {
-    id: 7,
+    id: 6,
     name: PersonType.EDITOR,
     display: () => PersonType.EDITOR
   },
   {
-    id: 8,
+    id: 7,
     name: PersonType.HAIR_DRESSER,
     display: () => PersonType.HAIR_DRESSER
   },
   {
-    id: 9,
+    id: 8,
     name: PersonType.MAKEUP_ARTIST,
     display: () => PersonType.MAKEUP_ARTIST
   },
   {
-    id: 10,
+    id: 9,
     name: PersonType.MUSICIAN,
     display: () => PersonType.MUSICIAN
   },
   {
-    id: 11,
+    id: 10,
     name: PersonType.PHOTOGRAPHER,
     display: () => PersonType.PHOTOGRAPHER
   },
   {
-    id: 12,
+    id: 11,
     name: PersonType.PRODUCER,
     display: () => PersonType.PRODUCER
   },
   {
-    id: 13,
+    id: 12,
     name: PersonType.SCREENWRITER,
     display: () => PersonType.SCREENWRITER
   },
   {
-    id: 14,
+    id: 13,
     name: PersonType.SOUND_EDITOR,
     display: () => PersonType.SOUND_EDITOR
+  },
+  {
+    id: 14,
+    name: PersonType.SFX_SUPERVISOR,
+    display: () => PersonType.SFX_SUPERVISOR
   },
   {
     id: 15,
@@ -98,8 +98,8 @@ const types = [
   },
   {
     id: 16,
-    name: PersonType.VISUAL_EFFECTS_SUPERVISOR,
-    display: () => PersonType.VISUAL_EFFECTS_SUPERVISOR
+    name: PersonType.VFX_SUPERVISOR,
+    display: () => PersonType.VFX_SUPERVISOR
   }
 ];
 

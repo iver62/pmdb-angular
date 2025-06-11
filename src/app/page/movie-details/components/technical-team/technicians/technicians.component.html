@@ -1,0 +1,28 @@
+<mat-card class="dark:!bg-black col-span-4 lg:col-span-2 xxl:col-span-1 h-full" appearance="outlined">
+  <mat-card-header class="mb-2">
+    <mat-card-title class="!flex !w-full justify-between items-center">
+      <div class="!flex items-center">
+        <mat-icon>play_arrow</mat-icon>
+        <span class="pl-2">{{title() | translate}}</span>
+      </div>
+      <mat-icon class="ml-2 small-icon dark:!text-pmdb-gold dark:hover:!text-pmdb-white cursor-pointer"
+        [matTooltip]="'app.edit' | translate" (click)="editTechnicians()">
+        edit
+      </mat-icon>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @for (technician of technicians(); track technician.id) {
+    <div class="w-full flex">
+      <a class="w-1/2 cursor-pointer hover:underline" [routerLink]="['/persons', technician.person.id]">
+        {{technician?.person?.name}}
+      </a>
+      <span class="w-1/2">{{technician?.role}}</span>
+    </div>
+    } @empty {
+    <div class="text-center">
+      <mat-icon>person_off</mat-icon>
+    </div>
+    }
+  </mat-card-content>
+</mat-card>

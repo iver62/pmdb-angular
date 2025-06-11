@@ -3,7 +3,7 @@ import { Movie, Person } from "./";
 
 export interface MovieActor {
   id?: number;
-  actor?: Person;
+  person?: Person;
   movie?: Movie;
   role?: string;
   rank?: number;
