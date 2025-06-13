@@ -26,12 +26,8 @@
         }
       </mat-form-field>
 
-      <!-- Champ personnes -->
-      <app-multiselect class="col-span-3" [control]="getPersonsFormControl(award)" [label]="'app.persons' | translate"
-        [placeholder]="'app.add_persons' | translate" [placeholderLabel]="'app.search_person' | translate"
-        [noEntriesFoundLabel]="'app.no_persons_found' | translate" [items]="persons$ | async" [total]="totalPersons"
-        (update)="updatePersonSearch($event)">
-      </app-multiselect>
+      <app-persons-multiselect class="col-span-3" [movieId]="movieId()" [control]="getPersonsFormControl(award)">
+      </app-persons-multiselect>
 
       <!-- Champ année -->
       <mat-form-field class="col-span-2">

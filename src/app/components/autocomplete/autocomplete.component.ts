@@ -117,10 +117,6 @@ export class AutocompleteComponent {
     });
   }
 
-  onSearch(event: string) {
-    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event.trim() });
-  }
-
   private onScroll(event: Event) {
     const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement;
 
@@ -135,6 +131,10 @@ export class AutocompleteComponent {
         );
       }, 100); // Délai pour éviter les appels successifs rapides
     }
+  }
+
+  onSearch(event: string) {
+    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event.trim() });
   }
 
   /**

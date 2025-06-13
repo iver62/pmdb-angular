@@ -11,11 +11,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../../../app.component';
-import { MultiselectComponent } from "../../../../components";
 import { DelayedInputDirective } from '../../../../directives';
 import { SearchConfig } from '../../../../models';
 import { AwardService, MovieService } from '../../../../services';
 import { HttpUtils } from '../../../../utils';
+import { PersonsMultiselectComponent } from "./persons-multiselect/persons-multiselect.component";
 
 @Component({
   selector: 'app-awards-form',
@@ -28,11 +28,10 @@ import { HttpUtils } from '../../../../utils';
     MatIconModule,
     MatInputModule,
     MatTooltipModule,
-    MultiselectComponent,
+    PersonsMultiselectComponent,
     NgPipesModule,
     ReactiveFormsModule,
-    TranslatePipe,
-    MultiselectComponent
+    TranslatePipe
   ],
   templateUrl: './awards-form.component.html',
   styleUrl: './awards-form.component.scss'

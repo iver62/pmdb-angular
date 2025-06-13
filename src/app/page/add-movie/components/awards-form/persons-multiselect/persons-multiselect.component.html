@@ -1,0 +1,33 @@
+<mat-form-field class="w-full">
+  <mat-label>{{'app.persons' | translate}} ({{total}})</mat-label>
+  <mat-select [placeholder]="'app.add_persons' | translate" [formControl]="control()" [compareWith]="compare"
+    (selectionChange)="selectionChange($event)" multiple>
+    @if (selectedValues()?.length) {
+    <mat-select-trigger>
+      <div class="dark:!text-pmdb-white">
+        {{selectedValues()?.at(0).display() || ''}}
+        @if ((selectedValues()?.length || 0) > 1) {
+        (+{{(selectedValues()?.length || 0) - 1}} {{'app.others' | translate}})
+        }
+      </div>
+    </mat-select-trigger>
+    }
+    <mat-option>
+      <ngx-mat-select-search appDelayedInput [placeholderLabel]="'app.search_person' | translate"
+        [noEntriesFoundLabel]="'app.no_persons_found' | translate" (delayedInput)="updateSearch($event)"
+        [clearSearchInput]="false">
+        <mat-icon ngxMatSelectSearchClear matTooltip="Effacer" (click)="eraseSearch()">clear</mat-icon>
+      </ngx-mat-select-search>
+    </mat-option>
+    @for (person of persons$ | async; track person.id) {
+    <mat-option [value]="person">{{person?.name}}</mat-option>
+    }
+  </mat-select>
+  <!-- Bouton pour effacer la sélection -->
+  @if (control().value?.length) {
+  <button mat-icon-button matSuffix class="mx-2 dark:hover:!bg-pmdb-dark"
+    [matTooltip]="'app.delete_selection' | translate" (click)="clearSelection(); $event.stopPropagation()">
+    <mat-icon class="dark:!text-pmdb-white">clear</mat-icon>
+  </button>
+  }
+</mat-form-field>

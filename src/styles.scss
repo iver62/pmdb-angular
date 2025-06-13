@@ -30,15 +30,31 @@ body {
   background-color: inherit !important;
 }
 
-.dark .mat-mdc-menu-item {
-  svg {
-    color: var(--color-pmdb-white) !important;
+.dark {
+  .mat-mdc-menu-item {
+    svg {
+      color: var(--color-pmdb-white) !important;
+    }
   }
-}
 
-.dark .specific-class>.mat-expansion-indicator {
-  svg {
-    color: var(--color-pmdb-white) !important;
+  .mat-select-search-input {
+    background-color: var(--color-pmdb-grey) !important;
+  }
+
+  .mat-select-search-clear {
+    &:hover {
+      background-color: var(--color-pmdb-dark);
+    }
+
+    .mat-icon {
+      color: var(--color-pmdb-white);
+    }
+  }
+
+  .specific-class>.mat-expansion-indicator {
+    svg {
+      color: var(--color-pmdb-white) !important;
+    }
   }
 }
 
@@ -62,13 +78,6 @@ body {
   background-color: white;
 }
 
-// .mat-datepicker-content {
-//   border: 1px solid darkgrey !important;
-//   border-top-left-radius: 0 !important;
-//   border-top-right-radius: 0 !important;
-//   border-top: none;
-// }
-
 @include mat.autocomplete-overrides((background-color: white));
 
 @include mat.button-overrides((filled-container-color: #2c2c2c,
@@ -88,7 +97,7 @@ body {
     calendar-date-today-outline-color: black,
     calendar-date-selected-state-background-color: black,
     range-input-separator-color: black,
-    calendar-date-in-range-state-background-color: whitesmoke));
+    calendar-date-in-range-state-background-color: lightgrey));
 
 @include mat.dialog-overrides((container-color: white,
     content-padding: 50px));

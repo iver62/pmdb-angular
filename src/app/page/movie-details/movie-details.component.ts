@@ -234,7 +234,7 @@ export class MovieDetailsComponent {
 
   saveAwards() {
     if (this.awardsForm.valid) {
-      this.movieService.saveAwards(this.id, this.awardsForm.value.get('awards')).subscribe(
+      this.movieService.saveAwards(this.id, this.awardsForm.get('awards').value).subscribe(
         {
           next: result => {
             this.snackBar.open(this.translate.instant('app.awards_update_success'), this.translate.instant('app.close'), { duration: this.duration });
