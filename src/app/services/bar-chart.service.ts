@@ -14,8 +14,6 @@ export class BarChartService {
   lightModeColors = ['#0071e3'];
 
   formatBarChartDataset(repartitions: Repartition[]) {
-    console.log(this.darkMode);
-
     return {
       labels: repartitions.map(d => d.label),
       datasets: [
