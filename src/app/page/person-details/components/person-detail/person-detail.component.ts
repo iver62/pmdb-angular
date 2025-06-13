@@ -45,7 +45,7 @@ export class PersonDetailComponent {
     effect(() => {
       this.photoUrl$ = this.personService.getPhotoUrl(this.person()?.photoFileName)
       this.age = PersonUtils.calculateAge(this.person());
-      this.ageOfDeath = new Date(this.person().dateOfDeath)?.getFullYear() - new Date(this.person().dateOfBirth)?.getFullYear();
+      this.ageOfDeath = PersonUtils.calculateAgeOfDeath(this.person());
     });
   }
 

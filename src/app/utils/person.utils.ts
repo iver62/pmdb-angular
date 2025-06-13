@@ -19,6 +19,23 @@ export class PersonUtils {
     return age;
   }
 
+  static calculateAgeOfDeath(person: Person): number | null {
+    if (!person.dateOfBirth) return null;
+
+    const birthDate = new Date(person.dateOfBirth);
+    const deathDate = new Date(person.dateOfDeath);
+    let age = deathDate.getFullYear() - birthDate.getFullYear();
+
+    if (
+      deathDate.getMonth() < birthDate.getMonth() ||
+      (deathDate.getMonth() === birthDate.getMonth() && deathDate.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  }
+
   static toLightPerson(person: Person): Person {
     return {
       id: person?.id,

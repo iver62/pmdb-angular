@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, effect, EventEmitter, input, Output, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,9 +12,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
-import { PersonType } from '../../enums';
 import { Person, PersonWithPhotoUrl, SearchConfig } from '../../models';
-import { PersonService } from '../../services';
+import { LoaderService, PersonService } from '../../services';
 import { HttpUtils, Utils } from '../../utils';
 
 @Component({
@@ -38,10 +37,10 @@ import { HttpUtils, Utils } from '../../utils';
 export class AutocompleteComponent {
 
   @ViewChild('auto', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
+  @ViewChild(MatAutocompleteTrigger) autocompleteTrigger: MatAutocompleteTrigger;
 
   control = input.required<AbstractControl | FormControl>();
   label = input.required<string>();
-  personsToExclude = input<number[]>();
   toSave = input<boolean>();
 
   @Output() select = new EventEmitter<Person>();
@@ -51,33 +50,33 @@ export class AutocompleteComponent {
     {
       page: 0,
       size: 20,
-      sort: 'nomFrFr',
       direction: 'asc',
-      term: EMPTY_STRING,
-      excludedActorIds: this.personsToExclude()
+      term: EMPTY_STRING
     }
   );
 
   // Liste des personnes filtrées
   readonly persons$ = this.searchConfig$.pipe(
-    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && Utils.arraysEqual(c1.excludedActorIds, c2.excludedActorIds)),
-    switchMap(config => this.personService.getPersons(config.page, config.size, config.term).pipe(
-      tap(response => {
-        this.isLoadingMore = false;
-        this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0);
-      }),
-      map(response => response.body.filter(person => !this.personsToExclude()?.includes(person.id))),
-      map(persons => persons.map(p => (
-        {
-          ...p,
-          photoUrl$: this.personService.getPhotoUrl(p.photoFileName) // Observable pour la photo
-        }
-      ))),
-      catchError(() => {
-        this.isLoadingMore = false;
-        return of([]);
-      })
-    )),
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.direction == c2.direction && c1.term == c2.term && Utils.arraysEqual(c1.excludedActorIds, c2.excludedActorIds)),
+    switchMap(config => !config.term.trim()
+      ? of([])
+      : this.personService.getPersons(config.page, config.size, config.term).pipe(
+        tap(response => {
+          this.isLoadingMore = false;
+          this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0);
+        }),
+        map(response => response.body),
+        map(persons => persons.map(p => (
+          {
+            ...p,
+            photoUrl$: this.personService.getPhotoUrl(p.photoFileName) // Observable pour la photo
+          }
+        ))),
+        catchError(() => {
+          this.isLoadingMore = false;
+          return of([]);
+        })
+      )),
     scan((acc: PersonWithPhotoUrl[], result: PersonWithPhotoUrl[]) => {
       if (this.searchConfig$.value.page == 0) {
         this.loaded = result.length;
@@ -98,14 +97,6 @@ export class AutocompleteComponent {
 
   constructor(private personService: PersonService) {
     effect(() => this.formControl = this.control() as FormControl);
-    effect(() =>
-      this.searchConfig$.next(
-        {
-          ...this.searchConfig$.value,
-          excludedActorIds: this.personsToExclude().filter(id => id)
-        }
-      )
-    );
   }
 
   ngAfterViewInit() {
@@ -126,10 +117,6 @@ export class AutocompleteComponent {
     });
   }
 
-  onFocus() {
-    this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
-  }
-
   onSearch(event: string) {
     this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event.trim() });
   }
@@ -137,7 +124,7 @@ export class AutocompleteComponent {
   private onScroll(event: Event) {
     const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded + this.personsToExclude().filter(id => id).length < this.total) {
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded < this.total) {
       this.isLoadingMore = true;
       setTimeout(() => {
         this.searchConfig$.next(

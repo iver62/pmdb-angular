@@ -1,7 +1,7 @@
 <mat-form-field class="w-full">
   <mat-label>{{label()}}</mat-label>
   <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="State" [matAutocomplete]="auto"
-    [formControl]="formControl" (focus)="onFocus()">
+    [formControl]="formControl">
   @if (toSave()) {
   <button matSuffix mat-icon-button class="mx-2 dark:!text-pmdb-white dark:!material-symbols-outlined"
     [matTooltip]="'app.save' | translate" aria-label="Sauvegarder l'acteur en base de données"

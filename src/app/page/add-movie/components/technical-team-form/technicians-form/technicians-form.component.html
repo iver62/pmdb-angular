@@ -13,7 +13,6 @@
 
           <!-- Autocomplete acteur -->
           <app-autocomplete class="col-span-5" [control]="technician.get('name')" [label]="label() | translate"
-            [personsToExclude]="formArray?.value | pluck: 'id'"
             [toSave]="technician?.value?.name && !technician?.value?.id" (select)="selectTechnician($event, i)"
             (save)="saveTechnician($event, i)">
           </app-autocomplete>

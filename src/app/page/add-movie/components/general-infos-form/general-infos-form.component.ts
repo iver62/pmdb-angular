@@ -59,6 +59,7 @@ export class GeneralInfosFormComponent {
 
   onSelectImage(event: File) {
     this.posterFormCtrl.setValue(event.name);
+    this.posterFormCtrl.markAsDirty();
     this.selectImage.emit(event);
   }
 

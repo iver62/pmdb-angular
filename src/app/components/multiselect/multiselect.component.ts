@@ -49,6 +49,34 @@ export class MultiselectComponent {
     effect(() => this.selectedValues.set(this.control().value || []));
   }
 
+  // ngAfterViewInit() {
+  //   this.matSelect.openedChange.subscribe(opened => {
+  //     if (opened) {
+  //       setTimeout(() => {
+  //         const panel = document.querySelector('.mat-select-panel');
+  //         panel?.addEventListener('scroll', this.onScroll.bind(this));
+  //       });
+  //       this.loadNextPage();
+  //     }
+  //   });
+  // }
+
+  // private onScroll(event: Event) {
+  //   const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement;
+
+  //   if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded + this.personsToExclude().filter(id => id).length < this.total) {
+  //     this.isLoadingMore = true;
+  //     setTimeout(() => {
+  //       this.searchConfig$.next(
+  //         {
+  //           ...this.searchConfig$.value,
+  //           page: this.searchConfig$.value.page + 1
+  //         }
+  //       );
+  //     }, 100); // Délai pour éviter les appels successifs rapides
+  //   }
+  // }
+
   selectionChange(event: MatSelectChange) {
     this.selectedValues.set(event.value);
   }

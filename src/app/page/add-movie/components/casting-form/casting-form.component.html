@@ -5,8 +5,8 @@
 
       <!-- Autocomplete acteur -->
       <app-autocomplete class="col-span-4" [control]="actor.get('name')" [label]="'app.actor_name' | translate"
-        [personsToExclude]="formArray?.value | pluck: 'id'" [toSave]="actor?.value?.name && !actor?.value?.id"
-        (select)="selectActor($event, i)" (save)="saveActor($event, i)">
+        [toSave]="actor?.value?.name && !actor?.value?.id" (select)="selectActor($event, i)"
+        (save)="saveActor($event, i)">
       </app-autocomplete>
 
       <!-- Champ rôle -->
