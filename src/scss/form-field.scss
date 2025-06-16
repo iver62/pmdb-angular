@@ -1,4 +1,7 @@
+@use '@angular/material' as mat;
+
 .dark {
+  @include mat.form-field-overrides((outlined-input-text-placeholder-color: var(--color-pmdb-white)));
 
   // Pour forcer la couleur du label (flottant ou pas)
   .mat-mdc-form-field .mdc-floating-label,

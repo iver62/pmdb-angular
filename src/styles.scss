@@ -3,6 +3,7 @@
 /* Angular Material and custom SCSS */
 @use "tailwindcss";
 @use '@angular/material' as mat;
+@use 'scss/accordion.scss' as *;
 @use 'scss/autocomplete.scss' as *;
 @use 'scss/button.scss' as *;
 @use 'scss/checkbox.scss' as *;
@@ -31,6 +32,11 @@ body {
 }
 
 .dark {
+  .mat-mdc-input-element::placeholder {
+    color: var(--color-pmdb-white) !important;
+    opacity: 1;
+  }
+
   .mat-mdc-menu-item {
     svg {
       color: var(--color-pmdb-white) !important;
@@ -55,6 +61,14 @@ body {
     svg {
       color: var(--color-pmdb-white) !important;
     }
+  }
+
+  .mat-mdc-checkbox-touch-target {
+    background-color: var(--color-pmdb-grey) !important;
+  }
+
+  .mdc-checkbox>.mdc-checkbox__background {
+    background-color: var(--color-pmdb-grey) !important;
   }
 }
 
@@ -101,6 +115,8 @@ body {
 
 @include mat.dialog-overrides((container-color: white,
     content-padding: 50px));
+
+@include mat.expansion-overrides((container-background-color: white));
 
 @include mat.form-field-overrides((outlined-focus-outline-color: black,
     outlined-focus-label-text-color: black,

@@ -1,0 +1,7 @@
+@use '@angular/material' as mat;
+
+.dark {
+  @include mat.expansion-overrides((container-text-color: var(--color-pmdb-white),
+      header-indicator-color: var(--color-pmdb-white),
+      container-background-color: var(--color-pmdb-black)))
+}

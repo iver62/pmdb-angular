@@ -7,6 +7,12 @@
         <mat-label>{{'app.ceremony' | translate}}</mat-label>
         <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="State" [matAutocomplete]="auto"
           formControlName="ceremony">
+        @if (award.value.ceremony) {
+        <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
+          aria-label="Effacer la cérémonie" (click)="clearCeremony(i)">
+          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
+        </button>
+        }
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectAward($event)">
           @for (ceremony of ceremonies$ | async; track ceremony) {
           <mat-option [value]="ceremony">{{ceremony}}</mat-option>
