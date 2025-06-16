@@ -1,6 +1,7 @@
 export * from './auth.service';
 export * from './award.service';
 export * from './bar-chart.service';
+export * from './config.service';
 export * from './country.service';
 export * from './date.service';
 export * from './genre.service';

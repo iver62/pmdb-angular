@@ -15,7 +15,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { map, Observable, startWith } from 'rxjs';
 import { Language } from './enums';
 import { FirstLetterPipe } from './pipes';
-import { AuthService, LoaderService } from './services';
+import { AuthService, ConfigService, LoaderService } from './services';
 
 export const EMPTY_STRING = '';
 
@@ -60,6 +60,7 @@ export class AppComponent {
   constructor(
     public authService: AuthService,
     changeDetectorRef: ChangeDetectorRef,
+    private configService: ConfigService,
     private dateAdapter: DateAdapter<any>,
     private loaderService: LoaderService,
     media: MediaMatcher,
@@ -92,10 +93,12 @@ export class AppComponent {
   toggleTheme(theme: 'light' | 'dark') {
     if (theme == 'dark') {
       this.isDarkMode = true;
+      this.configService.setDarkMode(true);
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     } else {
       this.isDarkMode = false;
+      this.configService.setDarkMode(false);
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }

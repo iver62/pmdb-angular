@@ -1,6 +1,7 @@
-import { Component, Input, signal, ViewChild } from '@angular/core';
+import { Component, effect, input, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { ConfigService } from '../../services';
 
 @Component({
   selector: 'app-bar-chart',
@@ -29,7 +30,7 @@ export class BarChartComponent {
           display: false // Désactive le quadrillage vertical
         },
         border: {
-          color: this.darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0, 0, 0, 0.1)'
+          color: this.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'
         }
       },
       y: {
@@ -41,10 +42,10 @@ export class BarChartComponent {
           },
         },
         grid: {
-          color: this.darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0, 0, 0, 0.1)'
+          color: this.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'
         },
         border: {
-          color: this.darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0, 0, 0, 0.1)'
+          color: this.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'
         }
       }
     },
@@ -57,41 +58,59 @@ export class BarChartComponent {
         display: false
       },
       tooltip: {
-        backgroundColor: this.darkMode ? '#212121' : 'black',   // ✅ Couleur de fond du tooltip
+        backgroundColor: this.darkMode ? '#212121' : 'black',   // Couleur de fond du tooltip
       }
     }
   };
 
   chartType = 'bar' as const;
 
-  chartData = signal<ChartData<'bar'>>({ labels: [], datasets: [] });
+  data = input.required<ChartData<'bar'> | null>();
 
-  @Input() set data(input: ChartData<'bar'> | null) {
-    if (!input || !input.datasets.length) return;
+  chartData: ChartData<'bar'> = ({ labels: [], datasets: [] });
 
-    const current = this.chartData();
-    const incoming = input;
+  constructor(private configService: ConfigService) {
+    effect(() => {
+      const current = this.chartData;
+      const incoming = this.data();
 
-    // Replace labels if they changed
-    if (JSON.stringify(current.labels) !== JSON.stringify(incoming.labels)) {
-      current.labels = [...incoming.labels];
-    }
+      // Remplacer les libellés si ils ont changé
+      if (JSON.stringify(current.labels) !== JSON.stringify(incoming.labels)) {
+        current.labels = [...incoming.labels];
+      }
 
-    // Replace dataset values by index
-    if (incoming.datasets.length && current.datasets.length) {
-      const currentDataset = current.datasets[0];
-      const incomingDataset = incoming.datasets[0];
+      // Replace dataset values by index
+      if (incoming.datasets.length && current.datasets.length) {
+        const currentDataset = current.datasets[0];
+        const incomingDataset = incoming.datasets[0];
 
-      incomingDataset.data.forEach((v, i) => {
-        if (currentDataset.data[i] !== v) {
-          currentDataset.data[i] = v;
+        incomingDataset.data.forEach((v, i) => {
+          if (currentDataset.data[i] !== v) {
+            currentDataset.data[i] = v;
+          }
+        });
+
+        if (currentDataset.backgroundColor != incomingDataset.backgroundColor) {
+          currentDataset.backgroundColor = incomingDataset.backgroundColor;
         }
-      });
-    } else {
-      current.datasets = [...incoming.datasets];
-    }
+      } else {
+        current.datasets = [...incoming.datasets];
+      }
 
-    this.chartData.set({ ...current });
-    queueMicrotask(() => this.chart?.update());
+      this.chartData = { ...current };
+      this.chart?.update();
+    });
+  }
+
+  ngOnInit() {
+    this.configService.isDarkMode$.subscribe(result => {
+      this.chartOptions.scales['x'].ticks.color = result ? 'white' : 'grey';
+      this.chartOptions.scales['x'].border.color = result ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+      this.chartOptions.scales['y'].ticks.color = result ? 'white' : 'grey';
+      this.chartOptions.scales['y'].grid.color = result ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+      this.chartOptions.scales['y'].border.color = result ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+      this.chartOptions.plugins.tooltip.backgroundColor = result ? '#212121' : 'black';
+      this.chart?.update();
+    });
   }
 }
