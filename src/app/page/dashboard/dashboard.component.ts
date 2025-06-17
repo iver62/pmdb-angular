@@ -62,7 +62,7 @@ export class DashboardComponent {
   ]).pipe(
     takeUntilDestroyed(),
     distinctUntilChanged(([r1, d1], [r2, d2]) => JSON.stringify(r1) === JSON.stringify(r2) && d1 === d2),
-    tap(([result]) => console.log('Films par genre', result)),
+    tap(([result]) => console.log('Films par catégorie', result)),
     map(([dataset, darkMode]) => this.barChartService.formatBarChartDataset(dataset, darkMode))
   );
 

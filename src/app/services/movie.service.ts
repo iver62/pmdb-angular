@@ -6,7 +6,7 @@ import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
 import { Direction, Language } from '../enums';
-import { Award, Country, Criterias, Genre, Movie, MovieActor, MovieTechnician, Person, TechnicalTeam } from '../models';
+import { Award, Category, Country, Criterias, Movie, MovieActor, MovieTechnician, Person, TechnicalTeam } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -62,7 +62,7 @@ export class MovieService {
     criterias?.fromLastUpdate && params.set('from-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     criterias?.toLastUpdate && params.set('to-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
-    criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
+    criterias?.categories?.forEach(category => params.append('category', category.id.toString()));
     criterias?.users?.forEach(user => params.append('user', user.id));
 
     return this.http.get<Movie[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
@@ -181,8 +181,8 @@ export class MovieService {
     return this.http.get<Person[]>(`${this.basePath}/${id}/stuntmen`);
   }
 
-  getGenres(id: number) {
-    return this.http.get<Genre[]>(`${this.basePath}/${id}/genres`);
+  getCategories(id: number) {
+    return this.http.get<Category[]>(`${this.basePath}/${id}/categories`);
   }
 
   getCountriesByMovie(id: number) {

@@ -17,11 +17,11 @@
         <div class="flex flex-col h-full">
           <div class="flex justify-between m-3">
             <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
-              (deleteGenre)="onDeleteGenre($event)" (deleteCountry)="onDeleteCountry($event)"
+              (deleteCategory)="onDeleteCategory($event)" (deleteCountry)="onDeleteCountry($event)"
               (deleteUser)="onDeleteUser($event)">
             </app-criterias-reminder>
             <app-toolbar [countries$]="movieService.getCountries"
-              [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
+              [criterias]="['releaseDate', 'categories', 'countries', 'users', 'creationDate', 'lastUpdate']"
               [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
               (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
               (sort)="onSort($event)">

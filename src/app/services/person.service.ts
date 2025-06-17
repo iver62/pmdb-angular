@@ -82,7 +82,7 @@ export class PersonService {
     criterias?.fromLastUpdate && params.set('start-last-update', this.dateService.format(criterias?.fromLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     criterias?.toLastUpdate && params.set('end-last-update', this.dateService.format(criterias?.toLastUpdate, DateUtils.API_DATE_TIME_FORMAT));
     criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
-    criterias?.genres?.forEach(genre => params.append('genre', genre.id.toString()));
+    criterias?.categories?.forEach(category => params.append('category', category.id.toString()));
 
     return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' })
   }

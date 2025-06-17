@@ -18,7 +18,7 @@ import { EMPTY_STRING } from '../../app.component';
 import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
-import { Award, Country, Criterias, Genre, Movie, Person, SearchConfig, SortOption, User } from '../../models';
+import { Award, Category, Country, Criterias, Movie, Person, SearchConfig, SortOption, User } from '../../models';
 import { MovieService, PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
 import { PersonDetailComponent, PersonFormComponent } from './components';
@@ -222,13 +222,13 @@ export class PersonDetailsComponent {
     this.updateSearchConfig({ page: event.pageIndex, size: event.pageSize });
   }
 
-  onDeleteGenre(genre: Genre) {
+  onDeleteCategory(category: Category) {
     this.updateSearchConfig(
       {
         page: 0,
         criterias: {
           ...this.moviesSearchConfig$.value.criterias,
-          genres: this.moviesSearchConfig$.value.criterias.genres.filter(g => g.id != genre.id)
+          categories: this.moviesSearchConfig$.value.criterias.categories.filter(c => c.id != category.id)
         }
       }
     );

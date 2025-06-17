@@ -42,10 +42,10 @@
       <span>&nbsp;{{movie()?.boxOffice | number}} @if (movie()?.boxOffice) { {{movie()?.boxOfficeCurrency}} }</span>
     </p>
     }
-    @if (movie()?.genres?.length) {
+    @if (movie()?.categories?.length) {
     <p>
       <span class="font-bold">{{'app.categories' | translate | uppercase}} :</span>
-      <span>&nbsp;{{(movie()?.genres | pluck: 'name' | orderBy)?.join(', ')}}</span>
+      <span>&nbsp;{{(movie()?.categories | pluck: 'name' | orderBy)?.join(', ')}}</span>
     </p>
     }
     @if (movie()?.countries?.length) {

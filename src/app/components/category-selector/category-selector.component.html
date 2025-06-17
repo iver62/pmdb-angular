@@ -1,0 +1,23 @@
+<mat-form-field class="w-full" [style.height.px]="92">
+  <mat-label>{{'app.categories' | translate}} ({{total}})</mat-label>
+  <mat-chip-grid #categoriesChipGrid aria-label="Category selection" [formControl]="control">
+    @for (category of selectedCategories(); track category.id) {
+    <mat-chip-row class="dark:!bg-pmdb-dark" [value]="category" (removed)="remove(category)">
+      <span class="dark:!text-pmdb-white">{{category?.name}}</span>
+      <button matChipRemove [attr.aria-label]="'remove ' + category?.name">
+        <mat-icon class="dark:!text-pmdb-white">cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+    }
+    <input #input appDelayedInput (delayedInput)="searchTerm$.next($event)" [placeholder]="'app.add' | translate"
+      [matChipInputFor]="categoriesChipGrid" [matAutocomplete]="autoCategories"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+  </mat-chip-grid>
+  <mat-autocomplete #autoCategories="matAutocomplete" (optionSelected)="selected($event)">
+    @for (category of filteredCategories$ | async; track category.id) {
+    <mat-option [value]="category" class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark">
+      {{category?.name}}
+    </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

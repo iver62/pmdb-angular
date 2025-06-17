@@ -5,14 +5,14 @@
     <div>
       <h2 [hidden]="total < 1" class="self-end dark:text-white text-xl">{{total}} {{'app.movies' | translate}}</h2>
     </div>
-    @if (searchConfig$?.value?.criterias?.genres?.length || searchConfig$?.value?.criterias?.countries?.length ||
+    @if (searchConfig$?.value?.criterias?.categories?.length || searchConfig$?.value?.criterias?.countries?.length ||
     searchConfig$?.value?.criterias?.users?.length) {
-    <app-criterias-reminder [criterias]="searchConfig$.value.criterias" (deleteGenre)="onDeleteGenre($event)"
+    <app-criterias-reminder [criterias]="searchConfig$.value.criterias" (deleteCategory)="onDeleteCategory($event)"
       (deleteCountry)="onDeleteCountry($event)" (deleteUser)="onDeleteUser($event)">
     </app-criterias-reminder>
     }
     <app-toolbar [countries$]="movieService.getCountries"
-      [criterias]="['releaseDate', 'genres', 'countries', 'users', 'creationDate', 'lastUpdate']"
+      [criterias]="['releaseDate', 'categories', 'countries', 'users', 'creationDate', 'lastUpdate']"
       [sorts]="sorts$ | async" [selectedCriterias]="searchConfig$?.value?.criterias" cookieName="movies-config"
       (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
       (sort)="onSort($event)">

@@ -1,9 +1,9 @@
 import { Moment } from "moment";
-import { Country, Genre, Type, User } from "./";
+import { Category, Country, Type, User } from "./";
 
 export interface Criterias {
   countries?: Country[];
-  genres?: Genre[];
+  categories?: Category[];
   users?: User[];
   types?: Type[];
   fromReleaseDate?: Date | Moment;

@@ -1,4 +1,4 @@
-export interface Genre {
+export interface Category {
   id?: number;
   name?: string;
   creationDate?: Date;

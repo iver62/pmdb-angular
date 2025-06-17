@@ -11,12 +11,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, combineLatest, distinctUntilChanged, filter, map, of, switchMap, take, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
-import { Genre } from '../../models';
-import { GenreService } from '../../services';
+import { Category } from '../../models';
+import { CategoryService } from '../../services';
 import { HttpUtils } from '../../utils';
 
 @Component({
-  selector: 'app-genre-selector',
+  selector: 'app-category-selector',
   imports: [
     AsyncPipe,
     DelayedInputDirective,
@@ -27,20 +27,20 @@ import { HttpUtils } from '../../utils';
     ReactiveFormsModule,
     TranslatePipe
   ],
-  templateUrl: './genre-selector.component.html',
-  styleUrl: './genre-selector.component.css'
+  templateUrl: './category-selector.component.html',
+  styleUrl: './category-selector.component.css'
 })
-export class GenreSelectorComponent {
+export class CategorySelectorComponent {
 
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
 
   formGroupName = input.required<string>();
   searchTerm$ = new BehaviorSubject(EMPTY_STRING);
-  selectedGenres = signal<Genre[]>([]);
+  selectedCategories = signal<Category[]>([]);
 
-  readonly genres$ = this.searchTerm$.pipe(
+  readonly categories$ = this.searchTerm$.pipe(
     distinctUntilChanged((t1, t2) => t1 == t2),
-    switchMap(term => this.genreService.getAll(term)
+    switchMap(term => this.categoryService.getAll(term)
       .pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => response.body ?? []),
@@ -49,39 +49,39 @@ export class GenreSelectorComponent {
     )
   );
 
-  readonly filteredGenres$ = combineLatest([this.genres$, toObservable(this.selectedGenres)]).pipe(
-    map(([allGenres, selected]) => allGenres.filter(genre => !selected.some(sel => sel.id === genre.id)))
+  readonly filteredCategories$ = combineLatest([this.categories$, toObservable(this.selectedCategories)]).pipe(
+    map(([allCategories, selected]) => allCategories.filter(category => !selected.some(sel => sel.id === category.id)))
   );
 
   readonly separatorKeysCodes: number[] = [ENTER];
 
-  control: FormControl<Genre[]>;
+  control: FormControl<Category[]>;
   total: number;
 
   constructor(
-    private genreService: GenreService,
+    private categoryService: CategoryService,
     private rootFormGroup: FormGroupDirective
   ) {
     effect(() => {
       this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
-      this.selectedGenres.set(this.control.value || []);
+      this.selectedCategories.set(this.control.value || []);
     });
   }
 
   add(event: MatChipInputEvent) {
     const value = (event.value || EMPTY_STRING).trim();
 
-    this.genres$.pipe(
+    this.categories$.pipe(
       filter(() => value != EMPTY_STRING),
       take(1),
-      map(genres => {
-        const existing = genres.find(g => g.name.toLocaleLowerCase() === value);
+      map(categories => {
+        const existing = categories.find(c => c.name.toLocaleLowerCase() === value);
         return existing ?? null;
       }),
-      switchMap((existingGenre: Genre) => existingGenre ? of(existingGenre) : this.genreService.save({ name: value })),
+      switchMap((existingCategory: Category) => existingCategory ? of(existingCategory) : this.categoryService.save({ name: value })),
     ).subscribe(result => {
-      this.selectedGenres.update(genres => genres.concat(result));
-      this.control.setValue(this.selectedGenres());
+      this.selectedCategories.update(categories => categories.concat(result));
+      this.control.setValue(this.selectedCategories());
 
       // Clear the input value
       this.searchTerm$.next(EMPTY_STRING);
@@ -89,21 +89,21 @@ export class GenreSelectorComponent {
     });
   }
 
-  remove(genre: Genre) {
-    const index = this.selectedGenres().findIndex(g => g.id === genre.id);
+  remove(category: Category) {
+    const index = this.selectedCategories().findIndex(c => c.id === category.id);
 
     if (index >= 0) {
-      this.selectedGenres.update(genres => genres.filter(g => g.id !== genre.id));
+      this.selectedCategories.update(categories => categories.filter(c => c.id !== category.id));
       this.searchTerm$.next(EMPTY_STRING);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent) {
-    const genre: Genre = event.option.value;
+    const category: Category = event.option.value;
 
-    if (!this.selectedGenres().some(g => g.id === genre.id)) {
-      this.selectedGenres.update(genres => genres.concat(genre));
-      this.control.setValue(this.selectedGenres());
+    if (!this.selectedCategories().some(c => c.id === category.id)) {
+      this.selectedCategories.update(categories => categories.concat(category));
+      this.control.setValue(this.selectedCategories());
       this.searchTerm$.next(EMPTY_STRING);
 
       if (this.input) {

@@ -4,7 +4,7 @@ export * from './bar-chart.service';
 export * from './config.service';
 export * from './country.service';
 export * from './date.service';
-export * from './genre.service';
+export * from './category.service';
 export * from './loader.service';
 export * from './line-chart.service';
 export * from './movie.service';

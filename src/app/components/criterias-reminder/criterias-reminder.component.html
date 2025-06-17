@@ -5,10 +5,10 @@
     <mat-icon class="cursor-pointer ml-1" (click)="deleteType.emit(type)">close</mat-icon>
   </span>
   }
-  @for (genre of (criterias() | pluck: 'genres' | values); track genre.id) {
+  @for (category of (criterias() | pluck: 'categories' | values); track category.id) {
   <span class="inline-flex items-center mr-3">
-    {{genre.name}}
-    <mat-icon class="cursor-pointer ml-1" (click)="deleteGenre.emit(genre)">close</mat-icon>
+    {{category.name}}
+    <mat-icon class="cursor-pointer ml-1" (click)="deleteCategory.emit(category)">close</mat-icon>
   </span>
   }
   @for (country of (criterias() | pluck: 'countries' | values); track country.id) {

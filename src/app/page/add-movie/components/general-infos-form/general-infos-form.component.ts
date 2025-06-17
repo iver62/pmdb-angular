@@ -9,15 +9,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
-import { CountrySelectorComponent, FileChooserComponent, GenreSelectorComponent } from '../../../../components';
+import { CategorySelectorComponent, CountrySelectorComponent, FileChooserComponent } from '../../../../components';
 import { currencies } from '../../../../utils';
 
 @Component({
   selector: 'app-general-infos-form',
   imports: [
+    CategorySelectorComponent,
     CountrySelectorComponent,
     FileChooserComponent,
-    GenreSelectorComponent,
     MatButtonModule,
     MatDatepickerModule,
     MatFormFieldModule,

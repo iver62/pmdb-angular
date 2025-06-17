@@ -26,11 +26,11 @@
     </app-date-range-picker>
     }
 
-    @if (data?.criterias?.includes('genres')) {
-    <app-multiselect [control]="form.controls.genres" [label]="'app.categories' | translate"
+    @if (data?.criterias?.includes('categories')) {
+    <app-multiselect [control]="form.controls.categories" [label]="'app.categories' | translate"
       [placeholder]="'app.add_categories' | translate" [placeholderLabel]="'app.search_category' | translate"
-      [noEntriesFoundLabel]="'app.no_categories_found' | translate" [items]="genres$ | async" [total]="totalGenres"
-      (update)="updateGenreSearch($event)">
+      [noEntriesFoundLabel]="'app.no_categories_found' | translate" [items]="categories$ | async"
+      [total]="totalCategories" (update)="updateCategorySearch($event)">
     </app-multiselect>
     }
 

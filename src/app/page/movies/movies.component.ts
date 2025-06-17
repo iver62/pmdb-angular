@@ -9,7 +9,7 @@ import { EMPTY_STRING } from '../../app.component';
 import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
-import { Country, Criterias, Genre, Movie, SearchConfig, SortOption, User } from '../../models';
+import { Category, Country, Criterias, Movie, SearchConfig, SortOption, User } from '../../models';
 import { MovieService } from '../../services';
 import { HttpUtils } from '../../utils';
 
@@ -95,13 +95,13 @@ export class MoviesComponent {
     public movieService: MovieService
   ) { }
 
-  onDeleteGenre(genre: Genre) {
+  onDeleteCategory(category: Category) {
     this.updateSearchConfig(
       {
         page: 0,
         criterias: {
           ...this.searchConfig$.value.criterias,
-          genres: this.searchConfig$.value.criterias.genres.filter(g => g.id != genre.id)
+          categories: this.searchConfig$.value.criterias.categories.filter(c => c.id != category.id)
         }
       }
     );

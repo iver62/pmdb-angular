@@ -3,19 +3,19 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
 import { Direction } from '../enums';
-import { Genre, Movie } from '../models';
+import { Category, Movie } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GenreService {
+export class CategoryService {
 
-  private basePath = `${environment.apiBaseUrl}/genres`
+  private basePath = `${environment.apiBaseUrl}/categories`
 
   constructor(private http: HttpClient) { }
 
   getAll(term = EMPTY_STRING, sort = 'name', direction = 'asc') {
-    return this.http.get<Genre[]>(`${this.basePath}?sort=${sort}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
+    return this.http.get<Category[]>(`${this.basePath}?sort=${sort}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
       { observe: 'response' }
     );
   }
@@ -32,8 +32,8 @@ export class GenreService {
     });
   }
 
-  save(genre: Genre) {
-    return this.http.post<Genre>(this.basePath, genre);
+  save(category: Category) {
+    return this.http.post<Category>(this.basePath, category);
   }
 
   delete(id: number) {

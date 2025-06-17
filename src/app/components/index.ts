@@ -1,5 +1,6 @@
 export * from './autocomplete/autocomplete.component';
 export * from './bar-chart/bar-chart.component';
+export * from './category-selector/category-selector.component';
 export * from './confirmation-dialog/confirmation-dialog.component';
 export * from './countries-list/countries-list.component';
 export * from './country-card/country-card.component';
@@ -7,7 +8,6 @@ export * from './country-selector/country-selector.component';
 export * from './criterias-reminder/criterias-reminder.component';
 export * from './date-range-picker/date-range-picker.component';
 export * from './file-chooser/file-chooser.component';
-export * from './genre-selector/genre-selector.component';
 export * from './input/input.component';
 export * from './line-chart/line-chart.component';
 export * from './movies-list/movie-card/movie-card.component';
@@ -20,3 +20,4 @@ export * from './persons-list/persons-list.component';
 export * from './persons-table/persons-table.component';
 export * from './roles-dialog/roles-dialog.component';
 export * from './toolbar/toolbar.component';
+

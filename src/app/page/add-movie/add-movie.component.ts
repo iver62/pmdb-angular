@@ -49,7 +49,7 @@ export class AddMovieComponent {
       boxOfficeCurrency: [],
       posterFileName: [],
       countries: [],
-      genres: []
+      categories: []
     }
   );
 

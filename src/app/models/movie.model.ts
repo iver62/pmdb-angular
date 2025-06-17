@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { Award, Country, Genre, MovieActor, TechnicalTeam, User } from "./";
+import { Award, Category, Country, MovieActor, TechnicalTeam, User } from "./";
 
 export interface Movie {
   id?: number;
@@ -19,7 +19,7 @@ export interface Movie {
   user?: User;
   technicalTeam?: TechnicalTeam;
   movieActors?: MovieActor[];
-  genres?: Genre[];
+  categories?: Category[];
   countries?: Country[];
   awards?: Award[];
 }

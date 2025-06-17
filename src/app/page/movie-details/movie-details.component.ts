@@ -123,7 +123,7 @@ export class MovieDetailsComponent {
           boxOfficeCurrency: [this.generalInfos.boxOfficeCurrency],
           posterFileName: [this.generalInfos.posterFileName],
           countries: [this.generalInfos.countries],
-          genres: [this.generalInfos.genres],
+          categories: [this.generalInfos.categories],
           user: [this.generalInfos.user]
         }
       );

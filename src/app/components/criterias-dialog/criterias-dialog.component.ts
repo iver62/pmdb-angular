@@ -11,8 +11,8 @@ import { BehaviorSubject, catchError, map, Observable, of, startWith, switchMap,
 import { DateRangePickerComponent, MultiselectComponent } from "..";
 import { EMPTY_STRING } from '../../app.component';
 import { Language, PersonType } from '../../enums';
-import { Country, Criterias, Genre, Type, User } from '../../models';
-import { GenreService, UserService } from '../../services';
+import { Category, Country, Criterias, Type, User } from '../../models';
+import { CategoryService, UserService } from '../../services';
 import { HttpUtils } from '../../utils';
 
 const types = [
@@ -123,18 +123,18 @@ export class CriteriasDialogComponent {
   // Termes de recherche
   searchTerms$ = {
     type: new BehaviorSubject(EMPTY_STRING),
+    category: new BehaviorSubject(EMPTY_STRING),
     country: new BehaviorSubject(EMPTY_STRING),
-    genre: new BehaviorSubject(EMPTY_STRING),
     user: new BehaviorSubject(EMPTY_STRING)
   };
 
-  // Liste des genres filtrés
-  genres$ = this.searchTerms$.genre.pipe(
-    switchMap(term => this.genreService.getAll(term)
+  // Liste des catégories filtrés
+  categories$ = this.searchTerms$.category.pipe(
+    switchMap(term => this.categoryService.getAll(term)
       .pipe(
-        tap(response => this.totalGenres = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
+        tap(response => this.totalCategories = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => response.body ?? []),
-        map(genres => genres.map(g => ({ ...g, display: () => g.name }))),
+        map(categories => categories.map(c => ({ ...c, display: () => c.name }))),
         catchError(() => of([])) // En cas d'erreur, retourner une liste vide
       )
     )
@@ -180,7 +180,7 @@ export class CriteriasDialogComponent {
       toBirthDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toBirthDate),
       fromDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.fromDeathDate),
       toDeathDate: new FormControl<Date | Moment>(this.data?.selectedCriterias?.toDeathDate),
-      genres: new FormControl<Genre[]>(this.data?.selectedCriterias?.genres?.map(g => ({ ...g, display: () => g.name }))),
+      categories: new FormControl<Category[]>(this.data?.selectedCriterias?.categories?.map(c => ({ ...c, display: () => c.name }))),
       types: new FormControl<Type[]>(this.data?.selectedCriterias?.types?.map(t => ({ ...t, display: () => t.name }))),
       countries: new FormControl<Country[]>(this.data?.selectedCriterias?.countries?.map(c => ({ ...c, display: () => c.nomFrFr }))),
       users: new FormControl<User[]>(this.data?.selectedCriterias?.users?.map(u => ({ ...u, display: () => u.username }))),
@@ -192,12 +192,12 @@ export class CriteriasDialogComponent {
   );
 
   totalTypes: number;
-  totalGenres: number;
+  totalCategories: number;
   totalCountries: number;
   totalUsers: number;
 
   constructor(
-    private genreService: GenreService,
+    private categoryService: CategoryService,
     private translate: TranslateService,
     private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: {
@@ -208,8 +208,8 @@ export class CriteriasDialogComponent {
   ) { }
 
   // Fonction pour mettre à jour la recherche
-  updateGenreSearch(term: string) {
-    this.searchTerms$.genre.next(term);
+  updateCategorySearch(term: string) {
+    this.searchTerms$.category.next(term);
   }
 
   // Fonction pour mettre à jour la recherche
