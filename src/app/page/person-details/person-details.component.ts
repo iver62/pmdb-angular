@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { NgPipesModule } from 'ngx-pipes';
 import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
@@ -141,7 +141,8 @@ export class PersonDetailsComponent {
     private personService: PersonService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) {
     // Effect ensures form updates when `person` changes
     effect(() => {
@@ -286,11 +287,11 @@ export class PersonDetailsComponent {
         next: result => {
           this.person.set(result);
           this.editMode = false;
-          this.snackBar.open(`${this.person().name} modifié avec succès`, 'Done', { duration: this.duration });
+          this.snackBar.open(`${this.person().name} modifié avec succès`, this.translate.instant('app.close'), { duration: this.duration });
         },
         error: (error: any) => {
           console.error(error);
-          this.snackBar.open(`Erreur lors de la modification de ${this.person().name}`, 'Error', { duration: this.duration });
+          this.snackBar.open(`Erreur lors de la modification de ${this.person().name}`, this.translate.instant('app.error'), { duration: this.duration });
         }
       }
     );
@@ -300,12 +301,12 @@ export class PersonDetailsComponent {
     this.personService.delete(this.person().id).subscribe(
       {
         next: () => {
-          this.snackBar.open(`${this.person.name} supprimé avec succès`, 'Done', { duration: this.duration });
+          this.snackBar.open(`${this.person.name} supprimé avec succès`, this.translate.instant('app.close'), { duration: this.duration });
           this.router.navigateByUrl(this.route.snapshot.url.at(0)?.path);
         },
         error: (error: any) => {
           console.error(error);
-          this.snackBar.open(`Erreur lors de la suppression de ${this.person().name}`, 'Error', { duration: this.duration });
+          this.snackBar.open(`Erreur lors de la suppression de ${this.person().name}`, this.translate.instant('app.error'), { duration: this.duration });
         }
       }
     );

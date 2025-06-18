@@ -54,13 +54,13 @@ export class UserComponent {
     this.authService.updateUser({ ...this.form.value }).subscribe(
       {
         next: result => {
-          this.snackBar.open(this.translate.instant('app.profile_updated_success'), 'Fermer', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.profile_updated_success'), this.translate.instant('app.close'), { duration: this.duration });
           this.user = result;
           this.editMode = false;
         },
         error: e => {
           console.error(e);
-          this.snackBar.open(this.translate.instant('app.error_updating_profile'), 'Fermer', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.error_updating_profile'), this.translate.instant('app.close'), { duration: this.duration });
         }
       }
     )
@@ -68,10 +68,10 @@ export class UserComponent {
 
   resetPassword(id: string) {
     return this.authService.resetPassword(id).subscribe({
-      next: () => this.snackBar.open(this.translate.instant('app.reset_email_sent'), 'Fermer', { duration: this.duration }),
+      next: () => this.snackBar.open(this.translate.instant('app.reset_email_sent'), this.translate.instant('app.close'), { duration: this.duration }),
       error: e => {
         console.error(e);
-        this.snackBar.open(this.translate.instant('app.error_reset_email'), 'Fermer', { duration: this.duration });
+        this.snackBar.open(this.translate.instant('app.error_reset_email'), this.translate.instant('app.close'), { duration: this.duration });
       }
     });
   }

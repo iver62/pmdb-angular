@@ -1,11 +1,4 @@
 <div class="form grid gap-4 grid-cols-4">
-  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
-    label="app.technical_team.producer_name" [movieId]="movieId()" [technicians]="technicalTeam().producers"
-    [personType]="personType.PRODUCER" [expanded]="expanded()"
-    [serviceCall]="movieService.saveProducers.bind(movieService)"
-    successMessage="app.technical_team_form.messages.success.adding_producers" [cancellable]="false">
-  </app-technicians-form>
-
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.directing"
     label="app.technical_team.director_name" [movieId]="movieId()" [technicians]="technicalTeam().directors"
     [personType]="personType.DIRECTOR" [expanded]="expanded()"
@@ -13,11 +6,25 @@
     successMessage="app.technical_team_form.messages.success.adding_directors" [cancellable]="false">
   </app-technicians-form>
 
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.assistant_directing"
+    label="app.technical_team.assistant_director_name" [movieId]="movieId()"
+    [technicians]="technicalTeam().assistantDirectors" [personType]="personType.ASSISTANT_DIRECTOR"
+    [expanded]="expanded()" [serviceCall]="movieService.saveAssistantDirectors.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.adding_assistant_directors" [cancellable]="false">
+  </app-technicians-form>
+
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.screenwriting"
     label="app.technical_team.screenwriter_name" [movieId]="movieId()" [technicians]="technicalTeam().screenwriters"
     [personType]="personType.SCREENWRITER" [expanded]="expanded()"
     [serviceCall]="movieService.saveScreenwriters.bind(movieService)"
     successMessage="app.technical_team_form.messages.success.adding_screenwriters" [cancellable]="false">
+  </app-technicians-form>
+
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
+    label="app.technical_team.producer_name" [movieId]="movieId()" [technicians]="technicalTeam().producers"
+    [personType]="personType.PRODUCER" [expanded]="expanded()"
+    [serviceCall]="movieService.saveProducers.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.adding_producers" [cancellable]="false">
   </app-technicians-form>
 
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.original_soundtrack"

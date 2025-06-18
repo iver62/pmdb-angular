@@ -1,17 +1,4 @@
 <div class="grid grid-cols-4 gap-4 text-xl dark:text-pmdb-white">
-  @if (edit.producers) {
-  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
-    label="app.technical_team.producer_name" [movieId]="movieId()" [technicians]="technicalTeam().producers"
-    [personType]="personType.PRODUCER" [expanded]="true" [serviceCall]="movieService.saveProducers.bind(movieService)"
-    successMessage="app.technical_team_form.messages.success.updating_producers"
-    (update)="updateTechnicians($event, 'producers')" (cancel)="edit.producers=false">
-  </app-technicians-form>
-  } @else {
-  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
-    [technicians]="technicalTeam()?.producers" (edit)="edit.producers=true">
-  </app-technicians>
-  }
-
   @if (edit.directors) {
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.directing"
     label="app.technical_team.director_name" [movieId]="movieId()" [technicians]="technicalTeam().directors"
@@ -22,6 +9,20 @@
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.directing"
     [technicians]="technicalTeam()?.directors" (edit)="edit.directors=true">
+  </app-technicians>
+  }
+
+  @if (edit.assistantDirectors) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.assistant_directing"
+    label="app.technical_team.assistant_director_name" [movieId]="movieId()"
+    [technicians]="technicalTeam().assistantDirectors" [personType]="personType.ASSISTANT_DIRECTOR" [expanded]="true"
+    [serviceCall]="movieService.saveAssistantDirectors.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_assistant_directors"
+    (update)="updateTechnicians($event, 'assistantDirectors')" (cancel)="edit.assistantDirectors=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.assistant_directing"
+    [technicians]="technicalTeam()?.assistantDirectors" (edit)="edit.assistantDirectors=true">
   </app-technicians>
   }
 
@@ -36,6 +37,19 @@
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.screenwriting"
     [technicians]="technicalTeam()?.screenwriters" (edit)="edit.screenwriters=true">
+  </app-technicians>
+  }
+
+  @if (edit.producers) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
+    label="app.technical_team.producer_name" [movieId]="movieId()" [technicians]="technicalTeam().producers"
+    [personType]="personType.PRODUCER" [expanded]="true" [serviceCall]="movieService.saveProducers.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_producers"
+    (update)="updateTechnicians($event, 'producers')" (cancel)="edit.producers=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
+    [technicians]="technicalTeam()?.producers" (edit)="edit.producers=true">
   </app-technicians>
   }
 

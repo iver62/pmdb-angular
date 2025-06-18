@@ -63,6 +63,7 @@
     "english": "Anglais",
     "erase": "Effacer",
     "erase_all": "Effacer tout",
+    "error": "Erreur",
     "error_adding_awards": "Erreur lors de l'ajout des récompenses",
     "error_adding_cast": "Erreur lors de l'ajout du casting",
     "error_creating_movie": "Erreur lors de la création du film.",
@@ -175,6 +176,8 @@
       "artistic_team": "Équipe artistique",
       "artist_name": "Nom de l'artiste",
       "artists": "Artistes",
+      "assistant_directing": "Assistants à la réalisation",
+      "assistant_director_name": "Nom de l'assistant réalisateur",
       "casting": "Casting",
       "caster_name": "Nom du casteur",
       "casters": "Casteurs",
@@ -227,6 +230,7 @@
       "messages": {
         "success": {
           "adding_artists": "Artistes ajoutés avec succès",
+          "adding_assistant_directors": "Assistants réalisateurs ajoutés avec succès",
           "adding_casters": "Casteurs ajoutés avec succès",
           "adding_composers": "Compositeurs ajoutés avec succès",
           "adding_costumiers": "Costumiers ajoutés avec succès",
@@ -244,6 +248,7 @@
           "adding_stuntmen": "Cascadeurs ajoutés avec succès",
           "adding_vfx_supervisors": "Spécialistes effets visuels ajoutés avec succès",
           "updating_artists": "Artistes modifiés avec succès",
+          "updating_assistant_directors": "Assistants réalisateurs modifiés avec succès",
           "updating_casters": "Casteurs modifiés avec succès",
           "updating_composers": "Compositeurs modifiés avec succès",
           "updating_costumiers": "Costumiers modifiés avec succès",

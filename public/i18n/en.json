@@ -61,6 +61,7 @@
     "english": "English",
     "erase": "Erase",
     "erase_all": "Erase all",
+    "error": "Error",
     "error_adding_awards": "Error while adding awards",
     "error_adding_cast": "Error while adding the cast",
     "error_adding_technical_team": "Error while adding the technical team",
@@ -179,6 +180,8 @@
       "artistic_team": "Artistic team",
       "artist_name": "Artist name",
       "artists": "Artists",
+      "assistant_directing": "Directing assistants",
+      "assistant_director_name": "Assistant director name",
       "caster_name": "Caster name",
       "casters": "Casters",
       "casting": "Casting",
@@ -231,6 +234,7 @@
       "messages": {
         "success": {
           "adding_artists": "Artists added successfully",
+          "adding_assistant_directors": "Assistant directors added successfully",
           "adding_casters": "Casters added successfully",
           "adding_composers": "Composers added successfully",
           "adding_costumiers": "Costumiers added successfully",
@@ -247,6 +251,7 @@
           "adding_stuntmen": "Stuntmen added successfully",
           "adding_vfx_supervisors": "Visual effects supervisors added successfully",
           "updating_artists": "Artists updated successfully",
+          "updating_assistant_directors": "Assistant directors updated successfully",
           "updating_casters": "Casters updated successfully",
           "updating_composers": "Composers updated successfully",
           "updating_costumiers": "Costumiers updated successfully",

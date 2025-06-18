@@ -56,6 +56,7 @@ export class AddMovieComponent {
   technicalTeam: TechnicalTeam = {
     producers: [],
     directors: [],
+    assistantDirectors: [],
     screenwriters: [],
     composers: [],
     musicians: [],
@@ -111,20 +112,20 @@ export class AddMovieComponent {
           .pipe(
             catchError(response => {
               console.error('Erreur lors de la création du film.', response.error);
-              this.snackBar.open(this.translate.instant('app.error_creating_movie'), 'Fermer', { duration: this.duration });
+              this.snackBar.open(this.translate.instant('app.error_creating_movie'), this.translate.instant('app.close'), { duration: this.duration });
               return of(null);
             })
           )
         )
       ).subscribe(result => {
         if (result) {
-          this.snackBar.open(this.translate.instant('app.movie_created_success'), 'Fermer', { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.movie_created_success'), this.translate.instant('app.close'), { duration: this.duration });
           this.stepper.next();
           this.movie = result;
         }
       });
     } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
     }
   }
 
@@ -147,18 +148,18 @@ export class AddMovieComponent {
       this.movieService.saveCast(this.movie.id, body).subscribe(
         {
           next: result => {
-            this.snackBar.open(this.translate.instant('app.cast_added_success'), 'Fermer', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.cast_added_success'), this.translate.instant('app.close'), { duration: this.duration });
             this.stepper.next();
             this.movie.movieActors = result;
           },
           error: error => {
             console.error(error);
-            this.snackBar.open(this.translate.instant('app.error_adding_cast'), 'Fermer', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.error_adding_cast'), this.translate.instant('app.close'), { duration: this.duration });
           }
         }
       )
     } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
     }
   }
 
@@ -167,18 +168,18 @@ export class AddMovieComponent {
       this.movieService.saveAwards(this.movie.id, this.awardsForm.value['awards']).subscribe(
         {
           next: result => {
-            this.snackBar.open(this.translate.instant('app.awards_added_success'), 'Fermer', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.awards_added_success'), this.translate.instant('app.close'), { duration: this.duration });
             this.stepper.next();
             this.movie.awards = result;
           },
           error: error => {
             console.error(error);
-            this.snackBar.open(this.translate.instant('error_adding_awards'), 'Fermer', { duration: this.duration });
+            this.snackBar.open(this.translate.instant('error_adding_awards'), this.translate.instant('app.close'), { duration: this.duration });
           }
         }
       )
     } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), 'Fermer', { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
     }
   }
 }

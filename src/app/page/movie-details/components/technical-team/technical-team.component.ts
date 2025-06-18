@@ -24,6 +24,7 @@ export class TechnicalTeamComponent {
   edit = {
     producers: false,
     directors: false,
+    assistantDirectors: false,
     screenwriters: false,
     composers: false,
     musicians: false,

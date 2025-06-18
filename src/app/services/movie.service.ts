@@ -211,6 +211,10 @@ export class MovieService {
     return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/directors`, movieTechnicians);
   }
 
+  saveAssistantDirectors(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/assistant-directors`, movieTechnicians);
+  }
+
   saveScreenwriters(id: number, movieTechnicians: MovieTechnician[]) {
     return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/screenwriters`, movieTechnicians);
   }

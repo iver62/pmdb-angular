@@ -3,6 +3,7 @@ import { MovieTechnician } from "./";
 export interface TechnicalTeam {
   producers?: MovieTechnician[];
   directors?: MovieTechnician[];
+  assistantDirectors?: MovieTechnician[];
   screenwriters?: MovieTechnician[];
   composers?: MovieTechnician[];
   musicians?: MovieTechnician[];
