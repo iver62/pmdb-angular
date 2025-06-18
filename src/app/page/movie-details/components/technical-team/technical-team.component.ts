@@ -25,6 +25,7 @@ export class TechnicalTeamComponent {
     producers: false,
     directors: false,
     screenwriters: false,
+    composers: false,
     musicians: false,
     photographers: false,
     costumiers: false,

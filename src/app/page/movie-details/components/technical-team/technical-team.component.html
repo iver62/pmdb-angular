@@ -39,6 +39,19 @@
   </app-technicians>
   }
 
+  @if (edit.composers) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.original_soundtrack"
+    label="app.technical_team.composer_name" [movieId]="movieId()" [technicians]="technicalTeam().composers"
+    [personType]="personType.COMPOSER" [expanded]="true" [serviceCall]="movieService.saveComposers.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_composers"
+    (update)="updateTechnicians($event, 'composers')" (cancel)="edit.composers=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.original_soundtrack"
+    [technicians]="technicalTeam()?.composers" (edit)="edit.composers=true">
+  </app-technicians>
+  }
+
   @if (edit.musicians) {
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.music"
     label="app.technical_team.musician_name" [movieId]="movieId()" [technicians]="technicalTeam().musicians"

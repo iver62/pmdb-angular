@@ -4,6 +4,7 @@ export interface TechnicalTeam {
   producers?: MovieTechnician[];
   directors?: MovieTechnician[];
   screenwriters?: MovieTechnician[];
+  composers?: MovieTechnician[];
   musicians?: MovieTechnician[];
   photographers?: MovieTechnician[];
   costumiers?: MovieTechnician[];

@@ -57,6 +57,7 @@ export class AddMovieComponent {
     producers: [],
     directors: [],
     screenwriters: [],
+    composers: [],
     musicians: [],
     photographers: [],
     costumiers: [],
