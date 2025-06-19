@@ -30,16 +30,18 @@
       <span>&nbsp;{{movie()?.runningTime}} @if (movie()?.runningTime) {minutes}</span>
     </p>
     }
-    @if (movie()?.budget) {
+    @if (movie()?.budget?.value) {
     <p>
       <span class="font-bold">{{'app.budget' | translate | uppercase}} :</span>
-      <span>&nbsp;{{movie()?.budget | number}} @if (movie()?.budget) { {{movie()?.budgetCurrency}} }</span>
+      <span>&nbsp;{{movie()?.budget?.value | number}} @if (movie()?.budget) { {{movie()?.budget?.currency}} }</span>
     </p>
     }
-    @if (movie()?.boxOffice) {
+    @if (movie()?.boxOffice?.value) {
     <p>
       <span class="font-bold">{{'app.box_office' | translate | uppercase}} :</span>
-      <span>&nbsp;{{movie()?.boxOffice | number}} @if (movie()?.boxOffice) { {{movie()?.boxOfficeCurrency}} }</span>
+      <span>
+        &nbsp;{{movie()?.boxOffice?.value | number}} @if (movie()?.boxOffice) { {{movie()?.boxOffice?.currency}} }
+      </span>
     </p>
     }
     @if (movie()?.categories?.length) {

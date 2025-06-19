@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { Award, Category, Country, MovieActor, TechnicalTeam, User } from "./";
+import { Award, BoxOffice, Budget, Category, Country, MovieActor, TechnicalTeam, User } from "./";
 
 export interface Movie {
   id?: number;
@@ -8,10 +8,8 @@ export interface Movie {
   synopsis?: string;
   releaseDate?: string;
   runningTime?: number;
-  budget?: number;
-  budgetCurrency?: string;
-  boxOffice?: number;
-  boxOfficeCurrency?: string;
+  budget?: Budget;
+  boxOffice?: BoxOffice;
   posterFileName?: string;
   numberOfAwards?: number;
   creationDate?: Date;

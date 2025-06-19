@@ -1,4 +1,6 @@
 export * from './award.model';
+export * from './budget.model';
+export * from './box-office.model';
 export * from './column.model';
 export * from './country.model';
 export * from './country-repartition.model';

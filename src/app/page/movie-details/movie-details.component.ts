@@ -117,10 +117,10 @@ export class MovieDetailsComponent {
           synopsis: [this.generalInfos.synopsis],
           releaseDate: [this.generalInfos.releaseDate],
           runningTime: [this.generalInfos.runningTime],
-          budget: [this.generalInfos.budget],
-          budgetCurrency: [this.generalInfos.budgetCurrency],
-          boxOffice: [this.generalInfos.boxOffice],
-          boxOfficeCurrency: [this.generalInfos.boxOfficeCurrency],
+          budget: [this.generalInfos.budget.value],
+          budgetCurrency: [this.generalInfos.budget.currency],
+          boxOffice: [this.generalInfos.boxOffice.value],
+          boxOfficeCurrency: [this.generalInfos.boxOffice.currency],
           posterFileName: [this.generalInfos.posterFileName],
           countries: [this.generalInfos.countries],
           categories: [this.generalInfos.categories],
@@ -181,12 +181,18 @@ export class MovieDetailsComponent {
 
   saveGeneralInfos() {
     if (this.generalInfosForm.valid) {
-      this.movieService.updateMovie(this.imageFile, this.generalInfosForm.value).subscribe(
+      this.movieService.updateMovie(this.imageFile, this.movieService.buildMovieFromForm(this.generalInfosForm, this.generalInfos.user)).subscribe(
         {
           next: result => {
             this.snackBar.open(this.translate.instant('app.movie_updated_success'), this.translate.instant('app.close'), { duration: this.duration });
             this.generalInfos = result;
-            this.generalInfosForm.patchValue(this.generalInfos);
+            this.generalInfosForm.patchValue({
+              ...result,
+              budget: result.budget?.value,
+              budgetCurrency: result.budget?.currency,
+              boxOffice: result.boxOffice?.value,
+              boxOfficeCurrency: result.boxOffice?.currency
+            });
           },
           error: error => {
             console.error(error);

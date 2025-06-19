@@ -8,7 +8,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { catchError, of, switchMap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { Award, Movie, MovieActor, MovieTechnician, TechnicalTeam } from '../../models';
+import { Award, Movie, MovieActor, MovieTechnician, TechnicalTeam, User } from '../../models';
 import { AuthService, MovieService } from '../../services';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
@@ -108,7 +108,7 @@ export class AddMovieComponent {
   saveMovie() {
     if (this.generalInfosForm.valid) {
       this.authService.loadUserProfile().pipe(
-        switchMap(user => this.movieService.saveMovie(this.imageFile, { ...this.generalInfosForm.value, user: user })
+        switchMap(user => this.movieService.saveMovie(this.imageFile, this.movieService.buildMovieFromForm(this.generalInfosForm, user))
           .pipe(
             catchError(response => {
               console.error('Erreur lors de la création du film.', response.error);

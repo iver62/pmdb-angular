@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SseClient } from 'ngx-sse-client';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
 import { Direction, Language } from '../enums';
-import { Award, Category, Country, Criterias, Movie, MovieActor, MovieTechnician, Person, TechnicalTeam } from '../models';
+import { Award, Category, Country, Criterias, Movie, MovieActor, MovieTechnician, Person, TechnicalTeam, User } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -299,6 +299,21 @@ export class MovieService {
 
   deleteMovie(id: number) {
     return this.http.delete(`${this.basePath}/${id}`);
+  }
+
+  buildMovieFromForm(form: FormGroup, user: User): Movie {
+    return {
+      ...form.value,
+      budget: {
+        value: form.value.budget,
+        currency: form.value.budgetCurrency
+      },
+      boxOffice: {
+        value: form.value.boxOffice,
+        currency: form.value.boxOfficeCurrency
+      },
+      user: user
+    }
   }
 
   buildActorsFormArray(cast: MovieActor[]) {
