@@ -100,15 +100,7 @@
 } @else {
 <div class="max-h-full flex flex-col">
   <div class="flex-1 overflow-auto pt-1">
-    <app-person-form [form]="form" (changeImage)="onChangeImage($event)"></app-person-form>
-  </div>
-  <div class="flex items-center justify-end gap-4 p-2">
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancel()">
-      {{'app.cancel' | translate}}
-    </a>
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="save()">
-      {{'app.validate' | translate}}
-    </a>
+    <app-person-form [person]="person()" (cancel)="cancel()" (save)="save($event)"></app-person-form>
   </div>
 </div>
 }

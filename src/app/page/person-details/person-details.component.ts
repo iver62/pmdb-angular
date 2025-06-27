@@ -1,14 +1,11 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, effect, signal, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
@@ -32,10 +29,8 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatInputModule,
     MatPaginatorModule,
     MatTabsModule,
-    MatTooltipModule,
     MoviesListComponent,
     MoviesTableComponent,
     NgPipesModule,
@@ -130,33 +125,15 @@ export class PersonDetailsComponent {
   duration = 5000;
   person = signal<Person>(null);
   editMode = false;
-  form: FormGroup;
-  selectedFile: File | null = null;
 
   constructor(
-    private fb: FormBuilder,
     public movieService: MovieService,
     private personService: PersonService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
     private translate: TranslateService
-  ) {
-    // Effect ensures form updates when `person` changes
-    effect(() => {
-      if (this.person()) {
-        this.form = this.fb.group({
-          id: [this.person()!.id],
-          name: [this.person()!.name, Validators.required],
-          dateOfBirth: [this.person()!.dateOfBirth],
-          dateOfDeath: [this.person()!.dateOfDeath],
-          photoFileName: [this.person()!.photoFileName],
-          creationDate: [this.person()!.creationDate],
-          countries: [this.person()!.countries]
-        });
-      }
-    });
-  }
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(
@@ -172,11 +149,6 @@ export class PersonDetailsComponent {
 
   onTabChanged(event: MatTabChangeEvent) {
     this.selectedTab$.next(event.index);
-  }
-
-  onChangeImage(event: File) {
-    this.form.markAsDirty();
-    this.selectedFile = event;
   }
 
   onFilter(event: Criterias) {
@@ -268,31 +240,11 @@ export class PersonDetailsComponent {
 
   cancel() {
     this.editMode = false;
-    this.form.patchValue(
-      {
-        name: this.person().name,
-        photoFileName: this.person().photoFileName,
-        dateOfBirth: this.person().dateOfBirth,
-        dateOfDeath: this.person().dateOfDeath,
-        countries: this.person().countries
-      }
-    );
   }
 
-  save() {
-    this.personService.update(this.selectedFile, this.form.value).subscribe(
-      {
-        next: result => {
-          this.person.set(result);
-          this.editMode = false;
-          this.snackBar.open(`${this.person().name} modifié avec succès`, this.translate.instant('app.close'), { duration: this.duration });
-        },
-        error: (error: any) => {
-          console.error(error);
-          this.snackBar.open(`Erreur lors de la modification de ${this.person().name}`, this.translate.instant('app.error'), { duration: this.duration });
-        }
-      }
-    );
+  save(event: Person) {
+    this.person.set(event);
+    this.editMode = false;
   }
 
   deletePerson() {

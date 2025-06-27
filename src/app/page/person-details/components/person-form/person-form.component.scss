@@ -1,3 +1,8 @@
 .file-chooser-container {
   height: 76px;
 }
+
+.disabled {
+  pointer-events: none;
+  opacity: 40% !important;
+}
