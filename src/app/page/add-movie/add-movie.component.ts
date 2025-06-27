@@ -8,7 +8,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { catchError, of, switchMap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
-import { Award, Movie, MovieActor, MovieTechnician, TechnicalTeam, User } from '../../models';
+import { Award, Movie, MovieActor, MovieTechnician, TechnicalTeam } from '../../models';
 import { AuthService, MovieService } from '../../services';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
@@ -80,12 +80,6 @@ export class AddMovieComponent {
     }
   );
 
-  awardsForm = this.fb.group(
-    {
-      awards: this.fb.array<Award>([])
-    }
-  );
-
   isLinear = true;
   currentStep = 0;
 
@@ -113,10 +107,15 @@ export class AddMovieComponent {
             catchError(response => {
               console.error('Erreur lors de la création du film.', response.error);
               this.snackBar.open(this.translate.instant('app.error_creating_movie'), this.translate.instant('app.close'), { duration: this.duration });
-              return of(null);
+              return of(null)
             })
           )
-        )
+        ),
+        catchError(response => {
+          console.error('Erreur lors de la récupération de l\'utilisateur.', response.error);
+          this.snackBar.open(this.translate.instant('app.error_creating_movie'), this.translate.instant('app.close'), { duration: this.duration });
+          return of(null);
+        })
       ).subscribe(result => {
         if (result) {
           this.snackBar.open(this.translate.instant('app.movie_created_success'), this.translate.instant('app.close'), { duration: this.duration });
@@ -163,23 +162,8 @@ export class AddMovieComponent {
     }
   }
 
-  saveAwards() {
-    if (this.awardsForm.valid) {
-      this.movieService.saveAwards(this.movie.id, this.awardsForm.value['awards']).subscribe(
-        {
-          next: result => {
-            this.snackBar.open(this.translate.instant('app.awards_added_success'), this.translate.instant('app.close'), { duration: this.duration });
-            this.stepper.next();
-            this.movie.awards = result;
-          },
-          error: error => {
-            console.error(error);
-            this.snackBar.open(this.translate.instant('error_adding_awards'), this.translate.instant('app.close'), { duration: this.duration });
-          }
-        }
-      )
-    } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
-    }
+  saveAwards(event: Award[]) {
+    this.stepper.next();
+    this.movie.awards = event;
   }
 }

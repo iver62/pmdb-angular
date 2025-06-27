@@ -1,22 +1,24 @@
-@for (award of awards | orderBy: ['ceremony', 'name']; track award.id) {
-<div class="grid grid-cols-12 gap-4 text-xl my-1 dark:!text-pmdb-white">
-  <div class="flex items-center col-span-2">
-    <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
-    <span class="font-bold">{{award?.ceremony}}</span>
-  </div>
-  <span class="col-span-3">{{award?.name}}</span>
-  <div class="col-span-4">
-    @if (award?.persons?.length) {
-    @for (person of award?.persons | orderBy: 'name'; track person.id; let last = $last) {
-    <a class="cursor-pointer hover:underline" [routerLink]="['/persons', person.id]">{{person?.name}}</a>
-    @if (!last) {, }
-    }
-    }
-  </div>
-  @if (award?.year) {
-  <span class="col-span-1">{{award.year}}</span>
+<div class="grid grid-cols-4 gap-4">
+  @for (ceremonyAwards of localCeremoniesAwards | orderBy: 'ceremony.name'; track ceremonyAwards.ceremony; let i =
+  $index) {
+  @if (editGroupAwards().at(i)) {
+  <app-ceremony-awards-form class="col-span-4 xxl:col-span-2" [cancellable]="true" [movieId]="movieId()"
+    [ceremonyAwards]="ceremonyAwards" (save)="save($event, i)" (cancel)="cancelEdit(i)"
+    (delete)="deleteCeremonyAwards(i)">
+  </app-ceremony-awards-form>
+  } @else {
+  <app-ceremony-awards class="col-span-4 lg:col-span-2 xxl:col-span-1" [ceremonyAwards]="ceremonyAwards"
+    [editable]="true" (edit)="edit(i)">
+  </app-ceremony-awards>
   }
+  } @empty {
+  <div class="text-xl dark:text-white">{{'app.no_awards' | translate}}</div>
+  }
+  <div class="fixed bottom-5 right-5">
+    <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+      [matTooltip]="'app.add_ceremony' | translate" aria-label="Example icon button with a delete icon"
+      (click)="addCeremony()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 </div>
-} @empty {
-<div class="text-xl dark:text-white">{{'app.no_awards' | translate}}</div>
-}

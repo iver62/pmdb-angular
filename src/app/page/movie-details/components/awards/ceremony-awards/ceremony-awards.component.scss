@@ -1,0 +1,39 @@
+.small-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+}
+
+// .name-wrapper {
+//   overflow: hidden;
+//   white-space: nowrap;
+//   position: relative;
+// }
+
+// .name {
+//   display: inline-block;
+//   will-change: transform;
+// }
+
+// .animate {
+//   animation: bounce-scroll 8s ease-in-out infinite alternate;
+// }
+
+// @keyframes bounce-scroll {
+//   0% {
+//     transform: translateX(0%);
+//   }
+
+//   100% {
+//     transform: translateX(-100%);
+//   }
+// }
+
+.animate-left {
+  transform: translateX(calc(-100% + 100%)); // défile tout le texte
+}
+
+.animate-right {
+  transform: translateX(0%);
+}

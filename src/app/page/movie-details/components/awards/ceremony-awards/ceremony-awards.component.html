@@ -1,0 +1,42 @@
+<mat-card
+  class="!border-1 !border-pmbd-grey !bg-white dark:!bg-pmdb-dark xxl:col-span-1 text-xl dark:!border-pmdb-white">
+  <mat-card-header>
+    <mat-card-title class="!flex items-center justify-between">
+      <div class="flex items-center dark:!text-pmdb-white">
+        <mat-icon class="material-symbols-outlined mr-2">award_star</mat-icon>
+        <span>{{ceremonyAwards?.ceremony?.name}}</span>
+      </div>
+      @if (editable) {
+      <mat-icon class="small-icon dark:!text-pmdb-gold dark:hover:!text-pmdb-white cursor-pointer"
+        [matTooltip]="'app.edit' | translate" (click)="edit.emit()">
+        edit
+      </mat-icon>
+      }
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @for (award of ceremonyAwards?.awards | orderBy: 'name'; track award.id; let i = $index) {
+    <div class="grid grid-cols-12 gap-4 my-1 dark:!text-pmdb-white">
+      <div class="col-span-6 overflow-hidden whitespace-nowrap relative" (mouseenter)="checkOverflow(i)"
+        (mouseleave)="stopAnimation(i)">
+        <span class="inline-block transition-transform duration-[6000ms] ease-linear"
+          [class.animate-left]="overflowStates[i]?.scrollingLeft"
+          [class.animate-right]="overflowStates[i]?.scrollingRight" #textEl>
+          {{award?.name}}
+        </span>
+      </div>
+      <div class="col-span-5 whitespace-nowrap overflow-hidden text-ellipsis">
+        @if (award?.persons?.length) {
+        @for (person of award?.persons | orderBy: 'name'; track person.id; let last = $last) {
+        <a class="cursor-pointer hover:underline" [routerLink]="['/persons', person.id]">{{person?.name}}</a>
+        @if (!last) {, }
+        }
+        }
+      </div>
+      @if (award?.year) {
+      <span class="col-span-1 text-right">{{award.year}}</span>
+      }
+    </div>
+    }
+  </mat-card-content>
+</mat-card>

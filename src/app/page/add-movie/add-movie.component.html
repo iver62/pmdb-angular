@@ -4,42 +4,46 @@
     @if (currentStep == 0) {
     <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
     </app-general-infos-form>
-    <button mat-button class="dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveMovie()">
+    <button mat-button class="w-fit dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveMovie()">
       {{'app.next' | translate}}
     </button>
     }
   </mat-step>
   <mat-step [label]="'app.technical_team.label' | translate">
     @if (currentStep == 1) {
-    <app-technical-team-form [movieId]="movie.id" [technicalTeam]="technicalTeam" [expanded]="false">
-    </app-technical-team-form>
-    <button mat-button class="mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
+    <div class="flex-1 overflow-auto">
+      <app-technical-team-form [movieId]="movie.id" [technicalTeam]="technicalTeam" [expanded]="false">
+      </app-technical-team-form>
+    </div>
+    <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
       {{'app.next' | translate}}
     </button>
     }
   </mat-step>
   <mat-step [stepControl]="castingForm" [label]="'app.cast' | translate">
     @if (currentStep == 2) {
-    <app-cast-form [form]="castingForm"></app-cast-form>
-    <button mat-button class="mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveCasting()">
+    <div class="flex-1 overflow-auto">
+      <app-cast-form [form]="castingForm"></app-cast-form>
+    </div>
+    <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveCasting()">
       {{'app.next' | translate}}
     </button>
     }
   </mat-step>
-  <mat-step [stepControl]="awardsForm" [label]="'app.awards' | translate">
+  <mat-step [label]="'app.awards' | translate">
     @if (currentStep == 3) {
-    <app-awards-form [movieId]="movie.id" [form]="awardsForm"></app-awards-form>
-    <button mat-button class="mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveAwards()">
+    <div class="flex-1 overflow-auto">
+      <app-awards-form [movieId]="movie.id" [cancellable]="false"></app-awards-form>
+    </div>
+    <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
       {{'app.next' | translate}}
     </button>
     }
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>{{'app.done' | translate}}</ng-template>
-    <p class="mb-2">{{'app.done' | translate}}</p>
-    <div>
-      <button mat-button class="mr-2" matStepperPrevious>{{'app.back' | translate}}</button>
-      <button mat-button color="warn" (click)="stepper.reset()">{{'app.create_another_movie' | translate}}</button>
-    </div>
+    <p class="mb-2 dark:text-pmdb-white">{{'app.done' | translate}}</p>
+
+    <button mat-button color="warn" (click)="stepper.reset()">{{'app.create_another_movie' | translate}}</button>
   </mat-step>
 </mat-stepper>

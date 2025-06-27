@@ -17,6 +17,7 @@ export * from './multiselect/multiselect.component';
 export * from './person-selector/person-selector.component';
 export * from './persons-list/person-card/person-card.component';
 export * from './persons-list/persons-list.component';
+export * from './persons-multiselect/persons-multiselect.component';
 export * from './persons-table/persons-table.component';
 export * from './roles-dialog/roles-dialog.component';
 export * from './toolbar/toolbar.component';

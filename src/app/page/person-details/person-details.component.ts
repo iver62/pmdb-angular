@@ -18,7 +18,7 @@ import { EMPTY_STRING } from '../../app.component';
 import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
-import { Award, Category, Country, Criterias, Movie, Person, SearchConfig, SortOption, User } from '../../models';
+import { Category, Country, Criterias, Movie, Person, SearchConfig, SortOption, User } from '../../models';
 import { MovieService, PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
 import { PersonDetailComponent, PersonFormComponent } from './components';
@@ -43,8 +43,7 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
     PersonFormComponent,
     RouterLink,
     ToolbarComponent,
-    TranslatePipe,
-    CriteriasReminderComponent
+    TranslatePipe
   ],
   templateUrl: './person-details.component.html',
   styleUrl: './person-details.component.scss'
@@ -98,18 +97,17 @@ export class PersonDetailsComponent {
     )
   );
 
-  awards$ = this.awardsSearchConfig$.pipe(
+  groupedCeremonies$ = this.awardsSearchConfig$.pipe(
     filter(() => !!this.person()),
     switchMap(config =>
-      this.personService.getAwardsByPerson(this.person().id, config.page, config.size).pipe(
-        tap(result => this.totalAwards = result.length),
+      this.personService.getAwardsByPerson(this.person().id).pipe(
+        tap(result => this.totalAwards = result?.map(r => r.movieAwards?.map(ma => ma.awards).length)?.reduce((acc, currentValue) => acc + currentValue)),
         catchError(error => {
           console.error('Erreur lors de la récupération des récompenses:', error);
           return of(null); // Retourne un observable avec null en cas d'erreur
         })
       )
     ),
-    scan((acc: Award[], result: Award[]) => this.awardsSearchConfig$.value.page == 0 ? result : acc.concat(result), []) // Concatène les nouvelles données
   );
 
   sortOptions: SortOption[] = [

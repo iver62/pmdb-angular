@@ -8,16 +8,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
-import { Award, Movie, MovieActor, TechnicalTeam } from '../../models';
+import { CeremonyAwards, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
-import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent } from '../add-movie/components';
+import { CastingFormComponent, GeneralInfosFormComponent } from '../add-movie/components';
 import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
 
 @Component({
   selector: 'app-movie-details',
   imports: [
     AwardsComponent,
-    AwardsFormComponent,
     CastingComponent,
     CastingFormComponent,
     GeneralInfosFormComponent,
@@ -42,12 +41,11 @@ export class MovieDetailsComponent {
   generalInfos: Movie;
   technicalTeam: TechnicalTeam;
   cast: MovieActor[];
-  awards: Award[];
+  ceremoniesAwards: CeremonyAwards[];
 
   id: number;
   generalInfosForm: FormGroup;
   castForm: FormGroup;
-  awardsForm: FormGroup;
 
   editGeneralInfos = false;
   editCasting = false;
@@ -76,7 +74,7 @@ export class MovieDetailsComponent {
               if (tabIndex === 0) return this.movieService.getOne(id).pipe(map(res => ({ type: 'movie', data: res })));
               if (tabIndex === 1) return this.movieService.getTechnicalTeam(id).pipe(map(res => ({ type: 'team', data: res })));
               if (tabIndex === 2) return this.movieService.getActors(id).pipe(map(res => ({ type: 'actors', data: res || [] })));
-              if (tabIndex === 3) return this.movieService.getAwards(id).pipe(map(res => ({ type: 'awards', data: res || [] })));
+              if (tabIndex === 3) return this.movieService.getCeremoniesAwards(id).pipe(map(res => ({ type: 'awards', data: res || [] })));
               return of(null);
             }
           )
@@ -98,8 +96,7 @@ export class MovieDetailsComponent {
           this.initCastingForm();
           break;
         case 'awards':
-          this.awards = result.data as Award[];
-          this.initAwardsForm();
+          this.ceremoniesAwards = result.data as CeremonyAwards[];
           break;
       }
     });
@@ -139,20 +136,6 @@ export class MovieDetailsComponent {
 
     if (!this.castForm) {
       this.castForm = this.fb.group({ actors: actorsFormArray });
-    } else {
-      this.castForm.setValue({ actors: actorsFormArray });
-    }
-  }
-
-  private initAwardsForm() {
-    if (!this.awards) return;
-
-    const awardsFormArray = this.movieService.buildAwardsFormArray(this.awards);
-
-    if (!this.awardsForm) {
-      this.awardsForm = this.fb.group({ awards: awardsFormArray });
-    } else {
-      this.awardsForm.setValue({ awards: awardsFormArray });
     }
   }
 
@@ -172,11 +155,6 @@ export class MovieDetailsComponent {
   cancelCastForm() {
     this.editCasting = false;
     this.castForm.setControl('actors', this.movieService.buildActorsFormArray(this.cast));
-  }
-
-  cancelAwardsForm() {
-    this.editAwards = false;
-    this.awardsForm.setControl('awards', this.movieService.buildAwardsFormArray(this.awards));
   }
 
   saveGeneralInfos() {
@@ -231,28 +209,6 @@ export class MovieDetailsComponent {
             this.snackBar.open(this.translate.instant('app.cast_update_error'), this.translate.instant('app.close'), { duration: this.duration });
           },
           complete: () => this.editCasting = false
-        }
-      )
-    } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
-    }
-  }
-
-  saveAwards() {
-    if (this.awardsForm.valid) {
-      this.movieService.saveAwards(this.id, this.awardsForm.get('awards').value).subscribe(
-        {
-          next: result => {
-            this.snackBar.open(this.translate.instant('app.awards_update_success'), this.translate.instant('app.close'), { duration: this.duration });
-            this.awards = result;
-            this.awards.forEach(a => a.persons = a.persons.map(p => ({ ...p, display: () => p.name })));
-            this.awardsForm.patchValue({ awards: this.awards });
-          },
-          error: error => {
-            console.error(error);
-            this.snackBar.open(this.translate.instant('app.awards_update_error'), this.translate.instant('app.close'), { duration: this.duration });
-          },
-          complete: () => this.editAwards = false
         }
       )
     } else {

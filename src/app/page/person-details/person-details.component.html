@@ -55,21 +55,39 @@
       <mat-tab labelClass="tab-label">
         <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards || 0}})</ng-template>
 
-        <div class="pt-4 dark:!text-pmdb-white">
-          @for (award of awards$ | async | orderBy: ['ceremony', 'name']; track award.id) {
-          <div class="grid grid-cols-12 gap-4 text-xl my-1">
-            <div class="flex items-center col-span-2">
-              <mat-icon class="material-symbols-outlined font-bold mr-2">award_star</mat-icon>
-              <span class="font-bold">{{award?.ceremony}}</span>
-            </div>
-            <span class="col-span-3">{{award?.name}}</span>
-            <a class="cursor-pointer hover:underline col-span-3" [routerLink]="['/movies', award?.movie?.id]">
-              {{award?.movie?.title}}
-            </a>
-            @if (award?.year) {
-            <span class="col-span-1">{{award.year}}</span>
-            }
-          </div>
+        <div class="grid grid-cols-4 gap-4 mt-4">
+          @for (groupedCeremony of groupedCeremonies$ | async | orderBy:'ceremony.name'; track
+          groupedCeremony.ceremony.id) {
+          <mat-card
+            class="!border-1 !border-pmbd-grey !bg-white dark:!bg-pmdb-dark col-span-4 lg:col-span-2 xxl:col-span-1 text-xl dark:!border-pmdb-white">
+            <mat-card-header>
+              <mat-card-title class="!flex items-center justify-between">
+                <div class="flex items-center dark:!text-pmdb-white">
+                  <mat-icon class="material-symbols-outlined mr-2">award_star</mat-icon>
+                  <span>{{groupedCeremony?.ceremony?.name}}</span>
+                </div>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @for (movieAward of groupedCeremony?.movieAwards | orderBy: 'name'; track movieAward.movie.id; let i =
+              $index) {
+              @for (award of movieAward.awards; track award.id) {
+              <div class="grid grid-cols-12 gap-4 my-1 dark:!text-pmdb-white">
+                <div class="col-span-6 overflow-hidden whitespace-nowrap relative">
+                  <span>{{award?.name}}</span>
+                </div>
+                <div class="col-span-5 whitespace-nowrap overflow-hidden text-ellipsis">
+                  <a class="cursor-pointer hover:underline"
+                    [routerLink]="['/movies', movieAward.movie.id]">{{movieAward?.movie?.title}}</a>
+                </div>
+                @if (award?.year) {
+                <span class="col-span-1 text-right">{{award.year}}</span>
+                }
+              </div>
+              }
+              }
+            </mat-card-content>
+          </mat-card>
           } @empty {
           <div class="text-xl dark:!text-pmdb-white">{{'app.no_awards' | translate}}</div>
           }

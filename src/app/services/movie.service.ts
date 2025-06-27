@@ -6,7 +6,7 @@ import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { EMPTY_STRING } from '../app.component';
 import { Direction, Language } from '../enums';
-import { Award, Category, Country, Criterias, Movie, MovieActor, MovieTechnician, Person, TechnicalTeam, User } from '../models';
+import { Award, Category, CeremonyAwards, Country, Criterias, Movie, MovieActor, MovieTechnician, Person, TechnicalTeam, User } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -113,8 +113,8 @@ export class MovieService {
     return this.http.get<TechnicalTeam>(`${this.basePath}/${id}/technical-team`);
   }
 
-  getAwards(id: number) {
-    return this.http.get<Award[]>(`${this.basePath}/${id}/awards`);
+  getCeremoniesAwards(id: number) {
+    return this.http.get<CeremonyAwards[]>(`${this.basePath}/${id}/ceremonies-awards`);
   }
 
   getProducers(id: number) {
@@ -279,8 +279,8 @@ export class MovieService {
     return this.http.put<MovieActor[]>(`${this.basePath}/${id}/cast`, movieActors);
   }
 
-  saveAwards(id: number, awards: Award[]) {
-    return this.http.put<Award[]>(`${this.basePath}/${id}/awards`, awards);
+  saveAwards(id: number, ceremonyAwards: CeremonyAwards) {
+    return this.http.put<CeremonyAwards>(`${this.basePath}/${id}/ceremony-awards`, ceremonyAwards);
   }
 
   updateMovie(imageFile: File, movie: Movie) {
@@ -352,17 +352,17 @@ export class MovieService {
           this.fb.group(
             {
               id: [award.id],
-              ceremony: [award.ceremony, Validators.required], // Cérémonie de la récompense
-              name: [award.name, Validators.required], // Nom de la récompense
-              persons: [award.persons.map(p => ({ ...p, display: () => p.name }))],
-              year: [award.year] // Année de la récompense
+              name: [award?.name, Validators.required], // Nom de la récompense
+              persons: [award?.persons.map(p => ({ ...p, display: () => p.name }))], // Les personnes liés à la récompense
+              year: [award?.year] // Année de la récompense
             }
           )
         )
+      ?? []
     );
   }
 
   private compare(a: Award, b: Award) {
-    return a.ceremony.localeCompare(b.ceremony) || a.name.localeCompare(b.name);
+    return a.name.localeCompare(b.name);
   }
 }

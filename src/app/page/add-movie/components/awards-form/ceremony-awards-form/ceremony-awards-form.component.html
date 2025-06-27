@@ -1,0 +1,84 @@
+<mat-card class="!border-1 !border-pmbd-grey !bg-white dark:!bg-pmdb-dark xxl:col-span-1 dark:!border-pmdb-white p-4">
+  <form [formGroup]="form">
+    <div class="flex justify-between">
+      <!-- Champ cérémonie -->
+      <mat-form-field class="w-1/3" [formGroup]="ceremonyFormGroup">
+        <mat-label>{{'app.ceremony' | translate}}</mat-label>
+        <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="Cérémonie"
+          [matAutocomplete]="auto" formControlName="name">
+        @if (form.value.ceremony) {
+        <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
+          aria-label="Effacer la cérémonie" (click)="clearCeremony()">
+          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
+        </button>
+        }
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectCeremony($event)">
+          @for (ceremony of ceremonies$ | async; track ceremony) {
+          <mat-option [value]="ceremony">{{ceremony?.name}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <button mat-icon-button class="dark:hover:!bg-pmdb-grey" [matTooltip]="'app.delete' | translate"
+        aria-label="Supprimer la cérémonie" (click)="deleteCeremony()">
+        <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
+      </button>
+    </div>
+
+    <div formArrayName="awards">
+      @for (award of awardsCtrl.controls; track award; let i = $index) {
+      <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
+        <!-- Champ nom -->
+        <mat-form-field class="col-span-5">
+          <mat-label>{{'app.name' | translate}}</mat-label>
+          <input matInput formControlName="name" />
+          @if (award.value.name) {
+          <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
+            aria-label="Effacer le nom" (click)="clearName(i)">
+            <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
+          </button>
+          }
+        </mat-form-field>
+
+        <!-- Champ personnes -->
+        <app-persons-multiselect class="col-span-4" [movieId]="movieId()" [control]="getPersonsFormControl(award)">
+        </app-persons-multiselect>
+
+        <!-- Champ année -->
+        <mat-form-field class="col-span-2">
+          <mat-label>{{'app.year' | translate}}</mat-label>
+          <input matInput type="number" min="0" formControlName="year" />
+          @if (award.value.year) {
+          <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
+            aria-label="Effacer l'année" (click)="clearYear(i)">
+            <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
+          </button>
+          }
+        </mat-form-field>
+
+        <div class="flex items-center justify-end pb-4">
+          <mat-icon class="cursor-pointer large-icon material-symbols-outlined col-span-1 dark:!text-pmdb-white"
+            [matTooltip]="'app.delete' | translate" (click)="removeAward(i)">
+            delete
+          </mat-icon>
+        </div>
+      </div>
+      }
+    </div>
+    <div class="flex justify-between">
+      <a class="cursor-pointer hover:underline dark:text-white" (click)="addAward()">
+        {{'app.add_award' | translate}}
+      </a>
+      <div class="flex gap-4">
+        <a [hidden]="!cancellable()" class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+          (click)="cancelForm()">
+          {{'app.cancel' | translate}}
+        </a>
+        <a class="cursor-pointer dark:text-pmdb-gold dark:hover:!text-pmdb-white"
+          [class.disabled]="form.invalid || form.pristine" (click)="saveAwards()">
+          {{'app.validate' | translate}}
+        </a>
+      </div>
+    </div>
+  </form>
+</mat-card>

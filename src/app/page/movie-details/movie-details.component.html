@@ -81,36 +81,10 @@
   <mat-tab labelClass="tab-label">
     <ng-template mat-tab-label>{{'app.awards' | translate}}</ng-template>
 
+    @if (ceremoniesAwards) {
     <div class="h-full py-4">
-      @if (editAwards) {
-      <div class="h-full flex flex-col">
-        <div class="flex-1 overflow-auto pt-1">
-          <app-awards-form [movieId]="id" [form]="awardsForm"></app-awards-form>
-        </div>
-
-        <div class="flex items-center justify-end gap-4">
-          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelAwardsForm()">
-            {{'app.cancel' | translate}}
-          </a>
-          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-            [class.disabled]="awardsForm.invalid || awardsForm.pristine" (click)="saveAwards()">
-            {{'app.validate' | translate}}
-          </a>
-        </div>
-      </div>
-      } @else {
-      <div>
-        <app-awards [awards]="awards"></app-awards>
-
-        <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
-            [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
-            (click)="editAwards=true">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-      </div>
-      }
+      <app-awards [movieId]="id" [ceremoniesAwards]="ceremoniesAwards"></app-awards>
     </div>
+    }
   </mat-tab>
 </mat-tab-group>

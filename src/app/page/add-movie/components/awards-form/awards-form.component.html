@@ -1,62 +1,10 @@
-<form [formGroup]="form()" class="form">
-  <div formArrayName="awards" class="col-span-12">
-    @for (award of formArray?.controls; track award; let i = $index) {
-    <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
-      <!-- Champ cérémonie -->
-      <mat-form-field class="col-span-3">
-        <mat-label>{{'app.ceremony' | translate}}</mat-label>
-        <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="State" [matAutocomplete]="auto"
-          formControlName="ceremony">
-        @if (award.value.ceremony) {
-        <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
-          aria-label="Effacer la cérémonie" (click)="clearCeremony(i)">
-          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
-        </button>
-        }
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectAward($event)">
-          @for (ceremony of ceremonies$ | async; track ceremony) {
-          <mat-option [value]="ceremony">{{ceremony}}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <!-- Champ nom -->
-      <mat-form-field class="col-span-3">
-        <mat-label>{{'app.name' | translate}}</mat-label>
-        <input matInput formControlName="name" />
-        @if (award.value.name) {
-        <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
-          aria-label="Effacer le nom" (click)="clearName(i)">
-          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
-        </button>
-        }
-      </mat-form-field>
-
-      <app-persons-multiselect class="col-span-3" [movieId]="movieId()" [control]="getPersonsFormControl(award)">
-      </app-persons-multiselect>
-
-      <!-- Champ année -->
-      <mat-form-field class="col-span-2">
-        <mat-label>{{'app.year' | translate}}</mat-label>
-        <input matInput type="number" min="0" formControlName="year" />
-        @if (award.value.year) {
-        <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
-          aria-label="Effacer l'année" (click)="clearYear(i)">
-          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
-        </button>
-        }
-      </mat-form-field>
-
-      <div class="flex items-center pb-4">
-        <mat-icon class="cursor-pointer large-icon material-symbols-outlined col-span-1 dark:!text-pmdb-white"
-          [matTooltip]="'app.delete' | translate" (click)="removeAward(i)">
-          delete
-        </mat-icon>
-      </div>
-    </div>
-    }
-    <a class="cursor-pointer hover:underline dark:text-white" (click)="addAward()">
-      {{'app.add_award' | translate}}
-    </a>
-  </div>
-</form>
+@for (ceremonyAwards of localCeremoniesAwards; track $index; let i = $index) {
+<div class="grid grid-cols-4 gap-2 mb-2">
+  <app-ceremony-awards-form class="col-span-4 xxl:col-span-2" [movieId]="movieId()" [ceremonyAwards]="ceremonyAwards"
+    (delete)="deleteCeremonyAwards(i)">
+  </app-ceremony-awards-form>
+</div>
+}
+<a class="cursor-pointer hover:underline dark:text-white" (click)="addCeremony()">
+  {{'app.add_ceremony' | translate}}
+</a>

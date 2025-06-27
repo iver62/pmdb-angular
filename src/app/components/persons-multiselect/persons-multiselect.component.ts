@@ -9,11 +9,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, switchMap, tap } from 'rxjs';
-import { EMPTY_STRING } from '../../../../../app.component';
-import { DelayedInputDirective } from '../../../../../directives';
-import { Person, SearchConfig } from '../../../../../models';
-import { MovieService } from '../../../../../services';
-import { HttpUtils } from '../../../../../utils';
+import { EMPTY_STRING } from '../../app.component';
+import { DelayedInputDirective } from '../../directives';
+import { Person, SearchConfig } from '../../models';
+import { MovieService } from '../../services';
+import { HttpUtils } from '../../utils';
 
 @Component({
   selector: 'app-persons-multiselect',

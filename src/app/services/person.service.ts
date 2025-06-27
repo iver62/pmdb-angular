@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Direction, Language, PersonType } from '../enums';
-import { Award, Country, Criterias, Movie, Person } from '../models';
+import { Ceremony, CeremonyAwards, Country, Criterias, Movie, Person } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -84,16 +84,31 @@ export class PersonService {
     criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
     criterias?.categories?.forEach(category => params.append('category', category.id.toString()));
 
-    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' })
+    return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' });
   }
 
-  getAwardsByPerson(id: number, page = 0, size = 50) {
-    const params = new URLSearchParams();
+  getAwardsByPerson(id: number) {
+    return this.http.get<CeremonyAwards[]>(`${this.basePath}/${id}/awards`).pipe(
+      map((ceremonyAwardsList: CeremonyAwards[]) => {
+        const grouped = ceremonyAwardsList.reduce((acc, item) => {
+          const ceremonyId = item.ceremony?.id;
+          if (!ceremonyId) return acc;
 
-    params.set('page', page.toString());
-    params.set('size', size.toString());
+          if (!acc[ceremonyId]) {
+            acc[ceremonyId] = {
+              ceremony: item.ceremony,
+              movieAwards: []
+            };
+          }
 
-    return this.http.get<Award[]>(`${this.basePath}/${id}/awards?${params.toString()}`)
+          acc[ceremonyId].movieAwards.push({ movie: item.movie, awards: item.awards });
+          return acc;
+        }, [] as Record<number, { ceremony: Ceremony, movieAwards: CeremonyAwards[] }>);
+
+        // Transformer le Record en tableau
+        return Object.values(grouped);
+      })
+    );
   }
 
   getPhotoUrl(photoFileName: string) {

@@ -1,36 +1,20 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, EventEmitter, input, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslatePipe } from '@ngx-translate/core';
-import { NgPipesModule } from 'ngx-pipes';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../../../app.component';
-import { DelayedInputDirective } from '../../../../directives';
-import { SearchConfig } from '../../../../models';
-import { AwardService, MovieService } from '../../../../services';
+import { CeremonyAwards, SearchConfig } from '../../../../models';
+import { AwardService, CeremonyService, MovieService } from '../../../../services';
 import { HttpUtils } from '../../../../utils';
-import { PersonsMultiselectComponent } from "./persons-multiselect/persons-multiselect.component";
+import { CeremonyAwardsFormComponent } from "./ceremony-awards-form/ceremony-awards-form.component";
 
 @Component({
   selector: 'app-awards-form',
   imports: [
-    AsyncPipe,
-    DelayedInputDirective,
+    CeremonyAwardsFormComponent,
     MatAutocompleteModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatTooltipModule,
-    PersonsMultiselectComponent,
-    NgPipesModule,
-    ReactiveFormsModule,
     TranslatePipe
   ],
   templateUrl: './awards-form.component.html',
@@ -38,10 +22,16 @@ import { PersonsMultiselectComponent } from "./persons-multiselect/persons-multi
 })
 export class AwardsFormComponent {
 
-  form = input.required<FormGroup>();
+  duration = 5000;
+  // form = input.required<FormGroup>();
   movieId = input.required<number>();
+  ceremoniesAwards = input<CeremonyAwards[]>();
+  cancellable = input<boolean>(true);
 
-  awardsSearchConfig$ = new BehaviorSubject<SearchConfig>(
+  @Output() save = new EventEmitter<CeremonyAwards>();
+  @Output() cancel = new EventEmitter();
+
+  ceremoniesSearchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
       size: 20,
@@ -57,8 +47,8 @@ export class AwardsFormComponent {
     }
   );
 
-  ceremonies$ = this.awardsSearchConfig$.pipe(
-    switchMap(config => this.awardService.getCeremonies(config.page, config.size, config.term)
+  ceremonies$ = this.ceremoniesSearchConfig$.pipe(
+    switchMap(config => this.ceremonyService.getCeremonies(config.page, config.size, config.term)
       .pipe(
         tap(response => {
           this.isLoadingMoreCeremonies = false;
@@ -82,12 +72,16 @@ export class AwardsFormComponent {
     )
   );
 
-  get formArray() {
-    return this.form()?.get('awards') as FormArray;
-  }
+  form: FormGroup = this.fb.group(
+    {
+      ceremoniesAwards: this.fb.array<CeremonyAwards>([])
+    }
+  );
 
-  getPersonsFormControl(award: any) {
-    return award.get('persons') as FormControl;
+  localCeremoniesAwards: CeremonyAwards[] = [];
+
+  get formArray() {
+    return this.form?.get('ceremoniesAwards') as FormArray;
   }
 
   totalCeremonies: number;
@@ -100,15 +94,33 @@ export class AwardsFormComponent {
 
   constructor(
     private awardService: AwardService,
+    private ceremonyService: CeremonyService,
     private fb: FormBuilder,
-    private movieService: MovieService
-  ) { }
-
-  onSearch(event: string) {
-    this.awardsSearchConfig$.next({ ...this.awardsSearchConfig$.value, page: 0, term: event.trim() });
+    private movieService: MovieService,
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
+  ) {
+    effect(() => this.localCeremoniesAwards = this.ceremoniesAwards() ?? []);
   }
 
-  selectAward(event: MatAutocompleteSelectedEvent) { }
+  addCeremony() {
+    this.localCeremoniesAwards.push(
+      {
+        ceremony: null,
+        awards: []
+      }
+    );
+  }
+
+  getPersonsFormControl(award: any) {
+    return award.get('persons') as FormControl;
+  }
+
+  onSearch(event: string) {
+    this.ceremoniesSearchConfig$.next({ ...this.ceremoniesSearchConfig$.value, page: 0, term: event.trim() });
+  }
+
+  selectCeremony(event: MatAutocompleteSelectedEvent) { }
 
   /**
    * Fonction pour créer un groupe d'acteur
@@ -156,5 +168,28 @@ export class AwardsFormComponent {
 
   updatePersonSearch(term: string) {
     this.personsSearchConfig$.next({ ...this.personsSearchConfig$.value, page: 0, term: term });
+  }
+
+  saveAwards() {
+    if (this.form.valid) {
+      this.movieService.saveAwards(this.movieId(), this.form.value['awards']).subscribe(
+        {
+          next: result => {
+            this.snackBar.open(this.translate.instant('app.awards_added_success'), this.translate.instant('app.close'), { duration: this.duration });
+            this.save.emit(result);
+          },
+          error: error => {
+            console.error(error);
+            this.snackBar.open(error, this.translate.instant('app.close'), { duration: this.duration });
+          }
+        }
+      )
+    } else {
+      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
+    }
+  }
+
+  deleteCeremonyAwards(index: number) {
+    this.localCeremoniesAwards.splice(index, 1);
   }
 }

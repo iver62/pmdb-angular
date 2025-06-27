@@ -172,6 +172,20 @@
   </app-technicians>
   }
 
+  @if (edit.makeupArtists) {
+  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.makeup"
+    label="app.technical_team.makeup_artist_name" [movieId]="movieId()" [technicians]="technicalTeam().makeupArtists"
+    [personType]="personType.MAKEUP_ARTIST" [expanded]="true"
+    [serviceCall]="movieService.saveMakeupArtists.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_makeup_artists"
+    (update)="updateTechnicians($event, 'makeupArtists')" (cancel)="edit.makeupArtists=false">
+  </app-technicians-form>
+  } @else {
+  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.makeup"
+    [technicians]="technicalTeam()?.makeupArtists" (edit)="edit.makeupArtists=true">
+  </app-technicians>
+  }
+
   @if (edit.vfxSupervisors) {
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.vfx"
     label="app.technical_team.vfx_supervisor_name" [movieId]="movieId()" [technicians]="technicalTeam().vfxSupervisors"
@@ -197,20 +211,6 @@
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sfx"
     [technicians]="technicalTeam()?.sfxSupervisors" (edit)="edit.sfxSupervisors=true">
-  </app-technicians>
-  }
-
-  @if (edit.makeupArtists) {
-  <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.makeup"
-    label="app.technical_team.makeup_artist_name" [movieId]="movieId()" [technicians]="technicalTeam().makeupArtists"
-    [personType]="personType.MAKEUP_ARTIST" [expanded]="true"
-    [serviceCall]="movieService.saveMakeupArtists.bind(movieService)"
-    successMessage="app.technical_team_form.messages.success.updating_makeup_artists"
-    (update)="updateTechnicians($event, 'makeupArtists')" (cancel)="edit.makeupArtists=false">
-  </app-technicians-form>
-  } @else {
-  <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.makeup"
-    [technicians]="technicalTeam()?.makeupArtists" (edit)="edit.makeupArtists=true">
   </app-technicians>
   }
 
