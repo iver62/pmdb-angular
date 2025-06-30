@@ -1,7 +1,7 @@
 <h2 mat-dialog-title class="text-center dark:bg-black dark:!text-pmdb-white">{{'app.roles_of' | translate}}
   <strong>{{data?.username}}</strong>
 </h2>
-<mat-dialog-content class="!flex !items-center dark:bg-black">
+<mat-dialog-content class="!flex !items-center dark:bg-black !py-4">
   <form [formGroup]="form">
     @for (role of data.roles; track role.id) {
     <p>

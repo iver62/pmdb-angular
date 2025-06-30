@@ -90,7 +90,7 @@ export class PersonService {
   getAwardsByPerson(id: number) {
     return this.http.get<CeremonyAwards[]>(`${this.basePath}/${id}/awards`).pipe(
       map((ceremonyAwardsList: CeremonyAwards[]) => {
-        const grouped = ceremonyAwardsList.reduce((acc, item) => {
+        const grouped = ceremonyAwardsList?.reduce((acc, item) => {
           const ceremonyId = item.ceremony?.id;
           if (!ceremonyId) return acc;
 
@@ -106,7 +106,7 @@ export class PersonService {
         }, [] as Record<number, { ceremony: Ceremony, movieAwards: CeremonyAwards[] }>);
 
         // Transformer le Record en tableau
-        return Object.values(grouped);
+        return grouped ? Object.values(grouped) : null;
       })
     );
   }

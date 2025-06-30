@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { DURATION } from '../../app.component';
 import { User } from '../../models';
 import { AuthService } from '../../services';
 import { UserFormComponent } from "./components";
@@ -26,7 +27,6 @@ import { UserFormComponent } from "./components";
 export class UserComponent {
 
   user: User;
-  duration = 5000;
   editMode = false;
   form: FormGroup;
   selectedSection: 'profile' | 'security' = 'profile';
@@ -54,13 +54,13 @@ export class UserComponent {
     this.authService.updateUser({ ...this.form.value }).subscribe(
       {
         next: result => {
-          this.snackBar.open(this.translate.instant('app.profile_updated_success'), this.translate.instant('app.close'), { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.profile_updated_success'), this.translate.instant('app.close'), { duration: DURATION });
           this.user = result;
           this.editMode = false;
         },
         error: e => {
           console.error(e);
-          this.snackBar.open(this.translate.instant('app.error_updating_profile'), this.translate.instant('app.close'), { duration: this.duration });
+          this.snackBar.open(this.translate.instant('app.error_updating_profile'), this.translate.instant('app.close'), { duration: DURATION });
         }
       }
     )
@@ -68,10 +68,10 @@ export class UserComponent {
 
   resetPassword(id: string) {
     return this.authService.resetPassword(id).subscribe({
-      next: () => this.snackBar.open(this.translate.instant('app.reset_email_sent'), this.translate.instant('app.close'), { duration: this.duration }),
+      next: () => this.snackBar.open(this.translate.instant('app.reset_email_sent'), this.translate.instant('app.close'), { duration: DURATION }),
       error: e => {
         console.error(e);
-        this.snackBar.open(this.translate.instant('app.error_reset_email'), this.translate.instant('app.close'), { duration: this.duration });
+        this.snackBar.open(this.translate.instant('app.error_reset_email'), this.translate.instant('app.close'), { duration: DURATION });
       }
     });
   }

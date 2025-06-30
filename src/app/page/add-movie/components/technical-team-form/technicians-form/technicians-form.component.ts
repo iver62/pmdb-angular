@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { Observable } from 'rxjs';
-import { EMPTY_STRING } from '../../../../../app.component';
+import { DURATION, EMPTY_STRING } from '../../../../../app.component';
 import { AutocompleteComponent } from '../../../../../components';
 import { PersonType } from '../../../../../enums';
 import { MovieTechnician, Person } from '../../../../../models';
@@ -51,7 +51,6 @@ export class TechniciansFormComponent {
   @Output() cancel = new EventEmitter();
 
   form: FormGroup;
-  duration = 5000;
 
   get formArray() {
     return this.form.get('technicians') as FormArray;
@@ -104,18 +103,18 @@ export class TechniciansFormComponent {
       this.serviceCall()(this.movieId(), technicians).subscribe(
         {
           next: result => {
-            this.snackBar.open(this.translate.instant(this.successMessage()), this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(this.translate.instant(this.successMessage()), this.translate.instant('app.close'), { duration: DURATION });
             this.update.emit(result);
             this.form.markAsPristine();
           },
           error: error => {
             console.error(error);
-            this.snackBar.open(error.error, this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(error.error, this.translate.instant('app.close'), { duration: DURATION });
           }
         }
       );
     } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: DURATION });
     }
   }
 

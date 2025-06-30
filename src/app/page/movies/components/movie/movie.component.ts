@@ -6,9 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { DURATION } from '../../../../app.component';
 import { Movie } from '../../../../models';
 import { MovieService } from '../../../../services';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-movie',
@@ -27,7 +28,6 @@ export class MovieComponent {
 
   movie = input.required<Movie>();
   private _snackBar = inject(MatSnackBar);
-  private readonly durationInSeconds = 5;
 
   constructor(
     private translate: TranslateService,
@@ -38,10 +38,10 @@ export class MovieComponent {
     this.movieService.deleteMovie(id).subscribe(
       {
         next: () => {
-          this._snackBar.open('Film supprimé avec succès', this.translate.instant('app.close'), { duration: this.durationInSeconds * 1000 })
+          this._snackBar.open('Film supprimé avec succès', this.translate.instant('app.close'), { duration: DURATION })
           window.location.reload();
         },
-        error: () => this._snackBar.open('Impossible de supprimer le film', this.translate.instant('app.error'), { duration: this.durationInSeconds * 1000 }),
+        error: () => this._snackBar.open('Impossible de supprimer le film', this.translate.instant('app.error'), { duration: DURATION }),
       }
     )
   }

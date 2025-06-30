@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, catchError, filter, forkJoin, map, of, switchMap, tap } from 'rxjs';
-import { EMPTY_STRING } from '../../app.component';
+import { DURATION, EMPTY_STRING } from '../../app.component';
 import { ConfirmationDialogComponent, InputComponent, RolesDialogComponent } from '../../components';
 import { SearchConfig, SortOption, User } from '../../models';
 import { AuthService, UserService } from '../../services';
@@ -61,7 +61,6 @@ export class UsersComponent {
     )
   );
 
-  duration = 5000;
   displayedColumns = ['id', 'username', 'lastname', 'email', 'emailVerified', 'moviesCount', 'tools'];
   total: number;
   pageSizeOptions = [25, 50, 100];
@@ -116,8 +115,8 @@ export class UsersComponent {
         })
       ).subscribe(
         {
-          next: () => this._snackBar.open(this.translate.instant('app.roles_updated_success'), '✔', { duration: this.duration }),
-          error: () => this._snackBar.open(this.translate.instant('app.roles_updated_error'), '✔', { duration: this.duration })
+          next: () => this._snackBar.open(this.translate.instant('app.roles_updated_success'), '✔', { duration: DURATION }),
+          error: error => this._snackBar.open(error.error, '✔', { duration: DURATION })
         }
       )
     );
@@ -136,7 +135,7 @@ export class UsersComponent {
     this.dialog.open(ConfirmationDialogComponent, {
       minWidth: '30vw',  // Définit la largeur à 30% de l'écran
       data: {
-        title: this.translate.instant('app.confirm_delete_title'),
+        title: this.translate.instant('app.confirm'),
         message: this.translate.instant('app.confirm_delete_message', { username: user.username })
       }
     }).afterClosed().subscribe(result => {
@@ -149,9 +148,12 @@ export class UsersComponent {
                 ...this.searchConfig$.value,
                 page: 0 // Reset à la première page après suppression
               });
-              this._snackBar.open(this.translate.instant('app.user_deleted_success', { username: user.username }), '✔', { duration: this.duration });
+              this._snackBar.open(this.translate.instant('app.user_deleted_success', { username: user.username }), '✔', { duration: DURATION });
             },
-            error: () => this._snackBar.open(this.translate.instant('app.user_deleted_error', { username: user.username }), '✔', { duration: this.duration })
+            error: error => {
+              console.error(error);
+              this._snackBar.open(this.translate.instant('app.user_deleted_error', { username: user.username }), '✔', { duration: DURATION });
+            }
           }
         )
       }

@@ -4,7 +4,7 @@
   @if (editGroupAwards().at(i)) {
   <app-ceremony-awards-form class="col-span-4 xxl:col-span-2" [cancellable]="true" [movieId]="movieId()"
     [ceremonyAwards]="ceremonyAwards" (save)="save($event, i)" (cancel)="cancelEdit(i)"
-    (delete)="deleteCeremonyAwards(i)">
+    (delete)="deleteCeremonyAwards(ceremonyAwards.id, i)">
   </app-ceremony-awards-form>
   } @else {
   <app-ceremony-awards class="col-span-4 lg:col-span-2 xxl:col-span-1" [ceremonyAwards]="ceremonyAwards"

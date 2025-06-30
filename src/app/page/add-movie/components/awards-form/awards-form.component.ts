@@ -4,7 +4,7 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/ma
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
-import { EMPTY_STRING } from '../../../../app.component';
+import { DURATION, EMPTY_STRING } from '../../../../app.component';
 import { CeremonyAwards, SearchConfig } from '../../../../models';
 import { AwardService, CeremonyService, MovieService } from '../../../../services';
 import { HttpUtils } from '../../../../utils';
@@ -22,8 +22,6 @@ import { CeremonyAwardsFormComponent } from "./ceremony-awards-form/ceremony-awa
 })
 export class AwardsFormComponent {
 
-  duration = 5000;
-  // form = input.required<FormGroup>();
   movieId = input.required<number>();
   ceremoniesAwards = input<CeremonyAwards[]>();
   cancellable = input<boolean>(true);
@@ -175,17 +173,17 @@ export class AwardsFormComponent {
       this.movieService.saveAwards(this.movieId(), this.form.value['awards']).subscribe(
         {
           next: result => {
-            this.snackBar.open(this.translate.instant('app.awards_added_success'), this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.awards_added_success'), this.translate.instant('app.close'), { duration: DURATION });
             this.save.emit(result);
           },
           error: error => {
             console.error(error);
-            this.snackBar.open(error, this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(error, this.translate.instant('app.close'), { duration: DURATION });
           }
         }
       )
     } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: DURATION });
     }
   }
 

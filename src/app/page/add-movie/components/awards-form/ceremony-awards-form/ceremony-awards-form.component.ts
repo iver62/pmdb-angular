@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
-import { EMPTY_STRING } from '../../../../../app.component';
+import { DURATION, EMPTY_STRING } from '../../../../../app.component';
 import { PersonsMultiselectComponent } from '../../../../../components';
 import { DelayedInputDirective } from '../../../../../directives';
 import { Ceremony, CeremonyAwards, SearchConfig } from '../../../../../models';
@@ -38,8 +38,6 @@ import { HttpUtils } from '../../../../../utils';
   styleUrl: './ceremony-awards-form.component.scss'
 })
 export class CeremonyAwardsFormComponent {
-
-  duration = 5000;
 
   movieId = input.required<number>();
   ceremonyAwards = input.required<CeremonyAwards>();
@@ -188,17 +186,18 @@ export class CeremonyAwardsFormComponent {
       this.movieService.saveAwards(this.movieId(), this.form.value).subscribe(
         {
           next: result => {
-            this.snackBar.open(this.translate.instant('app.awards_added_success'), this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(this.translate.instant('app.awards_added_success'), this.translate.instant('app.close'), { duration: DURATION });
+            this.form.markAsPristine();
             this.save.emit(result);
           },
           error: error => {
             console.error(error);
-            this.snackBar.open(error, this.translate.instant('app.close'), { duration: this.duration });
+            this.snackBar.open(error, this.translate.instant('app.close'), { duration: DURATION });
           }
         }
       )
     } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: this.duration });
+      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: DURATION });
     }
   }
 

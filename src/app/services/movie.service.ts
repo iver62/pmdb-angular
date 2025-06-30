@@ -301,17 +301,13 @@ export class MovieService {
     return this.http.delete(`${this.basePath}/${id}`);
   }
 
+  deleteCeremonyAwards(movieId: number, ceremonyAwardsId: number) {
+    return this.http.delete(`${this.basePath}/${movieId}/ceremony-awards/${ceremonyAwardsId}`);
+  }
+
   buildMovieFromForm(form: FormGroup, user: User): Movie {
     return {
       ...form.value,
-      budget: {
-        value: form.value.budget,
-        currency: form.value.budgetCurrency
-      },
-      boxOffice: {
-        value: form.value.boxOffice,
-        currency: form.value.boxOfficeCurrency
-      },
       user: user
     }
   }

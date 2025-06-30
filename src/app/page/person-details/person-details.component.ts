@@ -11,7 +11,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { NgPipesModule } from 'ngx-pipes';
 import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
-import { EMPTY_STRING } from '../../app.component';
+import { DURATION, EMPTY_STRING } from '../../app.component';
 import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
@@ -122,7 +122,6 @@ export class PersonDetailsComponent {
   totalAwards: number;
   view = View;
   pageSizeOptions = [25, 50, 100];
-  duration = 5000;
   person = signal<Person>(null);
   editMode = false;
 
@@ -251,12 +250,12 @@ export class PersonDetailsComponent {
     this.personService.delete(this.person().id).subscribe(
       {
         next: () => {
-          this.snackBar.open(`${this.person.name} supprimé avec succès`, this.translate.instant('app.close'), { duration: this.duration });
-          this.router.navigateByUrl(this.route.snapshot.url.at(0)?.path);
+          this.snackBar.open(`${this.person().name} supprimé avec succès`, this.translate.instant('app.close'), { duration: DURATION });
+          this.router.navigateByUrl('persons');
         },
         error: (error: any) => {
           console.error(error);
-          this.snackBar.open(`Erreur lors de la suppression de ${this.person().name}`, this.translate.instant('app.error'), { duration: this.duration });
+          this.snackBar.open(`Erreur lors de la suppression de ${this.person().name}`, this.translate.instant('app.error'), { duration: DURATION });
         }
       }
     );

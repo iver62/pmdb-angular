@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { DURATION } from '../../../../app.component';
 import { CountrySelectorComponent, FileChooserComponent } from '../../../../components';
 import { Person } from '../../../../models';
 import { PersonService } from '../../../../services';
@@ -30,7 +31,6 @@ export class PersonFormComponent {
   @Output() cancel = new EventEmitter();
   @Output() save = new EventEmitter<Person>();
 
-  private readonly duration = 5000;
   form: FormGroup;
   selectedFile: File | null = null;
 
@@ -88,11 +88,11 @@ export class PersonFormComponent {
       {
         next: result => {
           this.save.emit(result);
-          this.snackBar.open(`${this.person().name} modifié avec succès`, this.translate.instant('app.close'), { duration: this.duration });
+          this.snackBar.open(`${this.person().name} modifié avec succès`, this.translate.instant('app.close'), { duration: DURATION });
         },
         error: (error: any) => {
           console.error(error);
-          this.snackBar.open(`Erreur lors de la modification de ${this.person().name}`, this.translate.instant('app.error'), { duration: this.duration });
+          this.snackBar.open(`Erreur lors de la modification de ${this.person().name}`, this.translate.instant('app.error'), { duration: DURATION });
         }
       }
     );
