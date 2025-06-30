@@ -2,7 +2,13 @@ textarea {
   field-sizing: content;
 }
 
-::placeholder {
+.dark input::placeholder,
+.dark textarea::placeholder {
   color: white !important;
   opacity: 1; // Important, car certains navigateurs mettent le placeholder semi-transparent
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 40% !important;
 }

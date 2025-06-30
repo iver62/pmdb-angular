@@ -1,12 +1,15 @@
 <mat-stepper class="rounded-lg h-full" [linear]="isLinear" (selectionChange)="onStepChange($event)" #stepper>
 
-  <mat-step [stepControl]="generalInfosForm" [label]="'app.general_infos' | translate">
+  <mat-step [label]="'app.general_infos' | translate">
     @if (currentStep == 0) {
-    <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
+    <app-general-infos-form [movie]="movie" [user]="user$ | async" [cancellable]="false"
+      (save)="saveGeneralInfos($event)">
     </app-general-infos-form>
-    <button mat-button class="w-fit dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveMovie()">
+    @if (movie.id) {
+    <button mat-button class="w-fit dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
       {{'app.next' | translate}}
     </button>
+    }
     }
   </mat-step>
   <mat-step [label]="'app.technical_team.label' | translate">
@@ -44,6 +47,6 @@
     <ng-template matStepLabel>{{'app.done' | translate}}</ng-template>
     <p class="mb-2 dark:text-pmdb-white">{{'app.done' | translate}}</p>
 
-    <button mat-button color="warn" (click)="stepper.reset()">{{'app.create_another_movie' | translate}}</button>
+    <button mat-button class="w-fit" (click)="stepper.reset()">{{'app.create_another_movie' | translate}}</button>
   </mat-step>
 </mat-stepper>

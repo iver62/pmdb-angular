@@ -4,7 +4,7 @@
   <mat-label>{{'app.countries' | translate}} ({{total}})</mat-label>
   <mat-chip-grid #countriesChipGrid aria-label="Country selection" [formControl]="control">
     @for (country of selectedCountries(); track country.id) {
-    <mat-chip-row class="dark:!bg-pmdb-dark" [value]="country" (removed)="remove(country)">
+    <mat-chip-row class="dark:!bg-pmdb-dark" [value]="country" (removed)="onRemove(country)">
       <span class="dark:!text-pmdb-white">{{country?.nomFrFr}}</span>
       <button matChipRemove [attr.aria-label]="'remove ' + country?.nomFrFr">
         <mat-icon class="dark:!text-pmdb-white">cancel</mat-icon>

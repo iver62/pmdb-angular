@@ -34,6 +34,7 @@
     "cast_update_success": "Casting updated successfully",
     "categories": "Categories",
     "ceremony": "Ceremony",
+    "ceremony_deleted_success": "Cérémonie deleted successfully",
     "choose_file": "Choose a file",
     "choose_lang": "Choose language",
     "close": "Close",

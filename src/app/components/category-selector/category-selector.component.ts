@@ -1,6 +1,6 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { AsyncPipe } from '@angular/common';
-import { Component, effect, ElementRef, input, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, EventEmitter, input, Output, signal, ViewChild } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -37,6 +37,8 @@ export class CategorySelectorComponent {
   formGroupName = input.required<string>();
   searchTerm$ = new BehaviorSubject(EMPTY_STRING);
   selectedCategories = signal<Category[]>([]);
+
+  @Output() remove = new EventEmitter();
 
   readonly categories$ = this.searchTerm$.pipe(
     distinctUntilChanged((t1, t2) => t1 == t2),
@@ -89,13 +91,15 @@ export class CategorySelectorComponent {
     });
   }
 
-  remove(category: Category) {
+  onRemove(category: Category) {
     const index = this.selectedCategories().findIndex(c => c.id === category.id);
 
     if (index >= 0) {
       this.selectedCategories.update(categories => categories.filter(c => c.id !== category.id));
       this.searchTerm$.next(EMPTY_STRING);
     }
+
+    this.remove.emit();
   }
 
   selected(event: MatAutocompleteSelectedEvent) {

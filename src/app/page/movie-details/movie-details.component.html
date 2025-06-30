@@ -6,18 +6,9 @@
       @if (editGeneralInfos) {
       <div class="h-full flex flex-col">
         <div class="flex-1 overflow-auto pt-1">
-          <app-general-infos-form [form]="generalInfosForm" (selectImage)="selectImage($event)">
+          <app-general-infos-form [movie]="generalInfos" [cancellable]="true" (cancel)="cancelGeneralInfosForm()"
+            (save)="saveGeneralInfos($event)">
           </app-general-infos-form>
-        </div>
-
-        <div class="flex items-center justify-end gap-4">
-          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelGeneralInfosForm()">
-            {{'app.cancel' | translate}}
-          </a>
-          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-            [class.disabled]="generalInfosForm.invalid || generalInfosForm.pristine" (click)="saveGeneralInfos()">
-            {{'app.validate' | translate}}
-          </a>
         </div>
       </div>
       } @else {

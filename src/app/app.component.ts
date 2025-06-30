@@ -18,6 +18,7 @@ import { FirstLetterPipe } from './pipes';
 import { AuthService, ConfigService, LoaderService } from './services';
 
 export const EMPTY_STRING = '';
+export const DURATION = 5000;
 
 @Component({
   selector: 'app-root',

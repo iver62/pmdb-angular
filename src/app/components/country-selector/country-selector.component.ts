@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, effect, ElementRef, input, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, EventEmitter, input, Output, signal, ViewChild } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -37,6 +37,8 @@ export class CountrySelectorComponent {
 
   formGroupName = input.required<string>();
   selectedCountries = signal<Country[]>([]);
+
+  @Output() remove = new EventEmitter();
 
   currentLang$ = this.translate.onLangChange.pipe(
     map(result => result.lang),
@@ -137,7 +139,7 @@ export class CountrySelectorComponent {
     }
   }
 
-  remove(country: Country) {
+  onRemove(country: Country) {
     const index = this.selectedCountries().findIndex(c => c.id === country.id);
 
     if (index >= 0) {
@@ -145,6 +147,8 @@ export class CountrySelectorComponent {
       this.control.setValue([...this.selectedCountries()]);
       this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
     }
+
+    this.remove.emit();
   }
 
   selected(event: MatAutocompleteSelectedEvent) {
