@@ -12,9 +12,9 @@
     </mat-chip-row>
     }
     <input #input appDelayedInput (delayedInput)="onSearch($event)" [placeholder]="'app.add' | translate"
-      [matChipInputFor]="countriesChipGrid" [matAutocomplete]="auto" />
+      [matChipInputFor]="countriesChipGrid" [matAutocomplete]="autoCountries" />
   </mat-chip-grid>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+  <mat-autocomplete #autoCountries="matAutocomplete" (optionSelected)="selected($event)">
     @for (country of filteredCountries$ | async; track country.id) {
     <mat-option [value]="country" class="dark:!text-pmdb-white dark:hover:!bg-pmdb-dark">
       {{currentLang == language.FR ? country?.nomFrFr : country?.nomEnGb}}

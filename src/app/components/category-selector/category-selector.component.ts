@@ -3,15 +3,15 @@ import { AsyncPipe } from '@angular/common';
 import { Component, effect, ElementRef, EventEmitter, input, Output, signal, ViewChild } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BehaviorSubject, catchError, combineLatest, distinctUntilChanged, filter, map, of, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, distinctUntilChanged, filter, map, of, scan, switchMap, take, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
-import { Category } from '../../models';
+import { Category, SearchConfig } from '../../models';
 import { CategoryService } from '../../services';
 import { HttpUtils } from '../../utils';
 
@@ -33,6 +33,15 @@ import { HttpUtils } from '../../utils';
 export class CategorySelectorComponent {
 
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
+  @ViewChild('autoCategories', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
+
+  searchConfig$ = new BehaviorSubject<SearchConfig>(
+    {
+      page: 0,
+      size: 20,
+      term: EMPTY_STRING
+    }
+  );
 
   formGroupName = input.required<string>();
   searchTerm$ = new BehaviorSubject(EMPTY_STRING);
@@ -40,15 +49,30 @@ export class CategorySelectorComponent {
 
   @Output() remove = new EventEmitter();
 
-  readonly categories$ = this.searchTerm$.pipe(
-    distinctUntilChanged((t1, t2) => t1 == t2),
-    switchMap(term => this.categoryService.getAll(term)
-      .pipe(
-        tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
-        map(response => response.body ?? []),
-        catchError(() => of([])) // En cas d'erreur, retourner une liste vide
-      )
-    )
+  readonly categories$ = this.searchConfig$.pipe(
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.term == c2.term),
+    tap(() => this.isLoadingMore = true),
+    switchMap(config => this.categoryService.getCategories(config.page, config.size, config.term).pipe(
+      tap(response => {
+        this.isLoadingMore = false;
+        this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
+      }),
+      map(response => response.body ?? []),
+      catchError(() => {
+        this.isLoadingMore = false;
+        return of([]);
+      })
+    )),
+    scan((acc: Category[], result: Category[]) => {
+      if (this.searchConfig$.value.page == 0) {
+        this.loaded = result.length;
+        return result;
+      } else {
+        const newArray = acc.concat(result);
+        this.loaded = newArray.length;
+        return newArray;
+      }
+    }, [])
   );
 
   readonly filteredCategories$ = combineLatest([this.categories$, toObservable(this.selectedCategories)]).pipe(
@@ -59,6 +83,8 @@ export class CategorySelectorComponent {
 
   control: FormControl<Category[]>;
   total: number;
+  private loaded = 0;
+  private isLoadingMore = false;
 
   constructor(
     private categoryService: CategoryService,
@@ -68,6 +94,25 @@ export class CategorySelectorComponent {
       this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
       this.selectedCategories.set(this.control.value || []);
     });
+  }
+
+  ngAfterViewInit() {
+    this.matAutocomplete.opened.subscribe(() => {
+      setTimeout(() => {
+        const panel = document.querySelector('.mat-mdc-autocomplete-panel') as HTMLElement;
+        if (panel) {
+          panel.addEventListener('scroll', this.onScroll.bind(this));
+        }
+      }, 100);
+    });
+  }
+
+  private onScroll(event: Event) {
+    const { scrollTop, scrollHeight, clientHeight } = event.target as HTMLElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !this.isLoadingMore && this.loaded < this.total) {
+      this.searchConfig$.next({ ...this.searchConfig$.value, page: this.searchConfig$.value.page + 1 });
+    }
   }
 
   add(event: MatChipInputEvent) {

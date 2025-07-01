@@ -33,7 +33,7 @@ import { HttpUtils } from '../../utils';
 export class CountrySelectorComponent {
 
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
-  @ViewChild('auto', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
+  @ViewChild('autoCountries', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
 
   formGroupName = input.required<string>();
   selectedCountries = signal<Country[]>([]);

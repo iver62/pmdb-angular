@@ -20,6 +20,12 @@ export class CategoryService {
     );
   }
 
+  getCategories(page = 0, size = 50, term = EMPTY_STRING, sort = 'name', direction = 'asc') {
+    return this.http.get<Category[]>(`${this.basePath}?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
+      { observe: 'response' }
+    );
+  }
+
   getAllMovies(id: number, term: string, sort = 'title', direction = 'asc') {
     return this.http.get<Movie[]>(`${this.basePath}/${id}/movies/all?sort=${sort}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`, {
       observe: 'response'
