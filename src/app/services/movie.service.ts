@@ -117,69 +117,69 @@ export class MovieService {
     return this.http.get<CeremonyAwards[]>(`${this.basePath}/${id}/ceremonies-awards`);
   }
 
-  getProducers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/producers`);
-  }
+  // getProducers(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/producers`);
+  // }
 
-  getDirectors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/directors`);
-  }
+  // getDirectors(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/directors`);
+  // }
 
-  getScreenwriters(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/screenwriters`);
-  }
+  // getScreenwriters(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/screenwriters`);
+  // }
 
-  getMusicians(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/musicians`);
-  }
+  // getMusicians(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/musicians`);
+  // }
 
-  getPhotographers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/photographers`);
-  }
+  // getPhotographers(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/photographers`);
+  // }
 
-  getCostumiers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/costumiers`);
-  }
+  // getCostumiers(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/costumiers`);
+  // }
 
-  getDecorators(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/decorators`);
-  }
+  // getDecorators(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/decorators`);
+  // }
 
-  getEditors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/editors`);
-  }
+  // getEditors(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/editors`);
+  // }
 
-  getCasters(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/casters`);
-  }
+  // getCasters(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/casters`);
+  // }
 
-  getArtDirectors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/artists`);
-  }
+  // getArtists(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/artists`);
+  // }
 
-  getSoundEditors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors`);
-  }
+  // getSoundEditors(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/sound-editors`);
+  // }
 
-  getVfxSupervisors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/vfx-supervisors`);
-  }
+  // getVfxSupervisors(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/vfx-supervisors`);
+  // }
 
-  getSfxSupervisors(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/vfx-supervisors`);
-  }
+  // getSfxSupervisors(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/vfx-supervisors`);
+  // }
 
-  getMakeupArtists(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/makeup-artists`);
-  }
+  // getMakeupArtists(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/makeup-artists`);
+  // }
 
-  getHairDressers(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers`);
-  }
+  // getHairDressers(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/hair-dressers`);
+  // }
 
-  getStuntmen(id: number) {
-    return this.http.get<Person[]>(`${this.basePath}/${id}/stuntmen`);
-  }
+  // getStuntmen(id: number) {
+  //   return this.http.get<Person[]>(`${this.basePath}/${id}/stuntmen`);
+  // }
 
   getCategories(id: number) {
     return this.http.get<Category[]>(`${this.basePath}/${id}/categories`);
@@ -231,8 +231,8 @@ export class MovieService {
     return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/decorators`, movieTechnicians);
   }
 
-  saveCostumiers(id: number, movieTechnicians: MovieTechnician[]) {
-    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/costumiers`, movieTechnicians);
+  saveCostumeDesigners(id: number, movieTechnicians: MovieTechnician[]) {
+    return this.http.put<MovieTechnician[]>(`${this.basePath}/${id}/costume-designers`, movieTechnicians);
   }
 
   savePhotographers(id: number, movieTechnicians: MovieTechnician[]) {

@@ -43,8 +43,8 @@ const types = [
   },
   {
     id: 5,
-    name: PersonType.COSTUMIER,
-    display: () => PersonType.COSTUMIER
+    name: PersonType.COSTUME_DESIGNER,
+    display: () => PersonType.COSTUME_DESIGNER
   },
   {
     id: 6,

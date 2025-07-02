@@ -96,7 +96,7 @@ export class PersonDetailsComponent {
     filter(() => !!this.person()),
     switchMap(config =>
       this.personService.getAwardsByPerson(this.person().id).pipe(
-        tap(result => this.totalAwards = result?.map(r => r.movieAwards?.map(ma => ma.awards).length)?.reduce((acc, currentValue) => acc + currentValue)),
+        tap(result => this.totalAwards = result?.map(r => r.movieAwards?.flatMap(ma => ma.awards).length)?.reduce((acc, currentValue) => acc + currentValue)),
         catchError(error => {
           console.error('Erreur lors de la récupération des récompenses:', error);
           return of(null); // Retourne un observable avec null en cas d'erreur

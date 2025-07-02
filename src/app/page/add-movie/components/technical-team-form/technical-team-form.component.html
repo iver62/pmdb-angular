@@ -50,9 +50,9 @@
   </app-technicians-form>
 
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.costumes"
-    label="app.technical_team.costumier_name" [movieId]="movieId()" [technicians]="technicalTeam().costumiers"
-    [personType]="personType.COSTUMIER" [expanded]="expanded()"
-    [serviceCall]="movieService.saveCostumiers.bind(movieService)"
+    label="app.technical_team.costumier_name" [movieId]="movieId()" [technicians]="technicalTeam().costumeDesigners"
+    [personType]="personType.COSTUME_DESIGNER" [expanded]="expanded()"
+    [serviceCall]="movieService.saveCostumeDesigners.bind(movieService)"
     successMessage="app.technical_team_form.messages.success.adding_costumiers" [cancellable]="false">
   </app-technicians-form>
 

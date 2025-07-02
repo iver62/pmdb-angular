@@ -64,7 +64,7 @@ export class PersonService {
     criterias?.countries?.forEach(country => params.append('country', country.id.toString()));
     criterias?.types?.forEach(type => params.append('type', type.name));
 
-    return this.http.get<Person[]>(`${this.basePath}/movies-number?${params.toString()}`, { observe: 'response' });
+    return this.http.get<Person[]>(`${this.basePath}?${params.toString()}`, { observe: 'response' });
   }
 
   getMoviesByPerson(id: number, page = 0, size = 50, term: string, sort = 'title', direction = 'asc', criterias?: Criterias) {
