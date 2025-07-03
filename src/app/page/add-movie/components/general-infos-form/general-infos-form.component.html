@@ -1,5 +1,6 @@
-<form class="form" [formGroup]="form">
-  <div class="grid grid-cols-12 gap-2">
+@if (form) {
+<form class="h-full flex flex-col" [formGroup]="form">
+  <div class="flex-1 overflow-auto grid grid-cols-12 gap-2">
     <mat-form-field class="col-span-12 md:col-span-6 lg:col-span-4">
       <mat-label>{{'app.title' | translate}}</mat-label>
       <input matInput [placeholder]="'app.french_title' | translate" formControlName="title">
@@ -77,18 +78,14 @@
       formGroupName="posterFileName" (selectImage)="onSelectImage($event)" (deleteImage)="onDeleteImage()">
     </app-file-chooser>
 
-    @if (countriesFormCtrl) {
-    <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries" (remove)="onRemoveCountry()">
+    <app-country-selector class="col-span-12 lg:col-span-6" formGroupName="countries" (remove)="markFormAsDirty()">
     </app-country-selector>
-    }
 
-    @if (countriesFormCtrl) {
-    <app-category-selector class="col-span-12 lg:col-span-6" formGroupName="categories" (remove)="onRemoveCategory()">
+    <app-category-selector class="col-span-12 lg:col-span-6" formGroupName="categories" (remove)="markFormAsDirty()">
     </app-category-selector>
-    }
   </div>
 
-  <div class="flex items-center justify-end gap-4">
+  <div class="flex items-center justify-end gap-4 py-2">
     <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" [hidden]="!cancellable()"
       (click)="cancelForm()">
       {{'app.cancel' | translate}}
@@ -99,3 +96,4 @@
     </a>
   </div>
 </form>
+}

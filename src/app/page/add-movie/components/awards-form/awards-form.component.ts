@@ -6,7 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
 import { DURATION, EMPTY_STRING } from '../../../../app.component';
 import { CeremonyAwards, SearchConfig } from '../../../../models';
-import { AwardService, CeremonyService, MovieService } from '../../../../services';
+import { CeremonyService, MovieService } from '../../../../services';
 import { HttpUtils } from '../../../../utils';
 import { CeremonyAwardsFormComponent } from "./ceremony-awards-form/ceremony-awards-form.component";
 
@@ -91,7 +91,6 @@ export class AwardsFormComponent {
   private isLoadingMorePersons = false;
 
   constructor(
-    private awardService: AwardService,
     private ceremonyService: CeremonyService,
     private fb: FormBuilder,
     private movieService: MovieService,

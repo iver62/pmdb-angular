@@ -1,41 +1,55 @@
-<form [formGroup]="form" class="form">
-  <div cdkDropList formArrayName="actors" (cdkDropListDropped)="drop($event)">
-    @for (actor of formArray.controls; track actor; let i = $index) {
-    <div class="grid grid-cols-12 gap-2" [formGroupName]="i" cdkDrag>
+<form class="h-full flex flex-col" [formGroup]="form">
+  <div class="flex-1 overflow-auto">
+    <div cdkDropList formArrayName="actors" (cdkDropListDropped)="drop($event)">
+      @for (actor of formArray.controls; track actor; let i = $index) {
+      <div class="grid grid-cols-12 gap-2" [formGroupName]="i" cdkDrag>
 
-      <!-- Autocomplete acteur -->
-      <app-autocomplete class="col-span-4" [control]="actor.get('name')" [label]="'app.actor_name' | translate"
-        [toSave]="actor?.value?.name && !actor?.value?.id" (select)="selectActor($event, i)"
-        (save)="saveActor($event, i)">
-      </app-autocomplete>
+        <!-- Autocomplete acteur -->
+        <app-autocomplete class="col-span-4" [control]="actor.get('name')" [label]="'app.actor_name' | translate"
+          [toSave]="actor?.value?.name && !actor?.value?.id" (select)="selectActor($event, i)"
+          (save)="saveActor($event, i)">
+        </app-autocomplete>
 
-      <!-- Champ rôle -->
-      <mat-form-field class="col-span-6">
-        <mat-label>{{'app.role' | translate}}</mat-label>
-        <input matInput formControlName="role" />
-        @if (actor.value.role) {
-        <button matSuffix mat-icon-button class="mr-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
-          aria-label="Effacer le rôle" (click)="clearRole(i)">
-          <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
-        </button>
-        }
-      </mat-form-field>
+        <!-- Champ rôle -->
+        <mat-form-field class="col-span-6">
+          <mat-label>{{'app.role' | translate}}</mat-label>
+          <input matInput formControlName="role" />
+          @if (actor.value.role) {
+          <button matSuffix mat-icon-button class="mr-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
+            aria-label="Effacer le rôle" (click)="clearRole(i)">
+            <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
+          </button>
+          }
+        </mat-form-field>
 
-      <!-- Actions -->
-      <div class="flex items-center justify-between pb-4 col-span-2">
-        <mat-icon class="cursor-pointer large-icon material-symbols-outlined mx-2 dark:!text-pmdb-white"
-          [matTooltip]="'app.delete' | translate" (click)="removeActor(i)">
-          delete
-        </mat-icon>
-        <mat-icon class="drag-item large-icon mr-4 dark:!text-pmdb-white" [matTooltip]="'app.move' | translate"
-          cdkDragHandle>
-          drag_indicator
-        </mat-icon>
+        <!-- Actions -->
+        <div class="flex items-center justify-between pb-4 col-span-2">
+          <mat-icon class="cursor-pointer large-icon material-symbols-outlined mx-2 dark:!text-pmdb-white"
+            [matTooltip]="'app.delete' | translate" (click)="removeActor(i)">
+            delete
+          </mat-icon>
+          <mat-icon class="drag-item large-icon mr-4 dark:!text-pmdb-white" [matTooltip]="'app.move' | translate"
+            cdkDragHandle>
+            drag_indicator
+          </mat-icon>
+        </div>
       </div>
+      }
     </div>
-    }
   </div>
-  <a class="cursor-pointer hover:underline dark:text-white" (click)="addActor()">
-    {{'app.add_actor' | translate}}
-  </a>
+  <div class="flex items-center justify-between gap-4 py-2">
+    <a class="cursor-pointer hover:underline dark:text-white" (click)="addActor()">
+      {{'app.add_actor' | translate}}
+    </a>
+    <div class="flex items-center gap-4">
+      <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" [hidden]="!cancellable()"
+        (click)="cancelCastForm()">
+        {{'app.cancel' | translate}}
+      </a>
+      <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+        [class.disabled]="form.invalid || form.pristine" (click)="saveCast()">
+        {{'app.validate' | translate}}
+      </a>
+    </div>
+  </div>
 </form>

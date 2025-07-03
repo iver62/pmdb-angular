@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
-import { DURATION } from '../../app.component';
 import { CeremonyAwards, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { MovieService } from '../../services';
 import { CastingFormComponent, GeneralInfosFormComponent } from '../add-movie/components';
@@ -23,11 +20,9 @@ import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamC
     GeneralInfosFormComponent,
     MatButtonModule,
     MatIconModule,
-    MatSnackBarModule,
     MatTabsModule,
     MatTooltipModule,
     MovieDetailComponent,
-    ReactiveFormsModule,
     TechnicalTeamComponent,
     TranslatePipe
   ],
@@ -44,18 +39,14 @@ export class MovieDetailsComponent {
   ceremoniesAwards: CeremonyAwards[];
 
   id: number;
-  castForm: FormGroup;
 
   editGeneralInfos = false;
   editCasting = false;
   editAwards = false;
 
   constructor(
-    private fb: FormBuilder,
     private movieService: MovieService,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
-    private translate: TranslateService
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -89,23 +80,12 @@ export class MovieDetailsComponent {
           break;
         case 'actors':
           this.cast = result.data as MovieActor[];
-          this.initCastingForm();
           break;
         case 'awards':
           this.ceremoniesAwards = result.data as CeremonyAwards[];
           break;
       }
     });
-  }
-
-  private initCastingForm() {
-    if (!this.cast) return;
-
-    const actorsFormArray = this.movieService.buildActorsFormArray(this.cast);
-
-    if (!this.castForm) {
-      this.castForm = this.fb.group({ actors: actorsFormArray });
-    }
   }
 
   onTabChanged(event: MatTabChangeEvent) {
@@ -123,38 +103,10 @@ export class MovieDetailsComponent {
 
   cancelCastForm() {
     this.editCasting = false;
-    this.castForm.setControl('actors', this.movieService.buildActorsFormArray(this.cast));
   }
 
-  saveCast() {
-    if (this.castForm.valid) {
-      const body: MovieActor[] = this.castForm.get('actors').value.map(
-        (ma: any, index: number) => (
-          {
-            id: this.cast.find(a => a.person.id == ma.id)?.id ?? null,
-            person: { id: ma.id, name: ma.name },
-            role: ma.role,
-            rank: index
-          }
-        )
-      );
-
-      this.movieService.saveCast(this.id, body).subscribe(
-        {
-          next: result => {
-            this.snackBar.open(this.translate.instant('app.cast_update_success'), this.translate.instant('app.close'), { duration: DURATION });
-            this.cast = result;
-            this.castForm.markAsPristine();
-          },
-          error: error => {
-            console.error(error);
-            this.snackBar.open(this.translate.instant('app.cast_update_error'), this.translate.instant('app.close'), { duration: DURATION });
-          },
-          complete: () => this.editCasting = false
-        }
-      )
-    } else {
-      this.snackBar.open(this.translate.instant('app.invalid_form'), this.translate.instant('app.close'), { duration: DURATION });
-    }
+  saveCast(event: MovieActor[]) {
+    this.cast = event;
+    this.editCasting = false;
   }
 }

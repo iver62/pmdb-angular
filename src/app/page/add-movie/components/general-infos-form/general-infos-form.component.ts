@@ -42,8 +42,8 @@ export class GeneralInfosFormComponent {
 
   @ViewChild('textarea') textarea!: ElementRef<HTMLTextAreaElement>;
 
-  cancellable = input.required<boolean>();
   movie = input.required<Movie>();
+  cancellable = input.required<boolean>();
   user = input<User>();
 
   @Output() cancel = new EventEmitter();
@@ -117,8 +117,8 @@ export class GeneralInfosFormComponent {
             }
           ),
           posterFileName: [movie?.posterFileName],
-          countries: [movie?.countries],
-          categories: [movie?.categories],
+          countries: [movie?.countries ?? []],
+          categories: [movie?.categories ?? []],
           user: [movie?.user ?? this.user()]
         }
       );
@@ -155,11 +155,7 @@ export class GeneralInfosFormComponent {
     this.cancel.emit();
   }
 
-  onRemoveCountry() {
-    this.form.markAsDirty();
-  }
-
-  onRemoveCategory() {
+  markFormAsDirty() {
     this.form.markAsDirty();
   }
 

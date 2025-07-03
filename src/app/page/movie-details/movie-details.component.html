@@ -40,17 +40,9 @@
       @if (editCasting) {
       <div class="h-full flex flex-col">
         <div class="flex-1 overflow-auto pt-1">
-          <app-cast-form [form]="castForm"></app-cast-form>
-        </div>
-
-        <div class="flex items-center justify-end gap-4">
-          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelCastForm()">
-            {{'app.cancel' | translate}}
-          </a>
-          <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-            [class.disabled]="castForm.invalid || castForm.pristine" (click)="saveCast()">
-            {{'app.validate' | translate}}
-          </a>
+          <app-cast-form [movieId]="id" [cast]="cast" [cancellable]="true" (cancel)="cancelCastForm()"
+            (save)="saveCast($event)">
+          </app-cast-form>
         </div>
       </div>
       } @else {

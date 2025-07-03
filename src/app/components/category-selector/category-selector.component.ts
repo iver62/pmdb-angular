@@ -135,7 +135,7 @@ export class CategorySelectorComponent {
       this.control.setValue(this.selectedCategories());
 
       // Clear the input value
-      this.searchTerm$.next(EMPTY_STRING);
+      this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
       this.input.nativeElement.value = EMPTY_STRING;
     });
   }
@@ -145,7 +145,7 @@ export class CategorySelectorComponent {
 
     if (index >= 0) {
       this.selectedCategories.update(categories => categories.filter(c => c.id !== category.id));
-      this.searchTerm$.next(EMPTY_STRING);
+      this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
     }
 
     this.remove.emit();
@@ -157,7 +157,7 @@ export class CategorySelectorComponent {
     if (!this.selectedCategories().some(c => c.id === category.id)) {
       this.selectedCategories.update(categories => categories.concat(category));
       this.control.setValue(this.selectedCategories());
-      this.searchTerm$.next(EMPTY_STRING);
+      this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
 
       if (this.input) {
         this.input.nativeElement.value = EMPTY_STRING; // Clear the input value

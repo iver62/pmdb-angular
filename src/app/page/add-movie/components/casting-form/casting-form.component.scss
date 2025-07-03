@@ -46,3 +46,8 @@
     cursor: grabbing;
   }
 }
+
+.disabled {
+  pointer-events: none;
+  opacity: 40% !important;
+}

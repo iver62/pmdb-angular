@@ -23,12 +23,12 @@
     </button>
     }
   </mat-step>
-  <mat-step [stepControl]="castingForm" [label]="'app.cast' | translate">
+  <mat-step [label]="'app.cast' | translate">
     @if (currentStep == 2) {
     <div class="flex-1 overflow-auto">
-      <app-cast-form [form]="castingForm"></app-cast-form>
+      <app-cast-form [movieId]="movie.id" [cast]="cast" [cancellable]="false"></app-cast-form>
     </div>
-    <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="saveCasting()">
+    <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
       {{'app.next' | translate}}
     </button>
     }
