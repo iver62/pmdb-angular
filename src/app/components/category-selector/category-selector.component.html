@@ -9,7 +9,7 @@
       </button>
     </mat-chip-row>
     }
-    <input #input appDelayedInput (delayedInput)="searchTerm$.next($event)" [placeholder]="'app.add' | translate"
+    <input #input appDelayedInput (delayedInput)="onSearch($event)" [placeholder]="'app.add' | translate"
       [matChipInputFor]="categoriesChipGrid" [matAutocomplete]="autoCategories"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
   </mat-chip-grid>

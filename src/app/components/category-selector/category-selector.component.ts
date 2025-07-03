@@ -115,6 +115,10 @@ export class CategorySelectorComponent {
     }
   }
 
+  onSearch(event: string) {
+    this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event });
+  }
+
   add(event: MatChipInputEvent) {
     const value = (event.value || EMPTY_STRING).trim();
 

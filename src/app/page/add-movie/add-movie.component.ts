@@ -90,7 +90,6 @@ export class AddMovieComponent {
     this.stepper.next();
   }
 
-
   updateTechnicians(event: { type: keyof TechnicalTeam, list: MovieTechnician[] }) {
     this.movie.technicalTeam[event.type] = event.list;
   }
