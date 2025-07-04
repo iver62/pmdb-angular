@@ -1,15 +1,15 @@
 @if (!editMode) {
 @if (person()) {
 @let movies = movies$ | async;
+@let roles = roles$ | async;
 
-<div class="flex flex-col flex-1 overflow-auto">
+<div class="flex flex-col h-full">
   <app-person-detail [person]="person()" [canDelete]="movies?.length > 0" (edit)="editMode = !editMode"
     (delete)="deletePerson()">
   </app-person-detail>
 
   <div class="flex flex-col flex-1 overflow-auto mt-4">
-    <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent
-      (selectedTabChange)="onTabChanged($event)">
+    <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent>
       <!-- Films associés -->
       <mat-tab labelClass="tab-label">
         <ng-template mat-tab-label>{{'app.movies' | translate}} ({{totalMovies}})</ng-template>
@@ -36,15 +36,15 @@
           </div>
           } @else {
           <!-- TABLEAU -->
-          <div class="flex-1 overflow-auto flex flex-col h-full">
+          <div class="flex-1 flex flex-col overflow-auto">
             <app-movies-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]=" movies"
               [sortActive]="moviesSearchConfig$.value.sort" [sortDirection]="moviesSearchConfig$.value.direction"
               (sort)="onSort($event)">
             </app-movies-table>
             @if (movies?.length) {
-            <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [length]="totalMovies"
-              [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
-              aria-label="Select page of Movie search results">
+            <mat-paginator #moviesPaginator class="rounded-b-lg dark:!text-white" [pageSizeOptions]="pageSizeOptions"
+              [length]="totalMovies" [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true"
+              (page)="onPageChange($event)" aria-label="Select page of Movie search results">
             </mat-paginator>
             }
           </div>
@@ -90,6 +90,24 @@
           </mat-card>
           } @empty {
           <div class="text-xl dark:!text-pmdb-white">{{'app.no_awards' | translate}}</div>
+          }
+        </div>
+      </mat-tab>
+
+      <!-- Rôles associés -->
+      <mat-tab labelClass="tab-label">
+        <ng-template mat-tab-label>{{'app.roles' | translate}} ({{totalRoles ?? 0}})</ng-template>
+
+        <div class="flex flex-1 flex-col overflow-auto h-full">
+          <app-roles-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]="roles"
+            [sortActive]="rolesSearchConfig$.value.sort" [sortDirection]="rolesSearchConfig$.value.direction"
+            (sort)="onSortRoles($event)">
+          </app-roles-table>
+          @if (roles?.length) {
+          <mat-paginator #rolesPaginator class="rounded-b-lg dark:!text-white" [pageSizeOptions]="pageSizeOptions"
+            [length]="totalMovies" [pageSize]="moviesSearchConfig$.value.size" [showFirstLastButtons]="true"
+            (page)="onPageChange($event)" aria-label="Select page of Role search results">
+          </mat-paginator>
           }
         </div>
       </mat-tab>

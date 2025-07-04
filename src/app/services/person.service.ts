@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Direction, Language, PersonType } from '../enums';
-import { Ceremony, CeremonyAwards, Country, Criterias, Movie, Person } from '../models';
+import { Ceremony, CeremonyAwards, Country, Criterias, Movie, MovieActor, Person } from '../models';
 import { DateUtils } from '../utils';
 import { DateService } from './date.service';
 
@@ -85,6 +85,17 @@ export class PersonService {
     criterias?.categories?.forEach(category => params.append('category', category.id.toString()));
 
     return this.http.get<Movie[]>(`${this.basePath}/${id}/movies?${params.toString()}`, { observe: 'response' });
+  }
+
+  getRolesByPerson(id: number, page = 0, size = 50, sort = 'movie.title', direction = 'asc') {
+    const params = new URLSearchParams();
+
+    params.set('page', page.toString());
+    params.set('size', size.toString());
+    params.set('sort', sort);
+    params.set('direction', direction === 'asc' ? Direction.ASCENDING : Direction.DESCENDING);
+
+    return this.http.get<MovieActor[]>(`${this.basePath}/${id}/roles?${params.toString()}`, { observe: 'response' });
   }
 
   getAwardsByPerson(id: number) {

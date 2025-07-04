@@ -137,6 +137,7 @@
     "reset_email_sent": "Email de réinitialisation envoyé !",
     "reset_password": "Réinitialiser le mot de passe",
     "role": "Rôle",
+    "roles": "Rôles",
     "roles_of": "Rôles de",
     "roles_updated_error": "Erreur lors de la modification des rôles",
     "roles_updated_success": "Rôles modifiés avec succés",

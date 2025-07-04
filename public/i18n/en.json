@@ -138,6 +138,7 @@
     "reset_email_sent": "Reset email sent !",
     "reset_password": "Reset password",
     "role": "Role",
+    "roles": "Roles",
     "roles_of": "Roles of",
     "roles_updated_error": "Error while updating user roles",
     "roles_updated_success": "Roles updated with success",

@@ -1,11 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, signal, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
@@ -19,6 +20,7 @@ import { Category, Country, Criterias, Movie, Person, SearchConfig, SortOption, 
 import { MovieService, PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
 import { PersonDetailComponent, PersonFormComponent } from './components';
+import { RolesTableComponent } from "./components/roles-table/roles-table.component";
 
 @Component({
   selector: 'app-person-details',
@@ -26,16 +28,18 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
     AsyncPipe,
     CriteriasReminderComponent,
     InfiniteScrollDirective,
-    MatButtonModule,
     MatCardModule,
     MatIconModule,
     MatPaginatorModule,
+    MatSortModule,
+    MatTableModule,
     MatTabsModule,
     MoviesListComponent,
     MoviesTableComponent,
     NgPipesModule,
     PersonDetailComponent,
     PersonFormComponent,
+    RolesTableComponent,
     RouterLink,
     ToolbarComponent,
     TranslatePipe
@@ -45,19 +49,27 @@ import { PersonDetailComponent, PersonFormComponent } from './components';
 })
 export class PersonDetailsComponent {
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  private selectedTab$ = new BehaviorSubject<number>(0);
+  @ViewChild(MatPaginator) moviesPaginator!: MatPaginator;
+  @ViewChild(MatPaginator) rolesPaginator!: MatPaginator;
 
   moviesSearchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
-      size: 20,
+      size: 25,
       sort: 'title',
       direction: 'asc',
       term: EMPTY_STRING,
       criterias: {},
       view: View.GRID
+    }
+  );
+
+  rolesSearchConfig$ = new BehaviorSubject<SearchConfig>(
+    {
+      page: 0,
+      size: 25,
+      sort: 'movie.title',
+      direction: 'asc'
     }
   );
 
@@ -92,6 +104,20 @@ export class PersonDetailsComponent {
     )
   );
 
+  roles$ = this.rolesSearchConfig$.pipe(
+    filter(() => !!this.person()),
+    switchMap(config =>
+      this.personService.getRolesByPerson(this.person().id, config.page, config.size, config.sort, config.direction).pipe(
+        tap(response => this.totalRoles = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
+        map(response => response.body ?? []),
+        catchError(error => {
+          console.error('Erreur lors de la récupération des rôles:', error);
+          return of(null); // Retourne un observable avec null en cas d'erreur
+        })
+      )
+    )
+  );
+
   groupedCeremonies$ = this.awardsSearchConfig$.pipe(
     filter(() => !!this.person()),
     switchMap(config =>
@@ -102,7 +128,7 @@ export class PersonDetailsComponent {
           return of(null); // Retourne un observable avec null en cas d'erreur
         })
       )
-    ),
+    )
   );
 
   sortOptions: SortOption[] = [
@@ -119,6 +145,7 @@ export class PersonDetailsComponent {
   ];
 
   totalMovies: number;
+  totalRoles: number;
   totalAwards: number;
   view = View;
   pageSizeOptions = [25, 50, 100];
@@ -146,10 +173,6 @@ export class PersonDetailsComponent {
     ).subscribe(result => this.person.set(result));
   }
 
-  onTabChanged(event: MatTabChangeEvent) {
-    this.selectedTab$.next(event.index);
-  }
-
   onFilter(event: Criterias) {
     this.moviesSearchConfig$.next(
       {
@@ -172,10 +195,22 @@ export class PersonDetailsComponent {
 
   onSort(event: SortOption) {
     if (this.moviesSearchConfig$.value.view == View.TABLE) {
-      this.paginator.firstPage();
+      this.moviesPaginator.firstPage();
     }
 
     this.updateSearchConfig({ page: 0, sort: event.active, direction: event.direction });
+  }
+
+  onSortRoles(event: SortOption) {
+    this.rolesSearchConfig$.next(
+      {
+        ...this.rolesSearchConfig$.value,
+        page: 0,
+        sort: event.active,
+        direction: event.direction
+      }
+    );
+    this.rolesPaginator.firstPage();
   }
 
   onSearch(event: string) {
@@ -253,9 +288,9 @@ export class PersonDetailsComponent {
           this.snackBar.open(`${this.person().name} supprimé avec succès`, this.translate.instant('app.close'), { duration: DURATION });
           this.router.navigateByUrl('persons');
         },
-        error: (error: any) => {
+        error: error => {
           console.error(error);
-          this.snackBar.open(`Erreur lors de la suppression de ${this.person().name}`, this.translate.instant('app.error'), { duration: DURATION });
+          this.snackBar.open(error.error, this.translate.instant('app.error'), { duration: DURATION });
         }
       }
     );
