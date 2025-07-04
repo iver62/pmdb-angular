@@ -60,17 +60,19 @@ export class CountrySelectorComponent {
   readonly countries$ = this.searchConfig$.pipe(
     distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.lang === c2.lang),
     tap(() => this.isLoadingMore = true),
-    switchMap(config => this.countryService.getCountries(config.page, config.size, config.term, config.sort, config.lang).pipe(
-      tap(response => {
-        this.isLoadingMore = false;
-        this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
-      }),
-      map(response => response.body ?? []),
-      catchError(() => {
-        this.isLoadingMore = false;
-        return of([]);
-      })
-    )),
+    switchMap(config => !config.term.trim()
+      ? of([]).pipe(tap(() => this.total = null))
+      : this.countryService.getCountries(config.page, config.size, config.term, config.sort, config.lang).pipe(
+        tap(response => {
+          this.isLoadingMore = false;
+          this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
+        }),
+        map(response => response.body ?? []),
+        catchError(() => {
+          this.isLoadingMore = false;
+          return of([]);
+        })
+      )),
     scan((acc: Country[], result: Country[]) => {
       if (this.searchConfig$.value.page == 0) {
         this.loaded = result.length;

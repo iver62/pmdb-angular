@@ -10,7 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
+import { NgPipesModule } from 'ngx-pipes';
+import { BehaviorSubject, map, of, switchMap, tap } from 'rxjs';
 import { DURATION, EMPTY_STRING } from '../../../../../app.component';
 import { PersonsMultiselectComponent } from '../../../../../components';
 import { DelayedInputDirective } from '../../../../../directives';
@@ -30,6 +31,7 @@ import { HttpUtils } from '../../../../../utils';
     MatIconModule,
     MatInputModule,
     MatTooltipModule,
+    NgPipesModule,
     PersonsMultiselectComponent,
     ReactiveFormsModule,
     TranslatePipe
@@ -49,7 +51,7 @@ export class CeremonyAwardsFormComponent {
   @Output() save = new EventEmitter<CeremonyAwards>();
   @Output() cancel = new EventEmitter();
 
-  awardsSearchConfig$ = new BehaviorSubject<SearchConfig>(
+  ceremoniesSearchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
       size: 20,
@@ -65,9 +67,10 @@ export class CeremonyAwardsFormComponent {
     }
   );
 
-  ceremonies$ = this.awardsSearchConfig$.pipe(
-    switchMap(config => this.ceremonyService.getCeremonies(config.page, config.size, config.term)
-      .pipe(
+  ceremonies$ = this.ceremoniesSearchConfig$.pipe(
+    switchMap(config => !config.term.trim()
+      ? of([]).pipe(tap(() => this.totalCeremonies = null))
+      : this.ceremonyService.getCeremonies(config.page, config.size, config.term).pipe(
         tap(response => {
           this.isLoadingMoreCeremonies = false;
           this.totalCeremonies = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0);
@@ -115,7 +118,7 @@ export class CeremonyAwardsFormComponent {
   }
 
   onSearch(event: string) {
-    this.awardsSearchConfig$.next({ ...this.awardsSearchConfig$.value, page: 0, term: event.trim() });
+    this.ceremoniesSearchConfig$.next({ ...this.ceremoniesSearchConfig$.value, page: 0, term: event.trim() });
   }
 
   selectCeremony(event: MatAutocompleteSelectedEvent) {
@@ -134,7 +137,6 @@ export class CeremonyAwardsFormComponent {
   createAward() {
     return this.fb.group(
       {
-        // ceremony: [EMPTY_STRING, Validators.required], // Cérémonie de la récompense
         name: [null, Validators.required], // Nom de la récompense
         year: [],  // Année de la récompense
         persons: []  // Personnes concernées par la récompense
@@ -162,11 +164,17 @@ export class CeremonyAwardsFormComponent {
   }
 
   clearCeremony() {
-    // this.ceremonyFormGroup.get('name').patchValue(null);
     this.ceremonyFormGroup.patchValue({
       id: null,
       name: null
     });
+    this.ceremoniesSearchConfig$.next(
+      {
+        page: 0,
+        size: 20,
+        term: EMPTY_STRING
+      }
+    )
   }
 
   clearName(index: number) {

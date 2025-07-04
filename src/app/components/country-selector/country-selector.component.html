@@ -1,7 +1,7 @@
 @let currentLang = currentLang$ | async;
 
 <mat-form-field class="w-full" [style.height.px]="92">
-  <mat-label>{{'app.countries' | translate}} ({{total}})</mat-label>
+  <mat-label>{{'app.countries' | translate}} @if (total) {({{total}})}</mat-label>
   <mat-chip-grid #countriesChipGrid aria-label="Country selection" [formControl]="control">
     @for (country of selectedCountries(); track country.id) {
     <mat-chip-row class="dark:!bg-pmdb-dark" [value]="country" (removed)="onRemove(country)">

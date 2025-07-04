@@ -3,17 +3,17 @@
     <div class="flex justify-between">
       <!-- Champ cérémonie -->
       <mat-form-field class="w-1/3" [formGroup]="ceremonyFormGroup">
-        <mat-label>{{'app.ceremony' | translate}}</mat-label>
+        <mat-label>{{'app.ceremony' | translate}} @if (totalCeremonies) {({{totalCeremonies}})}</mat-label>
         <input appDelayedInput (delayedInput)="onSearch($event)" matInput aria-label="Cérémonie"
           [matAutocomplete]="auto" formControlName="name">
-        @if (form.value.ceremony) {
+        @if (form.value.ceremony.name) {
         <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
           aria-label="Effacer la cérémonie" (click)="clearCeremony()">
           <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
         </button>
         }
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectCeremony($event)">
-          @for (ceremony of ceremonies$ | async; track ceremony) {
+          @for (ceremony of ceremonies$ | async | orderBy: 'name'; track ceremony) {
           <mat-option [value]="ceremony">{{ceremony?.name}}</mat-option>
           }
         </mat-autocomplete>

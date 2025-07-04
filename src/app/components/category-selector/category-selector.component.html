@@ -1,5 +1,5 @@
 <mat-form-field class="w-full" [style.height.px]="92">
-  <mat-label>{{'app.categories' | translate}} ({{total}})</mat-label>
+  <mat-label>{{'app.categories' | translate}} @if (total) {({{total}})}</mat-label>
   <mat-chip-grid #categoriesChipGrid aria-label="Category selection" [formControl]="control">
     @for (category of selectedCategories(); track category.id) {
     <mat-chip-row class="dark:!bg-pmdb-dark" [value]="category" (removed)="onRemove(category)">

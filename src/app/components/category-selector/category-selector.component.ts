@@ -52,17 +52,19 @@ export class CategorySelectorComponent {
   readonly categories$ = this.searchConfig$.pipe(
     distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.term == c2.term),
     tap(() => this.isLoadingMore = true),
-    switchMap(config => this.categoryService.getCategories(config.page, config.size, config.term).pipe(
-      tap(response => {
-        this.isLoadingMore = false;
-        this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
-      }),
-      map(response => response.body ?? []),
-      catchError(() => {
-        this.isLoadingMore = false;
-        return of([]);
-      })
-    )),
+    switchMap(config => !config.term.trim()
+      ? of([]).pipe(tap(() => this.total = null))
+      : this.categoryService.getCategories(config.page, config.size, config.term).pipe(
+        tap(response => {
+          this.isLoadingMore = false;
+          this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)
+        }),
+        map(response => response.body ?? []),
+        catchError(() => {
+          this.isLoadingMore = false;
+          return of([]);
+        })
+      )),
     scan((acc: Category[], result: Category[]) => {
       if (this.searchConfig$.value.page == 0) {
         this.loaded = result.length;
