@@ -14,7 +14,6 @@ export * from './movies-list/movie-card/movie-card.component';
 export * from './movies-list/movies-list.component';
 export * from './movies-table/movies-table.component';
 export * from './multiselect/multiselect.component';
-export * from './person-selector/person-selector.component';
 export * from './persons-list/person-card/person-card.component';
 export * from './persons-list/persons-list.component';
 export * from './persons-multiselect/persons-multiselect.component';
