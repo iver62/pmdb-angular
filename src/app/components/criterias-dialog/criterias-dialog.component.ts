@@ -48,48 +48,48 @@ const types = [
   },
   {
     id: 6,
-    name: PersonType.DECORATOR,
-    display: () => PersonType.DECORATOR
-  },
-  {
-    id: 7,
     name: PersonType.DIRECTOR,
     display: () => PersonType.DIRECTOR
   },
   {
-    id: 8,
+    id: 7,
     name: PersonType.EDITOR,
     display: () => PersonType.EDITOR
   },
   {
-    id: 9,
+    id: 8,
     name: PersonType.HAIR_DRESSER,
     display: () => PersonType.HAIR_DRESSER
   },
   {
-    id: 10,
+    id: 9,
     name: PersonType.MAKEUP_ARTIST,
     display: () => PersonType.MAKEUP_ARTIST
   },
   {
-    id: 11,
+    id: 10,
     name: PersonType.MUSICIAN,
     display: () => PersonType.MUSICIAN
   },
   {
-    id: 12,
+    id: 11,
     name: PersonType.PHOTOGRAPHER,
     display: () => PersonType.PHOTOGRAPHER
   },
   {
-    id: 13,
+    id: 12,
     name: PersonType.PRODUCER,
     display: () => PersonType.PRODUCER
   },
   {
-    id: 14,
+    id: 13,
     name: PersonType.SCREENWRITER,
     display: () => PersonType.SCREENWRITER
+  },
+  {
+    id: 14,
+    name: PersonType.SET_DESIGNER,
+    display: () => PersonType.SET_DESIGNER
   },
   {
     id: 15,

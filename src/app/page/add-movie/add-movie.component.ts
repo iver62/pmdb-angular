@@ -50,7 +50,7 @@ export class AddMovieComponent {
     musicians: [],
     photographers: [],
     costumeDesigners: [],
-    decorators: [],
+    setDesigners: [],
     editors: [],
     casters: [],
     artists: [],

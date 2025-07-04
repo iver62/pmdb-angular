@@ -30,7 +30,7 @@ export class TechnicalTeamComponent {
     musicians: false,
     photographers: false,
     costumeDesigners: false,
-    decorators: false,
+    setDesigners: false,
     editors: false,
     casters: false,
     artists: false,

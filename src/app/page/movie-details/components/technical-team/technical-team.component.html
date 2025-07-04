@@ -107,16 +107,17 @@
   </app-technicians>
   }
 
-  @if (edit.decorators) {
+  @if (edit.setDesigners) {
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sets"
-    label="app.technical_team.decorator_name" [movieId]="movieId()" [technicians]="technicalTeam().decorators"
-    [personType]="personType.DECORATOR" [expanded]="true" [serviceCall]="movieService.saveDecorators.bind(movieService)"
-    successMessage="app.technical_team_form.messages.success.updating_decorators"
-    (update)="updateTechnicians($event, 'decorators')" (cancel)="edit.decorators=false">
+    label="app.technical_team.set-designer_name" [movieId]="movieId()" [technicians]="technicalTeam().setDesigners"
+    [personType]="personType.SET_DESIGNER" [expanded]="true"
+    [serviceCall]="movieService.saveSetDesigners.bind(movieService)"
+    successMessage="app.technical_team_form.messages.success.updating_set_designer"
+    (update)="updateTechnicians($event, 'setDesigners')" (cancel)="edit.setDesigners=false">
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sets"
-    [technicians]="technicalTeam()?.decorators" (edit)="edit.decorators=true">
+    [technicians]="technicalTeam()?.setDesigners" (edit)="edit.setDesigners=true">
   </app-technicians>
   }
 

@@ -9,7 +9,7 @@ export interface TechnicalTeam {
   musicians?: MovieTechnician[];
   photographers?: MovieTechnician[];
   costumeDesigners?: MovieTechnician[];
-  decorators?: MovieTechnician[];
+  setDesigners?: MovieTechnician[];
   editors?: MovieTechnician[];
   casters?: MovieTechnician[];
   artists?: MovieTechnician[];

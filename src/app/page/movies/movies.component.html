@@ -31,7 +31,7 @@
     </app-movies-table>
   </div>
   @if (movies?.length) {
-  <mat-paginator #paginator class="rounded-b-lg dark:text-white!" [pageSizeOptions]="pageSizeOptions" [length]="total"
+  <mat-paginator #paginator class="rounded-b-lg dark:!text-white" [pageSizeOptions]="pageSizeOptions" [length]="total"
     [pageSize]="searchConfig$.value.size" [showFirstLastButtons]="true" (page)="onPageChange($event)"
     aria-label="Select page of Movie search results">
   </mat-paginator>
