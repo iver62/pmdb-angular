@@ -4,28 +4,32 @@
 @let roles = roles$ | async;
 
 <div class="flex flex-col h-full">
-  <app-person-detail [person]="person()" [canDelete]="movies?.length > 0" (edit)="editMode = !editMode"
+  <app-person-detail [person]="person()" [canDelete]="movies?.length < 1" (edit)="editMode = true"
     (delete)="deletePerson()">
   </app-person-detail>
 
   <div class="flex flex-col flex-1 overflow-auto mt-4">
-    <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent>
+    <mat-tab-group class="overflow-auto px-4" [disableRipple]="true" fitInkBarToContent
+      (selectedTabChange)="onTabChanged($event)">
       <!-- Films associés -->
       <mat-tab labelClass="tab-label">
-        <ng-template mat-tab-label>{{'app.movies' | translate}} ({{totalMovies}})</ng-template>
+        <ng-template mat-tab-label>{{'app.movies' | translate}}</ng-template>
 
         <div class="flex flex-col h-full">
-          <div class="flex justify-between m-3">
-            <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
-              (deleteCategory)="onDeleteCategory($event)" (deleteCountry)="onDeleteCountry($event)"
-              (deleteUser)="onDeleteUser($event)">
-            </app-criterias-reminder>
-            <app-toolbar [countries$]="movieService.getCountries"
-              [criterias]="['releaseDate', 'categories', 'countries', 'users', 'creationDate', 'lastUpdate']"
-              [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
-              (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
-              (sort)="onSort($event)">
-            </app-toolbar>
+          <div class="flex items-center justify-between dark:text-pmdb-white">
+            <h2 [hidden]="totalMovies < 1" class="text-xl">{{totalMovies}} {{'app.movies' | translate}}</h2>
+            <div class="flex justify-between m-3">
+              <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
+                (deleteCategory)="onDeleteCategory($event)" (deleteCountry)="onDeleteCountry($event)"
+                (deleteUser)="onDeleteUser($event)">
+              </app-criterias-reminder>
+              <app-toolbar [personId]="person().id" [countries$]="personService.getMovieCountriesByPerson"
+                [criterias]="['releaseDate', 'categories', 'countries', 'users', 'creationDate', 'lastUpdate']"
+                [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
+                (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
+                (sort)="onSortMovies($event)">
+              </app-toolbar>
+            </div>
           </div>
 
           <!-- AFFICHES -->
@@ -39,7 +43,7 @@
           <div class="flex-1 flex flex-col overflow-auto">
             <app-movies-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]=" movies"
               [sortActive]="moviesSearchConfig$.value.sort" [sortDirection]="moviesSearchConfig$.value.direction"
-              (sort)="onSort($event)">
+              (sort)="onSortMovies($event)">
             </app-movies-table>
             @if (movies?.length) {
             <mat-paginator #moviesPaginator class="rounded-b-lg dark:!text-white" [pageSizeOptions]="pageSizeOptions"
@@ -53,7 +57,7 @@
       </mat-tab>
       <!-- Récompenses associées -->
       <mat-tab labelClass="tab-label">
-        <ng-template mat-tab-label>{{'app.awards' | translate}} ({{totalAwards || 0}})</ng-template>
+        <ng-template mat-tab-label>{{'app.awards' | translate}}</ng-template>
 
         <div class="grid grid-cols-4 gap-4 mt-4">
           @for (groupedCeremony of groupedCeremonies$ | async | orderBy:'ceremony.name'; track
@@ -96,7 +100,7 @@
 
       <!-- Rôles associés -->
       <mat-tab labelClass="tab-label">
-        <ng-template mat-tab-label>{{'app.roles' | translate}} ({{totalRoles ?? 0}})</ng-template>
+        <ng-template mat-tab-label>{{'app.roles' | translate}}</ng-template>
 
         <div class="flex flex-1 flex-col overflow-auto h-full">
           <app-roles-table class="flex-1 overflow-auto rounded-t-lg" [dataSource]="roles"

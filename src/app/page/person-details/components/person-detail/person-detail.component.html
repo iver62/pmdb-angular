@@ -12,7 +12,7 @@
       @if (authService.hasRole('admin')) {
       <button mat-icon-button class="dark:text-pmdb-gold! dark:hover:text-pmdb-white! dark:disabled:opacity-25"
         [matTooltip]="'app.delete' | translate" aria-label="Example icon button with a delete icon" color="accent"
-        [disabled]="canDelete" (click)="onDelete()">
+        [disabled]="!canDelete" (click)="onDelete()">
         <mat-icon>delete</mat-icon>
       </button>
       }

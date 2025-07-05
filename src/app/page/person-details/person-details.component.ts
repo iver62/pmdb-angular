@@ -1,19 +1,20 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, signal, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { NgPipesModule } from 'ngx-pipes';
-import { BehaviorSubject, catchError, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, filter, map, Observable, of, scan, switchMap, tap } from 'rxjs';
 import { DURATION, EMPTY_STRING } from '../../app.component';
-import { MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
+import { ConfirmationDialogComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
 import { View } from '../../enums';
 import { Category, Country, Criterias, Movie, Person, SearchConfig, SortOption, User } from '../../models';
@@ -52,6 +53,8 @@ export class PersonDetailsComponent {
   @ViewChild(MatPaginator) moviesPaginator!: MatPaginator;
   @ViewChild(MatPaginator) rolesPaginator!: MatPaginator;
 
+  private selectedTab$ = new BehaviorSubject<number>(0);
+
   moviesSearchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
@@ -86,9 +89,9 @@ export class PersonDetailsComponent {
     )
   );
 
-  movies$ = this.moviesSearchConfig$.pipe(
-    filter(() => !!this.person()),
-    switchMap(config =>
+  movies$ = combineLatest([this.moviesSearchConfig$, this.selectedTab$]).pipe(
+    filter(([_, tab]) => !!this.person() && tab == 0),
+    switchMap(([config, _]) =>
       this.personService.getMoviesByPerson(this.person().id, config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.totalMovies = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
         map(response => response.body ?? []),
@@ -104,27 +107,27 @@ export class PersonDetailsComponent {
     )
   );
 
-  roles$ = this.rolesSearchConfig$.pipe(
-    filter(() => !!this.person()),
-    switchMap(config =>
-      this.personService.getRolesByPerson(this.person().id, config.page, config.size, config.sort, config.direction).pipe(
-        tap(response => this.totalRoles = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
-        map(response => response.body ?? []),
+  groupedCeremonies$ = combineLatest([this.awardsSearchConfig$, this.selectedTab$]).pipe(
+    filter(([_, tab]) => !!this.person() && tab == 1),
+    switchMap(() =>
+      this.personService.getAwardsByPerson(this.person().id).pipe(
+        tap(result => this.totalAwards = result?.map(r => r.movieAwards?.flatMap(ma => ma.awards).length)?.reduce((acc, currentValue) => acc + currentValue)),
         catchError(error => {
-          console.error('Erreur lors de la récupération des rôles:', error);
+          console.error('Erreur lors de la récupération des récompenses:', error);
           return of(null); // Retourne un observable avec null en cas d'erreur
         })
       )
     )
   );
 
-  groupedCeremonies$ = this.awardsSearchConfig$.pipe(
-    filter(() => !!this.person()),
-    switchMap(config =>
-      this.personService.getAwardsByPerson(this.person().id).pipe(
-        tap(result => this.totalAwards = result?.map(r => r.movieAwards?.flatMap(ma => ma.awards).length)?.reduce((acc, currentValue) => acc + currentValue)),
+  roles$ = combineLatest([this.rolesSearchConfig$, this.selectedTab$]).pipe(
+    filter(([_, tab]) => !!this.person() && tab == 2),
+    switchMap(([config, _]) =>
+      this.personService.getRolesByPerson(this.person().id, config.page, config.size, config.sort, config.direction).pipe(
+        tap(response => this.totalRoles = +response.headers.get(HttpUtils.X_TOTAL_COUNT)),
+        map(response => response.body ?? []),
         catchError(error => {
-          console.error('Erreur lors de la récupération des récompenses:', error);
+          console.error('Erreur lors de la récupération des rôles:', error);
           return of(null); // Retourne un observable avec null en cas d'erreur
         })
       )
@@ -153,8 +156,9 @@ export class PersonDetailsComponent {
   editMode = false;
 
   constructor(
+    private dialog: MatDialog,
     public movieService: MovieService,
-    private personService: PersonService,
+    public personService: PersonService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -171,6 +175,10 @@ export class PersonDetailsComponent {
     ).pipe(
       filter(person => !!person), // Empêche d'exécuter la requête si `person` est null
     ).subscribe(result => this.person.set(result));
+  }
+
+  onTabChanged(event: MatTabChangeEvent) {
+    this.selectedTab$.next(event.index);
   }
 
   onFilter(event: Criterias) {
@@ -193,7 +201,7 @@ export class PersonDetailsComponent {
     );
   }
 
-  onSort(event: SortOption) {
+  onSortMovies(event: SortOption) {
     if (this.moviesSearchConfig$.value.view == View.TABLE) {
       this.moviesPaginator.firstPage();
     }
@@ -282,17 +290,27 @@ export class PersonDetailsComponent {
   }
 
   deletePerson() {
-    this.personService.delete(this.person().id).subscribe(
-      {
-        next: () => {
-          this.snackBar.open(`${this.person().name} supprimé avec succès`, this.translate.instant('app.close'), { duration: DURATION });
-          this.router.navigateByUrl('persons');
-        },
-        error: error => {
-          console.error(error);
-          this.snackBar.open(error.error, this.translate.instant('app.error'), { duration: DURATION });
-        }
+    this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: '30vw',  // Définit la largeur à 30% de l'écran
+      data: {
+        title: this.translate.instant('app.confirm'),
+        message: this.translate.instant('app.confirm_delete_message', { data: this.person().name })
       }
-    );
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.personService.delete(this.person().id).subscribe(
+          {
+            next: () => {
+              this.snackBar.open(this.translate.instant('app.delete_success_message', { data: this.person().name }), this.translate.instant('app.close'), { duration: DURATION });
+              this.router.navigateByUrl('persons');
+            },
+            error: error => {
+              console.error(error);
+              this.snackBar.open(error.error, this.translate.instant('app.error'), { duration: DURATION });
+            }
+          }
+        );
+      }
+    });
   }
 }
