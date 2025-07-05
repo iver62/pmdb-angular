@@ -1,12 +1,14 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { TranslatePipe } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { BehaviorSubject, catchError, map, Observable, of, scan, switchMap, tap } from 'rxjs';
-import { EMPTY_STRING } from '../../app.component';
-import { CriteriasReminderComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '../../components';
+import { BehaviorSubject, catchError, combineLatest, map, Observable, of, scan, startWith, Subject, switchMap, tap } from 'rxjs';
+import { DURATION, EMPTY_STRING } from '../../app.component';
+import { ConfirmationDialogComponent, CriteriasReminderComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '../../components';
 import { PersonType, View } from '../../enums';
 import { Country, Criterias, Person, SearchConfig, SortOption, Type } from '../../models';
 import { PersonService } from '../../services/person.service';
@@ -61,8 +63,10 @@ export class PersonsComponent {
     }
   );
 
-  persons$ = this.searchConfig$.pipe(
-    switchMap(config =>
+  deletePerson$ = new Subject<Boolean>();
+
+  persons$ = combineLatest([this.searchConfig$, this.deletePerson$.pipe(startWith(false))]).pipe(
+    switchMap(([config, _]) =>
       this.personService.getPersonsWithMoviesNumber(config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => (response.body ?? [])),
@@ -97,7 +101,10 @@ export class PersonsComponent {
 
   constructor(
     private cookieService: CookieService,
-    private personService: PersonService
+    private dialog: MatDialog,
+    private personService: PersonService,
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) { }
 
   onDeleteType(type: Type) {
@@ -176,6 +183,31 @@ export class PersonsComponent {
         ...newConfig
       }
     );
+  }
+
+  deletePerson(person: Person) {
+    this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: '30vw',  // Définit la largeur à 30% de l'écran
+      data: {
+        title: this.translate.instant('app.confirm'),
+        message: this.translate.instant('app.confirm_delete_message', { data: person.name })
+      }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.personService.delete(person.id).subscribe(
+          {
+            next: () => {
+              this.snackBar.open(this.translate.instant('app.delete_success_message', { data: person.name }), this.translate.instant('app.close'), { duration: DURATION });
+              this.deletePerson$.next(true);
+            },
+            error: error => {
+              console.error(error);
+              this.snackBar.open(error.error, this.translate.instant('app.error'), { duration: DURATION });
+            }
+          }
+        );
+      }
+    });
   }
 
 }

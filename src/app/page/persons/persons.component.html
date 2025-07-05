@@ -25,7 +25,7 @@
   } @else {
   <div #tableContainer class="grow max-h-fit overflow-y-auto rounded-t-lg">
     <app-persons-table [dataSource]="persons" [sortActive]="searchConfig$.value.sort"
-      [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)">
+      [sortDirection]="searchConfig$.value.direction" (sort)="onSort($event)" (delete)="deletePerson($event)">
     </app-persons-table>
   </div>
   @if (persons?.length) {
