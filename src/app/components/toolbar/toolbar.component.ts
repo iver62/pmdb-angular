@@ -33,11 +33,12 @@ export class ToolbarComponent {
 
   @ViewChild('inputRef') inputComponent!: InputComponent;
 
-  countries$ = input<(term: string, page: number, size: number, sort: string, lang: Language) => Observable<HttpResponse<Country[]>>>();
+  countries$ = input<(term: string, page: number, size: number, sort: string, lang: Language, direction: string, id: number) => Observable<HttpResponse<Country[]>>>();
   sorts = input.required<SortOption[]>();
   criterias = input<string[]>([]);
   selectedCriterias = input<Criterias>({} as Criterias);
   cookieName = input<string>();
+  personId = input<number>();
 
   selectedSort = computed(() => this.sorts().find(s => ['asc', 'desc'].includes(s.direction)));
 
@@ -89,6 +90,7 @@ export class ToolbarComponent {
       minWidth: '40vw',  // Définit la largeur à 75% de l'écran
       maxHeight: '90vh', // Définit la hauteur à 90% de l'écran
       data: {
+        personId: this.personId(),
         criterias: this.criterias(),
         selectedCriterias: this.selectedCriterias(),
         countriesObs$: this.countries$()

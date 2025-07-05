@@ -160,7 +160,7 @@ export class CriteriasDialogComponent {
   countries$ = this.searchTerms$.country.pipe(
     switchMap(term => {
       const lang = localStorage.getItem('lang') || this.translate.defaultLang;
-      return this.data.countriesObs$(term, 0, 20, lang == Language.EN ? 'nomEnGb' : 'nomFrFr', lang)
+      return this.data.countriesObs$(term, 0, 20, lang == Language.EN ? 'nomEnGb' : 'nomFrFr', lang, 'asc', this.data.personId)
         .pipe(
           tap(response => this.totalCountries = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
           map(response => response.body ?? []),
@@ -211,9 +211,10 @@ export class CriteriasDialogComponent {
     private translate: TranslateService,
     private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: {
+      personId: number,
       criterias: string[],
       selectedCriterias: Criterias,
-      countriesObs$: (term: string, page: number, size: number, sort: string, lang: string) => Observable<HttpResponse<Country[]>>
+      countriesObs$: (term: string, page: number, size: number, sort: string, lang: string, direction: string, id: number) => Observable<HttpResponse<Country[]>>
     }
   ) { }
 
