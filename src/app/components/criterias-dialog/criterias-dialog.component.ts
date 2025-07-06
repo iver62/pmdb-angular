@@ -138,9 +138,9 @@ export class CriteriasDialogComponent {
     user: new BehaviorSubject(EMPTY_STRING)
   };
 
-  // Liste des catégories filtrés
+  // Liste des catégories filtrées
   categories$ = this.searchTerms$.category.pipe(
-    switchMap(term => this.categoryService.getAll(term)
+    switchMap(term => this.data.categoriesObs$(term, 0, 20, 'name', 'asc', this.data.personId)
       .pipe(
         tap(response => this.totalCategories = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
         map(response => response.body ?? []),
@@ -214,6 +214,7 @@ export class CriteriasDialogComponent {
       personId: number,
       criterias: string[],
       selectedCriterias: Criterias,
+      categoriesObs$: (term: string, page: number, size: number, sort: string, direction: string, id: number) => Observable<HttpResponse<Category[]>>
       countriesObs$: (term: string, page: number, size: number, sort: string, lang: string, direction: string, id: number) => Observable<HttpResponse<Country[]>>
     }
   ) { }

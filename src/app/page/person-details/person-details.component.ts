@@ -76,7 +76,7 @@ export class PersonDetailsComponent {
     }
   );
 
-  awardsSearchConfig$ = new BehaviorSubject<SearchConfig>({ page: 0, size: 20 });
+  // awardsSearchConfig$ = new BehaviorSubject<SearchConfig>({ page: 0, size: 20 });
 
   sorts$: Observable<SortOption[]> = this.moviesSearchConfig$.pipe(
     map(config =>
@@ -107,8 +107,8 @@ export class PersonDetailsComponent {
     )
   );
 
-  groupedCeremonies$ = combineLatest([this.awardsSearchConfig$, this.selectedTab$]).pipe(
-    filter(([_, tab]) => !!this.person() && tab == 1),
+  groupedCeremonies$ = this.selectedTab$.pipe(
+    filter(tab => !!this.person() && tab == 1),
     switchMap(() =>
       this.personService.getAwardsByPerson(this.person().id).pipe(
         tap(result => this.totalAwards = result?.map(r => r.movieAwards?.flatMap(ma => ma.awards).length)?.reduce((acc, currentValue) => acc + currentValue)),

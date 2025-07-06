@@ -138,6 +138,11 @@ export class PersonService {
       { observe: 'response' }
     );
 
+  getMovieCategoriesByPerson = (term: string, page = 0, size = 50, sort = 'name', direction = 'asc', id: number) =>
+    this.http.get<Country[]>(`${this.basePath}/${id}/movies/categories?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
+      { observe: 'response' }
+    );
+
   save(person: Person) {
     return this.http.post<Person>(this.basePath, person);
   }

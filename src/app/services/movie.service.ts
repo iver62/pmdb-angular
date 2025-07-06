@@ -100,8 +100,13 @@ export class MovieService {
     );
   }
 
-  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = Language.FR, direction = 'asc', id: number) =>
+  getCountries = (term: string, page = 0, size = 50, sort = 'nomFrFr', lang = Language.FR, direction = 'asc') =>
     this.http.get<Country[]>(`${this.basePath}/countries?page=${page}&size=${size}&sort=${sort}&lang=${lang}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
+      { observe: 'response' }
+    );
+
+  getCategories = (term: string, page = 0, size = 50, sort = 'name', direction = 'asc') =>
+    this.http.get<Category[]>(`${this.basePath}/categories?page=${page}&size=${size}&sort=${sort}&direction=${direction == 'asc' ? Direction.ASCENDING : Direction.DESCENDING}&term=${term}`,
       { observe: 'response' }
     );
 
@@ -115,14 +120,6 @@ export class MovieService {
 
   getCeremoniesAwards(id: number) {
     return this.http.get<CeremonyAwards[]>(`${this.basePath}/${id}/ceremonies-awards`);
-  }
-
-  getCategories(id: number) {
-    return this.http.get<Category[]>(`${this.basePath}/${id}/categories`);
-  }
-
-  getCountriesByMovie(id: number) {
-    return this.http.get<Country[]>(`${this.basePath}/${id}/countries`);
   }
 
   saveMovie(imageFile: File, movie: Movie) {

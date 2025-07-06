@@ -11,7 +11,7 @@
       (deleteCountry)="onDeleteCountry($event)" (deleteUser)="onDeleteUser($event)">
     </app-criterias-reminder>
     }
-    <app-toolbar [countries$]="movieService.getCountries"
+    <app-toolbar [categories$]="movieService.getCategories" [countries$]="movieService.getCountries"
       [criterias]="['releaseDate', 'categories', 'countries', 'users', 'creationDate', 'lastUpdate']"
       [sorts]="sorts$ | async" [selectedCriterias]="searchConfig$?.value?.criterias" cookieName="movies-config"
       (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"

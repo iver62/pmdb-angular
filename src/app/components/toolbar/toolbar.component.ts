@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, computed, effect, EventEmitter, input, Output, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { NgPipesModule } from 'ngx-pipes';
 import { filter, Observable, take } from 'rxjs';
 import { Language, View } from '../../enums';
-import { Country, Criterias, SearchConfig, SortOption } from '../../models';
+import { Category, Country, Criterias, SearchConfig, SortOption } from '../../models';
 import { CriteriasDialogComponent } from '../criterias-dialog/criterias-dialog.component';
 import { InputComponent } from '../input/input.component';
 
@@ -19,7 +19,6 @@ import { InputComponent } from '../input/input.component';
   imports: [
     InputComponent,
     MatButtonModule,
-    MatDialogModule,
     MatIconModule,
     MatMenuModule,
     MatTooltipModule,
@@ -33,6 +32,7 @@ export class ToolbarComponent {
 
   @ViewChild('inputRef') inputComponent!: InputComponent;
 
+  categories$ = input<(term: string, page: number, size: number, sort: string, direction: string, id: number) => Observable<HttpResponse<Category[]>>>();
   countries$ = input<(term: string, page: number, size: number, sort: string, lang: Language, direction: string, id: number) => Observable<HttpResponse<Country[]>>>();
   sorts = input.required<SortOption[]>();
   criterias = input<string[]>([]);
@@ -93,6 +93,7 @@ export class ToolbarComponent {
         personId: this.personId(),
         criterias: this.criterias(),
         selectedCriterias: this.selectedCriterias(),
+        categoriesObs$: this.categories$(),
         countriesObs$: this.countries$()
       }
     }).afterClosed().pipe(

@@ -16,20 +16,21 @@
         <ng-template mat-tab-label>{{'app.movies' | translate}}</ng-template>
 
         <div class="flex flex-col h-full">
-          <div class="flex items-center justify-between dark:text-pmdb-white">
-            <h2 [hidden]="totalMovies < 1" class="text-xl">{{totalMovies}} {{'app.movies' | translate}}</h2>
-            <div class="flex justify-between m-3">
-              <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
-                (deleteCategory)="onDeleteCategory($event)" (deleteCountry)="onDeleteCountry($event)"
-                (deleteUser)="onDeleteUser($event)">
-              </app-criterias-reminder>
-              <app-toolbar [personId]="person().id" [countries$]="personService.getMovieCountriesByPerson"
-                [criterias]="['releaseDate', 'categories', 'countries', 'users', 'creationDate', 'lastUpdate']"
-                [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
-                (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
-                (sort)="onSortMovies($event)">
-              </app-toolbar>
+          <div class="flex items-center justify-between dark:text-pmdb-white m-3">
+            <div>
+              <h2 [hidden]="totalMovies < 1" class="text-xl">{{totalMovies}} {{'app.movies' | translate}}</h2>
             </div>
+            <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
+              (deleteCategory)="onDeleteCategory($event)" (deleteCountry)="onDeleteCountry($event)"
+              (deleteUser)="onDeleteUser($event)">
+            </app-criterias-reminder>
+            <app-toolbar [personId]="person().id" [categories$]="personService.getMovieCategoriesByPerson"
+              [countries$]="personService.getMovieCountriesByPerson"
+              [criterias]="['releaseDate', 'categories', 'countries', 'users', 'creationDate', 'lastUpdate']"
+              [sorts]="sorts$ | async" [selectedCriterias]="moviesSearchConfig$?.value?.criterias"
+              (search)="onSearch($event)" (filter)="onFilter($event)" (switchView)="onSwitchView($event)"
+              (sort)="onSortMovies($event)">
+            </app-toolbar>
           </div>
 
           <!-- AFFICHES -->
