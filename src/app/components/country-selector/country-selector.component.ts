@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, effect, ElementRef, EventEmitter, input, Output, signal, ViewChild } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,10 +35,11 @@ export class CountrySelectorComponent {
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
   @ViewChild('autoCountries', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
 
-  formGroupName = input.required<string>();
-  selectedCountries = signal<Country[]>([]);
+  control = input.required<FormControl>();
 
   @Output() remove = new EventEmitter();
+
+  selectedCountries = signal<Country[]>([]);
 
   currentLang$ = this.translate.onLangChange.pipe(
     map(result => result.lang),
@@ -91,7 +92,6 @@ export class CountrySelectorComponent {
     )
   );
 
-  control: FormControl;
   total: number;
   language = Language;
   private loaded = 0;
@@ -99,13 +99,9 @@ export class CountrySelectorComponent {
 
   constructor(
     private countryService: CountryService,
-    private rootFormGroup: FormGroupDirective,
     private translate: TranslateService
   ) {
-    effect(() => {
-      this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
-      this.selectedCountries.set(this.control.value || []);
-    });
+    effect(() => this.selectedCountries.set(this.control().value || []));
 
     translate.onLangChange.subscribe(result => this.searchConfig$.next(
       {
@@ -146,7 +142,7 @@ export class CountrySelectorComponent {
 
     if (index >= 0) {
       this.selectedCountries.update(countries => countries.filter(c => c.id !== country.id));
-      this.control.setValue([...this.selectedCountries()]);
+      this.control().setValue([...this.selectedCountries()]);
       this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
     }
 
@@ -158,7 +154,7 @@ export class CountrySelectorComponent {
 
     if (!this.selectedCountries().some(c => c.id === country.id)) {
       this.selectedCountries.set([...this.selectedCountries(), country]);
-      this.control.setValue([...this.selectedCountries()]);
+      this.control().setValue([...this.selectedCountries()]);
       this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
 
       if (input) {

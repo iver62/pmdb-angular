@@ -2,7 +2,7 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { AsyncPipe } from '@angular/common';
 import { Component, effect, ElementRef, EventEmitter, input, Output, signal, ViewChild } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,6 +35,10 @@ export class CategorySelectorComponent {
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
   @ViewChild('autoCategories', { read: MatAutocomplete }) matAutocomplete: MatAutocomplete;
 
+  control = input.required<FormControl>();
+
+  @Output() remove = new EventEmitter();
+
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
       page: 0,
@@ -43,11 +47,8 @@ export class CategorySelectorComponent {
     }
   );
 
-  formGroupName = input.required<string>();
   searchTerm$ = new BehaviorSubject(EMPTY_STRING);
   selectedCategories = signal<Category[]>([]);
-
-  @Output() remove = new EventEmitter();
 
   readonly categories$ = this.searchConfig$.pipe(
     distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.term == c2.term),
@@ -83,19 +84,12 @@ export class CategorySelectorComponent {
 
   readonly separatorKeysCodes: number[] = [ENTER];
 
-  control: FormControl<Category[]>;
   total: number;
   private loaded = 0;
   private isLoadingMore = false;
 
-  constructor(
-    private categoryService: CategoryService,
-    private rootFormGroup: FormGroupDirective
-  ) {
-    effect(() => {
-      this.control = this.rootFormGroup.control.get(this.formGroupName()) as FormControl;
-      this.selectedCategories.set(this.control.value || []);
-    });
+  constructor(private categoryService: CategoryService) {
+    effect(() => this.selectedCategories.set(this.control().value || []));
   }
 
   ngAfterViewInit() {
@@ -134,7 +128,7 @@ export class CategorySelectorComponent {
       switchMap((existingCategory: Category) => existingCategory ? of(existingCategory) : this.categoryService.save({ name: value })),
     ).subscribe(result => {
       this.selectedCategories.update(categories => categories.concat(result));
-      this.control.setValue(this.selectedCategories());
+      this.control().setValue(this.selectedCategories());
 
       // Clear the input value
       this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
@@ -158,7 +152,7 @@ export class CategorySelectorComponent {
 
     if (!this.selectedCategories().some(c => c.id === category.id)) {
       this.selectedCategories.update(categories => categories.concat(category));
-      this.control.setValue(this.selectedCategories());
+      this.control().setValue(this.selectedCategories());
       this.searchConfig$.next({ ...this.searchConfig$.value, term: EMPTY_STRING });
 
       if (this.input) {

@@ -1,5 +1,5 @@
 import { Component, effect, EventEmitter, input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -36,6 +36,10 @@ export class PersonFormComponent {
 
   get photoFormCtrl() {
     return this.form.get('photoFileName');
+  }
+
+  get countriesFormCtrl() {
+    return this.form.get('countries') as FormControl;
   }
 
   constructor(

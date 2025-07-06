@@ -1,5 +1,5 @@
 import { Component, effect, ElementRef, EventEmitter, input, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -78,11 +78,11 @@ export class GeneralInfosFormComponent {
   }
 
   get countriesFormCtrl() {
-    return this.form.get('countries') as FormGroup;
+    return this.form.get('countries') as FormControl;
   }
 
   get categoriesFormCtrl() {
-    return this.form.get('categories') as FormGroup;
+    return this.form.get('categories') as FormControl;
   }
 
   constructor(
@@ -161,6 +161,8 @@ export class GeneralInfosFormComponent {
 
   saveGeneralInfos() {
     if (this.form.valid) {
+      console.log(this.form.value);
+
       this.config.service(this.imageFile, this.form.value).subscribe(
         {
           next: result => {
