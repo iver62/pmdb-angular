@@ -11,6 +11,7 @@
 @use 'scss/form-field.scss' as *;
 @use 'scss/paginator.scss' as *;
 @use 'scss/select.scss' as *;
+@use 'scss/spinner.scss' as *;
 @use 'scss/stepper.scss' as *;
 @use 'scss/table.scss' as *;
 @use 'scss/tabs.scss' as *;
@@ -125,8 +126,6 @@ body {
 @include mat.menu-overrides((container-color: white));
 
 @include mat.paginator-overrides((container-background-color: --color-pmdb-white));
-
-@include mat.progress-spinner-overrides((active-indicator-color: black));
 
 @include mat.select-overrides((panel-background-color: white,
     focused-arrow-color: black));
