@@ -14,3 +14,8 @@
   padding-right: 5rem;
   justify-content: space-between !important;
 }
+
+.disabled {
+  pointer-events: none;
+  opacity: 40% !important;
+}

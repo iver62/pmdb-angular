@@ -13,12 +13,14 @@
       (selectedTabChange)="onTabChanged($event)">
       <!-- Films associés -->
       <mat-tab labelClass="tab-label">
-        <ng-template mat-tab-label>{{'app.movies' | translate}}</ng-template>
+        <ng-template mat-tab-label>{{'app.filmography' | translate}}</ng-template>
 
         <div class="flex flex-col h-full">
           <div class="flex items-center justify-between dark:text-pmdb-white m-3">
             <div>
-              <h2 [hidden]="totalMovies < 1" class="text-xl">{{totalMovies}} {{'app.movies' | translate}}</h2>
+              <h2 [hidden]="totalMovies < 1 || moviesSearchConfig$.value.view != view.GRID" class="text-xl">
+                {{totalMovies}} {{'app.movies' | translate}}
+              </h2>
             </div>
             <app-criterias-reminder [criterias]="moviesSearchConfig$.value.criterias"
               (deleteCategory)="onDeleteCategory($event)" (deleteCountry)="onDeleteCountry($event)"

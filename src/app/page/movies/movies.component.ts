@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { TranslatePipe } from '@ngx-translate/core';
+import { isEqual } from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, scan, switchMap, tap } from 'rxjs';
@@ -35,6 +36,7 @@ export class MoviesComponent {
 
   view = View;
   total: number;
+  private loaded = 0;
   pageSizeOptions = [25, 50, 100];
   sortOptions: SortOption[] = [
     { active: 'title', label: 'app.title', direction: 'asc' },
@@ -62,7 +64,7 @@ export class MoviesComponent {
   );
 
   movies$ = this.searchConfig$.pipe(
-    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && c1.criterias === c2.criterias),
+    distinctUntilChanged((c1, c2) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && isEqual(c1.criterias, c2.criterias)),
     switchMap(config =>
       this.movieService.getMovies(config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
@@ -76,7 +78,8 @@ export class MoviesComponent {
     scan((acc: Movie[], result: Movie[]) => this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE
       ? result
       : acc.concat(result) // Concatène les nouvelles données
-    )
+    ),
+    tap(result => this.loaded = result.length)
   );
 
   sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(
@@ -163,7 +166,9 @@ export class MoviesComponent {
   }
 
   onScroll() {
-    this.updateSearchConfig({ page: this.searchConfig$.value.page + 1 });
+    if (this.loaded < this.total) {
+      this.updateSearchConfig({ page: this.searchConfig$.value.page + 1 });
+    }
   }
 
   onPageChange(event: PageEvent) {

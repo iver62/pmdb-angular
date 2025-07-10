@@ -76,8 +76,6 @@ export class PersonDetailsComponent {
     }
   );
 
-  // awardsSearchConfig$ = new BehaviorSubject<SearchConfig>({ page: 0, size: 20 });
-
   sorts$: Observable<SortOption[]> = this.moviesSearchConfig$.pipe(
     map(config =>
       this.sortOptions.map(option => (
@@ -282,6 +280,7 @@ export class PersonDetailsComponent {
 
   cancel() {
     this.editMode = false;
+    this.selectedTab$.next(0);
   }
 
   save(event: Person) {

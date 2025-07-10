@@ -136,7 +136,7 @@ export class UsersComponent {
       minWidth: '30vw',  // Définit la largeur à 30% de l'écran
       data: {
         title: this.translate.instant('app.confirm'),
-        message: this.translate.instant('app.confirm_delete_message', { username: user.username })
+        message: this.translate.instant('app.confirm_delete_message', { data: user.username })
       }
     }).afterClosed().subscribe(result => {
       if (result) {

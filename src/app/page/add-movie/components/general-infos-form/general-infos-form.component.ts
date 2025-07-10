@@ -94,7 +94,7 @@ export class GeneralInfosFormComponent {
     effect(() => {
       const movie = this.movie();
       const config = buildMovieConfig(this.movieService);
-      this.config = movie.user ? config.update : config.create;
+      this.config = movie.id ? config.update : config.create;
 
       this.form = this.fb.group(
         {
@@ -126,7 +126,9 @@ export class GeneralInfosFormComponent {
   }
 
   ngAfterViewInit() {
-    this.autoResize(this.textarea.nativeElement);
+    if (this.movie().synopsis) {
+      this.autoResize(this.textarea.nativeElement);
+    }
   }
 
   clearDates() {
@@ -155,14 +157,8 @@ export class GeneralInfosFormComponent {
     this.cancel.emit();
   }
 
-  markFormAsDirty() {
-    this.form.markAsDirty();
-  }
-
   saveGeneralInfos() {
     if (this.form.valid) {
-      console.log(this.form.value);
-
       this.config.service(this.imageFile, this.form.value).subscribe(
         {
           next: result => {

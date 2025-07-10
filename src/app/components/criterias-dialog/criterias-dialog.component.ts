@@ -2,17 +2,16 @@ import { AsyncPipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Moment } from 'moment';
-import { BehaviorSubject, catchError, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { DateRangePickerComponent, MultiselectComponent } from "..";
 import { EMPTY_STRING } from '../../app.component';
 import { Language, PersonType } from '../../enums';
 import { Category, Country, Criterias, Type, User } from '../../models';
-import { CategoryService, UserService } from '../../services';
+import { UserService } from '../../services';
 import { HttpUtils } from '../../utils';
 
 const types = [
@@ -118,7 +117,6 @@ const types = [
   imports: [
     AsyncPipe,
     DateRangePickerComponent,
-    MatButtonModule,
     MatDialogModule,
     MatIconModule,
     MultiselectComponent,
@@ -140,6 +138,7 @@ export class CriteriasDialogComponent {
 
   // Liste des catégories filtrées
   categories$ = this.searchTerms$.category.pipe(
+    distinctUntilChanged((t1, t2) => t1 == t2),
     switchMap(term => this.data.categoriesObs$(term, 0, 20, 'name', 'asc', this.data.personId)
       .pipe(
         tap(response => this.totalCategories = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
@@ -151,6 +150,7 @@ export class CriteriasDialogComponent {
   );
 
   types$: Observable<Type[]> = this.searchTerms$.type.pipe(
+    distinctUntilChanged((t1, t2) => t1 == t2),
     map(term => types.filter(t => t.name.toLowerCase().includes(term.trim().toLowerCase()))),
     tap(types => this.totalTypes = types.length),
     startWith(types)
@@ -158,6 +158,7 @@ export class CriteriasDialogComponent {
 
   // Liste des pays filtrés
   countries$ = this.searchTerms$.country.pipe(
+    distinctUntilChanged((t1, t2) => t1 == t2),
     switchMap(term => {
       const lang = localStorage.getItem('lang') || this.translate.defaultLang;
       return this.data.countriesObs$(term, 0, 20, lang == Language.EN ? 'nomEnGb' : 'nomFrFr', lang, 'asc', this.data.personId)
@@ -172,6 +173,7 @@ export class CriteriasDialogComponent {
 
   // Liste des utilisateurs filtrés
   users$ = this.searchTerms$.user.pipe(
+    distinctUntilChanged((t1, t2) => t1 == t2),
     switchMap(term => this.userService.get(0, 20, term)
       .pipe(
         tap(response => this.totalUsers = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
@@ -207,7 +209,6 @@ export class CriteriasDialogComponent {
   totalUsers: number;
 
   constructor(
-    private categoryService: CategoryService,
     private translate: TranslateService,
     private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: {

@@ -15,6 +15,13 @@
       <app-movie-detail [movie]="generalInfos"></app-movie-detail>
 
       <div class="fixed bottom-5 right-5">
+        @if (authService.hasRole('admin')) {
+        <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+          [matTooltip]="'app.delete' | translate" aria-label="Example icon button with a delete icon"
+          (click)="deleteMovie()">
+          <mat-icon>delete</mat-icon>
+        </button>
+        }
         <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
           [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
           (click)="editGeneralInfos=true">

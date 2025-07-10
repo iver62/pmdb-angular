@@ -4,9 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { isEqual } from 'lodash';
 import { CookieService } from 'ngx-cookie-service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { BehaviorSubject, catchError, combineLatest, map, Observable, of, scan, startWith, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, distinctUntilChanged, map, Observable, of, scan, startWith, Subject, switchMap, tap } from 'rxjs';
 import { DURATION, EMPTY_STRING } from '../../app.component';
 import { ConfirmationDialogComponent, CriteriasReminderComponent, PersonsListComponent, PersonsTableComponent, ToolbarComponent } from '../../components';
 import { PersonType, View } from '../../enums';
@@ -66,6 +67,7 @@ export class PersonsComponent {
   deletePerson$ = new Subject<Boolean>();
 
   persons$ = combineLatest([this.searchConfig$, this.deletePerson$.pipe(startWith(false))]).pipe(
+    distinctUntilChanged(([c1, d1], [c2, d2]) => c1.page == c2.page && c1.size == c2.size && c1.sort == c2.sort && c1.direction == c2.direction && c1.term == c2.term && isEqual(c1.criterias, c2.criterias)),
     switchMap(([config, _]) =>
       this.personService.getPersonsWithMoviesNumber(config.page, config.size, config.term, config.sort, config.direction, config.criterias).pipe(
         tap(response => this.total = +(response.headers.get(HttpUtils.X_TOTAL_COUNT) ?? 0)),
@@ -76,16 +78,12 @@ export class PersonsComponent {
         })
       )
     ),
-    scan((acc: Person[], result: Person[]) => {
-      if (this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE) {
-        this.loaded = result.length;
-        return result;
-      } else { // Concatène les nouvelles données
-        const newArray = acc.concat(result);
-        this.loaded = newArray.length;
-        return newArray;
-      }
-    })
+    scan((acc: Person[], result: Person[]) =>
+      this.searchConfig$.value.page == 0 || this.searchConfig$.value.view == View.TABLE
+        ? result
+        : acc.concat(result) // Concatène les nouvelles données
+    ),
+    tap(result => this.loaded = result.length)
   );
 
   sorts$: Observable<SortOption[]> = this.searchConfig$.pipe(

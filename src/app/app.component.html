@@ -2,7 +2,7 @@
 @let user = user$ | async;
 
 <div class="example-container bg-pmdb-white dark:bg-pmdb-dark" [class.example-is-mobile]="mobileQuery.matches">
-  <mat-toolbar class="justify-between bg-inherit">
+  <mat-toolbar class="justify-between !bg-inherit">
     <div class="items-center dark:text-pmdb-gold">
       <mat-icon class="cursor-pointer material-symbols-outlined" routerLink="/">dashboard</mat-icon>
     </div>
@@ -15,8 +15,8 @@
       <a routerLink="/add-movie">{{'app.add_movie' | translate}}</a>
     </div>
     <div class="items-center">
-      <button mat-icon-button class="menu-button dark:!text-pmdb-dark dark:!bg-pmdb-gold" [matMenuTriggerFor]="menu"
-        aria-label="Example icon button with a vertical three dot icon">
+      <button mat-icon-button class="!bg-pmdb-blue !text-pmdb-white dark:!text-pmdb-dark dark:!bg-pmdb-gold"
+        [matMenuTriggerFor]="menu" aria-label="Example icon button with a vertical three dot icon">
         {{user?.username | firstLetter | uppercase}}
       </button>
       <mat-menu #menu="matMenu" class="dark:text-pmdb-white dark:!bg-black">

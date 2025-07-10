@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
+import { DURATION } from '../../app.component';
+import { ConfirmationDialogComponent } from '../../components';
 import { CeremonyAwards, Movie, MovieActor, TechnicalTeam } from '../../models';
-import { MovieService } from '../../services';
+import { AuthService, MovieService } from '../../services';
 import { CastingFormComponent, GeneralInfosFormComponent } from '../add-movie/components';
 import { AwardsComponent, CastingComponent, MovieDetailComponent, TechnicalTeamComponent } from './components';
 
@@ -45,8 +49,13 @@ export class MovieDetailsComponent {
   editAwards = false;
 
   constructor(
+    public authService: AuthService,
+    private dialog: MatDialog,
     private movieService: MovieService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -108,5 +117,30 @@ export class MovieDetailsComponent {
   saveCast(event: MovieActor[]) {
     this.cast = event;
     this.editCasting = false;
+  }
+
+  deleteMovie() {
+    this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: '30vw',  // Définit la largeur à 30% de l'écran
+      data: {
+        title: this.translate.instant('app.confirm'),
+        message: this.translate.instant('app.confirm_delete_message', { data: this.generalInfos.title })
+      }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.movieService.deleteMovie(this.generalInfos.id).subscribe(
+          {
+            next: () => {
+              this.snackBar.open(this.translate.instant('app.delete_success_message', { data: this.generalInfos.title }), this.translate.instant('app.close'), { duration: DURATION });
+              this.router.navigateByUrl('/movies');
+            },
+            error: error => {
+              console.error(error);
+              this.snackBar.open(error.error, this.translate.instant('app.error'), { duration: DURATION });
+            }
+          }
+        );
+      }
+    })
   }
 }

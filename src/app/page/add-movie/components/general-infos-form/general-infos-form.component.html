@@ -78,11 +78,11 @@
       formGroupName="posterFileName" (selectImage)="onSelectImage($event)" (deleteImage)="onDeleteImage()">
     </app-file-chooser>
 
-    <app-country-selector class="col-span-12 lg:col-span-6" [control]="countriesFormCtrl" (remove)="markFormAsDirty()">
+    <app-country-selector class="col-span-12 lg:col-span-6" [control]="countriesFormCtrl" (remove)="form.markAsDirty()">
     </app-country-selector>
 
     <app-category-selector class="col-span-12 lg:col-span-6" [control]="categoriesFormCtrl"
-      (remove)="markFormAsDirty()">
+      (remove)="form.markAsDirty()">
     </app-category-selector>
   </div>
 

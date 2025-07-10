@@ -109,7 +109,7 @@
 
   @if (edit.setDesigners) {
   <app-technicians-form class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sets"
-    label="app.technical_team.set-designer_name" [movieId]="movieId()" [technicians]="technicalTeam().setDesigners"
+    label="app.technical_team.set_designer_name" [movieId]="movieId()" [technicians]="technicalTeam().setDesigners"
     [personType]="personType.SET_DESIGNER" [expanded]="true"
     [serviceCall]="movieService.saveSetDesigners.bind(movieService)"
     successMessage="app.technical_team_form.messages.success.updating_set_designer"
