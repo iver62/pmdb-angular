@@ -102,6 +102,7 @@
       </mat-tab>
 
       <!-- Rôles associés -->
+      @if (person().types.includes(personType.ACTOR)) {
       <mat-tab labelClass="tab-label">
         <ng-template mat-tab-label>{{'app.roles' | translate}}</ng-template>
 
@@ -118,6 +119,7 @@
           }
         </div>
       </mat-tab>
+      }
     </mat-tab-group>
   </div>
 </div>

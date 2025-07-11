@@ -16,7 +16,7 @@ import { BehaviorSubject, catchError, combineLatest, filter, map, Observable, of
 import { DURATION, EMPTY_STRING } from '../../app.component';
 import { ConfirmationDialogComponent, MoviesListComponent, MoviesTableComponent, ToolbarComponent } from '../../components';
 import { CriteriasReminderComponent } from "../../components/criterias-reminder/criterias-reminder.component";
-import { View } from '../../enums';
+import { PersonType, View } from '../../enums';
 import { Category, Country, Criterias, Movie, Person, SearchConfig, SortOption, User } from '../../models';
 import { MovieService, PersonService } from '../../services';
 import { HttpUtils } from '../../utils';
@@ -152,6 +152,7 @@ export class PersonDetailsComponent {
   pageSizeOptions = [25, 50, 100];
   person = signal<Person>(null);
   editMode = false;
+  personType = PersonType;
 
   constructor(
     private dialog: MatDialog,
