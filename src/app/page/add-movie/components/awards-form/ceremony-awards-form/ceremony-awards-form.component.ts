@@ -214,7 +214,6 @@ export class CeremonyAwardsFormComponent {
   }
 
   cancelForm() {
-    // this.form.setControl('awards', this.movieService.buildAwardsFormArray(this.awards()));
     this.cancel.emit();
   }
 

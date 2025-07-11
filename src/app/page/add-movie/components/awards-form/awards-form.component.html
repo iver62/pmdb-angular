@@ -1,7 +1,7 @@
-@for (ceremonyAwards of localCeremoniesAwards; track $index; let i = $index) {
+@for (ceremonyAwards of ceremoniesAwards(); track $index; let i = $index) {
 <div class="grid grid-cols-4 gap-2 mb-2">
   <app-ceremony-awards-form class="col-span-4 xxl:col-span-2" [movieId]="movieId()" [ceremonyAwards]="ceremonyAwards"
-    (delete)="deleteCeremonyAwards(i)">
+    (save)="save($event, i)" (delete)="deleteCeremonyAwards(i)">
   </app-ceremony-awards-form>
 </div>
 }

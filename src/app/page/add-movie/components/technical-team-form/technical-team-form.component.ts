@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { PersonType } from '../../../../enums';
-import { TechnicalTeam } from '../../../../models';
+import { MovieTechnician, TechnicalTeam } from '../../../../models';
 import { MovieService } from '../../../../services';
 import { TechniciansFormComponent } from "./technicians-form/technicians-form.component";
 
@@ -19,5 +19,9 @@ export class TechnicalTeamFormComponent {
   personType = PersonType;
 
   constructor(public movieService: MovieService) { }
+
+  updateTechnicians(list: MovieTechnician[], type: keyof TechnicalTeam) {
+    this.technicalTeam()[type] = list;
+  }
 
 }

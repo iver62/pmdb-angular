@@ -286,6 +286,7 @@ export class PersonDetailsComponent {
   save(event: Person) {
     this.person.set(event);
     this.editMode = false;
+    this.selectedTab$.next(0);
   }
 
   deletePerson() {

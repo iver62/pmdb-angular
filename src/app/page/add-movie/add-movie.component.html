@@ -1,15 +1,9 @@
 <mat-stepper class="rounded-lg h-full" [linear]="isLinear" (selectionChange)="onStepChange($event)" #stepper>
-
   <mat-step [label]="'app.general_infos' | translate">
     @if (currentStep == 0) {
     <app-general-infos-form [movie]="movie" [user]="user$ | async" [cancellable]="false"
       (save)="saveGeneralInfos($event)">
     </app-general-infos-form>
-    @if (movie.id) {
-    <button mat-button class="w-fit dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
-      {{'app.next' | translate}}
-    </button>
-    }
     }
   </mat-step>
   <mat-step [label]="'app.technical_team.label' | translate">
@@ -18,15 +12,17 @@
       <app-technical-team-form [movieId]="movie.id" [technicalTeam]="technicalTeam" [expanded]="false">
       </app-technical-team-form>
     </div>
-    <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
-      {{'app.next' | translate}}
-    </button>
+    <div class="mt-2">
+      <button mat-button class="w-fit dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
+        {{'app.next' | translate}}
+      </button>
+    </div>
     }
   </mat-step>
   <mat-step [label]="'app.cast' | translate">
     @if (currentStep == 2) {
     <div class="flex-1 overflow-auto">
-      <app-cast-form [movieId]="movie.id" [cast]="cast" [cancellable]="false"></app-cast-form>
+      <app-cast-form [movieId]="movie.id" [cast]="cast" [cancellable]="false" (save)="saveCast($event)"></app-cast-form>
     </div>
     <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
       {{'app.next' | translate}}
@@ -36,17 +32,22 @@
   <mat-step [label]="'app.awards' | translate">
     @if (currentStep == 3) {
     <div class="flex-1 overflow-auto">
-      <app-awards-form [movieId]="movie.id" [cancellable]="false"></app-awards-form>
+      <app-awards-form [movieId]="movie.id" [ceremoniesAwards]="ceremoniesAwards" [cancellable]="false">
+      </app-awards-form>
     </div>
-    <button mat-button class="w-fit mt-2 dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
-      {{'app.next' | translate}}
-    </button>
+    <div class="mt-2">
+      <button mat-button class="w-fit dark:text-pmdb-dark! dark:bg-pmdb-gold!" (click)="stepper.next()">
+        {{'app.next' | translate}}
+      </button>
+    </div>
     }
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>{{'app.done' | translate}}</ng-template>
     <p class="mb-2 dark:text-pmdb-white">{{'app.done' | translate}}</p>
 
-    <button mat-button class="w-fit" (click)="stepper.reset()">{{'app.create_another_movie' | translate}}</button>
+    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="reset()">
+      {{'app.create_another_movie' | translate}}
+    </a>
   </mat-step>
 </mat-stepper>

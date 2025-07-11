@@ -8,7 +8,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { catchError, of } from 'rxjs';
 import { DURATION } from '../../app.component';
-import { Movie, MovieActor, TechnicalTeam } from '../../models';
+import { CeremonyAwards, Movie, MovieActor, TechnicalTeam } from '../../models';
 import { AuthService } from '../../services';
 import { AwardsFormComponent, CastingFormComponent, GeneralInfosFormComponent, TechnicalTeamFormComponent } from './components';
 
@@ -39,30 +39,11 @@ export class AddMovieComponent {
       return of(null);
     })
   );
+
   movie: Movie = {};
-
-  technicalTeam: TechnicalTeam = {
-    producers: [],
-    directors: [],
-    assistantDirectors: [],
-    screenwriters: [],
-    composers: [],
-    musicians: [],
-    photographers: [],
-    costumeDesigners: [],
-    setDesigners: [],
-    editors: [],
-    casters: [],
-    artists: [],
-    soundEditors: [],
-    vfxSupervisors: [],
-    sfxSupervisors: [],
-    makeupArtists: [],
-    hairDressers: [],
-    stuntmen: []
-  }
-
+  technicalTeam: TechnicalTeam = this.createEmptyTechnicalTeam();
   cast: MovieActor[] = [];
+  ceremoniesAwards: CeremonyAwards[] = [];
 
   isLinear = true;
   currentStep = 0;
@@ -80,5 +61,40 @@ export class AddMovieComponent {
   saveGeneralInfos(event: Movie) {
     this.movie = event;
     this.stepper.next();
+  }
+
+  saveCast(event: MovieActor[]) {
+    this.cast = event;
+  }
+
+  reset() {
+    this.stepper.reset();
+    this.movie = {};
+    this.technicalTeam = this.createEmptyTechnicalTeam();
+    this.cast = [];
+    this.ceremoniesAwards = [];
+  }
+
+  private createEmptyTechnicalTeam(): TechnicalTeam {
+    return {
+      producers: [],
+      directors: [],
+      assistantDirectors: [],
+      screenwriters: [],
+      composers: [],
+      musicians: [],
+      photographers: [],
+      costumeDesigners: [],
+      setDesigners: [],
+      editors: [],
+      casters: [],
+      artists: [],
+      soundEditors: [],
+      vfxSupervisors: [],
+      sfxSupervisors: [],
+      makeupArtists: [],
+      hairDressers: [],
+      stuntmen: []
+    };
   }
 }

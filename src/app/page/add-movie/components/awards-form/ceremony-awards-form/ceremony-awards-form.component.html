@@ -1,6 +1,6 @@
 <mat-card class="!border-1 !border-pmbd-grey !bg-white dark:!bg-pmdb-dark xxl:col-span-1 dark:!border-pmdb-white p-4">
   <form [formGroup]="form">
-    <div class="flex justify-between">
+    <div class="flex justify-between items-baseline">
       <!-- Champ cérémonie -->
       <mat-form-field class="w-1/3" [formGroup]="ceremonyFormGroup">
         <mat-label>{{'app.ceremony' | translate}} @if (totalCeremonies) {({{totalCeremonies}})}</mat-label>
@@ -19,10 +19,10 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <button mat-icon-button class="dark:hover:!bg-pmdb-grey" [matTooltip]="'app.delete' | translate"
-        aria-label="Supprimer la cérémonie" (click)="deleteCeremony()">
-        <mat-icon class="dark:!text-pmdb-white">close</mat-icon>
-      </button>
+      <mat-icon class="cursor-pointer dark:!text-pmdb-white" [matTooltip]="'app.delete' | translate"
+        (click)="deleteCeremony()">
+        close
+      </mat-icon>
     </div>
 
     <div formArrayName="awards">
