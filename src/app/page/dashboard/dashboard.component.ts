@@ -2,7 +2,6 @@ import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { combineLatest, distinctUntilChanged, map, tap } from 'rxjs';
 import { BarChartComponent, LineChartComponent } from '../../components';
@@ -16,7 +15,6 @@ import { BarChartService, ConfigService, LineChartService, StatsService } from '
     DecimalPipe,
     LineChartComponent,
     MatCardModule,
-    MatIconModule,
     TranslatePipe
   ],
   templateUrl: './dashboard.component.html',
