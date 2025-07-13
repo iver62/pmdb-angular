@@ -6,8 +6,7 @@
 
         <!-- Autocomplete acteur -->
         <app-autocomplete class="col-span-4" [control]="actor.get('name')" [label]="'app.actor_name' | translate"
-          [toSave]="actor?.value?.name && !actor?.value?.id" (select)="selectActor($event, i)"
-          (save)="saveActor($event, i)">
+          [toSave]="actor?.value?.name && !actor?.value?.id" (select)="selectActor($event, i)">
         </app-autocomplete>
 
         <!-- Champ rôle -->

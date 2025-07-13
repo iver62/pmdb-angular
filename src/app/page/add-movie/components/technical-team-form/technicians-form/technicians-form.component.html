@@ -13,8 +13,7 @@
 
           <!-- Autocomplete acteur -->
           <app-autocomplete class="col-span-5" [control]="technician.get('name')" [label]="label() | translate"
-            [toSave]="technician?.value?.name && !technician?.value?.id" (select)="selectTechnician($event, i)"
-            (save)="saveTechnician($event, i)">
+            (select)="selectTechnician($event, i)">
           </app-autocomplete>
 
           <!-- Champ rôle -->

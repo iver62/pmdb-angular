@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { NgPipesModule } from 'ngx-pipes';
 import { MovieTechnician } from '../../../../../models';
 
 @Component({
@@ -12,6 +13,7 @@ import { MovieTechnician } from '../../../../../models';
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
+    NgPipesModule,
     RouterLink,
     TranslatePipe
   ],
@@ -21,11 +23,11 @@ import { MovieTechnician } from '../../../../../models';
 export class TechniciansComponent {
 
   title = input.required<string>();
-  technicians = input.required<MovieTechnician[]>()
+  movieTechnicians = input.required<MovieTechnician[]>()
 
   @Output() edit = new EventEmitter<void>();
 
-  editTechnicians() {
+  editMovieTechnicians() {
     this.edit.emit();
   }
 }

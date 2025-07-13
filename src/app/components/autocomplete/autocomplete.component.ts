@@ -6,9 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, distinctUntilChanged, map, of, scan, switchMap, tap } from 'rxjs';
 import { EMPTY_STRING } from '../../app.component';
 import { DelayedInputDirective } from '../../directives';
@@ -26,10 +24,8 @@ import { HttpUtils } from '../../utils';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatProgressSpinner,
     MatTooltipModule,
-    ReactiveFormsModule,
-    TranslatePipe
+    ReactiveFormsModule
   ],
   templateUrl: './autocomplete.component.html',
   styleUrl: './autocomplete.component.scss'
@@ -41,10 +37,8 @@ export class AutocompleteComponent {
 
   control = input.required<AbstractControl | FormControl>();
   label = input.required<string>();
-  toSave = input<boolean>();
 
   @Output() select = new EventEmitter<Person>();
-  @Output() save = new EventEmitter<Person>();
 
   searchConfig$ = new BehaviorSubject<SearchConfig>(
     {
@@ -135,25 +129,6 @@ export class AutocompleteComponent {
 
   onSearch(event: string) {
     this.searchConfig$.next({ ...this.searchConfig$.value, page: 0, term: event.trim() });
-  }
-
-  /**
-   * Persister un acteur dans la base de données
-   */
-  saveActor() {
-    if (!this.formControl.value?.trim()) {
-      console.warn('Le nom de l\'acteur est vide !');
-      return;
-    }
-
-    this.loading = true;
-    this.personService.save({ name: this.formControl.value?.trim() }).subscribe(
-      {
-        next: result => this.save.emit(result),
-        error: e => console.error(e),
-        complete: () => this.loading = false
-      }
-    );
   }
 
   selectActor(event: MatAutocompleteSelectedEvent) {

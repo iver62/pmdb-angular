@@ -98,10 +98,6 @@ export class CastingFormComponent {
     this.form.markAsDirty();
   }
 
-  saveActor(actor: Person, index: number) {
-    this.formArray.at(index).patchValue({ id: actor.id });
-  }
-
   clearRole(index: number) {
     this.formArray.at(index).patchValue({ role: null });
   }

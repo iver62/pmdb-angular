@@ -143,10 +143,6 @@ export class PersonService {
       { observe: 'response' }
     );
 
-  save(person: Person) {
-    return this.http.post<Person>(this.basePath, person);
-  }
-
   update(imageFile: File, person: Person) {
     const formData = new FormData();
     if (imageFile) {

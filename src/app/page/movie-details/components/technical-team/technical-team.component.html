@@ -8,7 +8,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.directing"
-    [technicians]="technicalTeam()?.directors" (edit)="edit.directors=true">
+    [movieTechnicians]="technicalTeam()?.directors" (edit)="edit.directors=true">
   </app-technicians>
   }
 
@@ -22,7 +22,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.assistant_directing"
-    [technicians]="technicalTeam()?.assistantDirectors" (edit)="edit.assistantDirectors=true">
+    [movieTechnicians]="technicalTeam()?.assistantDirectors" (edit)="edit.assistantDirectors=true">
   </app-technicians>
   }
 
@@ -36,7 +36,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.screenwriting"
-    [technicians]="technicalTeam()?.screenwriters" (edit)="edit.screenwriters=true">
+    [movieTechnicians]="technicalTeam()?.screenwriters" (edit)="edit.screenwriters=true">
   </app-technicians>
   }
 
@@ -49,7 +49,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.production"
-    [technicians]="technicalTeam()?.producers" (edit)="edit.producers=true">
+    [movieTechnicians]="technicalTeam()?.producers" (edit)="edit.producers=true">
   </app-technicians>
   }
 
@@ -62,7 +62,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.original_soundtrack"
-    [technicians]="technicalTeam()?.composers" (edit)="edit.composers=true">
+    [movieTechnicians]="technicalTeam()?.composers" (edit)="edit.composers=true">
   </app-technicians>
   }
 
@@ -75,7 +75,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.music"
-    [technicians]="technicalTeam()?.musicians" (edit)="edit.musicians=true">
+    [movieTechnicians]="technicalTeam()?.musicians" (edit)="edit.musicians=true">
   </app-technicians>
   }
 
@@ -89,7 +89,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.photography"
-    [technicians]="technicalTeam()?.photographers" (edit)="edit.photographers=true">
+    [movieTechnicians]="technicalTeam()?.photographers" (edit)="edit.photographers=true">
   </app-technicians>
   }
 
@@ -103,7 +103,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.costumes"
-    [technicians]="technicalTeam()?.costumeDesigners" (edit)="edit.costumeDesigners=true">
+    [movieTechnicians]="technicalTeam()?.costumeDesigners" (edit)="edit.costumeDesigners=true">
   </app-technicians>
   }
 
@@ -117,7 +117,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sets"
-    [technicians]="technicalTeam()?.setDesigners" (edit)="edit.setDesigners=true">
+    [movieTechnicians]="technicalTeam()?.setDesigners" (edit)="edit.setDesigners=true">
   </app-technicians>
   }
 
@@ -130,7 +130,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.editing"
-    [technicians]="technicalTeam()?.editors" (edit)="edit.editors=true">
+    [movieTechnicians]="technicalTeam()?.editors" (edit)="edit.editors=true">
   </app-technicians>
   }
 
@@ -143,7 +143,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.casting"
-    [technicians]="technicalTeam()?.casters" (edit)="edit.casters=true">
+    [movieTechnicians]="technicalTeam()?.casters" (edit)="edit.casters=true">
   </app-technicians>
   }
 
@@ -156,7 +156,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.artistic_team"
-    [technicians]="technicalTeam()?.artists" (edit)="edit.artists=true">
+    [movieTechnicians]="technicalTeam()?.artists" (edit)="edit.artists=true">
   </app-technicians>
   }
 
@@ -170,7 +170,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sound"
-    [technicians]="technicalTeam()?.soundEditors" (edit)="edit.soundEditors=true">
+    [movieTechnicians]="technicalTeam()?.soundEditors" (edit)="edit.soundEditors=true">
   </app-technicians>
   }
 
@@ -184,7 +184,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.makeup"
-    [technicians]="technicalTeam()?.makeupArtists" (edit)="edit.makeupArtists=true">
+    [movieTechnicians]="technicalTeam()?.makeupArtists" (edit)="edit.makeupArtists=true">
   </app-technicians>
   }
 
@@ -198,7 +198,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.vfx"
-    [technicians]="technicalTeam()?.vfxSupervisors" (edit)="edit.vfxSupervisors=true">
+    [movieTechnicians]="technicalTeam()?.vfxSupervisors" (edit)="edit.vfxSupervisors=true">
   </app-technicians>
   }
 
@@ -212,7 +212,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.sfx"
-    [technicians]="technicalTeam()?.sfxSupervisors" (edit)="edit.sfxSupervisors=true">
+    [movieTechnicians]="technicalTeam()?.sfxSupervisors" (edit)="edit.sfxSupervisors=true">
   </app-technicians>
   }
 
@@ -226,7 +226,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.hair_dressing"
-    [technicians]="technicalTeam()?.hairDressers" (edit)="edit.hairDressers=true">
+    [movieTechnicians]="technicalTeam()?.hairDressers" (edit)="edit.hairDressers=true">
   </app-technicians>
   }
 
@@ -239,7 +239,7 @@
   </app-technicians-form>
   } @else {
   <app-technicians class="col-span-4 lg:col-span-2 xxl:col-span-1" title="app.technical_team.stunts"
-    [technicians]="technicalTeam()?.stuntmen" (edit)="edit.stuntmen=true">
+    [movieTechnicians]="technicalTeam()?.stuntmen" (edit)="edit.stuntmen=true">
   </app-technicians>
   }
 </div>

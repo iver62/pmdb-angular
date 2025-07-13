@@ -79,10 +79,6 @@ export class TechniciansFormComponent {
     this.formArray.at(index).patchValue({ id: person.id, name: person.name });
   }
 
-  saveTechnician(person: Person, index: number) {
-    this.formArray.at(index).patchValue({ id: person.id });
-  }
-
   clearRole(index: number) {
     this.formArray.at(index).patchValue({ role: null });
   }

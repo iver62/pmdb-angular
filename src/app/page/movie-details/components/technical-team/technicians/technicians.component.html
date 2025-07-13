@@ -6,18 +6,18 @@
         <span class="pl-2">{{title() | translate}}</span>
       </div>
       <mat-icon class="ml-2 small-icon dark:!text-pmdb-gold cursor-pointer" [matTooltip]="'app.edit' | translate"
-        (click)="editTechnicians()">
+        (click)="editMovieTechnicians()">
         edit
       </mat-icon>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    @for (technician of technicians(); track technician.id) {
+    @for (movieTechnician of movieTechnicians() | orderBy: 'person.name'; track movieTechnician.id) {
     <div class="w-full flex">
-      <a class="w-1/2 cursor-pointer hover:underline" [routerLink]="['/persons', technician.person.id]">
-        {{technician?.person?.name}}
+      <a class="w-1/2 cursor-pointer hover:underline" [routerLink]="['/persons', movieTechnician.person.id]">
+        {{movieTechnician?.person?.name}}
       </a>
-      <span class="w-1/2">{{technician?.role}}</span>
+      <span class="w-1/2">{{movieTechnician?.role}}</span>
     </div>
     } @empty {
     <div class="text-center">
