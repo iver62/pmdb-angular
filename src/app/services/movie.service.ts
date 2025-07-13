@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SseClient } from 'ngx-sse-client';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -242,34 +242,77 @@ export class MovieService {
     return {
       ...form.value,
       user: user
-    }
+    };
   }
 
-  buildActorsFormArray(cast: MovieActor[]) {
-    return this.fb.array(
-      cast?.map(movieActor =>
-        this.fb.group(
-          {
-            id: [movieActor.person.id],
-            name: [movieActor.person.name, Validators.required],
-            role: [movieActor.role, Validators.required],
-          }
-        )
+  buildMovieActorsArray(formArray: FormArray) {
+    return formArray.value.map(
+      (ma: MovieActor, index: number) => (
+        {
+          id: ma?.id,
+          person: { id: ma?.person?.id, name: ma?.person?.name },
+          role: ma?.role,
+          rank: index
+        }
       )
+    ) as MovieActor[];
+  }
+
+  buildMovieTechniciansArray(formArray: FormArray) {
+    return formArray.value.map(
+      (mt: MovieTechnician) => (
+        {
+          id: mt?.id,
+          person: { id: mt?.person?.id, name: mt?.person?.name },
+          role: mt?.role
+        }
+      )
+    ) as MovieTechnician[];
+  }
+
+  buildMovieActorsForm(cast: MovieActor[]) {
+    return this.fb.group(
+      {
+        actors: this.fb.array(
+          cast?.map(movieActor =>
+            this.fb.group(
+              {
+                id: [movieActor.id],
+                person: this.fb.group(
+                  {
+                    id: [movieActor.person.id],
+                    name: [movieActor.person.name, Validators.required],
+                  }
+                ),
+                role: [movieActor.role, Validators.required]
+              }
+            )
+          )
+        )
+      }
     );
   }
 
-  buildTechniciansFormArray(technicians: MovieTechnician[]) {
-    return this.fb.array(
-      technicians?.map(t =>
-        this.fb.group(
-          {
-            id: [t.person.id],
-            name: [t.person.name, Validators.required],
-            role: [t.role],
-          }
+  buildTechniciansForm(technicians: MovieTechnician[]) {
+    return this.fb.group(
+      {
+        technicians: this.fb.array(
+          technicians?.map(t =>
+            this.fb.group(
+              {
+                id: [t.id],
+                person: this.fb.group(
+                  {
+                    id: [t.person.id],
+                    name: [t.person.name, Validators.required],
+                  }
+                ),
+                role: [t.role],
+              }
+            )
+          )
         )
-      )
+      }
     );
   }
 

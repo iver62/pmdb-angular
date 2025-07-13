@@ -8,19 +8,19 @@
     </mat-expansion-panel-header>
     <form [formGroup]="form">
       <div formArrayName="technicians">
-        @for (technician of formArray?.controls; track technician; let i = $index) {
+        @for (movieTechnician of formArray?.controls; track movieTechnician; let i = $index) {
         <div class="grid grid-cols-12 gap-2" [formGroupName]="i">
 
           <!-- Autocomplete acteur -->
-          <app-autocomplete class="col-span-5" [control]="technician.get('name')" [label]="label() | translate"
-            (select)="selectTechnician($event, i)">
+          <app-autocomplete class="col-span-5" [control]="movieTechnician.get('person').get('name')"
+            [label]="label() | translate" (select)="selectTechnician($event, i)">
           </app-autocomplete>
 
           <!-- Champ rôle -->
           <mat-form-field class="col-span-6">
             <mat-label>{{'app.role' | translate}}</mat-label>
             <input matInput formControlName="role" />
-            @if (technician.value.role) {
+            @if (movieTechnician.value.role) {
             <button matSuffix mat-icon-button class="mx-2 dark:hover:!bg-pmdb-dark"
               [matTooltip]="'app.erase' | translate" aria-label="Effacer le rôle" (click)="clearRole(i)">
               <mat-icon class="dark:!text-pmdb-white">close</mat-icon>

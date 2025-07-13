@@ -37,7 +37,7 @@ export class PersonsTableComponent {
   @Output() sort = new EventEmitter<{ active: string, direction: 'asc' | 'desc' }>();
   @Output() delete = new EventEmitter<Person>();
 
-  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'moviesCount', 'awardsCount', 'types', 'creationDate', 'lastUpdate', 'tools'];
+  displayedColumns = ['photo', 'name', 'dateOfBirth', 'dateOfDeath', 'moviesCount', 'awardsCount', 'types', 'creationDate', 'lastUpdate'];
 
   constructor(
     public authService: AuthService,
