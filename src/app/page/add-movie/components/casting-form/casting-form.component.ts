@@ -60,24 +60,26 @@ export class CastingFormComponent {
     private snackBar: MatSnackBar,
     private translate: TranslateService
   ) {
-    effect(() => {
-      const actorsFormArray = this.movieService.buildActorsFormArray(this.cast());
-      this.form = this.fb.group({ actors: actorsFormArray });
-    });
+    effect(() => this.form = this.movieService.buildMovieActorsForm(this.cast()));
   }
 
   selectActor(person: Person, index: number) {
-    this.formArray.at(index).patchValue({ id: person.id, name: person.name });
+    this.formArray.at(index).get('person').patchValue({ id: person.id, name: person.name });
   }
 
   /**
-   * Fonction pour créer un groupe d'acteur
+   * Crée un acteur 
    */
   createActor() {
     return this.fb.group(
       {
         id: [],
-        name: [EMPTY_STRING, Validators.required], // Nom de l'acteur
+        person: this.fb.group(
+          {
+            id: [],
+            name: [EMPTY_STRING, Validators.required], // Nom de l'acteur
+          }
+        ),
         role: [EMPTY_STRING, Validators.required]  // Rôle joué dans le film
       }
     );
@@ -91,7 +93,7 @@ export class CastingFormComponent {
   }
 
   /**
-   * Supprimer un acteur du FormArray
+   * Supprime un acteur du FormArray
    */
   removeActor(index: number) {
     this.formArray.removeAt(index);
@@ -114,16 +116,7 @@ export class CastingFormComponent {
 
   saveCast() {
     if (this.form.valid) {
-      const body: MovieActor[] = this.form.get('actors').value.map(
-        (ma: any, index: number) => (
-          {
-            id: this.cast().find(a => a.person.id == ma.id)?.id ?? null,
-            person: { id: ma.id, name: ma.name },
-            role: ma.role,
-            rank: index
-          }
-        )
-      );
+      const body: MovieActor[] = this.movieService.buildMovieActorsArray(this.formArray);
 
       this.movieService.saveCast(this.movieId(), body).subscribe(
         {

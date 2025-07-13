@@ -1,19 +1,19 @@
 <form class="h-full flex flex-col" [formGroup]="form">
   <div class="flex-1 overflow-auto">
     <div cdkDropList formArrayName="actors" (cdkDropListDropped)="drop($event)">
-      @for (actor of formArray.controls; track actor; let i = $index) {
+      @for (movieActor of formArray.controls; track movieActor; let i = $index) {
       <div class="grid grid-cols-12 gap-2" [formGroupName]="i" cdkDrag>
 
         <!-- Autocomplete acteur -->
-        <app-autocomplete class="col-span-4" [control]="actor.get('name')" [label]="'app.actor_name' | translate"
-          [toSave]="actor?.value?.name && !actor?.value?.id" (select)="selectActor($event, i)">
+        <app-autocomplete class="col-span-4" [control]="movieActor.get('person').get('name')"
+          [label]="'app.actor_name' | translate" (select)="selectActor($event, i)">
         </app-autocomplete>
 
         <!-- Champ rôle -->
         <mat-form-field class="col-span-6">
           <mat-label>{{'app.role' | translate}}</mat-label>
           <input matInput formControlName="role" />
-          @if (actor.value.role) {
+          @if (movieActor.value.role) {
           <button matSuffix mat-icon-button class="mr-2 dark:hover:!bg-pmdb-dark" [matTooltip]="'app.erase' | translate"
             aria-label="Effacer le rôle" (click)="clearRole(i)">
             <mat-icon class="dark:!text-pmdb-white">close</mat-icon>

@@ -62,21 +62,26 @@ export class TechniciansFormComponent {
     private snackBar: MatSnackBar,
     private translate: TranslateService
   ) {
-    effect(() => this.form = this.fb.group({ technicians: this.movieService.buildTechniciansFormArray(this.technicians()) }));
+    effect(() => this.form = this.movieService.buildTechniciansForm(this.technicians()));
   }
 
   createTechnician() {
     return this.fb.group(
       {
         id: [],
-        name: [EMPTY_STRING, Validators.required], // Nom du technicien
-        role: [EMPTY_STRING]  // Rôle joué dans le film
+        person: this.fb.group(
+          {
+            id: [],
+            name: [EMPTY_STRING, Validators.required], // Nom du technicien
+          }
+        ),
+        role: [EMPTY_STRING]  // Rôle tenu dans le film
       }
     );
   }
 
   selectTechnician(person: Person, index: number) {
-    this.formArray.at(index).patchValue({ id: person.id, name: person.name });
+    this.formArray.at(index).get('person').patchValue({ id: person.id, name: person.name });
   }
 
   clearRole(index: number) {
@@ -94,7 +99,7 @@ export class TechniciansFormComponent {
 
   saveTechnicians() {
     if (this.form.valid) {
-      const technicians = this.formArrayToArray(this.formArray);
+      const technicians = this.movieService.buildMovieTechniciansArray(this.formArray);
 
       this.serviceCall()(this.movieId(), technicians).subscribe(
         {
@@ -117,16 +122,4 @@ export class TechniciansFormComponent {
   cancelForm() {
     this.cancel.emit();
   }
-
-  private formArrayToArray(formArray: FormArray): MovieTechnician[] {
-    return formArray.value.map(
-      (mt: any) => (
-        {
-          person: { id: mt.id, name: mt.name },
-          role: mt.role
-        }
-      )
-    );
-  }
-
 }
