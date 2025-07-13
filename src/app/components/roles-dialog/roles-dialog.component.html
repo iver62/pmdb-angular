@@ -16,11 +16,11 @@
 </mat-dialog-content>
 <mat-dialog-actions class="dark:bg-black">
   <div class="flex items-center justify-end gap-4">
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" mat-dialog-close>
+    <a class="cursor-pointer dark:!text-pmdb-gold" mat-dialog-close>
       {{'app.cancel' | translate}}
     </a>
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-      [class.disabled]="form.invalid || form.pristine" [mat-dialog-close]="form.value">
+    <a class="cursor-pointer dark:!text-pmdb-gold" [class.disabled]="form.invalid || form.pristine"
+      [mat-dialog-close]="form.value">
       {{'app.validate' | translate}}
     </a>
   </div>

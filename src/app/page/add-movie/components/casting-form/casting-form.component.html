@@ -42,12 +42,11 @@
       {{'app.add_actor' | translate}}
     </a>
     <div class="flex items-center gap-4">
-      <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" [hidden]="!cancellable()"
-        (click)="cancelCastForm()">
+      <a class="cursor-pointer dark:!text-pmdb-gold" [hidden]="!cancellable()" (click)="cancelCastForm()">
         {{'app.cancel' | translate}}
       </a>
-      <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-        [class.disabled]="form.invalid || form.pristine" (click)="saveCast()">
+      <a class="cursor-pointer dark:!text-pmdb-gold" [class.disabled]="form.invalid || form.pristine"
+        (click)="saveCast()">
         {{'app.validate' | translate}}
       </a>
     </div>

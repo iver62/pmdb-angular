@@ -7,8 +7,8 @@
         <span>{{ceremonyAwards?.ceremony?.name}}</span>
       </div>
       @if (editable) {
-      <mat-icon class="small-icon dark:!text-pmdb-gold dark:hover:!text-pmdb-white cursor-pointer"
-        [matTooltip]="'app.edit' | translate" (click)="edit.emit()">
+      <mat-icon class="small-icon dark:!text-pmdb-gold cursor-pointer" [matTooltip]="'app.edit' | translate"
+        (click)="edit.emit()">
         edit
       </mat-icon>
       }

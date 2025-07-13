@@ -45,11 +45,11 @@
     </div>
 
     <div class="flex items-center text-base justify-end gap-4 py-2 pr-4">
-      <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="cancelForm()">
+      <a class="cursor-pointer dark:!text-pmdb-gold" (click)="cancelForm()">
         {{'app.cancel' | translate}}
       </a>
-      <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-        [class.disabled]="form.invalid || form.pristine" (click)="saveUser()">
+      <a class="cursor-pointer dark:!text-pmdb-gold" [class.disabled]="form.invalid || form.pristine"
+        (click)="saveUser()">
         {{'app.validate' | translate}}
       </a>
     </div>

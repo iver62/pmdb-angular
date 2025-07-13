@@ -33,11 +33,10 @@
     <app-country-selector class="col-span-12" [control]="countriesFormCtrl"></app-country-selector>
   </div>
   <div class="flex items-center justify-end gap-4 p-2">
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="onCancel()">
+    <a class="cursor-pointer dark:!text-pmdb-gold" (click)="onCancel()">
       {{'app.cancel' | translate}}
     </a>
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-      [class.disabled]="form.invalid || form.pristine" (click)="onSave()">
+    <a class="cursor-pointer dark:!text-pmdb-gold" [class.disabled]="form.invalid || form.pristine" (click)="onSave()">
       {{'app.validate' | translate}}
     </a>
   </div>

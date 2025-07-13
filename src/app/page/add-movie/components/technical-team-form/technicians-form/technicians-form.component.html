@@ -44,12 +44,11 @@
           {{'app.add' | translate}}
         </a>
         <div class="flex gap-4">
-          <a [hidden]="!cancellable()" class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-            (click)="cancelForm()">
+          <a [hidden]="!cancellable()" class="cursor-pointer dark:!text-pmdb-gold" (click)="cancelForm()">
             {{'app.cancel' | translate}}
           </a>
-          <a class="cursor-pointer dark:text-pmdb-gold dark:hover:!text-pmdb-white"
-            [class.disabled]="form.invalid || form.pristine" (click)="saveTechnicians()">
+          <a class="cursor-pointer dark:text-pmdb-gold" [class.disabled]="form.invalid || form.pristine"
+            (click)="saveTechnicians()">
             {{'app.validate' | translate}}
           </a>
         </div>

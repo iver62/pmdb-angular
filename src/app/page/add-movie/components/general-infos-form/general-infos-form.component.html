@@ -87,12 +87,11 @@
   </div>
 
   <div class="flex items-center justify-end gap-4 py-2">
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" [hidden]="!cancellable()"
-      (click)="cancelForm()">
+    <a class="cursor-pointer dark:!text-pmdb-gold" [hidden]="!cancellable()" (click)="cancelForm()">
       {{'app.cancel' | translate}}
     </a>
-    <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
-      [class.disabled]="form.invalid || form.pristine" (click)="saveGeneralInfos()">
+    <a class="cursor-pointer dark:!text-pmdb-gold" [class.disabled]="form.invalid || form.pristine"
+      (click)="saveGeneralInfos()">
       {{'app.validate' | translate}}
     </a>
   </div>

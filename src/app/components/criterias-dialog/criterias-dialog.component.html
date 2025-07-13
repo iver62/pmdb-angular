@@ -68,14 +68,14 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions class="dark:bg-black">
-  <a class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white" (click)="eraseCriterias()">
+  <a class="cursor-pointer dark:!text-pmdb-gold" (click)="eraseCriterias()">
     {{'app.erase_all' | translate}}
   </a>
   <div class="flex items-center justify-end gap-4 py-2">
-    <a mat-dialog-close class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white">
+    <a mat-dialog-close class="cursor-pointer dark:!text-pmdb-gold">
       {{'app.cancel' | translate}}
     </a>
-    <a [mat-dialog-close]="form" class="cursor-pointer dark:!text-pmdb-gold dark:hover:!text-pmdb-white"
+    <a [mat-dialog-close]="form" class="cursor-pointer dark:!text-pmdb-gold"
       [class.disabled]="form.invalid || form.pristine">
       {{'app.validate' | translate}}
     </a>
