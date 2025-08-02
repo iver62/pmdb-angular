@@ -12,7 +12,9 @@
       @if (authService.hasRole('admin')) {
       <a routerLink="/users">{{'app.users' | translate}}</a>
       }
+      @if (authService.hasRole('admin') || authService.hasRole('user')) {
       <a routerLink="/add-movie">{{'app.add_movie' | translate}}</a>
+      }
     </div>
     <div class="items-center">
       <button mat-icon-button class="!bg-pmdb-blue !text-pmdb-white dark:!text-pmdb-dark dark:!bg-pmdb-gold"

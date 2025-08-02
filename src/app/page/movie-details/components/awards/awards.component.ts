@@ -7,7 +7,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { DURATION } from '../../../../app.component';
 import { CeremonyAwards } from '../../../../models';
-import { MovieService } from '../../../../services';
+import { AuthService, MovieService } from '../../../../services';
 import { CeremonyAwardsFormComponent } from "../../../add-movie/components/awards-form/ceremony-awards-form/ceremony-awards-form.component";
 import { CeremonyAwardsComponent } from "./ceremony-awards/ceremony-awards.component";
 
@@ -35,6 +35,7 @@ export class AwardsComponent {
   localCeremoniesAwards: CeremonyAwards[];
 
   constructor(
+    public authService: AuthService,
     private movieService: MovieService,
     private snackBar: MatSnackBar,
     private translate: TranslateService

@@ -1,4 +1,5 @@
-<mat-tab-group class="px-4" [disableRipple]="true" fitInkBarToContent (selectedTabChange)="onTabChanged($event)">
+<mat-tab-group class="px-4" [disableRipple]="true" [selectedIndex]="currentTabIndex" fitInkBarToContent
+  (selectedIndexChange)="onTabChanged($event)">
   <mat-tab labelClass="tab-label">
     <ng-template mat-tab-label>{{'app.general_infos' | translate}}</ng-template>
 
@@ -7,7 +8,7 @@
       <div class="h-full flex flex-col">
         <div class="flex-1 overflow-auto pt-1">
           <app-general-infos-form [movie]="generalInfos" [cancellable]="true" (cancel)="cancelGeneralInfosForm()"
-            (save)="saveGeneralInfos($event)">
+            (save)="saveGeneralInfos($event)" #generalInfosForm>
           </app-general-infos-form>
         </div>
       </div>
@@ -16,17 +17,19 @@
 
       <div class="fixed bottom-5 right-5">
         @if (authService.hasRole('admin')) {
-        <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+        <button mat-fab class="float-right m-1 dark:!text-pmdb-dark dark:!bg-pmdb-gold"
           [matTooltip]="'app.delete' | translate" aria-label="Example icon button with a delete icon"
           (click)="deleteMovie()">
           <mat-icon>delete</mat-icon>
         </button>
         }
-        <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+        @if (authService.hasRole('admin') || authService.hasRole('user')) {
+        <button mat-fab class="float-right m-1 dark:!text-pmdb-dark dark:!bg-pmdb-gold"
           [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
           (click)="editGeneralInfos=true">
           <mat-icon>edit</mat-icon>
         </button>
+        }
       </div>
       }
     </div>
@@ -44,11 +47,11 @@
     <ng-template mat-tab-label>{{'app.cast' | translate}}</ng-template>
 
     <div class="h-full py-4">
-      @if (editCasting) {
+      @if (editCast) {
       <div class="h-full flex flex-col">
         <div class="flex-1 overflow-auto pt-1">
           <app-cast-form [movieId]="id" [cast]="cast" [cancellable]="true" (cancel)="cancelCastForm()"
-            (save)="saveCast($event)">
+            (save)="saveCast($event)" #castForm>
           </app-cast-form>
         </div>
       </div>
@@ -57,11 +60,13 @@
         <app-cast [actors]="cast"></app-cast>
 
         <div class="fixed bottom-5 right-5">
-          <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
+          @if (authService.hasRole('admin') || authService.hasRole('user')) {
+          <button mat-fab class="float-right m-1 dark:!text-pmdb-dark dark:!bg-pmdb-gold"
             [matTooltip]="'app.edit' | translate" aria-label="Example icon button with a delete icon"
-            (click)="editCasting=true">
+            (click)="editCast=true">
             <mat-icon>edit</mat-icon>
           </button>
+          }
         </div>
       </div>
       }

@@ -15,10 +15,12 @@
   <div class="text-xl dark:text-white">{{'app.no_awards' | translate}}</div>
   }
   <div class="fixed bottom-5 right-5">
+    @if (authService.hasRole('admin') || authService.hasRole('user')) {
     <button mat-fab class="float-right m-1 dark:text-pmdb-dark! dark:bg-pmdb-gold!"
       [matTooltip]="'app.add_ceremony' | translate" aria-label="Example icon button with a delete icon"
       (click)="addCeremony()">
       <mat-icon>add</mat-icon>
     </button>
+    }
   </div>
 </div>

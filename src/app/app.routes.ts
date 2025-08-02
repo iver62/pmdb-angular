@@ -11,7 +11,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard],
-    data: { roles: ['admin', 'user'] },
+    data: { roles: ['admin', 'user', 'guest'] },
     loadComponent: () => import('./page/dashboard/dashboard.component').then(c => c.DashboardComponent)
   },
   {
@@ -23,25 +23,25 @@ export const routes: Routes = [
   {
     path: 'movies',
     canActivate: [authGuard],
-    data: { roles: ['admin', 'user'] },
+    data: { roles: ['admin', 'user', 'guest'] },
     loadComponent: () => import('./page/movies/movies.component').then(c => c.MoviesComponent)
   },
   {
     path: 'movies/:id',
     canActivate: [authGuard],
-    data: { roles: ['admin', 'user'] },
+    data: { roles: ['admin', 'user', 'guest'] },
     loadComponent: () => import('./page/movie-details/movie-details.component').then(c => c.MovieDetailsComponent)
   },
   {
     path: 'persons',
     canActivate: [authGuard],
-    data: { roles: ['admin', 'user'] },
+    data: { roles: ['admin', 'user', 'guest'] },
     loadComponent: () => import('./page/persons/persons.component').then(c => c.PersonsComponent)
   },
   {
     path: 'persons/:id',
     canActivate: [authGuard],
-    data: { roles: ['admin', 'user'] },
+    data: { roles: ['admin', 'user', 'guest'] },
     loadComponent: () => import('./page/person-details/person-details.component').then(c => c.PersonDetailsComponent)
   },
   {

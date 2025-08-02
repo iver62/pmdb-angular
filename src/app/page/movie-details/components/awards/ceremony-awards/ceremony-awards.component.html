@@ -6,7 +6,7 @@
         <mat-icon class="material-symbols-outlined mr-2">award_star</mat-icon>
         <span>{{ceremonyAwards?.ceremony?.name}}</span>
       </div>
-      @if (editable) {
+      @if (editable && (authService.hasRole('admin') || authService.hasRole('user'))) {
       <mat-icon class="small-icon dark:!text-pmdb-gold cursor-pointer" [matTooltip]="'app.edit' | translate"
         (click)="edit.emit()">
         edit

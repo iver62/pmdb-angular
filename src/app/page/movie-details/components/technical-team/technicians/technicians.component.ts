@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { MovieTechnician } from '../../../../../models';
+import { AuthService } from '../../../../../services';
 
 @Component({
   selector: 'app-technicians',
@@ -26,6 +27,8 @@ export class TechniciansComponent {
   movieTechnicians = input.required<MovieTechnician[]>()
 
   @Output() edit = new EventEmitter<void>();
+
+  constructor(public authService: AuthService) { }
 
   editMovieTechnicians() {
     this.edit.emit();

@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgPipesModule } from 'ngx-pipes';
 import { CeremonyAwards } from '../../../../../models';
+import { AuthService } from '../../../../../services';
 
 @Component({
   selector: 'app-ceremony-awards',
@@ -32,6 +33,8 @@ export class CeremonyAwardsComponent {
   overflowStates: {
     [key: number]: { scrollingLeft: boolean; scrollingRight: boolean }
   } = {};
+
+  constructor(public authService: AuthService) { }
 
   checkOverflow(index: number) {
     const el = this.textEls.get(index)?.nativeElement;
