@@ -213,7 +213,7 @@ export class MovieService {
   }
 
   saveAwards(id: number, ceremonyAwards: CeremonyAwards) {
-    return this.http.put<CeremonyAwards>(`${this.basePath}/${id}/ceremony-awards`, ceremonyAwards);
+    return this.http.put<CeremonyAwards>(`${this.basePath}/${id}/ceremonies-awards`, ceremonyAwards);
   }
 
   updateMovie(imageFile: File, movie: Movie) {
@@ -235,7 +235,7 @@ export class MovieService {
   }
 
   deleteCeremonyAwards(movieId: number, ceremonyAwardsId: number) {
-    return this.http.delete(`${this.basePath}/${movieId}/ceremony-awards/${ceremonyAwardsId}`);
+    return this.http.delete(`${this.basePath}/${movieId}/ceremonies-awards/${ceremonyAwardsId}`);
   }
 
   buildMovieFromForm(form: FormGroup, user: User): Movie {
